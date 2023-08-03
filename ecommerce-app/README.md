@@ -89,7 +89,20 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+#### `npm run lint`
+ESLint provides checks for a large set of potential errors and style violations. Its pluggable architecture also enables anyone to write their own rules and custom configurations.
 
+Eslint --fix will fix every rule violation it is capable of fixing, actually overwrite the code, and print out any warnings or errors it was incapable of fixing. The output will be a list of errors and warnings.
+
+Integrating auto-fix provides constant feedback by cleaning up mistakes and keeping code clean before you check it in to a repository. This saves time for you and your team when reviewing code by ensuring that the code contributed doesn't require little clean ups.
+
+ #### `npm run prepare`
+ Husky helps us do more things along with git commands. For example, we can run npm test in pre-commit phase and do something else in post-commit phase.
+
+This script will be trigger enable Git hooks after install
+
+Once installed, you will also need to run this command to enable Git hooks:
+`npx husky install` or `chmod ug+x .husky/*` (for macOS)
 ## Usage
 
 We'll provide various use cases and code examples here later.
