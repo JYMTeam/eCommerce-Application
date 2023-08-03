@@ -50,6 +50,19 @@ Users can browse through a vast range of products, view detailed descriptions, a
 An important aspect of our application is that it's responsive 📲, ensuring it looks great on various devices with a minimum resolution of 390px. This feature makes the shopping experience enjoyable, irrespective of the device users prefer.
 
 ## Setup
+Clone or download this repo, then install the dependencies and run the dev server:
+
+~~~
+npm i --save-dev
+npm start
+~~~
+
+Important! If you are using MacOS, you should also run this command in terminal to enable Husky:
+~~~
+chmod ug+x .husky/*
+~~~
+That all should get a dev server up and running (assuming you have npm and Node installed already). Any saved changes to components and styles should auto-refresh.
+
 ### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
