@@ -9,6 +9,8 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 
+// test commit
+
 root.render(
   <BrowserRouter>
     {/* BrowserRouter для роута */}
