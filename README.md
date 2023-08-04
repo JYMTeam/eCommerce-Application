@@ -148,6 +148,6 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 ## Contact
 Created by [@JYMTeam](https://github.com/JYMTeam/) - - feel free to contact us!
   #### Team Members:
-- [Mariya Dziamidovich](https://github.com/mariyademy)
+- [Maryia Dziamidovich](https://github.com/mariyademy)
 - [Yaroslava Hryzadubova](https://github.com/yaroslavagd)
 - [Julia Khvatova](https://github.com/jkhvatova)
