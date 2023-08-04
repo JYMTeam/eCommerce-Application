@@ -1,20 +1,22 @@
 # Project Name
+
 E-commerce App
+
 > Live demo [_here_]().
 
 ## Table of Contents
-* [General Info](#general-information)
-* [Technologies Used](#technologies-used)
-* [Features](#features)
-* [Setup](#setup)
-* [Usage](#usage)
-* [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
-* [Learn more](#learn-more)
-* [Contact](#contact)
-<!-- * [License](#license) -->
 
+- [General Info](#general-information)
+- [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Project Status](#project-status)
+- [Room for Improvement](#room-for-improvement)
+- [Acknowledgements](#acknowledgements)
+- [Learn more](#learn-more)
+- [Contact](#contact)
+<!-- * [License](#license) -->
 
 ## General Information
 
@@ -32,8 +34,8 @@ About Us page 🙋‍♂️🙋‍♀️
 
 The application is powered by CommerceTools 🌐, a leading provider of commerce solutions for B2C and B2B enterprises. CommerceTools offers a cloud-native, microservices-based commerce platform that enables brands to create unique and engaging digital commerce experiences.
 
-
 ## Technologies Used
+
 - CommerceTools
 - Typescript
 - React
@@ -50,6 +52,7 @@ Users can browse through a vast range of products, view detailed descriptions, a
 An important aspect of our application is that it's responsive 📲, ensuring it looks great on various devices with a minimum resolution of 390px. This feature makes the shopping experience enjoyable, irrespective of the device users prefer.
 
 ## Setup
+
 ### Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -57,6 +60,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Available Scripts
 
 In the project directory, you can run:
+
 #### `npm start`
 
 Runs the app in the development mode.\
@@ -95,20 +99,23 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 We'll provide various use cases and code examples here later.
 
 ## Project Status
+
 Project is: _in progress_
 
 ## Room for Improvement
 
 Room for improvement:
+
 - A lot
 
 To do:
+
 - Login, Registration, and Main Pages Implementation
 - Catalog Product, Detailed Product, and User Profile Pages Implementation
 - Detailed Product Page Enhancement, Basket Page, Catalog Page Enhancement, and About Us Page Implementation
 
-
 ## Acknowledgements
+
 - This project was based on [this RSSchool task](https://github.com/rolling-scopes-school/tasks/tree/master/tasks/eCommerce-Application).
 
 ## Learn More
@@ -118,4 +125,5 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 ## Contact
+
 Created by [@JYMTeam](https://github.com/JYMTeam/) - feel free to contact us!
