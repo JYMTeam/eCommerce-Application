@@ -1,9 +1,5 @@
-import React from 'react';
+import React from "react";
 
-export function AuthPage () {
-  return (
-    <div>
-      Auth
-    </div>
-  )
+export function AuthPage() {
+  return <div>Auth</div>;
 }
