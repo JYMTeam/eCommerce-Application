@@ -1,11 +1,10 @@
 import React from "react";
-// import logo from "./assets/logo.svg";
+import logo from "./assets/logo.svg";
 import "./styles/App.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/AuthPage";
 import { Navigation } from "./components/Navigation";
-import { Button } from "./components/Button";
 
 function App() {
   return (
@@ -20,7 +19,7 @@ function App() {
           <Route path="/auth" element={<LoginPage />}></Route>
         </Routes>
 
-        {/* <header className="App-header">
+        <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
@@ -33,9 +32,8 @@ function App() {
           >
             Learn React
           </a>
-        </header> */}
+        </header>
       </div>
-      <Button />
     </BrowserRouter>
   );
 }
