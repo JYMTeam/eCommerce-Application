@@ -3,7 +3,7 @@ import logo from "./assets/logo.svg";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
-import { AuthPage } from "./pages/AuthPage";
+import { LoginPage } from "./pages/AuthPage";
 import { Navigation } from "./components/Navigation";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       {/* пути для примера */}
       <Routes>
         <Route path="/" element={<MainPage />}></Route>
-        <Route path="/auth" element={<AuthPage />}></Route>
+        <Route path="/auth" element={<LoginPage />}></Route>
       </Routes>
 
       <header className="App-header">

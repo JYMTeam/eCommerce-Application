@@ -1,5 +1,3 @@
-import React from "react";
-
-export function AuthPage() {
-  return <div>Auth</div>;
+export function LoginPage() {
+  return <div>Login</div>;
 }
