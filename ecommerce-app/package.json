@@ -19,7 +19,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
       "eslint --fix --max-warnings=0", 
-      "CI=true react-scripts test"
+      "react-scripts test --env=jsdom --watchAll=false --passWithNoTests --bail"
     ],
     "src/**/*.{js,jsx,ts,tsx,json,css,js}": ["prettier --write"]
   },
