@@ -18,9 +18,10 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix --ext .ts,.tsx",
-      "prettier --write --ignore-unknown"
-    ]
+      "eslint --max-warnings=0", 
+      "react-scripts test --bail --watchAll=false --findRelatedTests --passWithNoTests"
+    ],
+    "src/**/*.{js,jsx,ts,tsx,json,css,js}": ["prettier --write"]
   },
   "scripts": {
     "start": "react-scripts start",
