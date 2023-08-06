@@ -17,9 +17,9 @@
     "web-vitals": "^2.1.4"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write --ignore-unknown",
-      "eslint --fix --ext .ts,.tsx"
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix --ext .ts,.tsx",
+      "prettier --write --ignore-unknown"
     ]
   },
   "scripts": {
