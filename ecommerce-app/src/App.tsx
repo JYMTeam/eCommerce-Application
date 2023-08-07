@@ -16,7 +16,7 @@ function App() {
         {/* пути для примера */}
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
-          <Route path="/auth" element={<LoginPage />}></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
         </Routes>
 
         <header className="App-header">

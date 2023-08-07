@@ -10,9 +10,9 @@ export function Navigation() {
         <Button variant="text">Backpacks</Button>
         <Button variant="text">Suitcases</Button>
         <Button variant="text">Wallets</Button>
-        {/* <Link to="auth">Auth</Link> */}
-        <Button component={Link} to="Auth" variant="contained" color="primary">
-          Auth
+        {/* <Link to="login">Login</Link> */}
+        <Button component={Link} to="Login" variant="contained" color="primary">
+          Login
         </Button>
         <Button component={Link} to="Main" variant="contained" color="primary">
           Main
