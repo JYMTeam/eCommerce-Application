@@ -5,7 +5,7 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/AuthPage";
 import { Navigation } from "./components/Navigation";
-
+import "./lib/ctpClient";
 function App() {
   return (
     <BrowserRouter>
