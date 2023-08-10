@@ -10,11 +10,10 @@ export function Navigation() {
         <Button variant="text">Backpacks</Button>
         <Button variant="text">Suitcases</Button>
         <Button variant="text">Wallets</Button>
-        {/* <Link to="login">Login</Link> */}
         <Button component={Link} to="Login" variant="contained" color="primary">
           Login
         </Button>
-        <Button component={Link} to="Main" variant="contained" color="primary">
+        <Button component={Link} to="/" variant="contained" color="primary">
           Main
         </Button>
       </Stack>
