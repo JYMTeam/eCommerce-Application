@@ -11,6 +11,7 @@ import {
   UPPERCASE_LETTER_REGEX,
   LOWERCASE_LETTER_REGEX,
   DIGIT_REGEX,
+  NO_SPACE_REGEX,
 } from "../../constants/constants";
 import { formInitialValues } from "../../types";
 
@@ -27,7 +28,7 @@ export function LoginForm() {
       .trim("Email must not contain leading or trailing whitespace")
       .strict(true)
       .matches(AT_SIGN_DOMAIN_REGEX, {
-        message: "Email must contain an '@' sign followed by domain ",
+        message: "Email must contain an '@' sign followed by domain in latin",
       })
       .email("Email must be valid e.g., user@example.com"),
 
@@ -37,14 +38,15 @@ export function LoginForm() {
       .trim("Password must not contain leading or trailing whitespace")
       .strict(true)
       .matches(UPPERCASE_LETTER_REGEX, {
-        message: "Password must contain at least one uppercase letter ",
+        message: "Password must contain at least one latin uppercase letter",
       })
       .matches(LOWERCASE_LETTER_REGEX, {
-        message: "Password must contain at least one lowercase letter ",
+        message: "Password must contain at least one latin lowercase letter",
       })
       .matches(DIGIT_REGEX, {
         message: "Password must contain at least one digit ",
-      }),
+      })
+      .matches(NO_SPACE_REGEX, { message: "Password must not contain spaces" }),
   });
 
   return (
