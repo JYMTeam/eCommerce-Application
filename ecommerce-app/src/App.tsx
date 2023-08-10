@@ -7,6 +7,7 @@ import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
 import { Navigation } from "./components/Navigation";
 import { setupStore } from "./store";
+import "./commercetools-sdk/ctpClient-exaple";
 
 const store = setupStore();
 

@@ -6,14 +6,13 @@ import {
 } from "@commercetools/sdk-client-v2";
 
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
-console.log("Все переменные окружения:", process.env);
 
 export const projectKey = process.env.REACT_APP_PROJECT_KEY || "";
 const scope = process.env.REACT_APP_SCOPES || "";
 const scopes = [scope];
 
 // Configure authMiddlewareOptions
-const authMiddlewareOptions: AuthMiddlewareOptions = {
+export const authMiddlewareOptions: AuthMiddlewareOptions = {
   host: "https://auth.europe-west1.gcp.commercetools.com",
   projectKey: projectKey,
   credentials: {
@@ -25,7 +24,7 @@ const authMiddlewareOptions: AuthMiddlewareOptions = {
 };
 
 // Configure httpMiddlewareOptions
-const httpMiddlewareOptions: HttpMiddlewareOptions = {
+export const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: "https://api.europe-west1.gcp.commercetools.com",
   fetch,
 };

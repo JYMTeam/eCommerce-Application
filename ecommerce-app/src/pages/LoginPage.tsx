@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { fetchUserLogin } from "../store/actions/userLoginActions";
 import { useAppDispatch } from "../hooks/redux";
-import { MyCustomerDraft } from "@commercetools/platform-sdk";
+import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 
-const existingUser: MyCustomerDraft = {
-  email: "johndoe@example.com",
+const existingUser: UserAuthOptions = {
+  username: "johndoe@example.com",
   password: "secret123",
   // firstName: "John",
   // lastName: "Doe",
@@ -13,8 +13,19 @@ const existingUser: MyCustomerDraft = {
 export function LoginPage() {
   const dispatch = useAppDispatch();
 
+  //получаем данные из стейта
+  // const { error, loading, loginData } = useAppSelector(
+  //   (state) => state.userLogin,
+  // );
+
   useEffect(() => {
     dispatch(fetchUserLogin(existingUser));
   });
-  return <div>Login</div>;
+  return (
+    <div>
+      {/* {loading && <p>Loading...</p>}
+      {error && <p>{error.message}</p>}
+      Customer = {loginData?.customer.email} is login! */}
+    </div>
+  );
 }
