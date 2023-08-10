@@ -4,7 +4,7 @@ import { Stack, Button } from "@mui/material";
 
 export function Navigation() {
   return (
-    <div>
+    <header>
       <Stack spacing={3} direction="row">
         <Button variant="text">Bags</Button>
         <Button variant="text">Backpacks</Button>
@@ -17,6 +17,6 @@ export function Navigation() {
           Main
         </Button>
       </Stack>
-    </div>
+    </header>
   );
 }
