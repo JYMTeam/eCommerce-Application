@@ -10,6 +10,9 @@ import {
   PasswordAuthMiddlewareOptions,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
+import { myToken } from "./MyTokenCache";
+
+export let passOptions: PasswordAuthMiddlewareOptions | null = null;
 
 const getApiPassRootBuilder = () => {
   let user: UserAuthOptions;
@@ -17,7 +20,6 @@ const getApiPassRootBuilder = () => {
   // here is a closure for user
   // so that the function remembers the user's login and password
   return (userAuthOptions?: UserAuthOptions) => {
-    let passOptions: PasswordAuthMiddlewareOptions | null = null;
     let client: Client | null = null;
 
     if (userAuthOptions) {
@@ -33,6 +35,7 @@ const getApiPassRootBuilder = () => {
           clientSecret: authMiddlewareOptions.credentials.clientSecret,
           user: user,
         },
+        tokenCache: myToken,
       };
     }
 

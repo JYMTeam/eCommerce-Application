@@ -1,5 +1,6 @@
 // This file for testing requests
 import { getApiRoot, projectKey } from "./ClientBuilder";
+import { passOptions } from "./ClientBuilderWithPass";
 
 const getProjects = async () => {
   try {
@@ -15,3 +16,5 @@ const getProjects = async () => {
 };
 
 getProjects().then(console.log).catch(console.error);
+console.log("token");
+console.log(passOptions?.tokenCache?.get());
