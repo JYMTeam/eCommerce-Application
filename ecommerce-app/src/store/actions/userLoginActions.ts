@@ -1,4 +1,4 @@
-import { projectKey } from "../../commercetools-sdk/ClientBuilder";
+import { getApiRoot, projectKey } from "../../commercetools-sdk/ClientBuilder";
 import {
   ClientResponse,
   HttpErrorType,
@@ -17,7 +17,7 @@ export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
     try {
       dispatch(userLoginFetching());
 
-      const answer = await getApiPassRoot(userAuthOptions)
+      const answer = await getApiRoot()
         .withProjectKey({ projectKey })
         .me()
         .login()
@@ -28,7 +28,7 @@ export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
           },
         })
         .execute();
-
+      getApiPassRoot(userAuthOptions);
       dispatch(userLoginFetchSuccess(answer.body.customer));
     } catch (e) {
       const error = e as ClientResponse<HttpErrorType>;
