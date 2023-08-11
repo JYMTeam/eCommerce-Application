@@ -1,17 +1,17 @@
 // This file for testing requests
 import { getApiRoot, projectKey } from "./ClientBuilder";
 
-const getCustomer = async () => {
+const getProjects = async () => {
   try {
-    const customer = await getApiRoot()
+    const projects = await getApiRoot()
       .withProjectKey({ projectKey })
       .categories()
       .get()
       .execute();
-    return customer;
+    return projects;
   } catch (e) {
     console.log(e);
   }
 };
 
-getCustomer().then(console.log).catch(console.error);
+getProjects().then(console.log).catch(console.error);

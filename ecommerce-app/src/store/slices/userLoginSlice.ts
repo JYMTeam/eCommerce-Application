@@ -1,15 +1,17 @@
 import { Customer } from "@commercetools/platform-sdk";
-import { IErrorResponse } from "../../models/errorModels";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { HttpErrorType } from "@commercetools/sdk-client-v2";
 
 interface IUserLoginState {
   loading: boolean;
-  error: IErrorResponse | null;
+  isLogged: boolean;
+  error: HttpErrorType | null;
   loginData: Customer | null;
 }
 
 const initialState: IUserLoginState = {
   loading: false,
+  isLogged: false,
   error: null,
   loginData: null,
 };
@@ -23,11 +25,14 @@ export const userLoginSlice = createSlice({
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
+      state.isLogged = true;
+      state.error = null;
       state.loginData = action.payload;
     },
-    userLoginFetchError(state, action: PayloadAction<IErrorResponse>) {
+    userLoginFetchError(state, action: PayloadAction<HttpErrorType>) {
       state.loading = false;
       state.error = action.payload;
+      state.loginData = null;
     },
   },
 });

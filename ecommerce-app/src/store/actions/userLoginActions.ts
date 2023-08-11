@@ -1,6 +1,9 @@
 import { projectKey } from "../../commercetools-sdk/ClientBuilder";
-import { ClientResponse, UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { IErrorResponse } from "../../models/errorModels";
+import {
+  ClientResponse,
+  HttpErrorType,
+  UserAuthOptions,
+} from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "..";
 import {
   userLoginFetchError,
@@ -9,28 +12,26 @@ import {
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/ClientBuilderWithPass";
 
-export const fetchUserLogin = (existingUser: UserAuthOptions) => {
+export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      // const answer = await getApiRoot()
-      //   .withProjectKey({projectKey})
-      //   .me()
-      //   .login()
-      //   // .post({
-      //   //   body: existingUser
-      //   // })
-      //   .execute();
 
-      // const apiPassRoot = getApiPassRoot(existingUser);
-      const answer2 = await getApiPassRoot(existingUser)
+      const answer = await getApiPassRoot(userAuthOptions)
         .withProjectKey({ projectKey })
         .me()
-        .get()
+        .login()
+        .post({
+          body: {
+            email: userAuthOptions.username,
+            password: userAuthOptions.password,
+          },
+        })
         .execute();
-      dispatch(userLoginFetchSuccess(answer2.body));
+
+      dispatch(userLoginFetchSuccess(answer.body.customer));
     } catch (e) {
-      const error = e as ClientResponse<IErrorResponse>;
+      const error = e as ClientResponse<HttpErrorType>;
       const body = error.body;
       if (body) {
         dispatch(userLoginFetchError(body));

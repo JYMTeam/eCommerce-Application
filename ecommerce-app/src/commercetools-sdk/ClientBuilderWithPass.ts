@@ -5,28 +5,51 @@ import {
   projectKey,
 } from "./ClientBuilder";
 import {
+  Client,
   ClientBuilder,
   PasswordAuthMiddlewareOptions,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
 
-export const getApiPassRoot = (userAuthOptions: UserAuthOptions) => {
-  const passOptions: PasswordAuthMiddlewareOptions = {
-    host: authMiddlewareOptions.host,
-    projectKey: authMiddlewareOptions.projectKey,
-    credentials: {
-      clientId: authMiddlewareOptions.credentials.clientId,
-      clientSecret: authMiddlewareOptions.credentials.clientSecret,
-      user: userAuthOptions,
-    },
-  };
+const getApiPassRootBuilder = () => {
+  let user: UserAuthOptions;
 
-  const client = new ClientBuilder()
-    .withProjectKey(projectKey) // .withProjectKey() is not required if the projectKey is included in authMiddlewareOptions
-    .withClientCredentialsFlow(authMiddlewareOptions)
-    .withPasswordFlow(passOptions)
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withLoggerMiddleware() // Include middleware for logging
-    .build();
-  return createApiBuilderFromCtpClient(client);
+  // here is a closure for user
+  // so that the function remembers the user's login and password
+  return (userAuthOptions?: UserAuthOptions) => {
+    let passOptions: PasswordAuthMiddlewareOptions | null = null;
+    let client: Client | null = null;
+
+    if (userAuthOptions) {
+      user = userAuthOptions;
+    }
+
+    if (user) {
+      passOptions = {
+        host: authMiddlewareOptions.host,
+        projectKey: authMiddlewareOptions.projectKey,
+        credentials: {
+          clientId: authMiddlewareOptions.credentials.clientId,
+          clientSecret: authMiddlewareOptions.credentials.clientSecret,
+          user: user,
+        },
+      };
+    }
+
+    if (passOptions) {
+      client = new ClientBuilder()
+        .withProjectKey(projectKey)
+        .withClientCredentialsFlow(authMiddlewareOptions)
+        .withPasswordFlow(passOptions) // required for password
+        .withHttpMiddleware(httpMiddlewareOptions)
+        .withLoggerMiddleware() // Include middleware for logging
+        .build();
+    }
+
+    return createApiBuilderFromCtpClient(client);
+  };
 };
+
+// when you need a new login call - getApiPassRoot(userAuthOptions)
+// when you need the old login call - getApiPassRoot()
+export const getApiPassRoot = getApiPassRootBuilder();
