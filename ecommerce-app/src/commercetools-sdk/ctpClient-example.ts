@@ -1,14 +1,9 @@
 // This file for testing requests
-import { getApiRoot, projectKey } from "./ClientBuilder";
-import { passOptions } from "./ClientBuilderWithPass";
+import { getApiAnonymRoot } from "./ClientBuilderAnonym";
 
 const getProjects = async () => {
   try {
-    const projects = await getApiRoot()
-      .withProjectKey({ projectKey })
-      .categories()
-      .get()
-      .execute();
+    const projects = await getApiAnonymRoot().categories().get().execute();
     return projects;
   } catch (e) {
     console.log(e);
@@ -16,5 +11,3 @@ const getProjects = async () => {
 };
 
 getProjects().then(console.log).catch(console.error);
-console.log("token");
-console.log(passOptions?.tokenCache?.get());

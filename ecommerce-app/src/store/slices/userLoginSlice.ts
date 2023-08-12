@@ -36,6 +36,9 @@ export const userLoginSlice = createSlice({
     },
   },
 });
+
+// Export actions
 export const { userLoginFetching, userLoginFetchSuccess, userLoginFetchError } =
-  userLoginSlice.actions; // Export actions
+  userLoginSlice.actions;
+
 export default userLoginSlice.reducer;
