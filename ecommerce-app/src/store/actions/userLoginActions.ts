@@ -8,8 +8,10 @@ import {
   userLoginFetchError,
   userLoginFetchSuccess,
   userLoginFetching,
+  setUserToken,
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/ClientBuilderWithPass";
+import { passToken } from "../../commercetools-sdk/PassTokenCache";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
   return async (dispatch: AppDispatch) => {
@@ -26,7 +28,9 @@ export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
           },
         })
         .execute();
+
       dispatch(userLoginFetchSuccess(answer.body.customer));
+      dispatch(setUserToken(passToken.get()));
     } catch (e) {
       const error = e as ClientResponse<HttpErrorType>;
       const body = error.body;

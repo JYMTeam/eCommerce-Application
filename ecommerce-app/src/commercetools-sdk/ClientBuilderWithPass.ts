@@ -29,9 +29,7 @@ export const getApiPassRoot = (userAuthOptions?: UserAuthOptions) => {
       tokenCache: passToken,
     };
 
-    client = defaultClient
-      .withPasswordFlow(passOptions) // required for password
-      .build();
+    client = defaultClient.withPasswordFlow(passOptions).build();
   }
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
