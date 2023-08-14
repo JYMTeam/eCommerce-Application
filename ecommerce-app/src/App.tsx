@@ -7,6 +7,7 @@ import { Navigation } from "./components/Navigation";
 import NotFoundPage from "./pages/NotFoundPage";
 import { setupStore } from "./store";
 import "./commercetools-sdk/ctpClient-example";
+import { RegistrationPage } from "./pages/RegistrationPage";
 
 const store = setupStore();
 
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
+            <Route path="/signup" element={<RegistrationPage />}></Route>
             <Route path="*" element={<NotFoundPage />}></Route>
           </Routes>
         </div>
