@@ -1,4 +1,5 @@
 import "./styles/App.css";
+import { Provider } from "react-redux";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
@@ -7,24 +8,27 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { setupStore } from "./store";
+import "./commercetools-sdk/ctpClient-example";
+
+const store = setupStore()
 
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <BrowserRouter>
-        <div className="App">
-          {/* навигация для примера */}
-          <Navigation />
-
-          {/* пути для примера */}
-          <Routes>
-            <Route path="/" element={<MainPage />}></Route>
-            <Route path="/login" element={<LoginPage />}></Route>
-            <Route path="/registration" element={<RegistrationPage />}></Route>
-            <Route path="*" element={<NotFoundPage />}></Route>
-          </Routes>
-        </div>
+      <Provider store={store}>
+        <BrowserRouter>
+          <div className="App">
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<MainPage />}></Route>
+              <Route path="/login" element={<LoginPage />}></Route>
+              <Route path="/registration" element={<RegistrationPage />}></Route>
+              <Route path="*" element={<NotFoundPage />}></Route>
+            </Routes>
+          </div>
       </BrowserRouter>
+     </Provider>
     </LocalizationProvider>
   );
 }

@@ -14,6 +14,14 @@ import {
   NO_SPACE_REGEX,
 } from "../../constants/constants";
 import { IFormInitialValues } from "../../types";
+import { fetchUserLogin } from "../../store/actions/userLoginActions";
+import { UserAuthOptions } from "@commercetools/sdk-client-v2";
+import { useAppDispatch } from "../../hooks/redux";
+
+// const existingUser: UserAuthOptions = {
+//   username: "johndoe@example.com",
+//   password: "Secret123",
+// };
 
 export function LoginForm() {
   const initialValues: IFormInitialValues = {
@@ -54,12 +62,19 @@ export function LoginForm() {
       }),
   });
 
+  const dispatch = useAppDispatch();
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={LoginSchema}
       onSubmit={(values) => {
-        //fires onSubmit by button or enter
+        const { email, password } = values;
+
+        const existingUser: UserAuthOptions = {
+          username: email,
+          password,
+        };
+        dispatch(fetchUserLogin(existingUser));
       }}
     >
       {(formik) => {
