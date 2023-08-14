@@ -19,7 +19,7 @@ import { IRegistrationInitialValues } from "../../types";
 import { subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Autocomplete } from "@mui/material";
+import { Autocomplete, Grid } from "@mui/material";
 import { useState } from "react";
 
 const postalCodes = require("postal-codes-js");
@@ -179,28 +179,32 @@ export function RegistrationForm() {
               }}
             >
               <FormControl fullWidth>
-                <TextField
-                  autoComplete="off"
-                  name="firstName"
-                  label="First name"
-                  variant="standard"
-                  required={true}
-                  onChange={handleChange}
-                  helperText={errors.firstName}
-                  error={!!errors.firstName}
-                  sx={{ mb: 0.5 }}
-                />
-                <TextField
-                  autoComplete="off"
-                  name="lastName"
-                  label="Last name"
-                  variant="standard"
-                  required={true}
-                  onChange={handleChange}
-                  helperText={errors.lastName}
-                  error={!!errors.lastName}
-                  sx={{ mb: 0.5 }}
-                />
+                <Grid container spacing={1.5}>
+                  <Grid item xs={6}>
+                    <TextField
+                      autoComplete="off"
+                      name="firstName"
+                      label="First name"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.firstName}
+                      error={!!errors.firstName}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      autoComplete="off"
+                      name="lastName"
+                      label="Last name"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.lastName}
+                      error={!!errors.lastName}
+                    />
+                  </Grid>
+                </Grid>
                 <DatePicker
                   label="Date of birth"
                   maxDate={dayjs(new Date())}
@@ -210,7 +214,6 @@ export function RegistrationForm() {
                     const formatedValue = value.format("YYYY-MM-DD");
                     setFieldValue("dateOfBirth", formatedValue, true);
                   }}
-                  sx={{ mb: 0.5 }}
                   slotProps={{
                     textField: {
                       required: true,
@@ -230,7 +233,6 @@ export function RegistrationForm() {
                   onChange={handleChange}
                   helperText={errors.email}
                   error={!!errors.email}
-                  sx={{ mb: 0.5 }}
                 />
                 <TextField
                   autoComplete="off"
@@ -242,69 +244,74 @@ export function RegistrationForm() {
                   onChange={handleChange}
                   helperText={errors.password}
                   error={!!errors.password}
-                  sx={{ mb: 0.5 }}
                 />
-                <TextField
-                  autoComplete="off"
-                  name="streetName"
-                  label="Street"
-                  variant="standard"
-                  required={true}
-                  onChange={handleChange}
-                  helperText={errors.streetName}
-                  error={!!errors.streetName}
-                  sx={{ mb: 0.5 }}
-                />
-                <TextField
-                  autoComplete="off"
-                  name="city"
-                  label="City / Town"
-                  variant="standard"
-                  required={true}
-                  onChange={handleChange}
-                  helperText={errors.city}
-                  error={!!errors.city}
-                  sx={{ mb: 0.5 }}
-                />
-                <Autocomplete
-                  options={countryOptions}
-                  onChange={(_, newValue) => {
-                    if (newValue) {
-                      setCountryCode(newValue.countryCode);
-                      setPostalCodeFormat(newValue.postalCodeFormat);
-                      setFieldValue("country", newValue.countryCode, true);
-                    } else {
-                      setCountryCode("");
-                      setPostalCodeFormat("");
-                      setFieldValue("country", "", true);
-                    }
-                  }}
-                  sx={{ mb: 0.5 }}
-                  renderInput={(params) => (
+                <Grid container spacing={1.5} sx={{ mb: 2 }}>
+                  <Grid item xs={6}>
+                    <Autocomplete
+                      options={countryOptions}
+                      onChange={(_, newValue) => {
+                        if (newValue) {
+                          setCountryCode(newValue.countryCode);
+                          setPostalCodeFormat(newValue.postalCodeFormat);
+                          setFieldValue("country", newValue.countryCode, true);
+                        } else {
+                          setCountryCode("");
+                          setPostalCodeFormat("");
+                          setFieldValue("country", "", true);
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          name="country"
+                          label="Country"
+                          variant="standard"
+                          required={true}
+                          autoComplete="off"
+                          helperText={errors.country}
+                          error={!!errors.country}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
                     <TextField
-                      {...params}
-                      name="country"
-                      label="Country"
+                      autoComplete="off"
+                      name="city"
+                      label="City / Town"
                       variant="standard"
                       required={true}
-                      autoComplete="off"
-                      helperText={errors.country}
-                      error={!!errors.country}
+                      onChange={handleChange}
+                      helperText={errors.city}
+                      error={!!errors.city}
                     />
-                  )}
-                />
-                <TextField
-                  autoComplete="off"
-                  name="postalCode"
-                  label="Postal code"
-                  variant="standard"
-                  required={true}
-                  onChange={handleChange}
-                  helperText={!!values.country && errors.postalCode}
-                  error={!!values.country && !!errors.postalCode}
-                  disabled={!values.country}
-                  sx={{ mb: 2 }}
-                />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      autoComplete="off"
+                      name="streetName"
+                      label="Street"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.streetName}
+                      error={!!errors.streetName}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      autoComplete="off"
+                      name="postalCode"
+                      label="Postal code"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={!!values.country && errors.postalCode}
+                      error={!!values.country && !!errors.postalCode}
+                      disabled={!values.country}
+                    />
+                  </Grid>
+                </Grid>
                 <Button type="submit" variant="contained" size="large">
                   Register
                 </Button>
