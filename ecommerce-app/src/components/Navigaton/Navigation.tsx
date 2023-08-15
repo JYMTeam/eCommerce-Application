@@ -30,7 +30,7 @@ export function Navigation() {
           to="/"
           sx={{
             ":hover": {
-              bgcolor: "transparent", // theme.palette.primary.main
+              bgcolor: "transparent",
             },
           }}
         >

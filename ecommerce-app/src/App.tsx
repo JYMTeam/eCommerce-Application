@@ -21,10 +21,7 @@ function App() {
         <Container maxWidth="lg">
           <div className="App">
             <ThemeProvider theme={Theme}>
-              {/* навигация для примера */}
               <Navigation />
-
-              {/* пути для примера */}
               <Routes>
                 <Route path="/" element={<MainPage />}></Route>
                 <Route path="/login" element={<LoginPage />}></Route>
