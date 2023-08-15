@@ -14,13 +14,12 @@ export const getApiTokenRoot = () => {
   let client: Client | null = null;
   const existingToken = passToken.get().token;
 
-  if (existingToken) {
+  if (existingToken !== "") {
     const authorization = `Bearer ${existingToken}`;
 
     client = defaultClient
       .withExistingTokenFlow(authorization, options)
       .build();
   }
-
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };

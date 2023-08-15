@@ -11,26 +11,24 @@ import {
   projectKey,
 } from "./ClientBuilderDefault";
 
-export const getApiPassRoot = (userAuthOptions?: UserAuthOptions) => {
+export const getApiPassRoot = (userAuthOptions: UserAuthOptions) => {
   let user: UserAuthOptions | null = null;
   let client: Client | null = null;
 
-  if (userAuthOptions) {
-    user = userAuthOptions;
+  user = userAuthOptions;
 
-    const passOptions: PasswordAuthMiddlewareOptions = {
-      host: authMiddlewareOptions.host,
-      projectKey: authMiddlewareOptions.projectKey,
-      credentials: {
-        clientId: authMiddlewareOptions.credentials.clientId,
-        clientSecret: authMiddlewareOptions.credentials.clientSecret,
-        user: user,
-      },
-      tokenCache: passToken,
-    };
+  const passOptions: PasswordAuthMiddlewareOptions = {
+    host: authMiddlewareOptions.host,
+    projectKey: authMiddlewareOptions.projectKey,
+    credentials: {
+      clientId: authMiddlewareOptions.credentials.clientId,
+      clientSecret: authMiddlewareOptions.credentials.clientSecret,
+      user: user,
+    },
+    tokenCache: passToken,
+  };
 
-    client = defaultClient.withPasswordFlow(passOptions).build();
-  }
+  client = defaultClient.withPasswordFlow(passOptions).build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };
