@@ -3,7 +3,7 @@ import {
   Client,
   ExistingTokenMiddlewareOptions,
 } from "@commercetools/sdk-client-v2";
-import { passToken } from "./PassTokenCache";
+import { passToken } from "../PassTokenCache";
 import { defaultClient, projectKey } from "./ClientBuilderDefault";
 
 const options: ExistingTokenMiddlewareOptions = {

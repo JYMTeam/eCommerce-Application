@@ -16,7 +16,8 @@ import {
 import { formInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
@@ -57,6 +58,9 @@ export function LoginForm() {
       .matches(NO_SPACE_REGEX, { message: "Password must not contain spaces" }),
   });
 
+  const { errorMessage, loading, isLogged } = useAppSelector(
+    (state) => state.userLogin,
+  );
   const dispatch = useAppDispatch();
   return (
     <Formik
@@ -69,6 +73,7 @@ export function LoginForm() {
           username: email,
           password,
         };
+
         dispatch(fetchUserLogin(existingUser));
       }}
     >
@@ -94,7 +99,17 @@ export function LoginForm() {
                   placeholder=" user@example.com"
                   required={true}
                   sx={{ mb: 1 }}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                    handleChange(event);
+                  }}
+                  onFocus={() => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                  }}
                   helperText={errors.email}
                   error={!!errors.email}
                 />
@@ -106,7 +121,17 @@ export function LoginForm() {
                   variant="standard"
                   required={true}
                   sx={{ mb: 2 }}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                    handleChange(event);
+                  }}
+                  onFocus={() => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                  }}
                   helperText={errors.password}
                   error={!!errors.password}
                 />
@@ -115,9 +140,36 @@ export function LoginForm() {
                   label="Show password"
                   sx={{ mb: 2 }}
                 />
-                <Button type="submit" variant="contained" size="large">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={loading}
+                >
                   Log in
                 </Button>
+                {isLogged && (
+                  <span
+                    style={{
+                      color: "green",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {"User successfully logged in!"}
+                  </span>
+                )}
+                {errorMessage && (
+                  <span
+                    style={{
+                      color: "red",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {errorMessage}
+                  </span>
+                )}
               </FormControl>
             </Box>
           </Form>
