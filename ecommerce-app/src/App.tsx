@@ -3,7 +3,9 @@ import { Provider } from "react-redux";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
-import { Navigation } from "./components/Navigation";
+import { ShopPage } from "./pages/ShopPage";
+import { CartPage } from "./pages/CartPage";
+import { Navigation } from "./components/Navigaton/Navigation";
 import NotFoundPage from "./pages/NotFoundPage";
 import { setupStore } from "./store";
 import "./commercetools-sdk/ctpClient-example";
@@ -27,6 +29,8 @@ function App() {
                 <Route path="/" element={<MainPage />}></Route>
                 <Route path="/login" element={<LoginPage />}></Route>
                 <Route path="/signup" element={<RegistrationPage />}></Route>
+                <Route path="/shop" element={<ShopPage />}></Route>
+                <Route path="/cart" element={<CartPage />}></Route>
                 <Route path="*" element={<NotFoundPage />}></Route>
               </Routes>
             </ThemeProvider>

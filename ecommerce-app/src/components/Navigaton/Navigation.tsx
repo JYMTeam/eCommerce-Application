@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../assets/logo.png";
-import CartIcon from "../assets/cart.svg";
+import Logo from "../../assets/logo.png";
+import CartIcon from "../../assets/cart.svg";
 import { AppBar, Toolbar, Stack, Button, IconButton, Box } from "@mui/material";
 
 //import { SystemStyleObject } from "@mui/system";
@@ -59,7 +59,7 @@ export function Navigation() {
           <Button
             variant="text"
             component={Link}
-            to="/"
+            to="Shop"
             sx={{
               ":hover": {
                 bgcolor: "transparent",
@@ -85,7 +85,12 @@ export function Navigation() {
           >
             Sign Up
           </Button>
-          <Button component={Link} to="/" variant="contained" color="primary">
+          <Button
+            component={Link}
+            to="Cart"
+            variant="contained"
+            color="primary"
+          >
             <Box
               component="img"
               src={CartIcon}
