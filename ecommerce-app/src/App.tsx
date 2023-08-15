@@ -11,7 +11,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
 import "./commercetools-sdk/ctpClient-example";
 
-const store = setupStore()
+const store = setupStore();
 
 function App() {
   return (
@@ -23,12 +23,15 @@ function App() {
             <Routes>
               <Route path="/" element={<MainPage />}></Route>
               <Route path="/login" element={<LoginPage />}></Route>
-              <Route path="/registration" element={<RegistrationPage />}></Route>
+              <Route
+                path="/registration"
+                element={<RegistrationPage />}
+              ></Route>
               <Route path="*" element={<NotFoundPage />}></Route>
             </Routes>
           </div>
-      </BrowserRouter>
-     </Provider>
+        </BrowserRouter>
+      </Provider>
     </LocalizationProvider>
   );
 }

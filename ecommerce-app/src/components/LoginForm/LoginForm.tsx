@@ -27,7 +27,7 @@ export function LoginForm() {
   const initialValues: IFormInitialValues = {
     email: "",
     password: "",
-    check: [],
+    passwordCheck: [],
   };
 
   const LoginSchema = object().shape({
@@ -106,7 +106,7 @@ export function LoginForm() {
                 <TextField
                   autoComplete="off"
                   type={
-                    values.check && values.check.length > 0
+                    values.passwordCheck && values.passwordCheck.length > 0
                       ? "text"
                       : "password"
                   }

@@ -19,8 +19,9 @@ import { IRegistrationInitialValues } from "../../types";
 import { subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Autocomplete, Grid } from "@mui/material";
+import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { useState } from "react";
+import "./RegistrationForm.css";
 
 const postalCodes = require("postal-codes-js");
 
@@ -30,15 +31,72 @@ const initialValues: IRegistrationInitialValues = {
   firstName: "",
   lastName: "",
   dateOfBirth: "",
-  streetName: "",
-  city: "",
-  country: "",
-  postalCode: "",
+  streetNameShipping: "",
+  streetNameBilling: "",
+  cityShipping: "",
+  cityBilling: "",
+  countryShipping: "",
+  countryBilling: "",
+  postalCodeShipping: "",
+  postalCodeBilling: "",
+  passwordCheck: [],
+  adressCheck: [],
+};
+
+const validateName = (field: string) => {
+  return string()
+    .required(`${field} is required`)
+    .trim(`${field} must not contain leading or trailing whitespace`)
+    .strict(true)
+    .matches(NO_SPECIAL_CHARS_REGEX, {
+      message: `${field} must not contain special charachers`,
+    })
+    .matches(NO_DIGIT_REGEX, {
+      message: `${field} must not contain numbers`,
+    });
+};
+
+const validateStreetName = () => {
+  return string()
+    .required("Street is required")
+    .trim("Street must not contain leading or trailing whitespace")
+    .strict(true);
+};
+
+const validateCity = () => {
+  return string()
+    .required("City is required")
+    .trim("City must not contain leading or trailing whitespace")
+    .strict(true)
+    .matches(NO_SPECIAL_CHARS_REGEX, {
+      message: "City must not contain special charachers",
+    })
+    .matches(NO_DIGIT_REGEX, {
+      message: "City must not contain numbers",
+    });
+};
+
+const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
+  return lazy(() =>
+    string()
+      .required("Postal code is required")
+      .test(
+        "is-correct-postal-code",
+        () =>
+          `Postal code must follow the country ${countryCode} format e.g. ${postalCodeFormat}`,
+        (value) => {
+          if (!value || !countryCode) return false;
+          return typeof postalCodes.validate(countryCode, value) === "boolean";
+        },
+      ),
+  );
 };
 
 export function RegistrationForm() {
-  const [countryCode, setCountryCode] = useState("");
-  const [postalCodeFormat, setPostalCodeFormat] = useState("");
+  const [countryCodeShipping, setCountryCodeShipping] = useState("");
+  const [postalCodeFormatShipping, setPostalCodeFormatShipping] = useState("");
+  const [countryCodeBilling, setCountryCodeBilling] = useState("");
+  const [postalCodeFormatBilling, setPostalCodeFormatBilling] = useState("");
 
   const RegistrationSchema = object().shape({
     email: string()
@@ -71,28 +129,8 @@ export function RegistrationForm() {
         message: "Password must not contain middle whitespace",
       }),
 
-    firstName: string()
-      .required("First name is required")
-      .min(1, "First name is too short - should be 1 char minimum")
-      .trim("First name must not contain leading or trailing whitespace")
-      .strict(true)
-      .matches(NO_SPECIAL_CHARS_REGEX, {
-        message: "First name must not contain special charachers",
-      })
-      .matches(NO_DIGIT_REGEX, {
-        message: "First name must not contain numbers",
-      }),
-
-    lastName: string()
-      .required("Last name is required")
-      .trim("Last name must not contain leading or trailing whitespace")
-      .strict(true)
-      .matches(NO_SPECIAL_CHARS_REGEX, {
-        message: "Last name must not contain special charachers",
-      })
-      .matches(NO_DIGIT_REGEX, {
-        message: "Last name must not contain numbers",
-      }),
+    firstName: validateName("First name"),
+    lastName: validateName("Last name"),
 
     dateOfBirth: lazy(() =>
       string()
@@ -110,38 +148,22 @@ export function RegistrationForm() {
         ),
     ),
 
-    streetName: string()
-      .required("Street is required")
-      .trim("Street must not contain leading or trailing whitespace")
-      .strict(true),
+    streetNameShipping: validateStreetName(),
+    streetNameBilling: validateStreetName(),
 
-    city: string()
-      .required("City is required")
-      .trim("City must not contain leading or trailing whitespace")
-      .strict(true)
-      .matches(NO_SPECIAL_CHARS_REGEX, {
-        message: "City must not contain special charachers",
-      })
-      .matches(NO_DIGIT_REGEX, {
-        message: "City must not contain numbers",
-      }),
+    cityShipping: validateCity(),
+    cityBilling: validateCity(),
 
-    country: string().required("Country is required"),
+    countryShipping: string().required("Country is required"),
+    countryBilling: string().required("Country is required"),
 
-    postalCode: lazy(() =>
-      string()
-        .required("Postal code is required")
-        .test(
-          "is-correct-postal-code",
-          () =>
-            `Postal code must follow the country ${countryCode} format e.g. ${postalCodeFormat}`,
-          (value) => {
-            if (!value || !countryCode) return false;
-            return (
-              typeof postalCodes.validate(countryCode, value) === "boolean"
-            );
-          },
-        ),
+    postalCodeShipping: validatePostalCode(
+      countryCodeShipping,
+      postalCodeFormatShipping,
+    ),
+    postalCodeBilling: validatePostalCode(
+      countryCodeBilling,
+      postalCodeFormatBilling,
     ),
   });
 
@@ -157,10 +179,14 @@ export function RegistrationForm() {
         //   firstName,
         //   lastName,
         //   dateOfBirth,
-        //   streetName,
-        //   city,
-        //   country,
-        //   postalCode,
+        //   streetNameShipping,
+        //   cityShipping,
+        //   countryShipping,
+        //   postalCodeShipping,
+        //   streetNameBilling,
+        //   cityBilling,
+        //   countryBilling,
+        //   postalCodeBilling,
         // } = values;
       }}
     >
@@ -175,54 +201,9 @@ export function RegistrationForm() {
                 borderRadius: 2,
                 p: 2,
                 minHeight: 230,
-                fontSize: 24,
               }}
             >
               <FormControl fullWidth>
-                <Grid container spacing={1.5}>
-                  <Grid item xs={6}>
-                    <TextField
-                      autoComplete="off"
-                      name="firstName"
-                      label="First name"
-                      variant="standard"
-                      required={true}
-                      onChange={handleChange}
-                      helperText={errors.firstName}
-                      error={!!errors.firstName}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      autoComplete="off"
-                      name="lastName"
-                      label="Last name"
-                      variant="standard"
-                      required={true}
-                      onChange={handleChange}
-                      helperText={errors.lastName}
-                      error={!!errors.lastName}
-                    />
-                  </Grid>
-                </Grid>
-                <DatePicker
-                  label="Date of birth"
-                  maxDate={dayjs(new Date())}
-                  orientation="portrait"
-                  onChange={(value) => {
-                    if (!value) return false;
-                    const formatedValue = value.format("YYYY-MM-DD");
-                    setFieldValue("dateOfBirth", formatedValue, true);
-                  }}
-                  slotProps={{
-                    textField: {
-                      required: true,
-                      variant: "standard",
-                      error: !!errors.dateOfBirth,
-                      helperText: errors.dateOfBirth,
-                    },
-                  }}
-                />
                 <TextField
                   autoComplete="off"
                   name="email"
@@ -233,10 +214,15 @@ export function RegistrationForm() {
                   onChange={handleChange}
                   helperText={errors.email}
                   error={!!errors.email}
+                  sx={{ mb: 0.3 }}
                 />
                 <TextField
                   autoComplete="off"
-                  type="password"
+                  type={
+                    values.passwordCheck && values.passwordCheck.length > 0
+                      ? "text"
+                      : "password"
+                  }
                   name="password"
                   label="Password"
                   variant="standard"
@@ -245,70 +231,257 @@ export function RegistrationForm() {
                   helperText={errors.password}
                   error={!!errors.password}
                 />
-                <Grid container spacing={1.5} sx={{ mb: 2 }}>
-                  <Grid item xs={6}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={handleChange}
+                      name="passwordCheck"
+                      size="small"
+                    />
+                  }
+                  label="Show password"
+                />
+                <Grid container spacing={2} sx={{ mb: 0.3 }}>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <TextField
+                      autoComplete="off"
+                      name="firstName"
+                      label="First name"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.firstName}
+                      error={!!errors.firstName}
+                      sx={{ width: 1 / 1 }}
+                    />
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <TextField
+                      autoComplete="off"
+                      name="lastName"
+                      label="Last name"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.lastName}
+                      error={!!errors.lastName}
+                      sx={{ width: 1 / 1 }}
+                    />
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <DatePicker
+                      label="Date of birth"
+                      maxDate={dayjs(new Date())}
+                      orientation="portrait"
+                      onChange={(value) => {
+                        if (!value) return false;
+                        const formatedValue = value.format("YYYY-MM-DD");
+                        setFieldValue("dateOfBirth", formatedValue, true);
+                      }}
+                      slotProps={{
+                        textField: {
+                          required: true,
+                          variant: "standard",
+                          error: !!errors.dateOfBirth,
+                          helperText: errors.dateOfBirth,
+                        },
+                      }}
+                      sx={{ mb: 0.3, width: 1 / 1 }}
+                    />
+                  </Grid>
+                </Grid>
+                <span className="form-adress">Shipping adress</span>
+                <Grid container spacing={1}>
+                  <Grid item md={4} sm={6} xs={12}>
                     <Autocomplete
                       options={countryOptions}
                       onChange={(_, newValue) => {
                         if (newValue) {
-                          setCountryCode(newValue.countryCode);
-                          setPostalCodeFormat(newValue.postalCodeFormat);
-                          setFieldValue("country", newValue.countryCode, true);
+                          setCountryCodeShipping(newValue.countryCode);
+                          setPostalCodeFormatShipping(
+                            newValue.postalCodeFormat,
+                          );
+                          setFieldValue(
+                            "countryShipping",
+                            newValue.countryCode,
+                            true,
+                          );
                         } else {
-                          setCountryCode("");
-                          setPostalCodeFormat("");
-                          setFieldValue("country", "", true);
+                          setCountryCodeShipping("");
+                          setPostalCodeFormatShipping("");
+                          setFieldValue("countryShipping", "", true);
                         }
                       }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          name="country"
+                          name="countryShipping"
                           label="Country"
                           variant="standard"
                           required={true}
                           autoComplete="off"
-                          helperText={errors.country}
-                          error={!!errors.country}
+                          helperText={errors.countryShipping}
+                          error={!!errors.countryShipping}
+                          sx={{ width: 1 / 1 }}
                         />
                       )}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={4} sm={6} xs={12}>
                     <TextField
                       autoComplete="off"
-                      name="city"
+                      name="cityShipping"
                       label="City / Town"
                       variant="standard"
                       required={true}
                       onChange={handleChange}
-                      helperText={errors.city}
-                      error={!!errors.city}
+                      helperText={errors.cityShipping}
+                      error={!!errors.cityShipping}
+                      sx={{ width: 1 / 1 }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={4} sm={6} xs={12}>
                     <TextField
                       autoComplete="off"
-                      name="streetName"
+                      name="streetNameShipping"
                       label="Street"
                       variant="standard"
                       required={true}
                       onChange={handleChange}
-                      helperText={errors.streetName}
-                      error={!!errors.streetName}
+                      helperText={errors.streetNameShipping}
+                      error={!!errors.streetNameShipping}
+                      sx={{ width: 1 / 1 }}
                     />
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item md={4} sm={6} xs={12}>
                     <TextField
                       autoComplete="off"
-                      name="postalCode"
+                      name="postalCodeShipping"
                       label="Postal code"
                       variant="standard"
                       required={true}
                       onChange={handleChange}
-                      helperText={!!values.country && errors.postalCode}
-                      error={!!values.country && !!errors.postalCode}
-                      disabled={!values.country}
+                      helperText={
+                        !!values.countryShipping && errors.postalCodeShipping
+                      }
+                      error={
+                        !!values.countryShipping && !!errors.postalCodeShipping
+                      }
+                      disabled={!values.countryShipping}
+                      sx={{ width: 1 / 1 }}
+                    />
+                  </Grid>
+                </Grid>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      onChange={handleChange}
+                      name="adressCheck"
+                      size="small"
+                    />
+                  }
+                  label="Set as default for shipping and billing"
+                  sx={
+                    values.adressCheck && values.adressCheck.length > 0
+                      ? { mb: 2 }
+                      : {}
+                  }
+                />
+                <Box
+                  className="form-adress"
+                  component="span"
+                  sx={
+                    values.adressCheck && values.adressCheck.length > 0
+                      ? { display: { xs: "none" } }
+                      : {}
+                  }
+                >
+                  Billing adress
+                </Box>
+                <Grid
+                  container
+                  spacing={1}
+                  sx={
+                    values.adressCheck && values.adressCheck.length > 0
+                      ? { display: { xs: "none" } }
+                      : { mb: 2 }
+                  }
+                >
+                  <Grid item md={4} sm={6} xs={12}>
+                    <Autocomplete
+                      options={countryOptions}
+                      onChange={(_, newValue) => {
+                        if (newValue) {
+                          setCountryCodeBilling(newValue.countryCode);
+                          setPostalCodeFormatBilling(newValue.postalCodeFormat);
+                          setFieldValue(
+                            "countryBilling",
+                            newValue.countryCode,
+                            true,
+                          );
+                        } else {
+                          setCountryCodeBilling("");
+                          setPostalCodeFormatBilling("");
+                          setFieldValue("countryBilling", "", true);
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          name="countryBilling"
+                          label="Country"
+                          variant="standard"
+                          required={true}
+                          autoComplete="off"
+                          helperText={errors.countryBilling}
+                          error={!!errors.countryBilling}
+                          sx={{ width: 1 / 1 }}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <TextField
+                      autoComplete="off"
+                      name="cityBilling"
+                      label="City / Town"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.cityBilling}
+                      error={!!errors.cityBilling}
+                      sx={{ width: 1 / 1 }}
+                    />
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <TextField
+                      autoComplete="off"
+                      name="streetNameBilling"
+                      label="Street"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={errors.streetNameBilling}
+                      error={!!errors.streetNameBilling}
+                      sx={{ width: 1 / 1 }}
+                    />
+                  </Grid>
+                  <Grid item md={4} sm={6} xs={12}>
+                    <TextField
+                      autoComplete="off"
+                      name="postalCodeBilling"
+                      label="Postal code"
+                      variant="standard"
+                      required={true}
+                      onChange={handleChange}
+                      helperText={
+                        !!values.countryBilling && errors.postalCodeBilling
+                      }
+                      error={
+                        !!values.countryBilling && !!errors.postalCodeBilling
+                      }
+                      disabled={!values.countryBilling}
+                      sx={{ width: 1 / 1 }}
                     />
                   </Grid>
                 </Grid>

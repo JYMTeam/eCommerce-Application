@@ -1,14 +1,19 @@
 export interface IFormInitialValues {
   email: string;
   password: string;
-  check?: string[];
+  passwordCheck?: string[];
 }
 export interface IRegistrationInitialValues extends IFormInitialValues {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-  streetName: string;
-  city: string;
-  country: string;
-  postalCode: string;
+  streetNameShipping: string;
+  streetNameBilling: string;
+  cityShipping: string;
+  cityBilling: string;
+  countryShipping: string;
+  countryBilling: string;
+  postalCodeShipping: string;
+  postalCodeBilling: string;
+  adressCheck?: string[];
 }
