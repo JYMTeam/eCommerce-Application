@@ -59,7 +59,7 @@ export function Navigation() {
           <Button
             variant="text"
             component={Link}
-            to="Shop"
+            to="shop"
             sx={{
               ":hover": {
                 bgcolor: "transparent",
@@ -71,7 +71,7 @@ export function Navigation() {
           </Button>
           <Button
             component={Link}
-            to="Login"
+            to="login"
             variant="contained"
             color="primary"
           >
@@ -79,7 +79,7 @@ export function Navigation() {
           </Button>
           <Button
             component={Link}
-            to="Signup"
+            to="signup"
             variant="contained"
             color="primary"
           >
@@ -87,7 +87,7 @@ export function Navigation() {
           </Button>
           <Button
             component={Link}
-            to="Cart"
+            to="cart"
             variant="contained"
             color="primary"
           >
