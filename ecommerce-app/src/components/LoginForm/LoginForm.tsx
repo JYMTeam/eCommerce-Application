@@ -19,11 +19,6 @@ import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 
-// const existingUser: UserAuthOptions = {
-//   username: "johndoe@example.com",
-//   password: "Secret123",
-// };
-
 export function LoginForm() {
   const initialValues: formInitialValues = {
     email: "",
@@ -68,13 +63,16 @@ export function LoginForm() {
       validationSchema={LoginSchema}
       onSubmit={(values) => {
         const { email, password } = values;
+        //   username: "johndoe@example.com",
+        //   password: "Secret123",
+        if (email && password) {
+          const existingUser: UserAuthOptions = {
+            username: email,
+            password,
+          };
 
-        const existingUser: UserAuthOptions = {
-          username: email,
-          password,
-        };
-
-        dispatch(fetchUserLogin(existingUser));
+          dispatch(fetchUserLogin(existingUser));
+        }
       }}
     >
       {(formik) => {
