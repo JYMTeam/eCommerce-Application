@@ -18,6 +18,7 @@ import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Alert, AlertTitle } from "@mui/material";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
 //   password: "Secret123",
@@ -59,6 +60,20 @@ export function LoginForm() {
 
   const dispatch = useAppDispatch();
   const { isLogged } = useAppSelector((state) => state.userLogin);
+  const navigate: NavigateFunction = useNavigate();
+  const loginHandler = (loginState: boolean) => {
+    if (loginState) {
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1500);
+      return (
+        <Alert severity="success">
+          <AlertTitle>You have successfully logged in!</AlertTitle>
+          Redirecting...
+        </Alert>
+      );
+    }
+  };
 
   return (
     <Formik
@@ -72,6 +87,7 @@ export function LoginForm() {
           password,
         };
         dispatch(fetchUserLogin(existingUser));
+        loginHandler(isLogged);
       }}
     >
       {(formik) => {
@@ -121,14 +137,7 @@ export function LoginForm() {
                   Log in
                 </Button>
               </FormControl>
-
-              {!isLogged ? (
-                <></>
-              ) : (
-                <Alert severity="success">
-                  <AlertTitle>You have successfully logged in!</AlertTitle>
-                </Alert>
-              )}
+              {loginHandler(isLogged)}
             </Box>
           </Form>
         );
