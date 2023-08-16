@@ -10,8 +10,16 @@ export function Navigation() {
         <Button variant="text">Backpacks</Button>
         <Button variant="text">Suitcases</Button>
         <Button variant="text">Wallets</Button>
-        <Button component={Link} to="Login" variant="contained" color="primary">
+        <Button component={Link} to="login" variant="contained" color="primary">
           Login
+        </Button>
+        <Button
+          component={Link}
+          to="registration"
+          variant="contained"
+          color="primary"
+        >
+          Registration
         </Button>
         <Button component={Link} to="/" variant="contained" color="primary">
           Main
