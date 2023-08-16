@@ -16,8 +16,8 @@ import {
 import { formInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { useAppDispatch } from "../../hooks/redux";
-
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { Alert, AlertTitle } from "@mui/material";
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
 //   password: "Secret123",
@@ -58,6 +58,8 @@ export function LoginForm() {
   });
 
   const dispatch = useAppDispatch();
+  const { isLogged } = useAppSelector((state) => state.userLogin);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -119,6 +121,14 @@ export function LoginForm() {
                   Log in
                 </Button>
               </FormControl>
+
+              {!isLogged ? (
+                <></>
+              ) : (
+                <Alert severity="success">
+                  <AlertTitle>You have successfully logged in!</AlertTitle>
+                </Alert>
+              )}
             </Box>
           </Form>
         );
