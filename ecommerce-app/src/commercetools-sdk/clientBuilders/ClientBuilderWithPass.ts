@@ -4,9 +4,10 @@ import {
   PasswordAuthMiddlewareOptions,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
-import { passToken } from "./PassTokenCache";
+import { passToken } from "../PassTokenCache";
 import {
   authMiddlewareOptions,
+  customerScopes,
   defaultClient,
   projectKey,
 } from "./ClientBuilderDefault";
@@ -25,10 +26,14 @@ export const getApiPassRoot = (userAuthOptions: UserAuthOptions) => {
       clientSecret: authMiddlewareOptions.credentials.clientSecret,
       user: user,
     },
+    scopes: customerScopes,
     tokenCache: passToken,
   };
 
-  client = defaultClient.withPasswordFlow(passOptions).build();
+  client = defaultClient
+    .withClientCredentialsFlow(authMiddlewareOptions)
+    .withPasswordFlow(passOptions)
+    .build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };

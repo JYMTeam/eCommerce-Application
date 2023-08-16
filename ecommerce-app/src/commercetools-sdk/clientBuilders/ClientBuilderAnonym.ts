@@ -1,7 +1,11 @@
 import { AnonymousAuthMiddlewareOptions } from "@commercetools/sdk-client-v2";
 
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
-import { defaultClient, projectKey, scopes } from "./ClientBuilderDefault";
+import {
+  customerScopes,
+  defaultClient,
+  projectKey,
+} from "./ClientBuilderDefault";
 
 export const anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
   host: process.env.REACT_APP_AUTH_URL || "",
@@ -10,7 +14,7 @@ export const anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     clientId: process.env.REACT_APP_CLIENT_ID || "",
     clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
   },
-  scopes,
+  scopes: customerScopes,
   fetch,
 };
 

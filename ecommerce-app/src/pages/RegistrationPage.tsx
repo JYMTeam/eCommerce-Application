@@ -4,7 +4,7 @@ import { useAppDispatch } from "../hooks/redux";
 import { fetchUserSignup } from "../store/actions/userSignupActions";
 
 const newUser: MyCustomerDraft = {
-  email: "draft1@gmail.com",
+  email: "draft12@gmail.com",
   password: "Password1",
   firstName: "FirstName",
   lastName: "Last-Name",
@@ -68,6 +68,7 @@ const newUser: MyCustomerDraft = {
 export function RegistrationPage() {
   const dispatch = useAppDispatch();
 
+  // signup
   useEffect(() => {
     dispatch(fetchUserSignup(newUser));
   }, [dispatch]);

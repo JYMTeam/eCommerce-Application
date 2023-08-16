@@ -10,7 +10,7 @@ import {
   userLoginFetching,
   setUserToken,
 } from "../slices/userLoginSlice";
-import { getApiPassRoot } from "../../commercetools-sdk/ClientBuilderWithPass";
+import { getApiPassRoot } from "../../commercetools-sdk/clientBuilders/ClientBuilderWithPass";
 import { passToken } from "../../commercetools-sdk/PassTokenCache";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
