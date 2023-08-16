@@ -7,6 +7,7 @@ const NO_SPACE_REGEX = /^\S*$/;
 const NO_SPECIAL_CHARS_REGEX = /^(?!.*[()[\]{}*&^%$#@!"+=:;<>?,./\\|_]).*$/;
 const NO_DIGIT_REGEX = /^(?!.*[0-9]).*$/;
 const USER_AGE_ALLOWED = 14;
+const MAX_HUMAN_AGE = 130;
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
   { label: "Germany", countryCode: "DE", postalCodeFormat: "12345" },
@@ -21,5 +22,6 @@ export {
   NO_SPECIAL_CHARS_REGEX,
   NO_DIGIT_REGEX,
   USER_AGE_ALLOWED,
+  MAX_HUMAN_AGE,
   countryOptions,
 };

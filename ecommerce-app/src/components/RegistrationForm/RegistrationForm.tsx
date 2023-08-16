@@ -13,6 +13,7 @@ import {
   NO_SPECIAL_CHARS_REGEX,
   NO_DIGIT_REGEX,
   USER_AGE_ALLOWED,
+  MAX_HUMAN_AGE,
   countryOptions,
 } from "../../constants/constants";
 import { IRegistrationInitialValues } from "../../types";
@@ -21,7 +22,6 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { useState } from "react";
-import "./RegistrationForm.css";
 
 const postalCodes = require("postal-codes-js");
 
@@ -40,7 +40,9 @@ const initialValues: IRegistrationInitialValues = {
   postalCodeShipping: "",
   postalCodeBilling: "",
   passwordCheck: [],
-  adressCheck: [],
+  commonAdressCheck: [],
+  defaultShippingCheck: [],
+  defaultBillingCheck: [],
 };
 
 const validateName = (field: string) => {
@@ -145,6 +147,14 @@ export function RegistrationForm() {
               new Date(value) < subtractYears(new Date(), USER_AGE_ALLOWED)
             );
           },
+        )
+        .test(
+          "is-valid-age",
+          () => `Your age must be within the possible human lifespan`,
+          (value) => {
+            if (!value) return false;
+            return new Date(value) > subtractYears(new Date(), MAX_HUMAN_AGE);
+          },
         ),
     ),
 
@@ -192,6 +202,7 @@ export function RegistrationForm() {
     >
       {(formik) => {
         const { values, handleChange, errors, setFieldValue } = formik;
+        console.log(values);
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -272,6 +283,7 @@ export function RegistrationForm() {
                     <DatePicker
                       label="Date of birth"
                       maxDate={dayjs(new Date())}
+                      minDate={dayjs(subtractYears(new Date(), MAX_HUMAN_AGE))}
                       orientation="portrait"
                       onChange={(value) => {
                         if (!value) return false;
@@ -290,7 +302,25 @@ export function RegistrationForm() {
                     />
                   </Grid>
                 </Grid>
-                <span className="form-adress">Shipping adress</span>
+                <Grid container spacing={1}>
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: "bold", mt: 1, mb: 0.3, ml: 1 }}
+                  >
+                    Shipping adress
+                  </Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={handleChange}
+                        name="defaultShippingCheck"
+                        size="small"
+                      />
+                    }
+                    label="Set as default for shipping"
+                    sx={{ ml: 0.1 }}
+                  />
+                </Grid>
                 <Grid container spacing={1}>
                   <Grid item md={4} sm={6} xs={12}>
                     <Autocomplete
@@ -376,33 +406,52 @@ export function RegistrationForm() {
                   control={
                     <Checkbox
                       onChange={handleChange}
-                      name="adressCheck"
+                      name="commonAdressCheck"
                       size="small"
                     />
                   }
-                  label="Set as default for shipping and billing"
+                  label="Set as adress for shipping and billing"
                   sx={
-                    values.adressCheck && values.adressCheck.length > 0
+                    values.commonAdressCheck &&
+                    values.commonAdressCheck.length > 0
                       ? { mb: 2 }
                       : {}
                   }
                 />
-                <Box
-                  className="form-adress"
-                  component="span"
-                  sx={
-                    values.adressCheck && values.adressCheck.length > 0
-                      ? { display: { xs: "none" } }
-                      : {}
-                  }
-                >
-                  Billing adress
-                </Box>
                 <Grid
                   container
                   spacing={1}
                   sx={
-                    values.adressCheck && values.adressCheck.length > 0
+                    values.commonAdressCheck &&
+                    values.commonAdressCheck.length > 0
+                      ? { display: { xs: "none" } }
+                      : {}
+                  }
+                >
+                  <Box
+                    component="span"
+                    sx={{ fontWeight: "bold", mt: 1, mb: 0.3, ml: 1 }}
+                  >
+                    Billing adress
+                  </Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={handleChange}
+                        name="defaultBillingCheck"
+                        size="small"
+                      />
+                    }
+                    label="Set as default for billing"
+                    sx={{ ml: 0.1 }}
+                  />
+                </Grid>
+                <Grid
+                  container
+                  spacing={1}
+                  sx={
+                    values.commonAdressCheck &&
+                    values.commonAdressCheck.length > 0
                       ? { display: { xs: "none" } }
                       : { mb: 2 }
                   }
