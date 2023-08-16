@@ -8,7 +8,6 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
-import "./commercetools-sdk/ctpClient-example";
 import { RegistrationPage } from "./pages/RegistrationPage";
 
 const store = setupStore();
