@@ -202,7 +202,6 @@ export function RegistrationForm() {
     >
       {(formik) => {
         const { values, handleChange, errors, setFieldValue } = formik;
-        console.log(values);
         return (
           <Form noValidate autoComplete="off">
             <Box
