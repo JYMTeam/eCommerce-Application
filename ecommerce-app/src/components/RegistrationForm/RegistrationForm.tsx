@@ -40,7 +40,7 @@ const initialValues: IRegistrationInitialValues = {
   postalCodeShipping: "",
   postalCodeBilling: "",
   passwordCheck: [],
-  commonAdressCheck: [],
+  commonAddressCheck: [],
   defaultShippingCheck: [],
   defaultBillingCheck: [],
 };
@@ -71,7 +71,7 @@ const validateCity = () => {
     .trim("City must not contain leading or trailing whitespace")
     .strict(true)
     .matches(NO_SPECIAL_CHARS_REGEX, {
-      message: "City must not contain special charachers",
+      message: "City must not contain special characters",
     })
     .matches(NO_DIGIT_REGEX, {
       message: "City must not contain numbers",
@@ -99,6 +99,7 @@ export function RegistrationForm() {
   const [postalCodeFormatShipping, setPostalCodeFormatShipping] = useState("");
   const [countryCodeBilling, setCountryCodeBilling] = useState("");
   const [postalCodeFormatBilling, setPostalCodeFormatBilling] = useState("");
+  const [isCommonAddressChecked, setIsCommonAddressChecked] = useState(false);
 
   const RegistrationSchema = object().shape({
     email: string()
@@ -159,22 +160,27 @@ export function RegistrationForm() {
     ),
 
     streetNameShipping: validateStreetName(),
-    streetNameBilling: validateStreetName(),
+    streetNameBilling: isCommonAddressChecked
+      ? string().notRequired()
+      : validateStreetName(),
 
     cityShipping: validateCity(),
-    cityBilling: validateCity(),
+    cityBilling: isCommonAddressChecked
+      ? string().notRequired()
+      : validateCity(),
 
     countryShipping: string().required("Country is required"),
-    countryBilling: string().required("Country is required"),
+    countryBilling: isCommonAddressChecked
+      ? string().notRequired()
+      : string().required("Country is required"),
 
     postalCodeShipping: validatePostalCode(
       countryCodeShipping,
       postalCodeFormatShipping,
     ),
-    postalCodeBilling: validatePostalCode(
-      countryCodeBilling,
-      postalCodeFormatBilling,
-    ),
+    postalCodeBilling: isCommonAddressChecked
+      ? string().notRequired()
+      : validatePostalCode(countryCodeBilling, postalCodeFormatBilling),
   });
 
   return (
@@ -183,21 +189,23 @@ export function RegistrationForm() {
       validationSchema={RegistrationSchema}
       onSubmit={(values) => {
         //fires onSubmit by button or enter
-        // const {
-        //   email,
-        //   password,
-        //   firstName,
-        //   lastName,
-        //   dateOfBirth,
-        //   streetNameShipping,
-        //   cityShipping,
-        //   countryShipping,
-        //   postalCodeShipping,
-        //   streetNameBilling,
-        //   cityBilling,
-        //   countryBilling,
-        //   postalCodeBilling,
-        // } = values;
+        const {
+          email,
+          // password,
+          // firstName,
+          // lastName,
+          // dateOfBirth,
+          // streetNameShipping,
+          // cityShipping,
+          // countryShipping,
+          // postalCodeShipping,
+          // streetNameBilling,
+          // cityBilling,
+          // countryBilling,
+          // postalCodeBilling,
+        } = values;
+
+        console.log(email);
       }}
     >
       {(formik) => {
@@ -306,7 +314,7 @@ export function RegistrationForm() {
                     component="span"
                     sx={{ fontWeight: "bold", mt: 1, mb: 0.3, ml: 1 }}
                   >
-                    Shipping adress
+                    Shipping address
                   </Box>
                   <FormControlLabel
                     control={
@@ -404,15 +412,18 @@ export function RegistrationForm() {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={handleChange}
-                      name="commonAdressCheck"
+                      onChange={(e) => {
+                        setIsCommonAddressChecked(e.target.checked);
+                        handleChange(e);
+                      }}
+                      name="commonAddressCheck"
                       size="small"
                     />
                   }
-                  label="Set as adress for shipping and billing"
+                  label="Set as address for shipping and billing"
                   sx={
-                    values.commonAdressCheck &&
-                    values.commonAdressCheck.length > 0
+                    values.commonAddressCheck &&
+                    values.commonAddressCheck.length > 0
                       ? { mb: 2 }
                       : {}
                   }
@@ -421,8 +432,8 @@ export function RegistrationForm() {
                   container
                   spacing={1}
                   sx={
-                    values.commonAdressCheck &&
-                    values.commonAdressCheck.length > 0
+                    values.commonAddressCheck &&
+                    values.commonAddressCheck.length > 0
                       ? { display: { xs: "none" } }
                       : {}
                   }
@@ -431,7 +442,7 @@ export function RegistrationForm() {
                     component="span"
                     sx={{ fontWeight: "bold", mt: 1, mb: 0.3, ml: 1 }}
                   >
-                    Billing adress
+                    Billing address
                   </Box>
                   <FormControlLabel
                     control={
@@ -449,8 +460,8 @@ export function RegistrationForm() {
                   container
                   spacing={1}
                   sx={
-                    values.commonAdressCheck &&
-                    values.commonAdressCheck.length > 0
+                    values.commonAddressCheck &&
+                    values.commonAddressCheck.length > 0
                       ? { display: { xs: "none" } }
                       : { mb: 2 }
                   }

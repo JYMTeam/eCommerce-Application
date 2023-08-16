@@ -15,7 +15,7 @@ export interface IRegistrationInitialValues extends IFormInitialValues {
   countryBilling: string;
   postalCodeShipping: string;
   postalCodeBilling: string;
-  commonAdressCheck?: string[];
+  commonAddressCheck?: string[];
   defaultShippingCheck?: string[];
   defaultBillingCheck?: string[];
 }
