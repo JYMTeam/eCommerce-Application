@@ -11,7 +11,7 @@ import {
   userSignupFetching,
 } from "../slices/userSignupSlice";
 import { fetchUserLogin } from "./userLoginActions";
-import { getApiSignupRoot } from "../../commercetools-sdk/clientBuilders/ClientBuilderSignup";
+import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
 
 export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
   return async (dispatch: AppDispatch) => {

@@ -6,12 +6,6 @@ import {
 
 export const projectKey = process.env.REACT_APP_PROJECT_KEY || "";
 
-// export const scopes = [process.env.REACT_APP_SCOPES || ""];
-// const customerScope = scopes[0];
-// export const customerScopes = [
-//   customerScope.replace(" manage_customers:ec-app", ""),
-// ];
-
 export const getDefaultScopes = () => {
   const scopes = [process.env.REACT_APP_SCOPES || ""];
   return scopes;
