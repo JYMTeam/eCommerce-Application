@@ -187,7 +187,9 @@ export function SignupForm() {
   });
 
   const dispatch = useAppDispatch();
-  const { loading } = useAppSelector((state) => state.userSignup);
+  const { loading, isSignedUp, errorMessage } = useAppSelector(
+    (state) => state.userSignup,
+  );
 
   return (
     <Formik
@@ -542,10 +544,34 @@ export function SignupForm() {
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={loading}
+                  disabled={loading || isSignedUp}
                 >
                   Sign up
                 </Button>
+                {isSignedUp && (
+                  <span
+                    style={{
+                      color: "green",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                      textAlign: "center",
+                    }}
+                  >
+                    {"You have successfully signed up and logged in"}
+                  </span>
+                )}
+                {errorMessage && (
+                  <span
+                    style={{
+                      color: "red",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                      textAlign: "center",
+                    }}
+                  >
+                    {errorMessage}
+                  </span>
+                )}
               </FormControl>
             </Box>
           </Form>

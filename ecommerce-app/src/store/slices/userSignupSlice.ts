@@ -1,18 +1,23 @@
-import { CustomerSignInResult } from "@commercetools/platform-sdk";
+import {
+  AuthErrorResponse,
+  CustomerSignInResult,
+} from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { HttpErrorType } from "@commercetools/sdk-client-v2";
+import { formatErrorMessage } from "../../commercetools-sdk/errors/errors";
 
 interface IUserSignupState {
   loading: boolean;
-  isSignup: boolean;
-  error: HttpErrorType | null;
+  isSignedUp: boolean;
+  error: AuthErrorResponse | null;
+  errorMessage: string;
   signupData: CustomerSignInResult | null;
 }
 
 const initialState: IUserSignupState = {
   loading: false,
-  isSignup: false,
+  isSignedUp: false,
   error: null,
+  errorMessage: "",
   signupData: null,
 };
 
@@ -25,14 +30,19 @@ export const userSignupSlice = createSlice({
     },
     userSignupFetchSuccess(state, action: PayloadAction<CustomerSignInResult>) {
       state.loading = false;
-      state.isSignup = true;
+      state.isSignedUp = true;
       state.error = null;
+      state.errorMessage = "";
       state.signupData = action.payload;
     },
-    userSignupFetchError(state, action: PayloadAction<HttpErrorType>) {
+    userSignupFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
       state.error = action.payload;
+      state.errorMessage = formatErrorMessage(action.payload);
       state.signupData = null;
+    },
+    userSignupClearErrorMessage(state, action: PayloadAction<string>) {
+      state.errorMessage = "";
     },
   },
 });

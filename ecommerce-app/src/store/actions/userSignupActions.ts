@@ -1,10 +1,6 @@
-import {
-  ClientResponse,
-  HttpErrorType,
-  UserAuthOptions,
-} from "@commercetools/sdk-client-v2";
+import { ClientResponse, UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "..";
-import { CustomerDraft } from "@commercetools/platform-sdk";
+import { AuthErrorResponse, CustomerDraft } from "@commercetools/platform-sdk";
 import {
   userSignupFetchError,
   userSignupFetchSuccess,
@@ -36,7 +32,7 @@ export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
         dispatch(fetchUserLogin(existingUser));
       }
     } catch (e) {
-      const error = e as ClientResponse<HttpErrorType>;
+      const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
       if (body) {
         dispatch(userSignupFetchError(body));

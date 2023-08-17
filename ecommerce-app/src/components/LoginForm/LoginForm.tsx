@@ -79,6 +79,22 @@ export function LoginForm() {
     >
       {(formik) => {
         const { handleChange, errors } = formik;
+
+        const onInputChange = (
+          event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+          if (errorMessage) {
+            dispatch(userLoginClearErrorMessage(""));
+          }
+          handleChange(event);
+        };
+
+        const onInputFocus = () => {
+          if (errorMessage) {
+            dispatch(userLoginClearErrorMessage(""));
+          }
+        };
+
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -99,19 +115,11 @@ export function LoginForm() {
                   placeholder=" user@example.com"
                   required={true}
                   sx={{ mb: 1 }}
-                  onChange={(event) => {
-                    if (errorMessage) {
-                      dispatch(userLoginClearErrorMessage(""));
-                    }
-                    handleChange(event);
-                  }}
-                  onFocus={() => {
-                    if (errorMessage) {
-                      dispatch(userLoginClearErrorMessage(""));
-                    }
-                  }}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.email}
                   error={!!errors.email}
+                  disabled={isLogged}
                 />
                 <TextField
                   autoComplete="off"
@@ -121,19 +129,11 @@ export function LoginForm() {
                   variant="standard"
                   required={true}
                   sx={{ mb: 2 }}
-                  onChange={(event) => {
-                    if (errorMessage) {
-                      dispatch(userLoginClearErrorMessage(""));
-                    }
-                    handleChange(event);
-                  }}
-                  onFocus={() => {
-                    if (errorMessage) {
-                      dispatch(userLoginClearErrorMessage(""));
-                    }
-                  }}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.password}
                   error={!!errors.password}
+                  disabled={isLogged}
                 />
                 <FormControlLabel
                   control={
@@ -143,6 +143,7 @@ export function LoginForm() {
                         // handleChange
                       }
                       name="check"
+                      disabled={isLogged}
                     />
                   }
                   label="Show password"
@@ -152,7 +153,7 @@ export function LoginForm() {
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={loading}
+                  disabled={loading || isLogged}
                 >
                   Log in
                 </Button>
@@ -162,6 +163,7 @@ export function LoginForm() {
                       color: "green",
                       marginTop: "8px",
                       fontSize: "0.85rem",
+                      textAlign: "center",
                     }}
                   >
                     {"You have successfully logged in!"}
@@ -173,6 +175,7 @@ export function LoginForm() {
                       color: "red",
                       marginTop: "8px",
                       fontSize: "0.85rem",
+                      textAlign: "center",
                     }}
                   >
                     {errorMessage}
