@@ -1,9 +1,21 @@
 import { BaseAddress, CustomerDraft } from "@commercetools/platform-sdk";
-import { IRegistrationInitialValues } from "../types";
+import { IFormInitialValues, IRegistrationInitialValues } from "../types";
+import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 
 export const subtractYears = (date: Date, years: number) => {
   date.setFullYear(date.getFullYear() - years);
   return date;
+};
+
+export const convertToUserAuthOptions = (values: IFormInitialValues) => {
+  const { email, password } = values;
+
+  const userAuthOptions: UserAuthOptions = {
+    username: email,
+    password,
+  };
+
+  return userAuthOptions;
 };
 
 export const convertToCustomerDraft = (values: IRegistrationInitialValues) => {

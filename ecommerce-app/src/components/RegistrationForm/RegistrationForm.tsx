@@ -22,6 +22,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { useState } from "react";
+import { CustomerDraft } from "@commercetools/platform-sdk";
 
 const postalCodes = require("postal-codes-js");
 
@@ -188,28 +189,8 @@ export function RegistrationForm() {
       initialValues={initialValues}
       validationSchema={RegistrationSchema}
       onSubmit={(values) => {
-        //fires onSubmit by button or enter
-        // const {
-        //   email,
-        //   password,
-        //   firstName,
-        //   lastName,
-        //   dateOfBirth,
-        //   streetNameShipping,
-        //   cityShipping,
-        //   countryShipping,
-        //   postalCodeShipping,
-        //   streetNameBilling,
-        //   cityBilling,
-        //   countryBilling,
-        //   postalCodeBilling,
-        //   commonAddressCheck,
-        //   defaultBillingCheck,
-        //   defaultShippingCheck
-        // } = values;
-
-        console.log(values);
-        console.log(convertToCustomerDraft(values));
+        const newCustomer: CustomerDraft = convertToCustomerDraft(values);
+        console.log(newCustomer);
       }}
     >
       {(formik) => {

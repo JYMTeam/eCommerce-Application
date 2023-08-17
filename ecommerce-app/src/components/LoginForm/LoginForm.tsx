@@ -17,6 +17,7 @@ import { IFormInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch } from "../../hooks/redux";
+import { convertToUserAuthOptions } from "../../utils/utils";
 
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
@@ -68,12 +69,7 @@ export function LoginForm() {
       initialValues={initialValues}
       validationSchema={LoginSchema}
       onSubmit={(values) => {
-        const { email, password } = values;
-
-        const existingUser: UserAuthOptions = {
-          username: email,
-          password,
-        };
+        const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         dispatch(fetchUserLogin(existingUser));
       }}
     >
