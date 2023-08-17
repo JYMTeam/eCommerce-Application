@@ -13,17 +13,17 @@ import {
   DIGIT_REGEX,
   NO_SPACE_REGEX,
 } from "../../constants/constants";
-import { formInitialValues } from "../../types";
+import { IFormInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 
 export function LoginForm() {
-  const initialValues: formInitialValues = {
+  const initialValues: IFormInitialValues = {
     email: "",
     password: "",
-    check: [],
+    passwordCheck: [],
   };
 
   const LoginSchema = object().shape({
@@ -31,10 +31,13 @@ export function LoginForm() {
       .required("Email is required")
       .trim("Email must not contain leading or trailing whitespace")
       .strict(true)
+      .matches(NO_SPACE_REGEX, {
+        message: "Email must not contain middle whitespace",
+      })
       .matches(AT_SIGN_DOMAIN_REGEX, {
         message: "Email must contain an '@' sign followed by domain in latin",
       })
-      .email("Email must be valid e.g., user@example.com"),
+      .email("Email must be properly formatted e.g., user@example.com"),
 
     password: string()
       .required("Password is required")
@@ -50,7 +53,9 @@ export function LoginForm() {
       .matches(DIGIT_REGEX, {
         message: "Password must contain at least one digit ",
       })
-      .matches(NO_SPACE_REGEX, { message: "Password must not contain spaces" }),
+      .matches(NO_SPACE_REGEX, {
+        message: "Password must not contain middle whitespace",
+      }),
   });
 
   const { errorMessage, loading, isLogged } = useAppSelector(
@@ -113,7 +118,11 @@ export function LoginForm() {
                 />
                 <TextField
                   autoComplete="off"
-                  type={values.check.length > 0 ? "text" : "password"}
+                  type={
+                    values.passwordCheck && values.passwordCheck.length > 0
+                      ? "text"
+                      : "password"
+                  }
                   name="password"
                   label="Password"
                   variant="standard"
