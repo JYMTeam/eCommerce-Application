@@ -20,8 +20,8 @@ export function LoginPage() {
       <h1>Account login</h1>
       <LoginForm></LoginForm>
       <Box sx={{ pt: "2em" }}>
-        <Link className="redirect-link" to="/registration" color="primary">
-          Not yet a member? Register here!
+        <Link className="redirect-link" to="/signup" color="primary">
+          Not yet a member? Sign up here
         </Link>
       </Box>
     </Container>

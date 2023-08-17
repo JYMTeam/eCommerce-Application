@@ -22,9 +22,11 @@ export default function WorkInProgress() {
         alt={"Work in progress"}
         sx={{ height: "100%", width: "auto" }}
       />
-      <Button component={Link} to="/" variant="contained" color="primary">
-        Go to Main page
-      </Button>
+      <Box sx={{ mb: "4em" }}>
+        <Button component={Link} to="/" variant="contained" color="primary">
+          Go to Main page
+        </Button>
+      </Box>
     </Grid>
   );
 }

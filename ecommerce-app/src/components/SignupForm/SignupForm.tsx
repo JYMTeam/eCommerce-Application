@@ -534,7 +534,7 @@ export function SignupForm() {
                   </Grid>
                 </Grid>
                 <Button type="submit" variant="contained" size="large">
-                  Register
+                  Sign up
                 </Button>
               </FormControl>
             </Box>
