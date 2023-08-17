@@ -1,6 +1,6 @@
 import {
   ClientResponse,
-  HttpErrorType,
+  // HttpErrorType,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "..";
@@ -12,6 +12,7 @@ import {
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
 import { passToken } from "../../commercetools-sdk/PassTokenCache";
+import { AuthErrorResponse } from "@commercetools/platform-sdk";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
   return async (dispatch: AppDispatch) => {
@@ -32,7 +33,7 @@ export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
       dispatch(userLoginFetchSuccess(answer.body.customer));
       dispatch(setUserToken(passToken.get()));
     } catch (e) {
-      const error = e as ClientResponse<HttpErrorType>;
+      const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
       if (body) {
         dispatch(userLoginFetchError(body));

@@ -5,10 +5,10 @@ import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
 import { Navigation } from "./components/Navigation";
 import NotFoundPage from "./pages/NotFoundPage";
+import { SignupPage } from "./pages/SignupPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
-import { SignupPage } from "./pages/SignupPage";
 
 const store = setupStore();
 
