@@ -1,4 +1,4 @@
-import { RegistrationForm } from "../components/SignupForm/SignupForm";
+import { SignupForm } from "../components/SignupForm/SignupForm";
 import Container from "@mui/material/Container";
 
 export function SignupPage() {
@@ -8,8 +8,8 @@ export function SignupPage() {
       sx={{ height: 1 / 1, pb: 5 }}
       className="container"
     >
-      <h1>Register here</h1>
-      <RegistrationForm></RegistrationForm>
+      <h1>Signup here</h1>
+      <SignupForm></SignupForm>
     </Container>
   );
 }
