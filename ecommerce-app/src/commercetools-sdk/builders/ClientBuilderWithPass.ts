@@ -8,29 +8,32 @@ import { passToken } from "../PassTokenCache";
 import {
   authMiddlewareOptions,
   defaultClient,
+  getCustomerScopes,
   projectKey,
 } from "./ClientBuilderDefault";
 
-export const getApiPassRoot = (userAuthOptions?: UserAuthOptions) => {
+export const getApiPassRoot = (userAuthOptions: UserAuthOptions) => {
   let user: UserAuthOptions | null = null;
   let client: Client | null = null;
 
-  if (userAuthOptions) {
-    user = userAuthOptions;
+  user = userAuthOptions;
 
-    const passOptions: PasswordAuthMiddlewareOptions = {
-      host: authMiddlewareOptions.host,
-      projectKey: authMiddlewareOptions.projectKey,
-      credentials: {
-        clientId: authMiddlewareOptions.credentials.clientId,
-        clientSecret: authMiddlewareOptions.credentials.clientSecret,
-        user: user,
-      },
-      tokenCache: passToken,
-    };
+  const passOptions: PasswordAuthMiddlewareOptions = {
+    host: process.env.REACT_APP_AUTH_URL || "",
+    projectKey: projectKey,
+    credentials: {
+      clientId: process.env.REACT_APP_CLIENT_ID || "",
+      clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
+      user: user,
+    },
+    scopes: getCustomerScopes(),
+    tokenCache: passToken,
+  };
 
-    client = defaultClient.withPasswordFlow(passOptions).build();
-  }
+  client = defaultClient
+    .withClientCredentialsFlow(authMiddlewareOptions)
+    .withPasswordFlow(passOptions)
+    .build();
 
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey });
 };

@@ -1,3 +1,4 @@
+import React from "react";
 import { SignupForm } from "../components/SignupForm/SignupForm";
 import Container from "@mui/material/Container";
 
@@ -8,7 +9,7 @@ export function SignupPage() {
       sx={{ height: 1 / 1, pb: 5 }}
       className="container"
     >
-      <h1>Signup here</h1>
+      <h1>Sign up here</h1>
       <SignupForm></SignupForm>
     </Container>
   );

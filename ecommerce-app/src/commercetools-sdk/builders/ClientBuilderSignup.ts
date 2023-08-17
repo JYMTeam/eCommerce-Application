@@ -1,29 +1,31 @@
 import { AnonymousAuthMiddlewareOptions } from "@commercetools/sdk-client-v2";
-
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 import {
   defaultClient,
-  getCustomerScopes,
+  getDefaultScopes,
   projectKey,
 } from "./ClientBuilderDefault";
 
-export const getApiAnonymRoot = () => {
-  const anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
+export const getApiSignupRoot = () => {
+  const scopes = getDefaultScopes();
+  const signupOptions: AnonymousAuthMiddlewareOptions = {
     host: process.env.REACT_APP_AUTH_URL || "",
     projectKey: projectKey,
     credentials: {
       clientId: process.env.REACT_APP_CLIENT_ID || "",
       clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
     },
-    scopes: getCustomerScopes(),
+    scopes,
     fetch,
   };
 
-  const anonymClient = defaultClient
-    .withAnonymousSessionFlow(anonymAuthMiddlewareOptions)
+  console.log("scopes!!!!");
+  console.log(scopes);
+  const signupClient = defaultClient
+    .withAnonymousSessionFlow(signupOptions)
     .build();
 
-  return createApiBuilderFromCtpClient(anonymClient).withProjectKey({
+  return createApiBuilderFromCtpClient(signupClient).withProjectKey({
     projectKey,
   });
 };

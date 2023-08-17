@@ -5,7 +5,21 @@ import {
 } from "@commercetools/sdk-client-v2";
 
 export const projectKey = process.env.REACT_APP_PROJECT_KEY || "";
-export const scopes = [process.env.REACT_APP_SCOPES || ""];
+
+export const getDefaultScopes = () => {
+  const scopes = [process.env.REACT_APP_SCOPES || ""];
+  return scopes;
+};
+
+export const getCustomerScopes = () => {
+  const scopes = [process.env.REACT_APP_SCOPES || ""];
+  const customerScope = scopes[0];
+  const customerScopes = [
+    customerScope.replace(" manage_customers:ec-app", ""),
+  ];
+
+  return customerScopes;
+};
 
 // Configure authMiddlewareOptions
 export const authMiddlewareOptions: AuthMiddlewareOptions = {
@@ -15,7 +29,7 @@ export const authMiddlewareOptions: AuthMiddlewareOptions = {
     clientId: process.env.REACT_APP_CLIENT_ID || "",
     clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
   },
-  scopes,
+  scopes: getCustomerScopes(),
   fetch,
 };
 
