@@ -46,19 +46,11 @@ export const convertToCustomerDraft = (values: IRegistrationInitialValues) => {
 
   let indexDefaultShipping = -1;
   let indexDefaultBilling = -1;
-  console.log(indexDefaultBilling);
 
   const shippingAddresses: number[] = [];
   const billingAddresses: number[] = [];
 
-  const newUser: CustomerDraft = {
-    email,
-    password,
-    firstName,
-    lastName,
-    dateOfBirth,
-    billingAddresses,
-  };
+  let newUser: CustomerDraft | null = null;
 
   // set shipping address
   addresses.push(shippingAddress);
@@ -76,11 +68,57 @@ export const convertToCustomerDraft = (values: IRegistrationInitialValues) => {
   if (isCommonAddress && isDefaultShipping) indexDefaultBilling = 0;
   if (!isCommonAddress && isDefaultBilling) indexDefaultBilling = 1;
 
-  if (indexDefaultShipping !== -1) {
-    // newUser.defaultShippingAddress = indexDefaultShipping;
+  if (indexDefaultShipping !== -1 && indexDefaultBilling !== -1) {
+    newUser = {
+      email,
+      password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      addresses,
+      shippingAddresses,
+      billingAddresses,
+      defaultShippingAddress: indexDefaultShipping,
+      defaultBillingAddress: indexDefaultBilling,
+    };
+  } else if (indexDefaultShipping !== -1) {
+    newUser = {
+      email,
+      password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      addresses,
+      shippingAddresses,
+      billingAddresses,
+      defaultShippingAddress: indexDefaultShipping,
+    };
+  } else if (indexDefaultBilling !== -1) {
+    newUser = {
+      email,
+      password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      addresses,
+      shippingAddresses,
+      billingAddresses,
+      defaultBillingAddress: indexDefaultBilling,
+    };
+  } else {
+    newUser = {
+      email,
+      password,
+      firstName,
+      lastName,
+      dateOfBirth,
+      addresses,
+      shippingAddresses,
+      billingAddresses,
+    };
   }
 
-  console.log(newUser);
+  return newUser;
 };
 
 const convertToBaseAddress = (

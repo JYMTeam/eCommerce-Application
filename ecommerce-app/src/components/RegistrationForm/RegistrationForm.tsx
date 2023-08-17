@@ -17,7 +17,7 @@ import {
   countryOptions,
 } from "../../constants/constants";
 import { IRegistrationInitialValues } from "../../types";
-import { subtractYears } from "../../utils/utils";
+import { convertToCustomerDraft, subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
@@ -209,6 +209,7 @@ export function RegistrationForm() {
         // } = values;
 
         console.log(values);
+        console.log(convertToCustomerDraft(values));
       }}
     >
       {(formik) => {
@@ -327,7 +328,11 @@ export function RegistrationForm() {
                         size="small"
                       />
                     }
-                    label="Set as default for shipping"
+                    label={
+                      isCommonAddressChecked
+                        ? "Set as default for shipping/billing"
+                        : "Set as default for shipping"
+                    }
                     sx={{ ml: 0.1 }}
                   />
                 </Grid>
@@ -423,7 +428,7 @@ export function RegistrationForm() {
                       size="small"
                     />
                   }
-                  label="Set as address for shipping and billing"
+                  label="Set as address for shipping/billing"
                   sx={
                     values.commonAddressCheck &&
                     values.commonAddressCheck.length > 0
