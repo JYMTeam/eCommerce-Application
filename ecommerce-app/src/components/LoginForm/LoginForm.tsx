@@ -16,12 +16,8 @@ import {
 import { IFormInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { useAppDispatch } from "../../hooks/redux";
-
-// const existingUser: UserAuthOptions = {
-//   username: "johndoe@example.com",
-//   password: "Secret123",
-// };
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 
 export function LoginForm() {
   const initialValues: IFormInitialValues = {
@@ -62,6 +58,9 @@ export function LoginForm() {
       }),
   });
 
+  const { errorMessage, loading, isLogged } = useAppSelector(
+    (state) => state.userLogin,
+  );
   const dispatch = useAppDispatch();
   return (
     <Formik
@@ -69,12 +68,16 @@ export function LoginForm() {
       validationSchema={LoginSchema}
       onSubmit={(values) => {
         const { email, password } = values;
+        //   username: "johndoe@example.com",
+        //   password: "Secret123",
+        if (email && password) {
+          const existingUser: UserAuthOptions = {
+            username: email,
+            password,
+          };
 
-        const existingUser: UserAuthOptions = {
-          username: email,
-          password,
-        };
-        dispatch(fetchUserLogin(existingUser));
+          dispatch(fetchUserLogin(existingUser));
+        }
       }}
     >
       {(formik) => {
@@ -99,7 +102,17 @@ export function LoginForm() {
                   placeholder=" user@example.com"
                   required={true}
                   sx={{ mb: 1 }}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                    handleChange(event);
+                  }}
+                  onFocus={() => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                  }}
                   helperText={errors.email}
                   error={!!errors.email}
                 />
@@ -115,7 +128,17 @@ export function LoginForm() {
                   variant="standard"
                   required={true}
                   sx={{ mb: 2 }}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                    handleChange(event);
+                  }}
+                  onFocus={() => {
+                    if (errorMessage) {
+                      dispatch(userLoginClearErrorMessage(""));
+                    }
+                  }}
                   helperText={errors.password}
                   error={!!errors.password}
                 />
@@ -124,9 +147,36 @@ export function LoginForm() {
                   label="Show password"
                   sx={{ mb: 2 }}
                 />
-                <Button type="submit" variant="contained" size="large">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={loading}
+                >
                   Log in
                 </Button>
+                {isLogged && (
+                  <span
+                    style={{
+                      color: "green",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {"You have successfully logged in!"}
+                  </span>
+                )}
+                {errorMessage && (
+                  <span
+                    style={{
+                      color: "red",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {errorMessage}
+                  </span>
+                )}
               </FormControl>
             </Box>
           </Form>

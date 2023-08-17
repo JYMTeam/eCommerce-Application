@@ -4,7 +4,7 @@ import {
   PasswordAuthMiddlewareOptions,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
-import { passToken } from "./PassTokenCache";
+import { passToken } from "../PassTokenCache";
 import {
   authMiddlewareOptions,
   defaultClient,

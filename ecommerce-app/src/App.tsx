@@ -5,7 +5,7 @@ import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
 import { Navigation } from "./components/Navigation";
 import NotFoundPage from "./pages/NotFoundPage";
-import { RegistrationPage } from "./pages/RegistrationPage";
+import { SignupPage } from "./pages/SignupPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
@@ -23,10 +23,7 @@ function App() {
             <Routes>
               <Route path="/" element={<MainPage />}></Route>
               <Route path="/login" element={<LoginPage />}></Route>
-              <Route
-                path="/registration"
-                element={<RegistrationPage />}
-              ></Route>
+              <Route path="/signup" element={<SignupPage />}></Route>
               <Route path="*" element={<NotFoundPage />}></Route>
             </Routes>
           </div>

@@ -1,5 +1,5 @@
 // This file for testing requests
-import { getApiAnonymRoot } from "./ClientBuilderAnonym";
+import { getApiAnonymRoot } from "./builders/ClientBuilderAnonym";
 
 const getProjects = async () => {
   try {
