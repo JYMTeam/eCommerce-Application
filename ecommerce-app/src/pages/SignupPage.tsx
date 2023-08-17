@@ -1,7 +1,7 @@
 import React from "react";
 // import { useAppDispatch } from "../hooks/redux";
 // import { fetchUserSignup } from "../store/actions/userSignupActions";
-import { RegistrationForm } from "../components/RegistrationForm/RegistrationForm";
+import { SignupForm } from "../components/SignupForm/SignupForm";
 import Container from "@mui/material/Container";
 
 // const newUser: MyCustomerDraft = {
@@ -66,7 +66,7 @@ import Container from "@mui/material/Container";
 //   defaultBillingAddress: 1,
 // };
 
-export function RegistrationPage() {
+export function SignupPage() {
   // const dispatch = useAppDispatch();
 
   // signup
@@ -80,8 +80,8 @@ export function RegistrationPage() {
       sx={{ height: 1 / 1, pb: 5 }}
       className="container"
     >
-      <h1>Register here</h1>
-      <RegistrationForm></RegistrationForm>
+      <h1>Sign up here</h1>
+      <SignupForm></SignupForm>
     </Container>
   );
 }

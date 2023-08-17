@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -16,7 +17,7 @@ import {
 import { IFormInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { useAppDispatch } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { convertToUserAuthOptions } from "../../utils/utils";
 
 // const existingUser: UserAuthOptions = {
@@ -25,6 +26,7 @@ import { convertToUserAuthOptions } from "../../utils/utils";
 // };
 
 export function LoginForm() {
+  const [showPassword, setShowPassword] = React.useState(false);
   const initialValues: IFormInitialValues = {
     email: "",
     password: "",
@@ -64,6 +66,7 @@ export function LoginForm() {
   });
 
   const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.userLogin);
   return (
     <Formik
       initialValues={initialValues}
@@ -74,7 +77,7 @@ export function LoginForm() {
       }}
     >
       {(formik) => {
-        const { values, handleChange, errors } = formik;
+        const { handleChange, errors } = formik;
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -101,11 +104,7 @@ export function LoginForm() {
                 />
                 <TextField
                   autoComplete="off"
-                  type={
-                    values.passwordCheck && values.passwordCheck.length > 0
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   label="Password"
                   variant="standard"
@@ -116,11 +115,24 @@ export function LoginForm() {
                   error={!!errors.password}
                 />
                 <FormControlLabel
-                  control={<Checkbox onChange={handleChange} name="check" />}
+                  control={
+                    <Checkbox
+                      onChange={
+                        () => setShowPassword(!showPassword)
+                        // handleChange
+                      }
+                      name="check"
+                    />
+                  }
                   label="Show password"
                   sx={{ mb: 2 }}
                 />
-                <Button type="submit" variant="contained" size="large">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={loading}
+                >
                   Log in
                 </Button>
               </FormControl>

@@ -15,11 +15,11 @@ export function Navigation() {
         </Button>
         <Button
           component={Link}
-          to="registration"
+          to="signup"
           variant="contained"
           color="primary"
         >
-          Registration
+          Sign up
         </Button>
         <Button component={Link} to="/" variant="contained" color="primary">
           Main

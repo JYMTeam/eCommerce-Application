@@ -8,7 +8,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
-import { RegistrationPage } from "./pages/RegistrationPage";
+import { SignupPage } from "./pages/SignupPage";
 
 const store = setupStore();
 
@@ -22,10 +22,7 @@ function App() {
             <Routes>
               <Route path="/" element={<MainPage />}></Route>
               <Route path="/login" element={<LoginPage />}></Route>
-              <Route
-                path="/registration"
-                element={<RegistrationPage />}
-              ></Route>
+              <Route path="/signup" element={<SignupPage />}></Route>
               <Route path="*" element={<NotFoundPage />}></Route>
             </Routes>
           </div>

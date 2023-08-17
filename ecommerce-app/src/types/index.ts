@@ -3,7 +3,7 @@ export interface IFormInitialValues {
   password: string;
   passwordCheck?: string[];
 }
-export interface IRegistrationInitialValues extends IFormInitialValues {
+export interface ISignupInitialValues extends IFormInitialValues {
   firstName: string;
   lastName: string;
   dateOfBirth: string;

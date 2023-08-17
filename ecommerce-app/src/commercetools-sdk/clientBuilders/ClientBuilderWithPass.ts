@@ -7,8 +7,8 @@ import {
 import { passToken } from "../PassTokenCache";
 import {
   authMiddlewareOptions,
-  customerScopes,
   defaultClient,
+  getCustomerScopes,
   projectKey,
 } from "./ClientBuilderDefault";
 
@@ -19,14 +19,14 @@ export const getApiPassRoot = (userAuthOptions: UserAuthOptions) => {
   user = userAuthOptions;
 
   const passOptions: PasswordAuthMiddlewareOptions = {
-    host: authMiddlewareOptions.host,
-    projectKey: authMiddlewareOptions.projectKey,
+    host: process.env.REACT_APP_AUTH_URL || "",
+    projectKey: projectKey,
     credentials: {
-      clientId: authMiddlewareOptions.credentials.clientId,
-      clientSecret: authMiddlewareOptions.credentials.clientSecret,
+      clientId: process.env.REACT_APP_CLIENT_ID || "",
+      clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
       user: user,
     },
-    scopes: customerScopes,
+    scopes: getCustomerScopes(),
     tokenCache: passToken,
   };
 

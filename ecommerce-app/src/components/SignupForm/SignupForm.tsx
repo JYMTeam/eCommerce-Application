@@ -16,17 +16,19 @@ import {
   MAX_HUMAN_AGE,
   countryOptions,
 } from "../../constants/constants";
-import { IRegistrationInitialValues } from "../../types";
+import { ISignupInitialValues } from "../../types";
 import { convertToCustomerDraft, subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import { useState } from "react";
 import { CustomerDraft } from "@commercetools/platform-sdk";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { fetchUserSignup } from "../../store/actions/userSignupActions";
 
 const postalCodes = require("postal-codes-js");
 
-const initialValues: IRegistrationInitialValues = {
+const initialValues: ISignupInitialValues = {
   email: "",
   password: "",
   firstName: "",
@@ -95,14 +97,14 @@ const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
   );
 };
 
-export function RegistrationForm() {
+export function SignupForm() {
   const [countryCodeShipping, setCountryCodeShipping] = useState("");
   const [postalCodeFormatShipping, setPostalCodeFormatShipping] = useState("");
   const [countryCodeBilling, setCountryCodeBilling] = useState("");
   const [postalCodeFormatBilling, setPostalCodeFormatBilling] = useState("");
   const [isCommonAddressChecked, setIsCommonAddressChecked] = useState(false);
 
-  const RegistrationSchema = object().shape({
+  const SignupSchema = object().shape({
     email: string()
       .required("Email is required")
       .trim("Email must not contain leading or trailing whitespace")
@@ -184,13 +186,16 @@ export function RegistrationForm() {
       : validatePostalCode(countryCodeBilling, postalCodeFormatBilling),
   });
 
+  const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.userSignup);
+
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={RegistrationSchema}
+      validationSchema={SignupSchema}
       onSubmit={(values) => {
-        const newCustomer: CustomerDraft = convertToCustomerDraft(values);
-        console.log(newCustomer);
+        const newUser: CustomerDraft = convertToCustomerDraft(values);
+        dispatch(fetchUserSignup(newUser));
       }}
     >
       {(formik) => {
@@ -533,8 +538,13 @@ export function RegistrationForm() {
                     />
                   </Grid>
                 </Grid>
-                <Button type="submit" variant="contained" size="large">
-                  Register
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={loading}
+                >
+                  Sign up
                 </Button>
               </FormControl>
             </Box>
