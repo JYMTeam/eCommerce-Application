@@ -154,7 +154,7 @@ export function LoginForm() {
                       fontSize: "0.85rem",
                     }}
                   >
-                    {"User successfully logged in!"}
+                    {"You have successfully logged in!"}
                   </span>
                 )}
                 {errorMessage && (

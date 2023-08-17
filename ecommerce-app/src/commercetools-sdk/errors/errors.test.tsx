@@ -26,7 +26,7 @@ describe("formatErrorMessage", () => {
     };
     const errorMessage = formatErrorMessage(error);
     expect(errorMessage).toBe(
-      "User with this password and email was not found",
+      "User with this password and/or email was not found",
     );
   });
 

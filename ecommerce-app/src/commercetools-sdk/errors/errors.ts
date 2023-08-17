@@ -15,7 +15,7 @@ export const formatErrorMessage = (error: AuthErrorResponse): string => {
       error.error === "invalid_customer_account_credentials" ||
       error.errors[0].code === "InvalidCredentials"
     ) {
-      return "User with this password and email was not found";
+      return "User with this password and/or email was not found";
     }
   }
   return "An error occurred. Please try again later.";
