@@ -189,23 +189,26 @@ export function RegistrationForm() {
       validationSchema={RegistrationSchema}
       onSubmit={(values) => {
         //fires onSubmit by button or enter
-        const {
-          email,
-          // password,
-          // firstName,
-          // lastName,
-          // dateOfBirth,
-          // streetNameShipping,
-          // cityShipping,
-          // countryShipping,
-          // postalCodeShipping,
-          // streetNameBilling,
-          // cityBilling,
-          // countryBilling,
-          // postalCodeBilling,
-        } = values;
+        // const {
+        //   email,
+        //   password,
+        //   firstName,
+        //   lastName,
+        //   dateOfBirth,
+        //   streetNameShipping,
+        //   cityShipping,
+        //   countryShipping,
+        //   postalCodeShipping,
+        //   streetNameBilling,
+        //   cityBilling,
+        //   countryBilling,
+        //   postalCodeBilling,
+        //   commonAddressCheck,
+        //   defaultBillingCheck,
+        //   defaultShippingCheck
+        // } = values;
 
-        console.log(email);
+        console.log(values);
       }}
     >
       {(formik) => {
