@@ -3,14 +3,25 @@ import ReactDOM from "react-dom/client";
 import "./styles/index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { persistStore } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import { setupStore } from "./store";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
-
+const store = setupStore();
+let persistor = persistStore(store);
 // test commit
 
-root.render(<App />);
+root.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />{" "}
+    </PersistGate>
+  </Provider>,
+);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
