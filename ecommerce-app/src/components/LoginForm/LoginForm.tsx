@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -16,14 +17,15 @@ import {
 import { IFormInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { useAppDispatch } from "../../hooks/redux";
-
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { convertToUserAuthOptions } from "../../utils/utils";
+import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
 //   password: "Secret123",
 // };
-
 export function LoginForm() {
+  const [showPassword, setShowPassword] = React.useState(false);
   const initialValues: IFormInitialValues = {
     email: "",
     password: "",
@@ -62,23 +64,37 @@ export function LoginForm() {
       }),
   });
 
+  const { errorMessage, loading, isLogged } = useAppSelector(
+    (state) => state.userLogin,
+  );
   const dispatch = useAppDispatch();
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={LoginSchema}
       onSubmit={(values) => {
-        const { email, password } = values;
-
-        const existingUser: UserAuthOptions = {
-          username: email,
-          password,
-        };
+        const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         dispatch(fetchUserLogin(existingUser));
       }}
     >
       {(formik) => {
-        const { values, handleChange, errors } = formik;
+        const { handleChange, errors } = formik;
+
+        const onInputChange = (
+          event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+          if (errorMessage) {
+            dispatch(userLoginClearErrorMessage(""));
+          }
+          handleChange(event);
+        };
+
+        const onInputFocus = () => {
+          if (errorMessage) {
+            dispatch(userLoginClearErrorMessage(""));
+          }
+        };
+
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -99,34 +115,72 @@ export function LoginForm() {
                   placeholder=" user@example.com"
                   required={true}
                   sx={{ mb: 1 }}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.email}
                   error={!!errors.email}
+                  disabled={isLogged}
                 />
                 <TextField
                   autoComplete="off"
-                  type={
-                    values.passwordCheck && values.passwordCheck.length > 0
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   label="Password"
                   variant="standard"
                   required={true}
                   sx={{ mb: 2 }}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.password}
                   error={!!errors.password}
+                  disabled={isLogged}
                 />
                 <FormControlLabel
-                  control={<Checkbox onChange={handleChange} name="check" />}
+                  control={
+                    <Checkbox
+                      onChange={
+                        () => setShowPassword(!showPassword)
+                        // handleChange
+                      }
+                      name="check"
+                      disabled={isLogged}
+                    />
+                  }
                   label="Show password"
                   sx={{ mb: 2 }}
                 />
-                <Button type="submit" variant="contained" size="large">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={loading || isLogged}
+                >
                   Log in
                 </Button>
+                {isLogged && (
+                  <span
+                    style={{
+                      color: "green",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                      textAlign: "center",
+                    }}
+                  >
+                    {"You have successfully logged in!"}
+                  </span>
+                )}
+                {errorMessage && (
+                  <span
+                    style={{
+                      color: "red",
+                      marginTop: "8px",
+                      fontSize: "0.85rem",
+                      textAlign: "center",
+                    }}
+                  >
+                    {errorMessage}
+                  </span>
+                )}
               </FormControl>
             </Box>
           </Form>

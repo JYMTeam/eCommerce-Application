@@ -1,11 +1,13 @@
-import { Customer } from "@commercetools/platform-sdk";
+import { AuthErrorResponse, Customer } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { HttpErrorType, TokenStore } from "@commercetools/sdk-client-v2";
+import { TokenStore } from "@commercetools/sdk-client-v2";
+import { formatErrorMessage } from "../../commercetools-sdk/errors/errors";
 
-interface IUserLoginState {
+export interface IUserLoginState {
   loading: boolean;
   isLogged: boolean;
-  error: HttpErrorType | null;
+  error: AuthErrorResponse | null;
+  errorMessage: string;
   loginData: Customer | null;
   tokenData: TokenStore | null;
 }
@@ -14,6 +16,7 @@ const initialState: IUserLoginState = {
   loading: false,
   isLogged: false,
   error: null,
+  errorMessage: "",
   loginData: null,
   tokenData: null,
 };
@@ -29,12 +32,17 @@ export const userLoginSlice = createSlice({
       state.loading = false;
       state.isLogged = true;
       state.error = null;
+      state.errorMessage = "";
       state.loginData = action.payload;
     },
-    userLoginFetchError(state, action: PayloadAction<HttpErrorType>) {
+    userLoginFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
       state.error = action.payload;
+      state.errorMessage = formatErrorMessage(action.payload);
       state.loginData = null;
+    },
+    userLoginClearErrorMessage(state, action: PayloadAction<string>) {
+      state.errorMessage = "";
     },
     setUserToken(state, action: PayloadAction<TokenStore>) {
       state.tokenData = action.payload;
@@ -47,6 +55,7 @@ export const {
   userLoginFetching,
   userLoginFetchSuccess,
   userLoginFetchError,
+  userLoginClearErrorMessage,
   setUserToken,
 } = userLoginSlice.actions;
 
