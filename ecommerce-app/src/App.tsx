@@ -11,7 +11,6 @@ import { SignupPage } from "./pages/SignupPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
-import "./commercetools-sdk/ctpClient-example";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
 
