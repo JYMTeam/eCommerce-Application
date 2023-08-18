@@ -20,6 +20,9 @@ import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { convertToUserAuthOptions } from "../../utils/utils";
 import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
+import { Alert, AlertTitle } from "@mui/material";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
 //   password: "Secret123",
@@ -68,6 +71,21 @@ export function LoginForm() {
     (state) => state.userLogin,
   );
   const dispatch = useAppDispatch();
+  const navigate: NavigateFunction = useNavigate();
+  const loginHandler = (loginState: boolean) => {
+    if (loginState) {
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1500);
+      return (
+        <Alert severity="success">
+          <AlertTitle>You have successfully logged in!</AlertTitle>
+          Redirecting...
+        </Alert>
+      );
+    }
+  };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -75,6 +93,7 @@ export function LoginForm() {
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         dispatch(fetchUserLogin(existingUser));
+        loginHandler(isLogged);
       }}
     >
       {(formik) => {
@@ -157,29 +176,12 @@ export function LoginForm() {
                 >
                   Log in
                 </Button>
-                {isLogged && (
-                  <span
-                    style={{
-                      color: "green",
-                      marginTop: "8px",
-                      fontSize: "0.85rem",
-                      textAlign: "center",
-                    }}
-                  >
-                    {"You have successfully logged in!"}
-                  </span>
-                )}
+                {isLogged && <>{loginHandler(isLogged)}</>}
                 {errorMessage && (
-                  <span
-                    style={{
-                      color: "red",
-                      marginTop: "8px",
-                      fontSize: "0.85rem",
-                      textAlign: "center",
-                    }}
-                  >
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
                     {errorMessage}
-                  </span>
+                  </Alert>
                 )}
               </FormControl>
             </Box>
