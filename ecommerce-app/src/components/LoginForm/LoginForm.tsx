@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
@@ -13,22 +14,25 @@ import {
   DIGIT_REGEX,
   NO_SPACE_REGEX,
 } from "../../constants/constants";
-import { formInitialValues } from "../../types";
+import { IFormInitialValues } from "../../types";
 import { fetchUserLogin } from "../../store/actions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { convertToUserAuthOptions } from "../../utils/utils";
+import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 import { Alert, AlertTitle } from "@mui/material";
 import { NavigateFunction, useNavigate } from "react-router-dom";
+
 // const existingUser: UserAuthOptions = {
 //   username: "johndoe@example.com",
 //   password: "Secret123",
 // };
-
 export function LoginForm() {
-  const initialValues: formInitialValues = {
+  const [showPassword, setShowPassword] = React.useState(false);
+  const initialValues: IFormInitialValues = {
     email: "",
     password: "",
-    check: [],
+    passwordCheck: [],
   };
 
   const LoginSchema = object().shape({
@@ -36,10 +40,13 @@ export function LoginForm() {
       .required("Email is required")
       .trim("Email must not contain leading or trailing whitespace")
       .strict(true)
+      .matches(NO_SPACE_REGEX, {
+        message: "Email must not contain middle whitespace",
+      })
       .matches(AT_SIGN_DOMAIN_REGEX, {
         message: "Email must contain an '@' sign followed by domain in latin",
       })
-      .email("Email must be valid e.g., user@example.com"),
+      .email("Email must be properly formatted e.g., user@example.com"),
 
     password: string()
       .required("Password is required")
@@ -55,11 +62,15 @@ export function LoginForm() {
       .matches(DIGIT_REGEX, {
         message: "Password must contain at least one digit ",
       })
-      .matches(NO_SPACE_REGEX, { message: "Password must not contain spaces" }),
+      .matches(NO_SPACE_REGEX, {
+        message: "Password must not contain middle whitespace",
+      }),
   });
 
+  const { errorMessage, loading, isLogged } = useAppSelector(
+    (state) => state.userLogin,
+  );
   const dispatch = useAppDispatch();
-  const { isLogged } = useAppSelector((state) => state.userLogin);
   const navigate: NavigateFunction = useNavigate();
   const loginHandler = (loginState: boolean) => {
     if (loginState) {
@@ -80,18 +91,29 @@ export function LoginForm() {
       initialValues={initialValues}
       validationSchema={LoginSchema}
       onSubmit={(values) => {
-        const { email, password } = values;
-
-        const existingUser: UserAuthOptions = {
-          username: email,
-          password,
-        };
+        const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         dispatch(fetchUserLogin(existingUser));
         loginHandler(isLogged);
       }}
     >
       {(formik) => {
-        const { values, handleChange, errors } = formik;
+        const { handleChange, errors } = formik;
+
+        const onInputChange = (
+          event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+          if (errorMessage) {
+            dispatch(userLoginClearErrorMessage(""));
+          }
+          handleChange(event);
+        };
+
+        const onInputFocus = () => {
+          if (errorMessage) {
+            dispatch(userLoginClearErrorMessage(""));
+          }
+        };
+
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -112,32 +134,56 @@ export function LoginForm() {
                   placeholder=" user@example.com"
                   required={true}
                   sx={{ mb: 1 }}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.email}
                   error={!!errors.email}
+                  disabled={isLogged}
                 />
                 <TextField
                   autoComplete="off"
-                  type={values.check.length > 0 ? "text" : "password"}
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   label="Password"
                   variant="standard"
                   required={true}
                   sx={{ mb: 2 }}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.password}
                   error={!!errors.password}
+                  disabled={isLogged}
                 />
                 <FormControlLabel
-                  control={<Checkbox onChange={handleChange} name="check" />}
+                  control={
+                    <Checkbox
+                      onChange={
+                        () => setShowPassword(!showPassword)
+                        // handleChange
+                      }
+                      name="check"
+                      disabled={isLogged}
+                    />
+                  }
                   label="Show password"
                   sx={{ mb: 2 }}
                 />
-                <Button type="submit" variant="contained" size="large">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="large"
+                  disabled={loading || isLogged}
+                >
                   Log in
                 </Button>
+                {isLogged && <>{loginHandler(isLogged)}</>}
+                {errorMessage && (
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    {errorMessage}
+                  </Alert>
+                )}
               </FormControl>
-              {loginHandler(isLogged)}
             </Box>
           </Form>
         );

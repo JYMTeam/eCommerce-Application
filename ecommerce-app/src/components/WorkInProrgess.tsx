@@ -1,9 +1,9 @@
 import React from "react";
-import errorGif from "../assets/error-404.gif";
+import workingGif from "../assets/working.gif";
 import { Link } from "react-router-dom";
 
 import { Typography, Box, Grid, Button } from "@mui/material";
-export default function NotFoundPage() {
+export default function WorkInProgress() {
   return (
     <Grid
       container
@@ -13,13 +13,13 @@ export default function NotFoundPage() {
       sx={{ my: 20 }}
     >
       <Typography variant="h2" component="h2">
-        Oops!
+        Come back later!
       </Typography>
-      <Typography>We can't find the page you are looking for!</Typography>
+      <Typography>We are working on this page!</Typography>
       <Box
         component="img"
-        src={errorGif}
-        alt={"404"}
+        src={workingGif}
+        alt={"Work in progress"}
         sx={{ height: "100%", width: "auto" }}
       />
       <Box sx={{ mb: "4em" }}>
