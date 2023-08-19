@@ -21,7 +21,6 @@ function App() {
     }
     return <>{children}</>;
   };
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg">
