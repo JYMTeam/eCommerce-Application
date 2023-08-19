@@ -28,6 +28,11 @@ export const userLoginSlice = createSlice({
     userLoginFetching(state) {
       state.loading = true;
     },
+    userLoginReset(state) {
+      state.isLogged = false;
+      state.loginData = null;
+      state.tokenData = null;
+    },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
       state.isLogged = true;
@@ -53,6 +58,7 @@ export const userLoginSlice = createSlice({
 // Export actions
 export const {
   userLoginFetching,
+  userLoginReset,
   userLoginFetchSuccess,
   userLoginFetchError,
   userLoginClearErrorMessage,
