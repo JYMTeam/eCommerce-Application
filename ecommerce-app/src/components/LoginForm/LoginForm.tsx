@@ -66,12 +66,12 @@ export function LoginForm() {
         message: "Password must not contain middle whitespace",
       }),
   });
-
+  const navigate: NavigateFunction = useNavigate();
   const { errorMessage, loading, isLogged } = useAppSelector(
     (state) => state.userLogin,
   );
   const dispatch = useAppDispatch();
-  const navigate: NavigateFunction = useNavigate();
+
   const loginHandler = (loginState: boolean) => {
     if (loginState) {
       setTimeout(() => {
