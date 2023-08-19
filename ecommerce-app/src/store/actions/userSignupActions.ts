@@ -20,7 +20,6 @@ export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
           body: userSignupOptions,
         })
         .execute();
-
       dispatch(userSignupFetchSuccess(answer.body));
 
       const { email, password } = userSignupOptions;
