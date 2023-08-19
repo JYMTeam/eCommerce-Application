@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import "./styles/App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
@@ -11,7 +12,9 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
-import { useAppSelector } from "./hooks/redux";
+import { useAppDispatch, useAppSelector } from "./hooks/redux";
+import { fetchUserLoginToken } from "./store/actions/userLoginActions";
+import { userLoginReset } from "./store/slices/userLoginSlice";
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
   const LoggedIn = ({ children }: MyComponentProps) => {
@@ -21,6 +24,18 @@ function App() {
     }
     return <>{children}</>;
   };
+
+  //check token after loading
+  const { tokenData } = useAppSelector((state) => state.userLogin);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (tokenData && tokenData?.token !== "") {
+      dispatch(fetchUserLoginToken(tokenData));
+    } else {
+      dispatch(userLoginReset());
+    }
+  }, [dispatch, tokenData]);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg">

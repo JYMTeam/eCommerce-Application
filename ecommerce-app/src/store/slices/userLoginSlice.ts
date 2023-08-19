@@ -2,6 +2,7 @@ import { AuthErrorResponse, Customer } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TokenStore } from "@commercetools/sdk-client-v2";
 import { formatErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { passToken } from "../../commercetools-sdk/PassTokenCache";
 
 export interface IUserLoginState {
   loading: boolean;
@@ -29,7 +30,10 @@ export const userLoginSlice = createSlice({
       state.loading = true;
     },
     userLoginReset(state) {
+      state.loading = false;
       state.isLogged = false;
+      state.error = null;
+      state.errorMessage = "";
       state.loginData = null;
       state.tokenData = null;
     },
@@ -51,6 +55,7 @@ export const userLoginSlice = createSlice({
     },
     setUserToken(state, action: PayloadAction<TokenStore>) {
       state.tokenData = action.payload;
+      passToken.set(action.payload);
     },
   },
 });

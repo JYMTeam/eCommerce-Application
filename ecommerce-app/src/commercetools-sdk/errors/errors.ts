@@ -17,6 +17,21 @@ export const formatErrorMessage = (error: AuthErrorResponse): string => {
     ) {
       return "User with this password and/or email was not found";
     }
+
+    if (error.errors[0].code === "DuplicateField") {
+      return "User with this email already exists";
+    }
+
+    if (
+      error.errors[0].code === "InvalidOperation" ||
+      error.errors[0].code === "InvalidJsonInput"
+    ) {
+      return "The server did not receive your data correctly. Please try again.";
+    }
+
+    if (error.errors[0].code === "MaxResourceLimitExceeded") {
+      return "Unfortunately, too many users have been created. Limit reached. Please try again later.";
+    }
   }
   return "An error occurred. Please try again later.";
 };

@@ -52,6 +52,7 @@ export const {
   userSignupFetching,
   userSignupFetchSuccess,
   userSignupFetchError,
+  userSignupClearErrorMessage,
 } = userSignupSlice.actions;
 
 export default userSignupSlice.reducer;
