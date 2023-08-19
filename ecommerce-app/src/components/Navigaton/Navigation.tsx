@@ -3,21 +3,14 @@ import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import CartIcon from "../../assets/cart.svg";
 import { AppBar, Toolbar, Stack, Button, IconButton, Box } from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { logout } from "../../store/slices/userLogoutSlice";
 
 //import { SystemStyleObject } from "@mui/system";
 
 export function Navigation() {
-  // const classes: SystemStyleObject = {
-  //   flexGrow: {
-  //     flex: "1",
-  //   },
-  //   button: {
-  //     "&:hover": {
-  //       bgcolor: "transparent",
-  //       color: "primary.dark",
-  //     },
-  //   },
-  // };
+  const { isLogged } = useAppSelector((state) => state.userLogin);
+  const dispatch = useAppDispatch();
   return (
     <AppBar
       position="static"
@@ -77,6 +70,19 @@ export function Navigation() {
           >
             Login
           </Button>
+          {isLogged && (
+            <Button
+              component={Link}
+              to="/"
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                dispatch(logout());
+              }}
+            >
+              Log out
+            </Button>
+          )}
           <Button
             component={Link}
             to="signup"
