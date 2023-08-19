@@ -4,7 +4,7 @@ import Logo from "../../assets/logo.png";
 import CartIcon from "../../assets/cart.svg";
 import { AppBar, Toolbar, Stack, Button, IconButton, Box } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { logout } from "../../store/slices/userLogoutSlice";
+import { userLoginReset } from "../../store/slices/userLoginSlice";
 
 //import { SystemStyleObject } from "@mui/system";
 
@@ -77,7 +77,7 @@ export function Navigation() {
               variant="contained"
               color="primary"
               onClick={() => {
-                dispatch(logout());
+                dispatch(userLoginReset());
               }}
             >
               Log out
