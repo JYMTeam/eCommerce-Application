@@ -13,6 +13,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { setupStore } from "./store";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
+import React from "react";
 
 const store = setupStore();
 function App() {
