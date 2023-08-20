@@ -19,3 +19,13 @@ export interface ISignupInitialValues extends IFormInitialValues {
   defaultShippingCheck?: string[];
   defaultBillingCheck?: string[];
 }
+export interface IPostalCodes {
+  validate: (countryCode: string, value: string) => {};
+}
+export interface ISignedUpSchemaOptions {
+  countryCodeShipping: string;
+  countryCodeBilling: string;
+  postalCodeFormatShipping: string;
+  postalCodeFormatBilling: string;
+  isCommonAddressChecked: boolean;
+}

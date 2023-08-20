@@ -1,6 +1,17 @@
 import { IFormInitialValues, ISignupInitialValues } from "../types";
 import { CustomerDraft } from "@commercetools/platform-sdk";
-import { convertToUserAuthOptions, convertToCustomerDraft } from "./utils";
+import {
+  subtractYears,
+  convertToUserAuthOptions,
+  convertToCustomerDraft,
+} from "./utils";
+
+describe("subtractYears function", () => {
+  it("subtracts years from date", () => {
+    const subtractedYear = subtractYears(new Date("2023-02-06T00:00:00"), 23);
+    expect(subtractedYear).toEqual(new Date("2000-02-06T00:00:00"));
+  });
+});
 
 describe("convertToUserAuthOptions", () => {
   it("should convert form values to user auth options", () => {
