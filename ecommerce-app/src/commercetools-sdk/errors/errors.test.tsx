@@ -1,5 +1,6 @@
 import {
   AuthErrorResponse,
+  DuplicateFieldError,
   InvalidCredentialsError,
   InvalidFieldError,
 } from "@commercetools/platform-sdk";
@@ -28,6 +29,17 @@ describe("formatErrorMessage", () => {
     expect(errorMessage).toBe(
       "User with this password and/or email was not found",
     );
+  });
+
+  it('should return "User with this email already exists" message for duplicate email', () => {
+    const error: AuthErrorResponse = {
+      statusCode: 400,
+      error: "invalid_input",
+      errors: [{ code: "DuplicateField" } as DuplicateFieldError],
+      message: "Email already exists",
+    };
+    const errorMessage = formatErrorMessage(error);
+    expect(errorMessage).toBe("User with this email already exists");
   });
 
   it("should return default error message for unknown errors", () => {

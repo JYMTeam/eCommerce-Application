@@ -3,20 +3,11 @@ import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import { Formik, Form } from "formik";
-import { object, string, lazy } from "yup";
 import {
-  AT_SIGN_DOMAIN_REGEX,
-  UPPERCASE_LETTER_REGEX,
-  LOWERCASE_LETTER_REGEX,
-  DIGIT_REGEX,
-  NO_SPACE_REGEX,
-  NO_SPECIAL_CHARS_REGEX,
-  NO_DIGIT_REGEX,
-  USER_AGE_ALLOWED,
   MAX_HUMAN_AGE,
   countryOptions,
+  initialSignUpValues,
 } from "../../constants/constants";
-import { ISignupInitialValues } from "../../types";
 import { convertToCustomerDraft, subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
@@ -32,78 +23,8 @@ import { useState } from "react";
 import { CustomerDraft } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchUserSignup } from "../../store/actions/userSignupActions";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-
-const postalCodes = require("postal-codes-js");
-
-const initialValues: ISignupInitialValues = {
-  email: "",
-  password: "",
-  firstName: "",
-  lastName: "",
-  dateOfBirth: "",
-  streetNameShipping: "",
-  streetNameBilling: "",
-  cityShipping: "",
-  cityBilling: "",
-  countryShipping: "",
-  countryBilling: "",
-  postalCodeShipping: "",
-  postalCodeBilling: "",
-  passwordCheck: [],
-  commonAddressCheck: [],
-  defaultShippingCheck: [],
-  defaultBillingCheck: [],
-};
-
-const validateName = (field: string) => {
-  return string()
-    .required(`${field} is required`)
-    .trim(`${field} must not contain leading or trailing whitespace`)
-    .strict(true)
-    .matches(NO_SPECIAL_CHARS_REGEX, {
-      message: `${field} must not contain special charachers`,
-    })
-    .matches(NO_DIGIT_REGEX, {
-      message: `${field} must not contain numbers`,
-    });
-};
-
-const validateStreetName = () => {
-  return string()
-    .required("Street is required")
-    .trim("Street must not contain leading or trailing whitespace")
-    .strict(true);
-};
-
-const validateCity = () => {
-  return string()
-    .required("City is required")
-    .trim("City must not contain leading or trailing whitespace")
-    .strict(true)
-    .matches(NO_SPECIAL_CHARS_REGEX, {
-      message: "City must not contain special characters",
-    })
-    .matches(NO_DIGIT_REGEX, {
-      message: "City must not contain numbers",
-    });
-};
-
-const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
-  return lazy(() =>
-    string()
-      .required("Postal code is required")
-      .test(
-        "is-correct-postal-code",
-        () =>
-          `Postal code must follow the country ${countryCode} format e.g. ${postalCodeFormat}`,
-        (value) => {
-          if (!value || !countryCode) return false;
-          return typeof postalCodes.validate(countryCode, value) === "boolean";
-        },
-      ),
-  );
-};
+import { setSignupSchema } from "../../utils/validation-schemas";
+import { userSignupClearErrorMessage } from "../../store/slices/userSignupSlice";
 
 export function SignupForm() {
   const [countryCodeShipping, setCountryCodeShipping] = useState("");
@@ -112,118 +33,54 @@ export function SignupForm() {
   const [postalCodeFormatBilling, setPostalCodeFormatBilling] = useState("");
   const [isCommonAddressChecked, setIsCommonAddressChecked] = useState(false);
 
-  const SignupSchema = object().shape({
-    email: string()
-      .required("Email is required")
-      .trim("Email must not contain leading or trailing whitespace")
-      .strict(true)
-      .matches(NO_SPACE_REGEX, {
-        message: "Email must not contain middle whitespace",
-      })
-      .matches(AT_SIGN_DOMAIN_REGEX, {
-        message: "Email must contain an '@' sign followed by domain in latin",
-      })
-      .email("Email must be properly formatted e.g., user@example.com"),
+  const SchemaOptions = {
+    countryCodeShipping,
+    postalCodeFormatShipping,
+    countryCodeBilling,
+    postalCodeFormatBilling,
+    isCommonAddressChecked,
+  };
 
-    password: string()
-      .required("Password is required")
-      .min(8, "Password is too short - should be 8 chars minimum")
-      .trim("Password must not contain leading or trailing whitespace")
-      .strict(true)
-      .matches(UPPERCASE_LETTER_REGEX, {
-        message: "Password must contain at least one latin uppercase letter",
-      })
-      .matches(LOWERCASE_LETTER_REGEX, {
-        message: "Password must contain at least one latin lowercase letter",
-      })
-      .matches(DIGIT_REGEX, {
-        message: "Password must contain at least one digit ",
-      })
-      .matches(NO_SPACE_REGEX, {
-        message: "Password must not contain middle whitespace",
-      }),
-
-    firstName: validateName("First name"),
-    lastName: validateName("Last name"),
-
-    dateOfBirth: lazy(() =>
-      string()
-        .required("Birthday is required")
-        .test(
-          "is-allowed-age",
-          () =>
-            `You must be ${USER_AGE_ALLOWED} years old or above to register`,
-          (value) => {
-            if (!value) return false;
-            return (
-              new Date(value) < subtractYears(new Date(), USER_AGE_ALLOWED)
-            );
-          },
-        )
-        .test(
-          "is-valid-age",
-          () => `Your age must be within the possible human lifespan`,
-          (value) => {
-            if (!value) return false;
-            return new Date(value) > subtractYears(new Date(), MAX_HUMAN_AGE);
-          },
-        ),
-    ),
-
-    streetNameShipping: validateStreetName(),
-    streetNameBilling: isCommonAddressChecked
-      ? string().notRequired()
-      : validateStreetName(),
-
-    cityShipping: validateCity(),
-    cityBilling: isCommonAddressChecked
-      ? string().notRequired()
-      : validateCity(),
-
-    countryShipping: string().required("Country is required"),
-    countryBilling: isCommonAddressChecked
-      ? string().notRequired()
-      : string().required("Country is required"),
-
-    postalCodeShipping: validatePostalCode(
-      countryCodeShipping,
-      postalCodeFormatShipping,
-    ),
-    postalCodeBilling: isCommonAddressChecked
-      ? string().notRequired()
-      : validatePostalCode(countryCodeBilling, postalCodeFormatBilling),
-  });
-
+  const SignupSchema = setSignupSchema(SchemaOptions);
   const dispatch = useAppDispatch();
   const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
-  const { isLogged } = useAppSelector((state) => state.userLogin);
-  const navigate: NavigateFunction = useNavigate();
+  const { isLogged, isSuccessMessage } = useAppSelector(
+    (state) => state.userLogin,
+  );
 
-  const loginHandler = (loginState: boolean) => {
-    if (loginState) {
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1500);
-      return (
-        <Alert severity="success">
-          <AlertTitle>You have successfully signed up and logged in</AlertTitle>
-          Redirecting...
-        </Alert>
-      );
-    }
+  const successMessageHandler = () => {
+    return (
+      <Alert severity="success">
+        <AlertTitle>You have successfully signed up and logged in</AlertTitle>
+        Redirecting...
+      </Alert>
+    );
   };
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialSignUpValues}
       validationSchema={SignupSchema}
       onSubmit={(values) => {
         const newUser: CustomerDraft = convertToCustomerDraft(values);
         dispatch(fetchUserSignup(newUser));
-        loginHandler(isLogged);
       }}
     >
       {(formik) => {
         const { values, handleChange, errors, setFieldValue } = formik;
+        const onInputChange = (
+          event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+          if (errorMessage) {
+            dispatch(userSignupClearErrorMessage());
+          }
+          handleChange(event);
+        };
+
+        const onInputFocus = () => {
+          if (errorMessage) {
+            dispatch(userSignupClearErrorMessage());
+          }
+        };
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -243,7 +100,8 @@ export function SignupForm() {
                   variant="standard"
                   placeholder=" user@example.com"
                   required={true}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.email}
                   error={!!errors.email}
                   sx={{ mb: 0.3 }}
@@ -259,14 +117,16 @@ export function SignupForm() {
                   label="Password"
                   variant="standard"
                   required={true}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.password}
                   error={!!errors.password}
                 />
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       name="passwordCheck"
                       size="small"
                     />
@@ -281,7 +141,8 @@ export function SignupForm() {
                       label="First name"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.firstName}
                       error={!!errors.firstName}
                       sx={{ width: 1 / 1 }}
@@ -294,7 +155,8 @@ export function SignupForm() {
                       label="Last name"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.lastName}
                       error={!!errors.lastName}
                       sx={{ width: 1 / 1 }}
@@ -333,7 +195,8 @@ export function SignupForm() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={handleChange}
+                        onChange={onInputChange}
+                        onFocus={onInputFocus}
                         name="defaultShippingCheck"
                         size="small"
                       />
@@ -389,7 +252,8 @@ export function SignupForm() {
                       label="City / Town"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.cityShipping}
                       error={!!errors.cityShipping}
                       sx={{ width: 1 / 1 }}
@@ -402,7 +266,8 @@ export function SignupForm() {
                       label="Street"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.streetNameShipping}
                       error={!!errors.streetNameShipping}
                       sx={{ width: 1 / 1 }}
@@ -415,7 +280,8 @@ export function SignupForm() {
                       label="Postal code"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={
                         !!values.countryShipping && errors.postalCodeShipping
                       }
@@ -465,7 +331,8 @@ export function SignupForm() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={handleChange}
+                        onChange={onInputChange}
+                        onFocus={onInputFocus}
                         name="defaultBillingCheck"
                         size="small"
                       />
@@ -524,7 +391,8 @@ export function SignupForm() {
                       label="City / Town"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.cityBilling}
                       error={!!errors.cityBilling}
                       sx={{ width: 1 / 1 }}
@@ -537,7 +405,8 @@ export function SignupForm() {
                       label="Street"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.streetNameBilling}
                       error={!!errors.streetNameBilling}
                       sx={{ width: 1 / 1 }}
@@ -550,7 +419,8 @@ export function SignupForm() {
                       label="Postal code"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={
                         !!values.countryBilling && errors.postalCodeBilling
                       }
@@ -566,11 +436,11 @@ export function SignupForm() {
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={loading || isLogged}
+                  disabled={loading || isLogged || isSuccessMessage}
                 >
                   Sign up
                 </Button>
-                {isLogged && <>{loginHandler(isLogged)}</>}
+                {isSuccessMessage && <>{successMessageHandler()}</>}
                 {errorMessage && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>

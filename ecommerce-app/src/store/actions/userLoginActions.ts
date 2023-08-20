@@ -11,11 +11,12 @@ import {
   userLoginFetching,
   setUserToken,
   userLoginReset,
+  setIsSuccess,
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
 import { passToken } from "../../commercetools-sdk/PassTokenCache";
 import { AuthErrorResponse } from "@commercetools/platform-sdk";
-import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClinetBuilderWithExistingToken";
+import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
   return async (dispatch: AppDispatch) => {
@@ -32,9 +33,11 @@ export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
           },
         })
         .execute();
-
-      dispatch(userLoginFetchSuccess(answer.body.customer));
-      dispatch(setUserToken(passToken.get()));
+      dispatch(setIsSuccess());
+      setTimeout(() => {
+        dispatch(userLoginFetchSuccess(answer.body.customer));
+        dispatch(setUserToken(passToken.get()));
+      }, 1500);
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
@@ -62,7 +65,6 @@ export const fetchUserLoginToken = (existingToken: TokenStore) => {
       const body = error.body;
       if (body) {
         dispatch(userLoginReset());
-        // dispatch(userLoginFetchError(body));
       }
     }
   };
