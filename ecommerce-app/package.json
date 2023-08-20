@@ -44,7 +44,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint --fix src --ext .ts,.tsx",
     "prettier": "npx prettier src --write",
-    "prepare": "cd .. && husky install ecommerce-app/.husky"
+    "prepare": "cd .. && husky install ecommerce-app/.husky",
+    "coverage": "react-scripts test --coverage --watchAll"
   },
   "eslintConfig": {
     "extends": [
