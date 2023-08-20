@@ -53,7 +53,14 @@ function App() {
                   </LoggedIn>
                 }
               ></Route>
-              <Route path="/signup" element={<SignupPage />}></Route>
+              <Route
+                path="/signup"
+                element={
+                  <LoggedIn>
+                    <SignupPage />
+                  </LoggedIn>
+                }
+              ></Route>
               <Route path="/shop" element={<ShopPage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
               <Route path="*" element={<NotFoundPage />}></Route>
