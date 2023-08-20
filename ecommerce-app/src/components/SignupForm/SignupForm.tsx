@@ -20,11 +20,19 @@ import { ISignupInitialValues } from "../../types";
 import { convertToCustomerDraft, subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { Autocomplete, Checkbox, FormControlLabel, Grid } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+} from "@mui/material";
 import { useState } from "react";
 import { CustomerDraft } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchUserSignup } from "../../store/actions/userSignupActions";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const postalCodes = require("postal-codes-js");
 
@@ -189,6 +197,21 @@ export function SignupForm() {
   const dispatch = useAppDispatch();
   const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
   const { isLogged } = useAppSelector((state) => state.userLogin);
+  const navigate: NavigateFunction = useNavigate();
+
+  const loginHandler = (loginState: boolean) => {
+    if (loginState) {
+      setTimeout(() => {
+        navigate("/", { replace: true });
+      }, 1500);
+      return (
+        <Alert severity="success">
+          <AlertTitle>You have successfully signed up and logged in</AlertTitle>
+          Redirecting...
+        </Alert>
+      );
+    }
+  };
   return (
     <Formik
       initialValues={initialValues}
@@ -196,6 +219,7 @@ export function SignupForm() {
       onSubmit={(values) => {
         const newUser: CustomerDraft = convertToCustomerDraft(values);
         dispatch(fetchUserSignup(newUser));
+        loginHandler(isLogged);
       }}
     >
       {(formik) => {
@@ -546,29 +570,12 @@ export function SignupForm() {
                 >
                   Sign up
                 </Button>
-                {isLogged && (
-                  <span
-                    style={{
-                      color: "green",
-                      marginTop: "8px",
-                      fontSize: "0.85rem",
-                      textAlign: "center",
-                    }}
-                  >
-                    {"You have successfully signed up and logged in"}
-                  </span>
-                )}
+                {isLogged && <>{loginHandler(isLogged)}</>}
                 {errorMessage && (
-                  <span
-                    style={{
-                      color: "red",
-                      marginTop: "8px",
-                      fontSize: "0.85rem",
-                      textAlign: "center",
-                    }}
-                  >
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
                     {errorMessage}
-                  </span>
+                  </Alert>
                 )}
               </FormControl>
             </Box>
