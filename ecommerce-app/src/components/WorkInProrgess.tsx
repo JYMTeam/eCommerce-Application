@@ -20,7 +20,7 @@ export default function WorkInProgress() {
         component="img"
         src={workingGif}
         alt={"Work in progress"}
-        sx={{ height: "100%", width: "auto" }}
+        sx={{ maxHeight: "100%", width: "auto" }}
       />
       <Box sx={{ mb: "4em" }}>
         <Button component={Link} to="/" variant="contained" color="primary">
