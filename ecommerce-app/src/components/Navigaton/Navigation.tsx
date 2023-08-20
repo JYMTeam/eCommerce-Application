@@ -5,7 +5,7 @@ import { Container, useMediaQuery } from "@mui/material";
 import { AppBar, Toolbar, Stack, Button, IconButton, Box } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { userLoginReset } from "../../store/slices/userLoginSlice";
-import { Drawer } from "../Drawer.tsx/Drawer";
+import { Drawer } from "../Drawer/Drawer";
 import { Theme } from "../Theme";
 
 //import { SystemStyleObject } from "@mui/system";

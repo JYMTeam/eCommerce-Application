@@ -2,16 +2,20 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CartIcon from "../../assets/cart.svg";
 import "./drawer.css";
-import { SwipeableDrawer } from "@mui/material";
+import { SwipeableDrawer, Divider, useMediaQuery } from "@mui/material";
 import { Stack, Button, IconButton, Box } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { userLoginReset } from "../../store/slices/userLoginSlice";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import { Theme } from "../Theme";
+
 export const Drawer = () => {
   const { isLogged } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
+
   return (
     <>
       <IconButton onClick={() => setOpen(true)}>
@@ -57,6 +61,7 @@ export const Drawer = () => {
           >
             Shop
           </Button>
+          {isMobile && <Divider />}
           <Button
             component={Link}
             to="login"
