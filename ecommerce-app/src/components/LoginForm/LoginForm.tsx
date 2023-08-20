@@ -19,11 +19,12 @@ import { setLoginSchema } from "../../utils/validation-schemas";
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const LoginSchema = setLoginSchema();
+  const navigate: NavigateFunction = useNavigate();
   const { errorMessage, loading, isLogged } = useAppSelector(
     (state) => state.userLogin,
   );
   const dispatch = useAppDispatch();
-  const navigate: NavigateFunction = useNavigate();
+
   const loginHandler = (loginState: boolean) => {
     if (loginState) {
       setTimeout(() => {

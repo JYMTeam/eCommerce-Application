@@ -35,10 +35,8 @@ export function SignupForm() {
 
   const SignupSchema = setSignupSchema(SchemaOptions);
   const dispatch = useAppDispatch();
-  const { loading, isSignedUp, errorMessage } = useAppSelector(
-    (state) => state.userSignup,
-  );
-
+  const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
+  const { isLogged } = useAppSelector((state) => state.userLogin);
   return (
     <Formik
       initialValues={initialSignUpValues}
@@ -392,11 +390,11 @@ export function SignupForm() {
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={loading || isSignedUp}
+                  disabled={loading || isLogged}
                 >
                   Sign up
                 </Button>
-                {isSignedUp && (
+                {isLogged && (
                   <span
                     style={{
                       color: "green",

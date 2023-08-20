@@ -19,8 +19,6 @@ export const getApiSignupRoot = () => {
     fetch,
   };
 
-  console.log("scopes!!!!");
-  console.log(scopes);
   const signupClient = defaultClient
     .withAnonymousSessionFlow(signupOptions)
     .build();

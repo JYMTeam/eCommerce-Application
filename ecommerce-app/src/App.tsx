@@ -1,6 +1,6 @@
+import React, { useEffect } from "react";
 import "./styles/App.css";
-import { Provider } from "react-redux";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
 import { ShopPage } from "./pages/ShopPage";
@@ -10,34 +10,57 @@ import NotFoundPage from "./pages/NotFoundPage";
 import { SignupPage } from "./pages/SignupPage";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { setupStore } from "./store";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
-import React from "react";
+import { useAppDispatch, useAppSelector } from "./hooks/redux";
+import { fetchUserLoginToken } from "./store/actions/userLoginActions";
+import { userLoginReset } from "./store/slices/userLoginSlice";
 
-const store = setupStore();
 function App() {
+  type MyComponentProps = React.PropsWithChildren<{}>;
+  const LoggedIn = ({ children }: MyComponentProps) => {
+    const { isLogged } = useAppSelector((state) => state.userLogin);
+    if (isLogged) {
+      return <Navigate to="/" />;
+    }
+    return <>{children}</>;
+  };
+
+  //check token after loading
+  const { tokenData } = useAppSelector((state) => state.userLogin);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (tokenData && tokenData?.token !== "") {
+      dispatch(fetchUserLoginToken(tokenData));
+    } else {
+      dispatch(userLoginReset());
+    }
+  }, [dispatch, tokenData]);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <Container maxWidth="lg">
-            <div className="App">
-              <ThemeProvider theme={Theme}>
-                <Navigation />
-                <Routes>
-                  <Route path="/" element={<MainPage />}></Route>
-                  <Route path="/login" element={<LoginPage />}></Route>
-                  <Route path="/signup" element={<SignupPage />}></Route>
-                  <Route path="/shop" element={<ShopPage />}></Route>
-                  <Route path="/cart" element={<CartPage />}></Route>
-                  <Route path="*" element={<NotFoundPage />}></Route>
-                </Routes>
-              </ThemeProvider>
-            </div>
-          </Container>
-        </BrowserRouter>
-      </Provider>
+      <Container maxWidth="lg">
+        <div className="App">
+          <ThemeProvider theme={Theme}>
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<MainPage />}></Route>
+              <Route
+                path="/login"
+                element={
+                  <LoggedIn>
+                    <LoginPage />
+                  </LoggedIn>
+                }
+              ></Route>
+              <Route path="/signup" element={<SignupPage />}></Route>
+              <Route path="/shop" element={<ShopPage />}></Route>
+              <Route path="/cart" element={<CartPage />}></Route>
+              <Route path="*" element={<NotFoundPage />}></Route>
+            </Routes>
+          </ThemeProvider>
+        </div>
+      </Container>
     </LocalizationProvider>
   );
 }
