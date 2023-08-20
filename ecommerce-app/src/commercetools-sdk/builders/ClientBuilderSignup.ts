@@ -6,7 +6,7 @@ import {
   projectKey,
 } from "./ClientBuilderDefault";
 
-export const getApiSignupRoot = () => {
+const getSignupClient = () => {
   const scopes = getDefaultScopes();
   const signupOptions: AnonymousAuthMiddlewareOptions = {
     host: process.env.REACT_APP_AUTH_URL || "",
@@ -22,6 +22,12 @@ export const getApiSignupRoot = () => {
   const signupClient = defaultClient
     .withAnonymousSessionFlow(signupOptions)
     .build();
+
+  return signupClient;
+};
+
+export const getApiSignupRoot = () => {
+  const signupClient = getSignupClient();
 
   return createApiBuilderFromCtpClient(signupClient).withProjectKey({
     projectKey,
