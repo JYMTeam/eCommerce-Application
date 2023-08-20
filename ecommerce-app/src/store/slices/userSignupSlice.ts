@@ -41,7 +41,7 @@ export const userSignupSlice = createSlice({
       state.errorMessage = formatErrorMessage(action.payload);
       state.signupData = null;
     },
-    userSignupClearErrorMessage(state, action: PayloadAction<string>) {
+    userSignupClearErrorMessage(state) {
       state.errorMessage = "";
     },
   },

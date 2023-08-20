@@ -11,6 +11,7 @@ export interface IUserLoginState {
   errorMessage: string;
   loginData: Customer | null;
   tokenData: TokenStore | null;
+  isSuccessMessage: boolean;
 }
 
 const initialState: IUserLoginState = {
@@ -20,6 +21,7 @@ const initialState: IUserLoginState = {
   errorMessage: "",
   loginData: null,
   tokenData: null,
+  isSuccessMessage: false,
 };
 
 export const userLoginSlice = createSlice({
@@ -36,6 +38,7 @@ export const userLoginSlice = createSlice({
       state.errorMessage = "";
       state.loginData = null;
       state.tokenData = null;
+      state.isSuccessMessage = false;
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
@@ -43,6 +46,7 @@ export const userLoginSlice = createSlice({
       state.error = null;
       state.errorMessage = "";
       state.loginData = action.payload;
+      state.isSuccessMessage = false;
     },
     userLoginFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
@@ -50,12 +54,15 @@ export const userLoginSlice = createSlice({
       state.errorMessage = formatErrorMessage(action.payload);
       state.loginData = null;
     },
-    userLoginClearErrorMessage(state, action: PayloadAction<string>) {
+    userLoginClearErrorMessage(state) {
       state.errorMessage = "";
     },
     setUserToken(state, action: PayloadAction<TokenStore>) {
       state.tokenData = action.payload;
       passToken.set(action.payload);
+    },
+    setIsSuccess(state) {
+      state.isSuccessMessage = true;
     },
   },
 });
@@ -68,6 +75,7 @@ export const {
   userLoginFetchError,
   userLoginClearErrorMessage,
   setUserToken,
+  setIsSuccess,
 } = userLoginSlice.actions;
 
 export default userLoginSlice.reducer;

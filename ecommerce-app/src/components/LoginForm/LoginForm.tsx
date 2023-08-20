@@ -13,30 +13,23 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { convertToUserAuthOptions } from "../../utils/utils";
 import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 import { Alert, AlertTitle } from "@mui/material";
-import { NavigateFunction, useNavigate } from "react-router-dom";
 import { setLoginSchema } from "../../utils/validation-schemas";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const LoginSchema = setLoginSchema();
-  const navigate: NavigateFunction = useNavigate();
-  const { errorMessage, loading, isLogged } = useAppSelector(
+  const { errorMessage, loading, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
   const dispatch = useAppDispatch();
 
-  const loginHandler = (loginState: boolean) => {
-    if (loginState) {
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1500);
-      return (
-        <Alert severity="success">
-          <AlertTitle>You have successfully logged in!</AlertTitle>
-          Redirecting...
-        </Alert>
-      );
-    }
+  const successMessageHandler = () => {
+    return (
+      <Alert severity="success">
+        <AlertTitle>You have successfully logged in!</AlertTitle>
+        Redirecting...
+      </Alert>
+    );
   };
 
   return (
@@ -46,7 +39,6 @@ export function LoginForm() {
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         dispatch(fetchUserLogin(existingUser));
-        loginHandler(isLogged);
       }}
     >
       {(formik) => {
@@ -56,14 +48,14 @@ export function LoginForm() {
           event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         ) => {
           if (errorMessage) {
-            dispatch(userLoginClearErrorMessage(""));
+            dispatch(userLoginClearErrorMessage());
           }
           handleChange(event);
         };
 
         const onInputFocus = () => {
           if (errorMessage) {
-            dispatch(userLoginClearErrorMessage(""));
+            dispatch(userLoginClearErrorMessage());
           }
         };
 
@@ -91,7 +83,7 @@ export function LoginForm() {
                   onFocus={onInputFocus}
                   helperText={errors.email}
                   error={!!errors.email}
-                  disabled={isLogged}
+                  disabled={isSuccessMessage}
                 />
                 <TextField
                   autoComplete="off"
@@ -105,14 +97,14 @@ export function LoginForm() {
                   onFocus={onInputFocus}
                   helperText={errors.password}
                   error={!!errors.password}
-                  disabled={isLogged}
+                  disabled={isSuccessMessage}
                 />
                 <FormControlLabel
                   control={
                     <Checkbox
                       onChange={() => setShowPassword(!showPassword)}
                       name="check"
-                      disabled={isLogged}
+                      disabled={isSuccessMessage}
                     />
                   }
                   label="Show password"
@@ -122,11 +114,11 @@ export function LoginForm() {
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={loading || isLogged}
+                  disabled={loading || isSuccessMessage}
                 >
                   Log in
                 </Button>
-                {isLogged && <>{loginHandler(isLogged)}</>}
+                {isSuccessMessage && <>{successMessageHandler()}</>}
                 {errorMessage && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>

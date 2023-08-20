@@ -24,7 +24,7 @@ import { CustomerDraft } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchUserSignup } from "../../store/actions/userSignupActions";
 import { setSignupSchema } from "../../utils/validation-schemas";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import { userSignupClearErrorMessage } from "../../store/slices/userSignupSlice";
 
 export function SignupForm() {
   const [countryCodeShipping, setCountryCodeShipping] = useState("");
@@ -44,21 +44,17 @@ export function SignupForm() {
   const SignupSchema = setSignupSchema(SchemaOptions);
   const dispatch = useAppDispatch();
   const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
-  const { isLogged } = useAppSelector((state) => state.userLogin);
-  const navigate: NavigateFunction = useNavigate();
+  const { isLogged, isSuccessMessage } = useAppSelector(
+    (state) => state.userLogin,
+  );
 
-  const loginHandler = (loginState: boolean) => {
-    if (loginState) {
-      setTimeout(() => {
-        navigate("/", { replace: true });
-      }, 1500);
-      return (
-        <Alert severity="success">
-          <AlertTitle>You have successfully signed up and logged in</AlertTitle>
-          Redirecting...
-        </Alert>
-      );
-    }
+  const successMessageHandler = () => {
+    return (
+      <Alert severity="success">
+        <AlertTitle>You have successfully signed up and logged in</AlertTitle>
+        Redirecting...
+      </Alert>
+    );
   };
   return (
     <Formik
@@ -67,11 +63,24 @@ export function SignupForm() {
       onSubmit={(values) => {
         const newUser: CustomerDraft = convertToCustomerDraft(values);
         dispatch(fetchUserSignup(newUser));
-        loginHandler(isLogged);
       }}
     >
       {(formik) => {
         const { values, handleChange, errors, setFieldValue } = formik;
+        const onInputChange = (
+          event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+          if (errorMessage) {
+            dispatch(userSignupClearErrorMessage());
+          }
+          handleChange(event);
+        };
+
+        const onInputFocus = () => {
+          if (errorMessage) {
+            dispatch(userSignupClearErrorMessage());
+          }
+        };
         return (
           <Form noValidate autoComplete="off">
             <Box
@@ -91,7 +100,8 @@ export function SignupForm() {
                   variant="standard"
                   placeholder=" user@example.com"
                   required={true}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.email}
                   error={!!errors.email}
                   sx={{ mb: 0.3 }}
@@ -107,14 +117,16 @@ export function SignupForm() {
                   label="Password"
                   variant="standard"
                   required={true}
-                  onChange={handleChange}
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
                   helperText={errors.password}
                   error={!!errors.password}
                 />
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       name="passwordCheck"
                       size="small"
                     />
@@ -129,7 +141,8 @@ export function SignupForm() {
                       label="First name"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.firstName}
                       error={!!errors.firstName}
                       sx={{ width: 1 / 1 }}
@@ -142,7 +155,8 @@ export function SignupForm() {
                       label="Last name"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.lastName}
                       error={!!errors.lastName}
                       sx={{ width: 1 / 1 }}
@@ -181,7 +195,8 @@ export function SignupForm() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={handleChange}
+                        onChange={onInputChange}
+                        onFocus={onInputFocus}
                         name="defaultShippingCheck"
                         size="small"
                       />
@@ -237,7 +252,8 @@ export function SignupForm() {
                       label="City / Town"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.cityShipping}
                       error={!!errors.cityShipping}
                       sx={{ width: 1 / 1 }}
@@ -250,7 +266,8 @@ export function SignupForm() {
                       label="Street"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.streetNameShipping}
                       error={!!errors.streetNameShipping}
                       sx={{ width: 1 / 1 }}
@@ -263,7 +280,8 @@ export function SignupForm() {
                       label="Postal code"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={
                         !!values.countryShipping && errors.postalCodeShipping
                       }
@@ -313,7 +331,8 @@ export function SignupForm() {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={handleChange}
+                        onChange={onInputChange}
+                        onFocus={onInputFocus}
                         name="defaultBillingCheck"
                         size="small"
                       />
@@ -372,7 +391,8 @@ export function SignupForm() {
                       label="City / Town"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.cityBilling}
                       error={!!errors.cityBilling}
                       sx={{ width: 1 / 1 }}
@@ -385,7 +405,8 @@ export function SignupForm() {
                       label="Street"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={errors.streetNameBilling}
                       error={!!errors.streetNameBilling}
                       sx={{ width: 1 / 1 }}
@@ -398,7 +419,8 @@ export function SignupForm() {
                       label="Postal code"
                       variant="standard"
                       required={true}
-                      onChange={handleChange}
+                      onChange={onInputChange}
+                      onFocus={onInputFocus}
                       helperText={
                         !!values.countryBilling && errors.postalCodeBilling
                       }
@@ -414,11 +436,11 @@ export function SignupForm() {
                   type="submit"
                   variant="contained"
                   size="large"
-                  disabled={loading || isLogged}
+                  disabled={loading || isLogged || isSuccessMessage}
                 >
                   Sign up
                 </Button>
-                {isLogged && <>{loginHandler(isLogged)}</>}
+                {isSuccessMessage && <>{successMessageHandler()}</>}
                 {errorMessage && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>
