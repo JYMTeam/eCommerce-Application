@@ -1,25 +1,17 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import CartIcon from "../../assets/cart.svg";
 import "./drawer.css";
-import { SwipeableDrawer, Divider, useMediaQuery } from "@mui/material";
-import { Stack, Button, IconButton, Box } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { userLoginReset } from "../../store/slices/userLoginSlice";
+import { SwipeableDrawer } from "@mui/material";
+import { Stack, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Theme } from "../Theme";
+import { MenuItems } from "../MenuItems";
 
 export const Drawer = () => {
-  const { isLogged } = useAppSelector((state) => state.userLogin);
-  const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
-  const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
-
   return (
     <>
       <IconButton onClick={() => setOpen(true)}>
-        <MenuIcon />
+        <MenuIcon color="primary" fontSize="large" />
       </IconButton>
       <SwipeableDrawer
         anchor="right"
@@ -30,80 +22,12 @@ export const Drawer = () => {
       >
         <div onClick={() => setOpen(false)} role="button" tabIndex={0}>
           <IconButton>
-            <CloseIcon />
+            <CloseIcon color="primary" fontSize="medium" />
           </IconButton>
         </div>
 
-        <Stack spacing={3} direction="column">
-          <Button
-            variant="text"
-            component={Link}
-            to="/"
-            sx={{
-              ":hover": {
-                bgcolor: "transparent",
-                color: "primary.dark",
-              },
-            }}
-          >
-            Main
-          </Button>
-          <Button
-            variant="text"
-            component={Link}
-            to="shop"
-            sx={{
-              ":hover": {
-                bgcolor: "transparent",
-                color: "primary.dark",
-              },
-            }}
-          >
-            Shop
-          </Button>
-          {isMobile && <Divider />}
-          <Button
-            component={Link}
-            to="login"
-            variant="contained"
-            color="primary"
-          >
-            Login
-          </Button>
-          {isLogged && (
-            <Button
-              component={Link}
-              to="/"
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                dispatch(userLoginReset());
-              }}
-            >
-              Log out
-            </Button>
-          )}
-          <Button
-            component={Link}
-            to="signup"
-            variant="contained"
-            color="primary"
-          >
-            Sign Up
-          </Button>
-          <Button
-            component={Link}
-            to="cart"
-            variant="contained"
-            color="primary"
-          >
-            <Box
-              component="img"
-              src={CartIcon}
-              alt={"link to Shopping Cart"}
-              sx={{ height: "1.4rem", width: "auto" }}
-            />
-          </Button>
+        <Stack spacing={3} direction="column" alignItems="center">
+          <MenuItems />
         </Stack>
       </SwipeableDrawer>
     </>
