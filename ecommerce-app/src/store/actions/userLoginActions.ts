@@ -15,7 +15,7 @@ import {
 import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
 import { passToken } from "../../commercetools-sdk/PassTokenCache";
 import { AuthErrorResponse } from "@commercetools/platform-sdk";
-import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClinetBuilderWithExistingToken";
+import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
   return async (dispatch: AppDispatch) => {
