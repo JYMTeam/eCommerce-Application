@@ -82,7 +82,7 @@ export function SignupForm() {
           }
         };
         return (
-          <Form noValidate autoComplete="off">
+          <Form data-testid="signup-form" noValidate autoComplete="off">
             <Box
               sx={{
                 bgcolor: "background.paper",

@@ -4,7 +4,7 @@ import { SwipeableDrawer } from "@mui/material";
 import { Stack, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { MenuItems } from "../MenuItems";
+import { MenuItems } from "../MenuItems/MenuItems";
 
 export const Drawer = () => {
   const [open, setOpen] = useState(false);

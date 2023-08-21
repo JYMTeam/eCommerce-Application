@@ -42,5 +42,5 @@ export const httpMiddlewareOptions: HttpMiddlewareOptions = {
 export const defaultClient = new ClientBuilder()
   .withProjectKey(projectKey) // .withProjectKey() is not required if the projectKey is included in authMiddlewareOptions
   // .withClientCredentialsFlow(authMiddlewareOptions)
-  .withHttpMiddleware(httpMiddlewareOptions)
-  .withLoggerMiddleware(); // Include middleware for logging
+  .withHttpMiddleware(httpMiddlewareOptions);
+// .withLoggerMiddleware(); // Include middleware for logging
