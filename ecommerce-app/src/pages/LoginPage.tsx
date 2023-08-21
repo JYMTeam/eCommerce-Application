@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export function LoginPage() {
   return (
-    <Container maxWidth="xs" sx={{ mb: 3 }} className="container">
+    <Container maxWidth="xs" sx={{ mb: 3 }}>
       <h1>Account login</h1>
       <LoginForm></LoginForm>
       <Box sx={{ pt: "2em" }}>
