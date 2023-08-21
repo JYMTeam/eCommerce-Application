@@ -185,10 +185,16 @@ export function SignupForm() {
                     />
                   </Grid>
                 </Grid>
-                <Grid container spacing={1}>
+                <Grid container spacing={1} mt={4} mb={1}>
                   <Box
                     component="span"
-                    sx={{ fontWeight: "bold", mt: 1, mb: 0.3, ml: 1 }}
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "1.2em",
+                      mt: 1,
+                      mb: 0.3,
+                      ml: 1,
+                    }}
                   >
                     Shipping address
                   </Box>
@@ -315,6 +321,8 @@ export function SignupForm() {
                 <Grid
                   container
                   spacing={1}
+                  mt={4}
+                  mb={1}
                   sx={
                     values.commonAddressCheck &&
                     values.commonAddressCheck.length > 0
@@ -324,7 +332,13 @@ export function SignupForm() {
                 >
                   <Box
                     component="span"
-                    sx={{ fontWeight: "bold", mt: 1, mb: 0.3, ml: 1 }}
+                    sx={{
+                      fontWeight: "bold",
+                      fontSize: "1.2em",
+                      mt: 1,
+                      mb: 0.3,
+                      ml: 1,
+                    }}
                   >
                     Billing address
                   </Box>
@@ -412,7 +426,7 @@ export function SignupForm() {
                       sx={{ width: 1 / 1 }}
                     />
                   </Grid>
-                  <Grid item md={4} sm={6} xs={12}>
+                  <Grid item md={4} sm={6} xs={12} mb={2}>
                     <TextField
                       autoComplete="off"
                       name="postalCodeBilling"
