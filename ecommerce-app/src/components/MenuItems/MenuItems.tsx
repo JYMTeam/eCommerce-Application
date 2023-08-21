@@ -1,11 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import CartIcon from "../assets/cart.svg";
+import CartIcon from "../../assets/cart.svg";
 import { Divider, useMediaQuery } from "@mui/material";
 import { Button, Box } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { userLoginReset } from "../store/slices/userLoginSlice";
-import { Theme } from "./Theme";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { userLoginReset } from "../../store/slices/userLoginSlice";
+import { Theme } from "../Theme";
 export const MenuItems = () => {
   const { isLogged } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();

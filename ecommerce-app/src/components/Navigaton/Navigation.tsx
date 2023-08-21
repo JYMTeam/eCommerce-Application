@@ -1,10 +1,11 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import { Container, useMediaQuery } from "@mui/material";
 import { AppBar, Toolbar, Stack, IconButton, Box } from "@mui/material";
 import { Drawer } from "../Drawer/Drawer";
 import { Theme } from "../Theme";
-import { MenuItems } from "../MenuItems";
+import { MenuItems } from "../MenuItems/MenuItems";
 
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
