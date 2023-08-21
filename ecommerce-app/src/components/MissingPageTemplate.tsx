@@ -25,7 +25,7 @@ export const MissingPageTemplate = ({ title, desc, img }: Data) => {
           component="img"
           src={img}
           alt={title}
-          sx={{ height: "auto", maxwidth: "100%" }}
+          sx={{ height: "40vh", maxwidth: "100%" }}
         />
       </Box>
       <Box sx={{ mb: "2em" }}>
