@@ -26,3 +26,8 @@ h1 {
 .redirect-link {
   text-decoration: none;
 }
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

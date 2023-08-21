@@ -21,7 +21,7 @@ function App() {
   const LoggedIn = ({ children }: MyComponentProps) => {
     const { isLogged } = useAppSelector((state) => state.userLogin);
     if (isLogged) {
-      return <Navigate to="/" />;
+      return <Navigate to="/" replace={true} />;
     }
     return <>{children}</>;
   };
