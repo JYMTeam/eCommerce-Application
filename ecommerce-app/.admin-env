@@ -1,0 +1,7 @@
+GENERATE_SOURCEMAP=false
+REACT_APP_PROJECT_KEY=ec-app
+REACT_APP_CLIENT_ID=JXpAwftBt2r_I3kqY1vxGXP-
+REACT_APP_CLIENT_SECRET=ARomY7cCTfuVvqhR8OEIJxldU27FPWjl
+REACT_APP_AUTH_URL=https://auth.europe-west1.gcp.commercetools.com
+REACT_APP_API_URL=https://api.europe-west1.gcp.commercetools.com
+REACT_APP_SCOPES=manage_project:ec-app
