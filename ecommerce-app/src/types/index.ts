@@ -29,3 +29,8 @@ export interface ISignedUpSchemaOptions {
   postalCodeFormatBilling: string;
   isCommonAddressChecked: boolean;
 }
+export interface ICountriesOptions {
+  label: string;
+  countryCode: string;
+  postalCodeFormat: string;
+}

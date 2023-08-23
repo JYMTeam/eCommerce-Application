@@ -7,6 +7,8 @@ import {
   MAX_HUMAN_AGE,
   countryOptions,
   initialSignUpValues,
+  FORM_DATE_FORMAT,
+  initialCountryOptions,
 } from "../../constants/constants";
 import { convertToCustomerDraft, subtractYears } from "../../utils/utils";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -25,18 +27,27 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchUserSignup } from "../../store/actions/userSignupActions";
 import { setSignupSchema } from "../../utils/validation-schemas";
 import { userSignupClearErrorMessage } from "../../store/slices/userSignupSlice";
+import { successMessageHandler } from "./signupHelpers";
+import { ICountriesOptions, ISignupInitialValues } from "../../types";
+
+const EMPTY_STR = "";
+const BIRTHDAY_INPUT_NAME = "dateOfBirth";
+const COUNTRY_SHIPPING_INPUT_NAME = "countryShipping";
+const COUNTRY_BILLING_INPUT_NAME = "countryBilling";
 
 export function SignupForm() {
-  const [countryCodeShipping, setCountryCodeShipping] = useState("");
-  const [postalCodeFormatShipping, setPostalCodeFormatShipping] = useState("");
-  const [countryCodeBilling, setCountryCodeBilling] = useState("");
-  const [postalCodeFormatBilling, setPostalCodeFormatBilling] = useState("");
+  const [countryCodeShipping, setCountryCodeShipping] = useState(EMPTY_STR);
+  const [postalCodeFormatShipping, setPostalCodeFormatShipping] =
+    useState(EMPTY_STR);
+  const [countryCodeBilling, setCountryCodeBilling] = useState(EMPTY_STR);
+  const [postalCodeFormatBilling, setPostalCodeFormatBilling] =
+    useState(EMPTY_STR);
   const [isCommonAddressChecked, setIsCommonAddressChecked] = useState(false);
 
   const SchemaOptions = {
     countryCodeShipping,
-    postalCodeFormatShipping,
     countryCodeBilling,
+    postalCodeFormatShipping,
     postalCodeFormatBilling,
     isCommonAddressChecked,
   };
@@ -48,22 +59,16 @@ export function SignupForm() {
     (state) => state.userLogin,
   );
 
-  const successMessageHandler = () => {
-    return (
-      <Alert severity="success">
-        <AlertTitle>You have successfully signed up and logged in</AlertTitle>
-        Redirecting...
-      </Alert>
-    );
+  const onSubmit = (values: ISignupInitialValues) => {
+    const newUser: CustomerDraft = convertToCustomerDraft(values);
+    dispatch(fetchUserSignup(newUser));
   };
+
   return (
     <Formik
       initialValues={initialSignUpValues}
       validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        const newUser: CustomerDraft = convertToCustomerDraft(values);
-        dispatch(fetchUserSignup(newUser));
-      }}
+      onSubmit={onSubmit}
     >
       {(formik) => {
         const { values, handleChange, errors, setFieldValue } = formik;
@@ -81,6 +86,42 @@ export function SignupForm() {
             dispatch(userSignupClearErrorMessage());
           }
         };
+
+        const onDatePickerChange = (value: dayjs.Dayjs | null) => {
+          if (!value) return false;
+          const formatedValue = value.format(FORM_DATE_FORMAT);
+          setFieldValue(BIRTHDAY_INPUT_NAME, formatedValue, true);
+        };
+
+        const onCountryShippingChange = (
+          _: React.SyntheticEvent<Element, Event>,
+          newValue: ICountriesOptions | null = initialCountryOptions,
+        ) => {
+          if (!newValue) return;
+          const { countryCode, postalCodeFormat } = newValue;
+          setCountryCodeShipping(countryCode);
+          setPostalCodeFormatShipping(postalCodeFormat);
+          setFieldValue(COUNTRY_SHIPPING_INPUT_NAME, countryCode, true);
+        };
+
+        const onCountryBillingChange = (
+          _: React.SyntheticEvent<Element, Event>,
+          newValue: ICountriesOptions | null = initialCountryOptions,
+        ) => {
+          if (!newValue) return;
+          const { countryCode, postalCodeFormat } = newValue;
+          setCountryCodeBilling(countryCode);
+          setPostalCodeFormatBilling(postalCodeFormat);
+          setFieldValue(COUNTRY_BILLING_INPUT_NAME, countryCode, true);
+        };
+
+        const onCommonCheckboxChange = (
+          event: React.ChangeEvent<HTMLInputElement>,
+        ) => {
+          setIsCommonAddressChecked(event.target.checked);
+          handleChange(event);
+        };
+
         return (
           <Form data-testid="signup-form" noValidate autoComplete="off">
             <Box
@@ -168,11 +209,7 @@ export function SignupForm() {
                       maxDate={dayjs(new Date())}
                       minDate={dayjs(subtractYears(new Date(), MAX_HUMAN_AGE))}
                       orientation="portrait"
-                      onChange={(value) => {
-                        if (!value) return false;
-                        const formatedValue = value.format("YYYY-MM-DD");
-                        setFieldValue("dateOfBirth", formatedValue, true);
-                      }}
+                      onChange={onDatePickerChange}
                       slotProps={{
                         textField: {
                           required: true,
@@ -219,23 +256,7 @@ export function SignupForm() {
                   <Grid item md={4} sm={6} xs={12}>
                     <Autocomplete
                       options={countryOptions}
-                      onChange={(_, newValue) => {
-                        if (newValue) {
-                          setCountryCodeShipping(newValue.countryCode);
-                          setPostalCodeFormatShipping(
-                            newValue.postalCodeFormat,
-                          );
-                          setFieldValue(
-                            "countryShipping",
-                            newValue.countryCode,
-                            true,
-                          );
-                        } else {
-                          setCountryCodeShipping("");
-                          setPostalCodeFormatShipping("");
-                          setFieldValue("countryShipping", "", true);
-                        }
-                      }}
+                      onChange={onCountryShippingChange}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -302,10 +323,7 @@ export function SignupForm() {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={(e) => {
-                        setIsCommonAddressChecked(e.target.checked);
-                        handleChange(e);
-                      }}
+                      onChange={onCommonCheckboxChange}
                       name="commonAddressCheck"
                       size="small"
                     />
@@ -368,21 +386,7 @@ export function SignupForm() {
                   <Grid item md={4} sm={6} xs={12}>
                     <Autocomplete
                       options={countryOptions}
-                      onChange={(_, newValue) => {
-                        if (newValue) {
-                          setCountryCodeBilling(newValue.countryCode);
-                          setPostalCodeFormatBilling(newValue.postalCodeFormat);
-                          setFieldValue(
-                            "countryBilling",
-                            newValue.countryCode,
-                            true,
-                          );
-                        } else {
-                          setCountryCodeBilling("");
-                          setPostalCodeFormatBilling("");
-                          setFieldValue("countryBilling", "", true);
-                        }
-                      }}
+                      onChange={onCountryBillingChange}
                       renderInput={(params) => (
                         <TextField
                           {...params}
