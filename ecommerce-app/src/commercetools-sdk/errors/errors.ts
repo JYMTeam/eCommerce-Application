@@ -39,7 +39,7 @@ export const formatAuthErrorMessage = (error: AuthErrorResponse): string => {
       return "Unfortunately, too many users have been created. Limit reached. Please try again later.";
     }
   }
-  return "An error occurred. Please try again later.";
+  return DEFAULT_ERROR_MESSAGE;
 };
 
 export const formatProductsErrorMessage = (error: ErrorResponse): string => {

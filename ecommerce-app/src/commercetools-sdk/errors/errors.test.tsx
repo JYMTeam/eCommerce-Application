@@ -50,6 +50,8 @@ describe("formatAuthErrorMessage", () => {
       message: "Invalid field",
     };
     const errorMessage = formatAuthErrorMessage(error);
-    expect(errorMessage).toBe("An error occurred. Please try again later.");
+    expect(errorMessage).toBe(
+      "An unexpected error occurred. Please try again later.",
+    );
   });
 });
