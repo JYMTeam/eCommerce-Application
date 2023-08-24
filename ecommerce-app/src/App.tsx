@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./styles/App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
@@ -13,8 +13,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
-import { fetchUserLoginToken } from "./store/actions/userLoginActions";
-import { userLoginReset } from "./store/slices/userLoginSlice";
+import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -27,16 +26,19 @@ function App() {
   };
 
   //check token after loading
+  const [tokenVerified, setTokenVerified] = useState(false);
   const { tokenData } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();
-
   useEffect(() => {
-    if (tokenData && tokenData?.token !== "") {
-      dispatch(fetchUserLoginToken(tokenData));
-    } else {
-      dispatch(userLoginReset());
-    }
-  }, [dispatch, tokenData]);
+    const tokenVerification = () => {
+      if (!tokenVerified && tokenData && tokenData?.token !== "") {
+        dispatch(fetchLoginWithToken(tokenData));
+        setTokenVerified(true);
+      }
+    };
+    tokenVerification();
+  }, [dispatch, tokenData, tokenVerified]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg">
