@@ -26,18 +26,18 @@ function App() {
   };
 
   //check token after loading
-  const [tokenVerified, setTokenVerified] = useState(false);
+  const [isTokenVerified, setTokenVerified] = useState(false);
   const { tokenData } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();
   useEffect(() => {
     const tokenVerification = () => {
-      if (!tokenVerified && tokenData && tokenData?.token !== "") {
+      if (!isTokenVerified && tokenData && tokenData?.token !== "") {
         dispatch(fetchLoginWithToken(tokenData));
         setTokenVerified(true);
       }
     };
     tokenVerification();
-  }, [dispatch, tokenData, tokenVerified]);
+  }, [dispatch, tokenData, isTokenVerified]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
