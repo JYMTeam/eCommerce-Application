@@ -3,7 +3,7 @@ import {
   CustomerSignInResult,
 } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { formatErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 
 interface IUserSignupState {
   loading: boolean;
@@ -38,7 +38,7 @@ export const userSignupSlice = createSlice({
     userSignupFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
       state.error = action.payload;
-      state.errorMessage = formatErrorMessage(action.payload);
+      state.errorMessage = formatAuthErrorMessage(action.payload);
       state.signupData = null;
     },
     userSignupClearErrorMessage(state) {

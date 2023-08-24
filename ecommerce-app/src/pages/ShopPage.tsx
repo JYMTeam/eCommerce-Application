@@ -1,5 +1,6 @@
 import React from "react";
-import WorkInProgress from "../components/WorkInProrgess";
+import ProductsList from "../components/ProductsList/ProductsList";
+
 export function ShopPage() {
-  return <WorkInProgress />;
+  return <ProductsList />;
 }
