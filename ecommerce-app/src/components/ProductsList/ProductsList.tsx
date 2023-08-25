@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
-import { useActions, useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { fetchProducts } from "../../store/actions/productsActions";
 
 export default function ProductsList() {
-  const { errorMessage, loading, products, page } = useAppSelector(
+  const { errorMessage, loading, products, page, limit } = useAppSelector(
     (state) => state.products,
   );
 
-  const { fetchProducts } = useActions();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchProducts(); //params: page, limit
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+    dispatch(fetchProducts()); //params: page, limit
+  }, [dispatch, page, limit]);
 
   if (loading) {
     return <h1>Loading...</h1>;
