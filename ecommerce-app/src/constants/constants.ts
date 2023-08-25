@@ -1,4 +1,5 @@
 import { IFormInitialValues, ISignupInitialValues } from "../types";
+import { Image } from "@commercetools/platform-sdk";
 
 const AT_SIGN_DOMAIN_REGEX =
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/u;
@@ -10,6 +11,9 @@ const NO_SPECIAL_CHARS_REGEX = /^(?!.*[()[\]{}*&^%$#@!"+=:;<>?,./\\|_]).*$/;
 const NO_DIGIT_REGEX = /^(?!.*[0-9]).*$/;
 const USER_AGE_ALLOWED = 14;
 const MAX_HUMAN_AGE = 130;
+const DEFAULT_LOCALE = "en-US";
+const DEFAULT_PRICE_COUNTRY = "US";
+const DEFAULT_CURRENCY = "USD";
 
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
@@ -42,6 +46,14 @@ const initialSignUpValues: ISignupInitialValues = {
   defaultBillingCheck: [],
 };
 
+const PRODUCT_DESCRIPTION_PLACEHOLDER =
+  "There will be a description of a product";
+
+const PRODUCT_IMAGE_PLACEHOLDER: Image = {
+  url: "images/product-placeholder.webp",
+  dimensions: { h: 1000, w: 1000 },
+};
+
 export {
   AT_SIGN_DOMAIN_REGEX,
   UPPERCASE_LETTER_REGEX,
@@ -55,4 +67,9 @@ export {
   countryOptions,
   initialLoginValues,
   initialSignUpValues,
+  DEFAULT_LOCALE,
+  PRODUCT_DESCRIPTION_PLACEHOLDER,
+  PRODUCT_IMAGE_PLACEHOLDER,
+  DEFAULT_PRICE_COUNTRY,
+  DEFAULT_CURRENCY,
 };

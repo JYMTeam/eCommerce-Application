@@ -60,7 +60,7 @@ export const productsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.errorMessage = formatProductsErrorMessage(action.payload);
-      //state.products = [];
+      state.products = [];
     },
     productsErrorMessage(state) {
       state.error = null;
