@@ -38,3 +38,8 @@ export enum statusCode {
   "TOO_MANY_REQUESTS" = 429,
   "SERVER_ERROR" = 500,
 }
+export interface ICountriesOptions {
+  label: string;
+  countryCode: string;
+  postalCodeFormat: string;
+}

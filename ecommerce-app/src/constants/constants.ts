@@ -14,6 +14,7 @@ const MAX_HUMAN_AGE = 130;
 const DEFAULT_LOCALE = "en-US";
 const DEFAULT_PRICE_COUNTRY = "US";
 const DEFAULT_CURRENCY = "USD";
+const FORM_DATE_FORMAT = "YYYY-MM-DD";
 
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
@@ -72,4 +73,5 @@ export {
   PRODUCT_IMAGE_PLACEHOLDER,
   DEFAULT_PRICE_COUNTRY,
   DEFAULT_CURRENCY,
+  FORM_DATE_FORMAT,
 };
