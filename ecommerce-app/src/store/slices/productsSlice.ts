@@ -15,7 +15,6 @@ export interface IProductsState {
   products: ProductProjection[];
   page: number;
   limit: number;
-  count: number;
   total?: number | undefined;
   offset: number;
 }
@@ -27,7 +26,6 @@ const initialState: IProductsState = {
   products: [],
   page: 1,
   limit: DEFAULT_PRODUCTS_LIMIT,
-  count: 0,
   total: 0,
   offset: 0,
 };
@@ -54,7 +52,6 @@ export const productsSlice = createSlice({
       state.error = null;
       state.errorMessage = "";
       state.products = action.payload.results;
-      state.count = action.payload.count;
       state.total = action.payload.total;
       state.limit = action.payload.limit;
       state.offset = action.payload.offset;
