@@ -11,6 +11,7 @@ const DEFAULT_LIMIT = 20;
 
 export interface IProductsState {
   loading: boolean;
+  isFiltered: boolean;
   error: ErrorResponse | null; //type?
   errorMessage: string;
   products: ProductProjection[];
@@ -22,6 +23,7 @@ export interface IProductsState {
 
 const initialState: IProductsState = {
   loading: false,
+  isFiltered: false,
   error: null,
   errorMessage: STR_PLACEHOLDER,
   products: [],
@@ -43,7 +45,7 @@ export const productsSlice = createSlice({
       state.loading = true;
     },
     productsReset(state) {
-      state = initialState;
+      Object.assign(state, initialState);
     },
     productsFetchSuccess(
       state,
@@ -62,12 +64,26 @@ export const productsSlice = createSlice({
       state.errorMessage = formatProductsErrorMessage(action.payload);
       state.products = [];
     },
-    productsErrorMessage(state) {
+    productsClearErrorMessage(state) {
       state.error = null;
       state.errorMessage = STR_PLACEHOLDER;
     },
     productPage(state, action: PayloadAction<pagePayload>) {
       state.page = action.payload.page;
+    },
+    filterProductsFetching(state) {
+      state.loading = true;
+    },
+    filterProductsFetchSuccess(
+      state,
+      action: PayloadAction<ProductProjectionPagedQueryResponse>,
+    ) {
+      state.loading = false;
+      state.error = null;
+      state.errorMessage = "";
+      state.products = action.payload.results;
+      state.count = action.payload.count;
+      state.total = action.payload.total;
     },
   },
 });

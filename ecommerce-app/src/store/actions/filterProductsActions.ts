@@ -5,7 +5,6 @@ import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderE
 import {
   filterProductsFetchError,
   filterProductsFetching,
-  setIsSuccess,
 } from "../slices/filterProductsSlice";
 
 export const fetchFilterProducts = () => {
@@ -33,19 +32,36 @@ export const fetchFilterProducts = () => {
       //   .execute();
       //   console.log(answer2);
 
-      const filterQuery = {
-        "filter.query": "variants.price.centAmount:range (* to 3000)",
-      };
-      const answer3 = await getApiEntryRoot()
-        .productProjections()
-        .search()
-        .get({
-          queryArgs: filterQuery,
-        })
-        .execute();
-      console.log(answer3);
-      dispatch(setIsSuccess());
+      // const filterQuery = {
+      //   "filter.query": "variants.price.centAmount:range (* to 3000)",
+      // };
+      // const filterQuery = {
+      //   filter: ['variants.attributes.color.key:"White"'],
+      // };
+      // const answer3 = await getApiEntryRoot()
+      //   .productProjections()
+      //   .search()
+      //   .get({
+      //     queryArgs: filterQuery,
+      //   })
+      //   .execute();
+      // console.log(answer3);
+      // dispatch(setIsSuccess());
       // dispatch(filterProductsFetchSuccess(answer.body));
+      // const answer4 = await getApiEntryRoot()
+      //   .categories()
+      //   .get({
+      //     queryArgs: {
+      //       expand: ['parent']
+      //     }
+      //   })
+      //   .execute();
+      //   console.log('categories');
+      //   console.log(answer4);
+      // dispatch(filterProductsFetchSuccess(answer.body));
+      const answer5 = await getApiEntryRoot().productTypes().get().execute();
+      console.log("types");
+      console.log(answer5);
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;

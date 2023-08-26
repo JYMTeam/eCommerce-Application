@@ -1,4 +1,8 @@
-import { IFormInitialValues, ISignupInitialValues } from "../types";
+import {
+  ICountriesOptions,
+  IFormInitialValues,
+  ISignupInitialValues,
+} from "../types";
 import { Image } from "@commercetools/platform-sdk";
 
 const AT_SIGN_DOMAIN_REGEX =
@@ -20,6 +24,12 @@ const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
   { label: "Germany", countryCode: "DE", postalCodeFormat: "12345" },
 ];
+
+const initialCountryOptions: ICountriesOptions = {
+  label: "",
+  countryCode: "",
+  postalCodeFormat: "",
+};
 
 const initialLoginValues: IFormInitialValues = {
   email: "",
@@ -55,6 +65,8 @@ const PRODUCT_IMAGE_PLACEHOLDER: Image = {
   dimensions: { h: 1000, w: 1000 },
 };
 
+const PRODUCT_TYPE_INDEX = 6; //TODO: set real index after uploading data to server
+
 export {
   AT_SIGN_DOMAIN_REGEX,
   UPPERCASE_LETTER_REGEX,
@@ -68,9 +80,11 @@ export {
   countryOptions,
   initialLoginValues,
   initialSignUpValues,
+  initialCountryOptions,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
+  PRODUCT_TYPE_INDEX,
   DEFAULT_PRICE_COUNTRY,
   DEFAULT_CURRENCY,
   FORM_DATE_FORMAT,

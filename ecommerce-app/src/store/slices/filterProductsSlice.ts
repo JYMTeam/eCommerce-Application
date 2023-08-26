@@ -3,7 +3,7 @@ import {
   ProductProjectionPagedQueryResponse,
 } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { formatErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 
 export interface IFilterProductsState {
   loading: boolean;
@@ -52,7 +52,7 @@ export const filterProductsSlice = createSlice({
     filterProductsFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
       state.error = action.payload;
-      state.errorMessage = formatErrorMessage(action.payload);
+      state.errorMessage = formatAuthErrorMessage(action.payload);
       state.filterData = null;
     },
     filterProductsClearErrorMessage(state) {
