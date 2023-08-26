@@ -1,7 +1,7 @@
 import {
   ClientBuilder,
-  type AuthMiddlewareOptions,
-  type HttpMiddlewareOptions,
+  type AuthMiddlewareOptions, // Required for auth
+  type HttpMiddlewareOptions, // Required for sending HTTP requests
 } from "@commercetools/sdk-client-v2";
 
 export const projectKey = process.env.REACT_APP_PROJECT_KEY || "";

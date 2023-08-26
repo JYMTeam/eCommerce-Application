@@ -1,15 +1,21 @@
-import { AuthErrorResponse } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/error";
+import {
+  AuthErrorResponse,
+  ErrorResponse,
+} from "@commercetools/platform-sdk/dist/declarations/src/generated/models/error";
+import { statusCode } from "../../types";
 
-export const formatErrorMessage = (error: AuthErrorResponse): string => {
-  if (
-    error.statusCode === 500 ||
-    error.statusCode === 501 ||
-    error.statusCode === 502 ||
-    error.statusCode === 503 ||
-    error.statusCode === 504
-  ) {
+const DEFAULT_ERROR_MESSAGE =
+  "An unexpected error occurred. Please try again later.";
+
+const serverErrorMessage = (statusCode: number) => {
+  if ([500, 501, 502, 503, 504].includes(statusCode)) {
     return "Server error. Please try again later.";
   }
+};
+
+export const formatAuthErrorMessage = (error: AuthErrorResponse): string => {
+  const serverError = serverErrorMessage(error.statusCode);
+  if (serverError) return serverError;
   if (error.statusCode === 400) {
     if (
       error.error === "invalid_customer_account_credentials" ||
@@ -33,5 +39,16 @@ export const formatErrorMessage = (error: AuthErrorResponse): string => {
       return "Unfortunately, too many users have been created. Limit reached. Please try again later.";
     }
   }
-  return "An error occurred. Please try again later.";
+  return DEFAULT_ERROR_MESSAGE;
+};
+
+export const formatProductsErrorMessage = (error: ErrorResponse): string => {
+  const serverError = serverErrorMessage(error.statusCode);
+  if (serverError) return serverError;
+
+  if (error.statusCode === statusCode.UNATHORIZED) {
+    return "401: Unauthorized. Sorry, your request could not be processed";
+  }
+
+  return DEFAULT_ERROR_MESSAGE;
 };
