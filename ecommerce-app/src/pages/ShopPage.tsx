@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import WorkInProgress from "../components/WorkInProrgess";
+import ProductsList from "../components/ProductsList/ProductsList";
 import { useAppDispatch } from "../hooks/redux";
 import { fetchFilterProducts } from "../store/actions/filterProductsActions";
+
 export function ShopPage() {
   //check token after loading
   const [isFiltered, setFiltered] = useState(false);
@@ -16,5 +17,5 @@ export function ShopPage() {
     };
     filtration();
   }, [dispatch, setFiltered, isFiltered]);
-  return <WorkInProgress />;
+  return <ProductsList />;
 }

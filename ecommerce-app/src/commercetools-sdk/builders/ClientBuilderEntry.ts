@@ -5,11 +5,15 @@ import {
   projectKey,
 } from "./ClientBuilderDefault";
 
-export const getApiEntryRoot = () => {
+const getEntryClient = () => {
   const entryClient = defaultClient
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build();
+  return entryClient;
+};
 
+export const getApiEntryRoot = () => {
+  const entryClient = getEntryClient();
   return createApiBuilderFromCtpClient(entryClient).withProjectKey({
     projectKey,
   });
