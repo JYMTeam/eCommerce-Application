@@ -9,7 +9,6 @@ import {
   CardContent,
   CardMedia,
   Chip,
-  Skeleton,
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -18,29 +17,19 @@ export default function ProductsList() {
   const { errorMessage, loading, products, page, limit } = useAppSelector(
     (state) => state.products,
   );
-
-  console.log(products);
-
-  const parsedProducts = parseProducts(products);
-  console.log(parsedProducts, "parsed");
-
   const dispatch = useAppDispatch();
+  const parsedProducts = parseProducts(products);
+  const offset = limit * (page - 1);
 
   useEffect(() => {
-    dispatch(fetchProducts()); //params: page, limit
-  }, [dispatch, page, limit]);
+    dispatch(fetchProducts(offset));
+  }, [dispatch, offset]);
 
   if (loading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-        <Skeleton variant="rectangular" width={210} height={118} />
-      </div>
-    );
+    return <h2>Loading...</h2>;
   }
-
   if (errorMessage) {
-    return <h1>{errorMessage}</h1>;
+    return <h2>{errorMessage}</h2>;
   }
 
   return (

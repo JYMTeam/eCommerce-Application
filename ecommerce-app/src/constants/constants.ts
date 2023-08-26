@@ -1,4 +1,8 @@
-import { IFormInitialValues, ISignupInitialValues } from "../types";
+import {
+  ICountriesOptions,
+  IFormInitialValues,
+  ISignupInitialValues,
+} from "../types";
 import { Image } from "@commercetools/platform-sdk";
 
 const AT_SIGN_DOMAIN_REGEX =
@@ -14,6 +18,8 @@ const MAX_HUMAN_AGE = 130;
 const DEFAULT_LOCALE = "en-US";
 const DEFAULT_PRICE_COUNTRY = "US";
 const DEFAULT_CURRENCY = "USD";
+const FORM_DATE_FORMAT = "YYYY-MM-DD";
+const DEFAULT_PRODUCTS_LIMIT = 8;
 
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
@@ -46,6 +52,12 @@ const initialSignUpValues: ISignupInitialValues = {
   defaultBillingCheck: [],
 };
 
+const initialCountryOptions: ICountriesOptions = {
+  label: "",
+  countryCode: "",
+  postalCodeFormat: "",
+};
+
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
@@ -72,4 +84,7 @@ export {
   PRODUCT_IMAGE_PLACEHOLDER,
   DEFAULT_PRICE_COUNTRY,
   DEFAULT_CURRENCY,
+  FORM_DATE_FORMAT,
+  DEFAULT_PRODUCTS_LIMIT,
+  initialCountryOptions,
 };

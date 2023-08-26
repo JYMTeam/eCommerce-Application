@@ -19,6 +19,21 @@ export const subtractYears = (date: Date, years: number) => {
   return date;
 };
 
+export const convertCustomerDraftToUserAuthOptions = (
+  customerDraft: CustomerDraft,
+) => {
+  const { email, password } = customerDraft;
+  if (email && password) {
+    const userAuthOptions: UserAuthOptions = {
+      username: email,
+      password,
+    };
+    return userAuthOptions;
+  }
+
+  return;
+};
+
 export const convertToUserAuthOptions = (values: IFormInitialValues) => {
   const { email, password } = values;
 

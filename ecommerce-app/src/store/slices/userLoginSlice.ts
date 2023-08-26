@@ -39,6 +39,13 @@ export const userLoginSlice = createSlice({
       state.loginData = null;
       state.tokenData = null;
       state.isSuccessMessage = false;
+
+      const cache: TokenStore = {
+        token: "",
+        expirationTime: 0,
+        refreshToken: undefined,
+      };
+      passToken.set(cache);
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
@@ -59,7 +66,6 @@ export const userLoginSlice = createSlice({
     },
     setUserToken(state, action: PayloadAction<TokenStore>) {
       state.tokenData = action.payload;
-      passToken.set(action.payload);
     },
     setIsSuccess(state) {
       state.isSuccessMessage = true;

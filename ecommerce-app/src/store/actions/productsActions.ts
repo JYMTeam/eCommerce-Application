@@ -1,27 +1,31 @@
-//import { ClientResponse, UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "..";
 import { ErrorResponse, ClientResponse } from "@commercetools/platform-sdk";
 import {
   productsFetching,
   productsFetchSuccess,
   productsFetchError,
+  productsPage,
 } from "../slices/productsSlice";
 import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
+import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 
-export const fetchProducts = (page = 1, limit = 20) => {
+export const fetchProducts = (offset = 0) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productsFetching());
 
-      //todo:params page, limit
+      const queryArgs = {
+        limit: DEFAULT_PRODUCTS_LIMIT,
+        offset,
+      };
+
       const answer = await getApiEntryRoot()
         .productProjections()
-        .get()
+        .get({ queryArgs })
         .execute();
 
       dispatch(productsFetchSuccess(answer.body));
     } catch (err) {
-      console.log(err, "FETCH PRODUCTS ERROR");
       const error = err as ClientResponse<ErrorResponse>;
       const body = error.body;
       if (body) {
@@ -31,7 +35,8 @@ export const fetchProducts = (page = 1, limit = 20) => {
   };
 };
 
-//todo: pager
 export const setProductsPage = (page: number) => {
-  return { payload: { page } };
+  return async (dispatch: AppDispatch) => {
+    dispatch(productsPage({ page }));
+  };
 };

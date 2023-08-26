@@ -5,19 +5,19 @@ import {
 } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 
 const STR_PLACEHOLDER = "";
-const DEFAULT_LIMIT = 20;
-
 export interface IProductsState {
   loading: boolean;
-  error: ErrorResponse | null; //type?
+  error: ErrorResponse | null;
   errorMessage: string;
   products: ProductProjection[];
   page: number;
   limit: number;
-  count: number; //Actual number of results returned
-  total?: number | undefined; //Total number of results matching the query
+  count: number;
+  total?: number | undefined;
+  offset: number;
 }
 
 const initialState: IProductsState = {
@@ -26,9 +26,10 @@ const initialState: IProductsState = {
   errorMessage: STR_PLACEHOLDER,
   products: [],
   page: 1,
-  limit: DEFAULT_LIMIT,
+  limit: DEFAULT_PRODUCTS_LIMIT,
   count: 0,
   total: 0,
+  offset: 0,
 };
 
 type pagePayload = {
@@ -43,7 +44,7 @@ export const productsSlice = createSlice({
       state.loading = true;
     },
     productsReset(state) {
-      state = initialState;
+      Object.assign(state, initialState); //shallow copy
     },
     productsFetchSuccess(
       state,
@@ -55,6 +56,8 @@ export const productsSlice = createSlice({
       state.products = action.payload.results;
       state.count = action.payload.count;
       state.total = action.payload.total;
+      state.limit = action.payload.limit;
+      state.offset = action.payload.offset;
     },
     productsFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
@@ -66,14 +69,17 @@ export const productsSlice = createSlice({
       state.error = null;
       state.errorMessage = STR_PLACEHOLDER;
     },
-    productPage(state, action: PayloadAction<pagePayload>) {
+    productsPage(state, action: PayloadAction<pagePayload>) {
       state.page = action.payload.page;
     },
   },
 });
 
-// Export actions
-export const { productsFetching, productsFetchSuccess, productsFetchError } =
-  productsSlice.actions;
+export const {
+  productsFetching,
+  productsFetchSuccess,
+  productsFetchError,
+  productsPage,
+} = productsSlice.actions;
 
 export default productsSlice.reducer;

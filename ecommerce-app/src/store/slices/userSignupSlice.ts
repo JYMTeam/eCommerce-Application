@@ -1,7 +1,4 @@
-import {
-  AuthErrorResponse,
-  CustomerSignInResult,
-} from "@commercetools/platform-sdk";
+import { AuthErrorResponse } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 
@@ -10,7 +7,6 @@ interface IUserSignupState {
   isSignedUp: boolean;
   error: AuthErrorResponse | null;
   errorMessage: string;
-  signupData: CustomerSignInResult | null;
 }
 
 const initialState: IUserSignupState = {
@@ -18,7 +14,6 @@ const initialState: IUserSignupState = {
   isSignedUp: false,
   error: null,
   errorMessage: "",
-  signupData: null,
 };
 
 export const userSignupSlice = createSlice({
@@ -28,18 +23,16 @@ export const userSignupSlice = createSlice({
     userSignupFetching(state) {
       state.loading = true;
     },
-    userSignupFetchSuccess(state, action: PayloadAction<CustomerSignInResult>) {
+    userSignupFetchSuccess(state) {
       state.loading = false;
       state.isSignedUp = true;
       state.error = null;
       state.errorMessage = "";
-      state.signupData = action.payload;
     },
     userSignupFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
       state.error = action.payload;
       state.errorMessage = formatAuthErrorMessage(action.payload);
-      state.signupData = null;
     },
     userSignupClearErrorMessage(state) {
       state.errorMessage = "";
