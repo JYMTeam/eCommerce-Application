@@ -1,19 +1,16 @@
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 import {
-  authMiddlewareOptions,
   defaultClient,
+  getAuthMiddlewareOptions,
   projectKey,
 } from "./ClientBuilderDefault";
 
-const getEntryClient = () => {
+export const getApiEntryRoot = () => {
+  const authMiddlewareOptions = getAuthMiddlewareOptions();
   const entryClient = defaultClient
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build();
-  return entryClient;
-};
 
-export const getApiEntryRoot = () => {
-  const entryClient = getEntryClient();
   return createApiBuilderFromCtpClient(entryClient).withProjectKey({
     projectKey,
   });

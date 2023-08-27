@@ -6,9 +6,8 @@ import {
 } from "@commercetools/sdk-client-v2";
 import { passToken } from "../PassTokenCache/PassTokenCache";
 import {
-  authMiddlewareOptions,
   defaultClient,
-  getCustomerScopes,
+  getAuthMiddlewareOptions,
   projectKey,
 } from "./ClientBuilderDefault";
 
@@ -17,16 +16,14 @@ export const getApiPassRoot = (userAuthOptions: UserAuthOptions) => {
   let client: Client | null = null;
 
   user = userAuthOptions;
-
+  const authMiddlewareOptions = getAuthMiddlewareOptions();
   const passOptions: PasswordAuthMiddlewareOptions = {
-    host: process.env.REACT_APP_AUTH_URL || "",
-    projectKey: projectKey,
+    ...authMiddlewareOptions,
     credentials: {
       clientId: process.env.REACT_APP_CLIENT_ID || "",
       clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
       user: user,
     },
-    scopes: getCustomerScopes(),
     tokenCache: passToken,
   };
 
