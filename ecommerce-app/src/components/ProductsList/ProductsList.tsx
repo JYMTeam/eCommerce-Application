@@ -13,6 +13,20 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 
+const MD_COLS = 3;
+const SM_COLS = 6;
+const XS_COLS = 12;
+const GRID_SPACING = 2;
+const CARD_MIN_HEIGHT = 320;
+const CARD_MAX_WIDTH = 325;
+const CARD_BOX_SHADOW = 3;
+const CARD_HEIGHT = "100%";
+const CARD_MEDIA_HEIGHT = 250;
+const CARD_TITLE_FONTSIZE = 18;
+const CARD_DESC_FONTSIZE = 14;
+const BUTTON_COLOR = "#F9C152";
+const CARD_DESC_MB = 1.5;
+
 export default function ProductsList() {
   const { errorMessage, loading, products, page, limit } = useAppSelector(
     (state) => state.products,
@@ -34,15 +48,15 @@ export default function ProductsList() {
 
   return (
     <div>
-      <Grid container spacing={2}>
+      <Grid container spacing={GRID_SPACING}>
         {parsedProducts.map(({ id, name, description, image, price }) => (
-          <Grid md={3} sm={6} xs={12} key={id}>
+          <Grid md={MD_COLS} sm={SM_COLS} xs={XS_COLS} key={id}>
             <Card
               sx={{
-                maxWidth: 325,
-                boxShadow: 3,
-                minHeight: 320,
-                height: "100%",
+                maxWidth: CARD_MAX_WIDTH,
+                boxShadow: CARD_BOX_SHADOW,
+                minHeight: CARD_MIN_HEIGHT,
+                height: CARD_HEIGHT,
                 display: "flex",
                 flexWrap: "wrap",
                 ":hover": {
@@ -53,7 +67,7 @@ export default function ProductsList() {
               <CardMedia
                 component="img"
                 alt={name as unknown as string}
-                height="250"
+                height={CARD_MEDIA_HEIGHT}
                 image={image.url}
               />
               <CardContent>
@@ -61,21 +75,21 @@ export default function ProductsList() {
                   gutterBottom
                   variant="h4"
                   component="h4"
-                  sx={{ fontSize: 18 }}
+                  sx={{ fontSize: CARD_TITLE_FONTSIZE }}
                 >
                   {name}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{ mb: 1.5, fontSize: 14 }}
+                  sx={{ mb: CARD_DESC_MB, fontSize: CARD_DESC_FONTSIZE }}
                 >
                   {description as unknown as string}
                 </Typography>
                 <Chip label={price} size="small" />
               </CardContent>
               <CardActions>
-                <Button size="small" sx={{ color: "#F9C152" }}>
+                <Button size="small" sx={{ color: BUTTON_COLOR }}>
                   Learn More
                 </Button>
               </CardActions>
