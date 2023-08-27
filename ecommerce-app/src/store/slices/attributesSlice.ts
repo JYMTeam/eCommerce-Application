@@ -1,4 +1,7 @@
-import { ErrorResponse, ProductType } from "@commercetools/platform-sdk";
+import {
+  AttributeDefinition,
+  ErrorResponse,
+} from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
 
@@ -7,7 +10,7 @@ export interface IFilterProductsState {
   isSuccess: boolean;
   error: ErrorResponse | null;
   errorMessage: string;
-  attributesData: ProductType | null;
+  attributesData: AttributeDefinition[] | undefined;
   isSuccessMessage: boolean;
 }
 
@@ -16,7 +19,7 @@ const initialState: IFilterProductsState = {
   isSuccess: false,
   error: null,
   errorMessage: "",
-  attributesData: null,
+  attributesData: undefined,
   isSuccessMessage: false,
 };
 
@@ -32,10 +35,13 @@ export const filterProductsSlice = createSlice({
       state.isSuccess = false;
       state.error = null;
       state.errorMessage = "";
-      state.attributesData = null;
+      state.attributesData = undefined;
       state.isSuccessMessage = false;
     },
-    attributesFetchSuccess(state, action: PayloadAction<ProductType>) {
+    attributesFetchSuccess(
+      state,
+      action: PayloadAction<AttributeDefinition[] | undefined>,
+    ) {
       state.loading = false;
       state.isSuccess = false;
       state.error = null;
@@ -47,7 +53,7 @@ export const filterProductsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
       state.errorMessage = formatProductsErrorMessage(action.payload);
-      state.attributesData = null;
+      state.attributesData = undefined;
     },
     attributesClearErrorMessage(state) {
       state.errorMessage = "";

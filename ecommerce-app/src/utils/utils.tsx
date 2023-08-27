@@ -1,4 +1,19 @@
 import {
+  AttributeBooleanType,
+  AttributeDateTimeType,
+  AttributeDateType,
+  AttributeDefinition,
+  AttributeEnumType,
+  AttributeLocalizableTextType,
+  AttributeLocalizedEnumType,
+  AttributeMoneyType,
+  AttributeNestedType,
+  AttributeNumberType,
+  AttributeReferenceType,
+  AttributeSetType,
+  AttributeTextType,
+  AttributeTimeType,
+  AttributeType,
   BaseAddress,
   CustomerDraft,
   Image,
@@ -226,3 +241,101 @@ export const parseProducts = (products: ProductProjection[]) => {
     };
   });
 };
+
+export const parseAttributes = (attributes: AttributeDefinition[]) => {
+  // return attributes.map((attribute) => {
+  //   if (isAttributeEnumType(attribute.type)) {
+  //     const enumObj = {
+  //       name: attribute.name,
+  //       values: attribute.type.values.map((value) => value.key)
+  //     }
+  //     return enumObj;
+  //   }
+  // if (isAttributeSetType(attribute.type)) {
+  //   const setObj = {
+  //     name: attribute.name,
+  //     values: attribute.type.elementType.values.map((value) => value.key)
+  //   }
+  //   return setObj;
+  // }
+  // });
+};
+
+// Type-checking predicate functions
+export function isAttributeBooleanType(
+  attribute: AttributeType,
+): attribute is AttributeBooleanType {
+  return (attribute as AttributeBooleanType).name === "boolean";
+}
+
+export function isAttributeDateTimeType(
+  attribute: AttributeType,
+): attribute is AttributeDateTimeType {
+  return (attribute as AttributeDateTimeType).name === "datetime";
+}
+
+export function isAttributeDateType(
+  attribute: AttributeType,
+): attribute is AttributeDateType {
+  return (attribute as AttributeDateType).name === "date";
+}
+
+export function isAttributeEnumType(
+  attribute: AttributeType,
+): attribute is AttributeEnumType {
+  return (attribute as AttributeEnumType).name === "enum";
+}
+
+export function isAttributeLocalizableTextType(
+  attribute: AttributeType,
+): attribute is AttributeLocalizableTextType {
+  return (attribute as AttributeLocalizableTextType).name === "ltext";
+}
+
+export function isAttributeLocalizedEnumType(
+  attribute: AttributeType,
+): attribute is AttributeLocalizedEnumType {
+  return (attribute as AttributeLocalizedEnumType).name === "lenum";
+}
+
+export function isAttributeMoneyType(
+  attribute: AttributeType,
+): attribute is AttributeMoneyType {
+  return (attribute as AttributeMoneyType).name === "money";
+}
+
+export function isAttributeNestedType(
+  attribute: AttributeType,
+): attribute is AttributeNestedType {
+  return (attribute as AttributeNestedType).name === "nested";
+}
+
+export function isAttributeNumberType(
+  attribute: AttributeType,
+): attribute is AttributeNumberType {
+  return (attribute as AttributeNumberType).name === "number";
+}
+
+export function isAttributeReferenceType(
+  attribute: AttributeType,
+): attribute is AttributeReferenceType {
+  return (attribute as AttributeReferenceType).name === "reference";
+}
+
+export function isAttributeSetType(
+  attribute: AttributeType,
+): attribute is AttributeSetType {
+  return (attribute as AttributeSetType).name === "set";
+}
+
+export function isAttributeTextType(
+  attribute: AttributeType,
+): attribute is AttributeTextType {
+  return (attribute as AttributeTextType).name === "text";
+}
+
+export function isAttributeTimeType(
+  attribute: AttributeType,
+): attribute is AttributeTimeType {
+  return (attribute as AttributeTimeType).name === "time";
+}

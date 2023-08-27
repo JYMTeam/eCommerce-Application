@@ -16,7 +16,11 @@ export const fetchAttributes = () => {
       const answer = await getApiEntryRoot().productTypes().get().execute();
       console.log("types");
       console.log(answer);
-      dispatch(attributesFetchSuccess(answer.body.results[PRODUCT_TYPE_INDEX]));
+      dispatch(
+        attributesFetchSuccess(
+          answer.body.results[PRODUCT_TYPE_INDEX].attributes,
+        ),
+      );
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;

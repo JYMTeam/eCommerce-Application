@@ -31,29 +31,24 @@ export const userLoginSlice = createSlice({
     userLoginFetching(state) {
       state.loading = true;
     },
-    userLoginReset(state) {
-      state.loading = false;
-      state.isLogged = false;
-      state.error = null;
-      state.errorMessage = "";
-      state.loginData = null;
-      state.tokenData = null;
-      state.isSuccessMessage = false;
-
+    userLoginReset() {
       const cache: TokenStore = {
         token: "",
         expirationTime: 0,
         refreshToken: undefined,
       };
       passToken.set(cache);
+      return { ...initialState };
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
-      state.isLogged = true;
       state.error = null;
       state.errorMessage = "";
-      state.loginData = action.payload;
       state.isSuccessMessage = false;
+
+      state.isLogged = true;
+      state.loginData = action.payload;
+      // return {...}
     },
     userLoginFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
