@@ -43,3 +43,8 @@ export interface ICountriesOptions {
   countryCode: string;
   postalCodeFormat: string;
 }
+
+export interface IProductsFormattedAttribute {
+  name: string;
+  values: string[];
+}

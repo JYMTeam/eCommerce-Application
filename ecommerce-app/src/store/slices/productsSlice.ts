@@ -41,7 +41,7 @@ export const productsSlice = createSlice({
     productsFetching(state) {
       state.loading = true;
     },
-    productsReset(state) {
+    productsReset() {
       return { ...initialState };
     },
     productsFetchSuccess(

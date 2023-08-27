@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchProducts } from "../../store/actions/productsActions";
-import { parseProducts } from "../../utils/utils";
 import {
   Button,
   Card,
@@ -12,6 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import { parseProducts } from "../../utils/dataParsers";
 
 const MD_COLS = 3;
 const SM_COLS = 6;

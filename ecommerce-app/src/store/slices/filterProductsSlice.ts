@@ -28,12 +28,8 @@ export const filterProductsSlice = createSlice({
     filterProductsFetching(state) {
       state.loading = true;
     },
-    filterProductsReset(state) {
-      state.loading = false;
-      state.isFiltered = false;
-      state.errorMessage = "";
-      state.filterData = null;
-      state.isSuccessMessage = false;
+    filterProductsReset() {
+      return { ...initialState };
     },
     filterProductsFetchSuccess(
       state,
