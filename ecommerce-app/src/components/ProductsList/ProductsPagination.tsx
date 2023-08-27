@@ -7,7 +7,7 @@ import { Pagination } from "@mui/material";
 import "./products.css";
 
 export default function ProductsPagination() {
-  const { loading, page, limit, total } = useAppSelector(
+  const { loading, page, limit, total, errorMessage } = useAppSelector(
     (state) => state.products,
   );
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export default function ProductsPagination() {
     dispatch(fetchProducts(offset));
   };
 
-  return loading ? (
+  return loading || errorMessage ? (
     <div></div>
   ) : (
     <div className="products-pagination">

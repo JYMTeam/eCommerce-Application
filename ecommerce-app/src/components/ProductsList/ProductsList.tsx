@@ -26,10 +26,10 @@ export default function ProductsList() {
   }, [dispatch, offset]);
 
   if (loading) {
-    return <h2>Loading...</h2>;
+    return <p className="notification-message">Loading...</p>;
   }
   if (errorMessage) {
-    return <h2>{errorMessage}</h2>;
+    return <p className="notification-message">{errorMessage}</p>;
   }
 
   return (
