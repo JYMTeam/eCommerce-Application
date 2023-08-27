@@ -5,7 +5,8 @@ import userLoginReducer from "./slices/userLoginSlice";
 import userSignupReducer from "./slices/userSignupSlice";
 import productsReducer from "./slices/productsSlice";
 import filterProductsReducer from "./slices/filterProductsSlice";
-// добавляем конфиг для сохранения состояния стейта
+import attributesReducer from "./slices/attributesSlice";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   userSignup: userSignupReducer,
   filterProducts: filterProductsReducer,
   products: productsReducer,
+  attributes: attributesReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 

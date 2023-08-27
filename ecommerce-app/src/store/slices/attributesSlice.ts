@@ -4,21 +4,21 @@ import {
 } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { parseAttributes } from "../../utils/dataParsers";
+import { IProductsFormattedAttribute } from "../../types";
 
 export interface IFilterProductsState {
   loading: boolean;
   isSuccess: boolean;
   errorMessage: string;
-  attributesData: AttributeDefinition[] | undefined;
-  isSuccessMessage: boolean;
+  attributesData: IProductsFormattedAttribute[];
 }
 
 const initialState: IFilterProductsState = {
   loading: false,
   isSuccess: false,
   errorMessage: "",
-  attributesData: undefined,
-  isSuccessMessage: false,
+  attributesData: [],
 };
 
 export const filterProductsSlice = createSlice({
@@ -38,19 +38,17 @@ export const filterProductsSlice = createSlice({
       state.loading = false;
       state.isSuccess = false;
       state.errorMessage = "";
-      state.attributesData = action.payload;
-      state.isSuccessMessage = false;
+      if (action.payload) {
+        state.attributesData = parseAttributes(action.payload);
+      }
     },
     attributesFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
-      state.attributesData = undefined;
+      state.attributesData = [];
       state.errorMessage = formatProductsErrorMessage(action.payload);
     },
     attributesClearErrorMessage(state) {
       state.errorMessage = "";
-    },
-    setIsSuccess(state) {
-      state.isSuccessMessage = true;
     },
   },
 });
@@ -62,7 +60,6 @@ export const {
   attributesFetchSuccess,
   attributesFetchError,
   attributesClearErrorMessage,
-  setIsSuccess,
 } = filterProductsSlice.actions;
 
 export default filterProductsSlice.reducer;

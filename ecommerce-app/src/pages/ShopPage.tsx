@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ProductsList from "../components/ProductsList/ProductsList";
 import ProductsPagination from "../components/ProductsList/ProductsPagination";
-import { useAppDispatch } from "../hooks/redux";
-import { fetchFilterProducts } from "../store/actions/filterProductsActions";
+import ProductsAttributes from "../components/ProductsList/ProductsAttributes";
 
 export function ShopPage() {
   //check token after loading
-  const [isFiltered, setFiltered] = useState(false);
-  const dispatch = useAppDispatch();
+  // const [isFiltered, setFiltered] = useState(false);
+  // const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const filtration = () => {
-      if (!isFiltered) {
-        dispatch(fetchFilterProducts());
-        setFiltered(true);
-      }
-    };
-    filtration();
-  }, [dispatch, setFiltered, isFiltered]);
+  // useEffect(() => {
+  //   const filtration = () => {
+  //     if (!isFiltered) {
+  //       dispatch(fetchFilterProducts());
+  //       setFiltered(true);
+  //     }
+  //   };
+  //   filtration();
+  // }, [dispatch, setFiltered, isFiltered]);
   return (
     <>
+      <ProductsAttributes />
       <ProductsList />
       <ProductsPagination />
     </>
