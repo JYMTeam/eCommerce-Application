@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 export function LoginPage() {
   return (
     <Container maxWidth="xs" sx={{ mb: 3 }}>
-      <h1>Account login</h1>
+      <h2>Account login</h2>
       <LoginForm></LoginForm>
       <Box sx={{ pt: "2em" }}>
         <Link className="redirect-link" to="/signup" color="primary">

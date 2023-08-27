@@ -1,5 +1,12 @@
 import React from "react";
-import WorkInProgress from "../components/WorkInProrgess";
+import ProductsList from "../components/ProductsList/ProductsList";
+import ProductsPagination from "../components/ProductsList/ProductsPagination";
+
 export function ShopPage() {
-  return <WorkInProgress />;
+  return (
+    <>
+      <ProductsList />
+      <ProductsPagination />
+    </>
+  );
 }

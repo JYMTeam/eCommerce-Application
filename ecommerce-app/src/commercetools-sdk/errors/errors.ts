@@ -2,23 +2,29 @@ import {
   AuthErrorResponse,
   ErrorResponse,
 } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/error";
-import { statusCode } from "../../types";
+
+enum statusCode {
+  "OK" = 200,
+  "BAD_REQUEST" = 400,
+  "UNATHORIZED" = 401,
+  "NOT_FOUND" = 404,
+  "TOO_MANY_REQUESTS" = 429,
+  "SERVER_ERROR" = 500,
+}
+
+const DEFAULT_ERROR_MESSAGE =
+  "An unexpected error occurred. Please try again later.";
+
 const serverErrorMessage = (statusCode: number) => {
   if ([500, 501, 502, 503, 504].includes(statusCode)) {
     return "Server error. Please try again later.";
   }
 };
-export const formatErrorMessage = (error: AuthErrorResponse): string => {
-  if (
-    error.statusCode === 500 ||
-    error.statusCode === 501 ||
-    error.statusCode === 502 ||
-    error.statusCode === 503 ||
-    error.statusCode === 504
-  ) {
-    return "Server error. Please try again later.";
-  }
-  if (error.statusCode === 400) {
+
+export const formatAuthErrorMessage = (error: AuthErrorResponse): string => {
+  const serverError = serverErrorMessage(error.statusCode);
+  if (serverError) return serverError;
+  if (error.statusCode === statusCode.BAD_REQUEST) {
     if (
       error.error === "invalid_customer_account_credentials" ||
       error.errors[0].code === "InvalidCredentials"
@@ -41,8 +47,9 @@ export const formatErrorMessage = (error: AuthErrorResponse): string => {
       return "Unfortunately, too many users have been created. Limit reached. Please try again later.";
     }
   }
-  return "An error occurred. Please try again later.";
+  return DEFAULT_ERROR_MESSAGE;
 };
+
 export const formatProductsErrorMessage = (error: ErrorResponse): string => {
   const serverError = serverErrorMessage(error.statusCode);
   if (serverError) return serverError;
@@ -50,7 +57,6 @@ export const formatProductsErrorMessage = (error: ErrorResponse): string => {
   if (error.statusCode === statusCode.UNATHORIZED) {
     return "401: Unauthorized. Sorry, your request could not be processed";
   }
-  const DEFAULT_ERROR_MESSAGE =
-    "An unexpected error occurred. Please try again later.";
+
   return DEFAULT_ERROR_MESSAGE;
 };

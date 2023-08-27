@@ -29,11 +29,7 @@ export interface ISignedUpSchemaOptions {
   postalCodeFormatBilling: string;
   isCommonAddressChecked: boolean;
 }
-export interface ICountriesOptions {
-  label: string;
-  countryCode: string;
-  postalCodeFormat: string;
-}
+
 export enum statusCode {
   "OK" = 200,
   "BAD_REQUEST" = 400,
@@ -41,4 +37,9 @@ export enum statusCode {
   "NOT_FOUND" = 404,
   "TOO_MANY_REQUESTS" = 429,
   "SERVER_ERROR" = 500,
+}
+export interface ICountriesOptions {
+  label: string;
+  countryCode: string;
+  postalCodeFormat: string;
 }

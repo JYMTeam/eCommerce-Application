@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import userLoginReducer from "./slices/userLoginSlice";
 import userSignupReducer from "./slices/userSignupSlice";
 import productDetailReducer from "./slices/productDetailSlice";
+import productsReducer from "./slices/productsSlice";
 // добавляем конфиг для сохранения состояния стейта
 const persistConfig = {
   key: "root",
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userSignup: userSignupReducer,
   productDetail: productDetailReducer,
+  products: productsReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
