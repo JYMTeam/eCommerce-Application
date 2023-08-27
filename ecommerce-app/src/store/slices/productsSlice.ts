@@ -42,7 +42,7 @@ export const productsSlice = createSlice({
       state.loading = true;
     },
     productsReset(state) {
-      Object.assign(state, initialState); //shallow copy
+      return { ...initialState };
     },
     productsFetchSuccess(
       state,
