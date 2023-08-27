@@ -34,3 +34,11 @@ export interface ICountriesOptions {
   countryCode: string;
   postalCodeFormat: string;
 }
+export enum statusCode {
+  "OK" = 200,
+  "BAD_REQUEST" = 400,
+  "UNATHORIZED" = 401,
+  "NOT_FOUND" = 404,
+  "TOO_MANY_REQUESTS" = 429,
+  "SERVER_ERROR" = 500,
+}
