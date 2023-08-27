@@ -5,14 +5,12 @@ import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 interface IUserSignupState {
   loading: boolean;
   isSignedUp: boolean;
-  // error: AuthErrorResponse | null;
   errorMessage: string;
 }
 
 const initialState: IUserSignupState = {
   loading: false,
   isSignedUp: false,
-  // error: null,
   errorMessage: "",
 };
 
@@ -26,12 +24,10 @@ export const userSignupSlice = createSlice({
     userSignupFetchSuccess(state) {
       state.loading = false;
       state.isSignedUp = true;
-      // state.error = null;
       state.errorMessage = "";
     },
     userSignupFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
-      // state.error = action.payload;
       state.errorMessage = formatAuthErrorMessage(action.payload);
     },
     userSignupClearErrorMessage(state) {

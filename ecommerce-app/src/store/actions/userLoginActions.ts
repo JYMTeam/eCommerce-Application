@@ -13,7 +13,7 @@ import {
   setIsSuccess,
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
-import { passToken } from "../../commercetools-sdk/PassTokenCache";
+import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { AuthErrorResponse } from "@commercetools/platform-sdk";
 import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 

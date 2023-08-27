@@ -4,7 +4,7 @@ import {
   authMiddlewareOptions,
   httpMiddlewareOptions,
   defaultClient,
-} from "./ClientBuilderDefault";
+} from "../ClientBuilderDefault";
 import {
   ClientBuilder,
   AuthMiddlewareOptions,

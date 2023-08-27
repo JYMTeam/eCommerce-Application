@@ -2,7 +2,7 @@ import { AuthErrorResponse, Customer } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TokenStore } from "@commercetools/sdk-client-v2";
 import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
-import { passToken } from "../../commercetools-sdk/PassTokenCache";
+import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 
 export interface IUserLoginState {
   loading: boolean;
