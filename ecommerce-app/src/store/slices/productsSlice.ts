@@ -12,7 +12,6 @@ const DEFAULT_LIMIT = 20;
 export interface IProductsState {
   loading: boolean;
   isFiltered: boolean;
-  error: ErrorResponse | null; //type?
   errorMessage: string;
   products: ProductProjection[];
   page: number;
@@ -24,7 +23,6 @@ export interface IProductsState {
 const initialState: IProductsState = {
   loading: false,
   isFiltered: false,
-  error: null,
   errorMessage: STR_PLACEHOLDER,
   products: [],
   page: 1,
@@ -52,7 +50,6 @@ export const productsSlice = createSlice({
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
       state.loading = false;
-      state.error = null;
       state.errorMessage = "";
       state.products = action.payload.results;
       state.count = action.payload.count;
@@ -60,12 +57,10 @@ export const productsSlice = createSlice({
     },
     productsFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
       state.errorMessage = formatProductsErrorMessage(action.payload);
       state.products = [];
     },
     productsClearErrorMessage(state) {
-      state.error = null;
       state.errorMessage = STR_PLACEHOLDER;
     },
     productPage(state, action: PayloadAction<pagePayload>) {
@@ -79,7 +74,6 @@ export const productsSlice = createSlice({
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
       state.loading = false;
-      state.error = null;
       state.errorMessage = "";
       state.products = action.payload.results;
       state.count = action.payload.count;

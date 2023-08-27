@@ -8,7 +8,6 @@ import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/error
 export interface IFilterProductsState {
   loading: boolean;
   isSuccess: boolean;
-  error: ErrorResponse | null;
   errorMessage: string;
   attributesData: AttributeDefinition[] | undefined;
   isSuccessMessage: boolean;
@@ -17,7 +16,6 @@ export interface IFilterProductsState {
 const initialState: IFilterProductsState = {
   loading: false,
   isSuccess: false,
-  error: null,
   errorMessage: "",
   attributesData: undefined,
   isSuccessMessage: false,
@@ -30,13 +28,8 @@ export const filterProductsSlice = createSlice({
     attributesFetching(state) {
       state.loading = true;
     },
-    attributesReset(state) {
-      state.loading = false;
-      state.isSuccess = false;
-      state.error = null;
-      state.errorMessage = "";
-      state.attributesData = undefined;
-      state.isSuccessMessage = false;
+    attributesReset() {
+      return { ...initialState };
     },
     attributesFetchSuccess(
       state,
@@ -44,16 +37,14 @@ export const filterProductsSlice = createSlice({
     ) {
       state.loading = false;
       state.isSuccess = false;
-      state.error = null;
       state.errorMessage = "";
       state.attributesData = action.payload;
       state.isSuccessMessage = false;
     },
     attributesFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
-      state.errorMessage = formatProductsErrorMessage(action.payload);
       state.attributesData = undefined;
+      state.errorMessage = formatProductsErrorMessage(action.payload);
     },
     attributesClearErrorMessage(state) {
       state.errorMessage = "";

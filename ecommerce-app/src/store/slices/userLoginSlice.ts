@@ -7,7 +7,7 @@ import { passToken } from "../../commercetools-sdk/PassTokenCache";
 export interface IUserLoginState {
   loading: boolean;
   isLogged: boolean;
-  error: AuthErrorResponse | null;
+  // error: AuthErrorResponse | null;
   errorMessage: string;
   loginData: Customer | null;
   tokenData: TokenStore | null;
@@ -17,7 +17,6 @@ export interface IUserLoginState {
 const initialState: IUserLoginState = {
   loading: false,
   isLogged: false,
-  error: null,
   errorMessage: "",
   loginData: null,
   tokenData: null,
@@ -42,17 +41,14 @@ export const userLoginSlice = createSlice({
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
-      state.error = null;
       state.errorMessage = "";
       state.isSuccessMessage = false;
 
       state.isLogged = true;
       state.loginData = action.payload;
-      // return {...}
     },
     userLoginFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
       state.errorMessage = formatAuthErrorMessage(action.payload);
       state.loginData = null;
     },

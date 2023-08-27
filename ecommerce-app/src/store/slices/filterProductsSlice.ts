@@ -8,7 +8,6 @@ import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 export interface IFilterProductsState {
   loading: boolean;
   isFiltered: boolean;
-  error: AuthErrorResponse | null;
   errorMessage: string;
   filterData: ProductProjectionPagedQueryResponse | null;
   isSuccessMessage: boolean;
@@ -17,7 +16,6 @@ export interface IFilterProductsState {
 const initialState: IFilterProductsState = {
   loading: false,
   isFiltered: false,
-  error: null,
   errorMessage: "",
   filterData: null,
   isSuccessMessage: false,
@@ -33,7 +31,6 @@ export const filterProductsSlice = createSlice({
     filterProductsReset(state) {
       state.loading = false;
       state.isFiltered = false;
-      state.error = null;
       state.errorMessage = "";
       state.filterData = null;
       state.isSuccessMessage = false;
@@ -44,14 +41,12 @@ export const filterProductsSlice = createSlice({
     ) {
       state.loading = false;
       state.isFiltered = false;
-      state.error = null;
       state.errorMessage = "";
       state.filterData = action.payload;
       state.isSuccessMessage = false;
     },
     filterProductsFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
       state.errorMessage = formatAuthErrorMessage(action.payload);
       state.filterData = null;
     },
