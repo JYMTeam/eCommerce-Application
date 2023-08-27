@@ -2,7 +2,15 @@ import {
   AuthErrorResponse,
   ErrorResponse,
 } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/error";
-import { statusCode } from "../../types";
+
+enum statusCode {
+  "OK" = 200,
+  "BAD_REQUEST" = 400,
+  "UNATHORIZED" = 401,
+  "NOT_FOUND" = 404,
+  "TOO_MANY_REQUESTS" = 429,
+  "SERVER_ERROR" = 500,
+}
 
 const DEFAULT_ERROR_MESSAGE =
   "An unexpected error occurred. Please try again later.";
@@ -16,7 +24,7 @@ const serverErrorMessage = (statusCode: number) => {
 export const formatAuthErrorMessage = (error: AuthErrorResponse): string => {
   const serverError = serverErrorMessage(error.statusCode);
   if (serverError) return serverError;
-  if (error.statusCode === 400) {
+  if (error.statusCode === statusCode.BAD_REQUEST) {
     if (
       error.error === "invalid_customer_account_credentials" ||
       error.errors[0].code === "InvalidCredentials"
