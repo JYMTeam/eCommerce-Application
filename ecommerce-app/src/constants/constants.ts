@@ -19,6 +19,7 @@ const DEFAULT_LOCALE = "en-US";
 const DEFAULT_PRICE_COUNTRY = "US";
 const DEFAULT_CURRENCY = "USD";
 const FORM_DATE_FORMAT = "YYYY-MM-DD";
+const DEFAULT_PRODUCTS_LIMIT = 8;
 
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
@@ -88,4 +89,5 @@ export {
   DEFAULT_PRICE_COUNTRY,
   DEFAULT_CURRENCY,
   FORM_DATE_FORMAT,
+  DEFAULT_PRODUCTS_LIMIT,
 };

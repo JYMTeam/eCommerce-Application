@@ -191,8 +191,8 @@ const convertToBaseAddress = (
   return address;
 };
 
-const convertCentsToUSD = (centsAmount: number) => {
-  return centsAmount / 100;
+const convertCentsToUSD = (centAmount: number) => {
+  return centAmount / 100;
 };
 
 const CURRENCY_CONVERTER = {
@@ -202,6 +202,18 @@ const CURRENCY_CONVERTER = {
 const CURRENCY_SIGN = {
   USD: "$",
   EUR: "€",
+};
+
+export const formatPrice = (centAmount: number, currencyCode: string) => {
+  const convertedPrice =
+    CURRENCY_CONVERTER[currencyCode as keyof typeof CURRENCY_CONVERTER](
+      centAmount,
+    );
+  const formatedPrice = new Intl.NumberFormat(DEFAULT_LOCALE, {
+    style: "currency",
+    currency: currencyCode,
+  }).format(convertedPrice);
+  return formatedPrice;
 };
 
 export const parseProducts = (products: ProductProjection[]) => {
@@ -221,14 +233,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       if (country) {
         const centAmount = country.value.centAmount;
         const currencyCode = country.value.currencyCode;
-        const convertedPrice =
-          CURRENCY_CONVERTER[
-            country.value.currencyCode as keyof typeof CURRENCY_CONVERTER
-          ](centAmount);
-        const formatedPrice = new Intl.NumberFormat(DEFAULT_LOCALE, {
-          style: "currency",
-          currency: currencyCode,
-        }).format(convertedPrice);
+        const formatedPrice = formatPrice(centAmount, currencyCode);
         price = `${formatedPrice}`;
       }
     }

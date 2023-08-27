@@ -11,7 +11,7 @@ export function SignupPage() {
       sx={{ height: 1 / 1, pb: 5 }}
       className="container"
     >
-      <h1>Sign up here</h1>
+      <h2>Sign up here</h2>
       <SignupForm></SignupForm>
       <Box sx={{ pt: "2em" }}>
         <Link className="redirect-link" to="/login" color="primary">

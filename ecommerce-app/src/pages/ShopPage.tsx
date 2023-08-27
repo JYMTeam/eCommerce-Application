@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductsList from "../components/ProductsList/ProductsList";
+import ProductsPagination from "../components/ProductsList/ProductsPagination";
 import { useAppDispatch } from "../hooks/redux";
 import { fetchFilterProducts } from "../store/actions/filterProductsActions";
 
@@ -17,5 +18,10 @@ export function ShopPage() {
     };
     filtration();
   }, [dispatch, setFiltered, isFiltered]);
-  return <ProductsList />;
+  return (
+    <>
+      <ProductsList />
+      <ProductsPagination />
+    </>
+  );
 }
