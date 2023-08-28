@@ -66,10 +66,7 @@ function App() {
               ></Route>
               <Route path="/shop" element={<ShopPage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
-              <Route
-                path="/products/:slug"
-                element={<ProductDetailPage />}
-              ></Route>
+              <Route path="/shop/:id" element={<ProductDetailPage />}></Route>
               <Route path="*" element={<NotFoundPage />}></Route>
             </Routes>
           </ThemeProvider>

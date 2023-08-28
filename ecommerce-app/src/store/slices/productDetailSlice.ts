@@ -26,10 +26,12 @@ export const productDetailSlice = createSlice({
     productDetailFetchSuccess(state, action: PayloadAction<ProductProjection>) {
       state.loading = false;
       state.error = null;
+      state.errorMessage = "";
       state.product = action.payload;
     },
     productDetailFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
+      state.error = action.payload;
       state.errorMessage = formatProductsErrorMessage(action.payload);
     },
   },
