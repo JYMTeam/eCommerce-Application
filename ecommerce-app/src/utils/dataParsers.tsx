@@ -52,8 +52,6 @@ export const formatPrice = (centAmount: number, currencyCode: string) => {
 };
 
 export const parseProducts = (products: ProductProjection[]) => {
-  console.log("parse products");
-  console.log(products);
   return products.map((product) => {
     let image: Image = PRODUCT_IMAGE_PLACEHOLDER;
     let description = PRODUCT_DESCRIPTION_PLACEHOLDER;

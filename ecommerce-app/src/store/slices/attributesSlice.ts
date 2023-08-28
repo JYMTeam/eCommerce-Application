@@ -53,7 +53,6 @@ export const filterProductsSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   attributesFetching,
   attributesReset,

@@ -7,7 +7,6 @@ import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache
 export interface IUserLoginState {
   loading: boolean;
   isLogged: boolean;
-  // error: AuthErrorResponse | null;
   errorMessage: string;
   loginData: Customer | null;
   tokenData: TokenStore | null;
@@ -64,7 +63,6 @@ export const userLoginSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   userLoginFetching,
   userLoginReset,

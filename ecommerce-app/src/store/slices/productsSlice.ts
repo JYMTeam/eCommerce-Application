@@ -79,6 +79,10 @@ export const productsSlice = createSlice({
       state.offset = action.payload.offset;
     },
     filterParams(state, action: PayloadAction<SelectedFilterValues>) {
+      state.page = 1;
+      state.limit = DEFAULT_PRODUCTS_LIMIT;
+      state.total = 0;
+      state.offset = 0;
       state.filterParams = action.payload;
     },
     filterEmpty(state) {

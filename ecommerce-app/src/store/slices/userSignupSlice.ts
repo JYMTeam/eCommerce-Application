@@ -36,7 +36,6 @@ export const userSignupSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   userSignupFetching,
   userSignupFetchSuccess,

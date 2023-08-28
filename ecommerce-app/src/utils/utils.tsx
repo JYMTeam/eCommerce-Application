@@ -1,10 +1,40 @@
 import { BaseAddress, CustomerDraft } from "@commercetools/platform-sdk";
 import { IFormInitialValues, ISignupInitialValues } from "../types";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
+import { DEFAULT_LOCALE } from "../constants/constants";
 
 export const subtractYears = (date: Date, years: number) => {
   date.setFullYear(date.getFullYear() - years);
   return date;
+};
+
+export const convertCentsToUSD = (centAmount: number) => {
+  return centAmount / 100;
+};
+
+export const convertUSDToCents = (usdAmount: number) => {
+  return usdAmount * 100;
+};
+
+export const CURRENCY_CONVERTER = {
+  USD: convertCentsToUSD,
+};
+
+export const CURRENCY_SIGN = {
+  USD: "$",
+  EUR: "€",
+};
+
+export const formatPrice = (centAmount: number, currencyCode: string) => {
+  const convertedPrice =
+    CURRENCY_CONVERTER[currencyCode as keyof typeof CURRENCY_CONVERTER](
+      centAmount,
+    );
+  const formatedPrice = new Intl.NumberFormat(DEFAULT_LOCALE, {
+    style: "currency",
+    currency: currencyCode,
+  }).format(convertedPrice);
+  return formatedPrice;
 };
 
 export const convertCustomerDraftToUserAuthOptions = (

@@ -10,6 +10,9 @@ import {
 } from "../../store/actions/productsActions";
 import MinimumDistanceSlider from "../MinimumDistanceSlider/MinimumDistanceSlider";
 
+const MIN_SLIDER_VALUE = 0;
+const MAX_SLIDER_VALUE = 1000;
+
 export type SelectedFilterValues = { [key: string]: string[] };
 
 export default function ProductsAttributes() {
@@ -27,7 +30,10 @@ export default function ProductsAttributes() {
   const [selectedValues, setSelectedValues] = useState<SelectedFilterValues>(
     {},
   );
-  const [sliderValue, setSliderValue] = useState<number[]>([0, 10000]);
+  const [sliderValue, setSliderValue] = useState<number[]>([
+    MIN_SLIDER_VALUE,
+    MAX_SLIDER_VALUE,
+  ]);
 
   const handleListChange = (listName: string, values: string[]) => {
     setSelectedValues((prevSelectedValues) => ({
@@ -38,25 +44,13 @@ export default function ProductsAttributes() {
 
   const handleSubmitAll = async () => {
     try {
-      const nonEmptySelectedValues: SelectedFilterValues = Object.entries(
-        selectedValues,
-      ).reduce<SelectedFilterValues>((acc, [key, value]) => {
-        if (value.length > 0) {
-          acc[key] = value;
-        }
-        return acc;
-      }, {});
-
+      const nonEmptySelectedValues: SelectedFilterValues =
+        getNonEmptySelectedValues(selectedValues);
       const updatedFilterParams = {
         ...nonEmptySelectedValues,
         price: sliderValue.map(String),
       };
-
-      // if (Object.keys(nonEmptySelectedValues).length === 0) {
-      //   dispatch(resetFilterParams());
-      // } else {
       dispatch(setFilterParams(updatedFilterParams));
-      // }
     } catch (error) {
       console.error("Error sending data:", error);
     }
@@ -64,12 +58,9 @@ export default function ProductsAttributes() {
 
   const handleResetFilters = async () => {
     setSelectedValues({});
+    setSliderValue([MIN_SLIDER_VALUE, MAX_SLIDER_VALUE]);
     dispatch(resetFilterParams());
   };
-
-  // if (loading) {
-  //   return <Skeleton animation="wave" variant="rectangular" height={80} width="100%" />
-  // }
 
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
@@ -97,6 +88,8 @@ export default function ProductsAttributes() {
           <MinimumDistanceSlider
             value={sliderValue}
             onChange={setSliderValue}
+            min={MIN_SLIDER_VALUE}
+            max={MAX_SLIDER_VALUE}
           />
         </Box>
         <Box className="filter-box__buttons">
@@ -121,3 +114,15 @@ export default function ProductsAttributes() {
     </div>
   );
 }
+
+const getNonEmptySelectedValues = (selectedValues: SelectedFilterValues) => {
+  return Object.entries(selectedValues).reduce<SelectedFilterValues>(
+    (acc, [key, value]) => {
+      if (value.length > 0) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {},
+  );
+};

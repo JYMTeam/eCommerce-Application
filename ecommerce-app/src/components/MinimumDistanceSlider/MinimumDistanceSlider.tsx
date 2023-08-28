@@ -8,17 +8,24 @@ function valuetext(value: number) {
   return `${value}`;
 }
 
-const minDistance = 50;
+const SLIDER_MIN_DISTANCE = 50;
+const SLIDER_STEP = 50;
+const SLIDER_WIDTH = 300;
+const SLIDER_THUMB_SIZE = 20;
+const SLIDER_MARK_WIDTH = 1;
+const SLIDER_MARK_HEIGHT = 8;
+const SLIDER_TOP_MARK_DISTANCE = 5;
+const SLIDER_PADDING = "15px 0";
 
 const iOSBoxShadow =
   "0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)";
 
 const IOSSlider = styled(Slider)(({ theme }) => ({
   height: 2,
-  padding: "15px 0",
+  padding: SLIDER_PADDING,
   "& .MuiSlider-thumb": {
-    height: 20,
-    width: 20,
+    height: SLIDER_THUMB_SIZE,
+    width: SLIDER_THUMB_SIZE,
     backgroundColor: "#fff",
     boxShadow: iOSBoxShadow,
     "&:focus, &:hover, &.Mui-active": {
@@ -30,9 +37,8 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
     },
   },
   "& .MuiSlider-valueLabel": {
-    fontSize: 12,
     fontWeight: "normal",
-    top: -6,
+    top: SLIDER_TOP_MARK_DISTANCE,
     backgroundColor: "unset",
     color: theme.palette.text.primary,
     "&:before": {
@@ -52,8 +58,8 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
   },
   "& .MuiSlider-mark": {
     backgroundColor: "#bfbfbf",
-    height: 8,
-    width: 1,
+    height: SLIDER_MARK_HEIGHT,
+    width: SLIDER_MARK_WIDTH,
     "&.MuiSlider-markActive": {
       opacity: 1,
       backgroundColor: "currentColor",
@@ -64,14 +70,16 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
 type MinimumDistanceSliderProps = {
   value: number[];
   onChange: (newValue: number[]) => void;
+  min: number;
+  max: number;
 };
 
 export default function MinimumDistanceSlider({
   value,
   onChange,
+  min = 0,
+  max = 2000,
 }: MinimumDistanceSliderProps) {
-  // const [value, setValue] = React.useState<number[]>([0, 10000]);
-
   const handleChange = (
     event: Event,
     newValue: number | number[],
@@ -83,51 +91,36 @@ export default function MinimumDistanceSlider({
 
     if (activeThumb === 0) {
       const updatedValue = [
-        Math.min(newValue[0], value[1] - minDistance),
+        Math.min(newValue[0], value[1] - SLIDER_MIN_DISTANCE),
         value[1],
       ];
       onChange(updatedValue);
-      // setValue([Math.min(newValue[0], value[1] - minDistance), value[1]]);
     } else {
       const updatedValue = [
         value[0],
-        Math.max(newValue[1], value[0] + minDistance),
+        Math.max(newValue[1], value[0] + SLIDER_MIN_DISTANCE),
       ];
       onChange(updatedValue);
-      // setValue([value[0], Math.max(newValue[1], value[0] + minDistance)]);
     }
   };
 
   return (
-    <Box sx={{ width: 300 }}>
+    <Box sx={{ width: SLIDER_WIDTH }}>
       <Typography className="slider-header" gutterBottom>
         Price
       </Typography>
       <IOSSlider
         getAriaLabel={() => "Price range"}
         value={value}
-        min={0}
-        max={2000}
-        step={50}
+        min={min}
+        max={max}
+        step={SLIDER_STEP}
         onChange={handleChange}
         valueLabelDisplay="on"
         size="small"
         getAriaValueText={valuetext}
         disableSwap
-        // marks={marks}
       />
-      {/* <Slider
-        getAriaLabel={() => 'Price range'}
-        value={value1}
-        min={0}
-        step={50}
-        max={2000}
-        onChange={handleChange1}
-        valueLabelDisplay="on"
-        size='small'
-        getAriaValueText={valuetext}
-        disableSwap
-      /> */}
     </Box>
   );
 }

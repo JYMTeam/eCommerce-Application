@@ -14,8 +14,6 @@ export const fetchAttributes = () => {
     try {
       dispatch(attributesFetching());
       const answer = await getApiEntryRoot().productTypes().get().execute();
-      console.log("types");
-      console.log(answer);
       dispatch(
         attributesFetchSuccess(
           answer.body.results[PRODUCT_TYPE_INDEX].attributes,
