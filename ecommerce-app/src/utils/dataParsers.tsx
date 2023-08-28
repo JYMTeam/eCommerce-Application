@@ -25,31 +25,7 @@ import {
   PRODUCT_IMAGE_PLACEHOLDER,
 } from "../constants/constants";
 import { IProductsFormattedAttribute } from "../types";
-
-const convertCentsToUSD = (centAmount: number) => {
-  return centAmount / 100;
-};
-
-const CURRENCY_CONVERTER = {
-  USD: convertCentsToUSD,
-};
-
-const CURRENCY_SIGN = {
-  USD: "$",
-  EUR: "€",
-};
-
-export const formatPrice = (centAmount: number, currencyCode: string) => {
-  const convertedPrice =
-    CURRENCY_CONVERTER[currencyCode as keyof typeof CURRENCY_CONVERTER](
-      centAmount,
-    );
-  const formatedPrice = new Intl.NumberFormat(DEFAULT_LOCALE, {
-    style: "currency",
-    currency: currencyCode,
-  }).format(convertedPrice);
-  return formatedPrice;
-};
+import { CURRENCY_SIGN, formatPrice } from "./utils";
 
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
