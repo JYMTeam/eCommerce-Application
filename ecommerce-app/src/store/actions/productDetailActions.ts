@@ -30,7 +30,3 @@ export const fetchProductDetail = (id: string) => {
     }
   };
 };
-
-export const setProductsPage = (page: number) => {
-  return { payload: { page } };
-};

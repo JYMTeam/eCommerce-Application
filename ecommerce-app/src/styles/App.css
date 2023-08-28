@@ -33,3 +33,6 @@ h2 {
   flex-direction: column;
   justify-content: center;
 }
+.product-img:hover {
+  transform: scale(1.1);
+}
