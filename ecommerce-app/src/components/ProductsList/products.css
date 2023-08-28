@@ -11,3 +11,42 @@
   margin: 0;
   text-align: center;
 }
+
+.slider-header {
+  text-align: center;
+}
+
+.filter-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+.filter-box__lists {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+.filter-box__bottom {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+}
+.filter-box__slider {
+  display: flex;
+  flex: 1 1 auto;
+}
+.filter-box__buttons {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.filter-box__button + .filter-box__button {
+  margin-left: 1rem;
+}

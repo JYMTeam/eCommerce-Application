@@ -6,6 +6,8 @@ import {
   productsFetchError,
   productsPage,
   filterProductsFetchSuccess,
+  filterParams,
+  filterEmpty,
 } from "../slices/productsSlice";
 import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
@@ -43,6 +45,12 @@ export const setProductsPage = (page: number) => {
   };
 };
 
+export const setFilterParams = (lists: SelectedFilterValues) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(filterParams(lists));
+  };
+};
+
 export const filterProducts = (
   selectedValues: SelectedFilterValues,
   offset = 0,
@@ -69,6 +77,12 @@ export const filterProducts = (
         dispatch(productsFetchError(body));
       }
     }
+  };
+};
+
+export const resetFilterParams = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(filterEmpty());
   };
 };
 

@@ -3,14 +3,21 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchAttributes } from "../../store/actions/attributesActions";
 import MultipleSelectList from "../MultipleSelect/MultipleSelect";
 import { Button } from "@mui/material";
-import { filterProducts } from "../../store/actions/productsActions";
+import Box from "@mui/material/Box";
+import {
+  resetFilterParams,
+  setFilterParams,
+} from "../../store/actions/productsActions";
+import MinimumDistanceSlider from "../MinimumDistanceSlider/MinimumDistanceSlider";
 
 export type SelectedFilterValues = { [key: string]: string[] };
 
 export default function ProductsAttributes() {
-  const { errorMessage, loading, attributesData } = useAppSelector(
+  const { errorMessage, attributesData } = useAppSelector(
     (state) => state.attributes,
   );
+
+  const { filterParams } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -20,6 +27,8 @@ export default function ProductsAttributes() {
   const [selectedValues, setSelectedValues] = useState<SelectedFilterValues>(
     {},
   );
+  const [sliderValue, setSliderValue] = useState<number[]>([0, 10000]);
+
   const handleListChange = (listName: string, values: string[]) => {
     setSelectedValues((prevSelectedValues) => ({
       ...prevSelectedValues,
@@ -35,49 +44,80 @@ export default function ProductsAttributes() {
         if (value.length > 0) {
           acc[key] = value;
         }
-
         return acc;
       }, {});
 
-      if (Object.keys(nonEmptySelectedValues).length === 0) {
-        console.log("No data to send");
-        return;
-      } else {
-        dispatch(filterProducts(nonEmptySelectedValues));
-      }
+      const updatedFilterParams = {
+        ...nonEmptySelectedValues,
+        price: sliderValue.map(String),
+      };
 
-      console.log("Data sent successfully");
-      console.log(nonEmptySelectedValues);
+      // if (Object.keys(nonEmptySelectedValues).length === 0) {
+      //   dispatch(resetFilterParams());
+      // } else {
+      dispatch(setFilterParams(updatedFilterParams));
+      // }
     } catch (error) {
       console.error("Error sending data:", error);
     }
   };
 
-  if (loading) {
-    return <p className="notification-message">Loading attributes...</p>;
-  }
+  const handleResetFilters = async () => {
+    setSelectedValues({});
+    dispatch(resetFilterParams());
+  };
+
+  // if (loading) {
+  //   return <Skeleton animation="wave" variant="rectangular" height={80} width="100%" />
+  // }
+
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
   }
   return (
-    <div>
-      {attributesData.map((attribute) => {
-        if (attribute.values.length !== 0) {
-          return (
-            <MultipleSelectList
-              key={attribute.name}
-              placeholder={attribute.name}
-              elements={attribute.values}
-              selectedValues={selectedValues[attribute.name] || []}
-              onChange={(values) => handleListChange(attribute.name, values)}
-            />
-          );
-        }
-        return null;
-      })}
-      <Button variant="contained" onClick={handleSubmitAll}>
-        Filter
-      </Button>
+    <div className="filter-box">
+      <Box className="filter-box__lists">
+        {attributesData.map((attribute) => {
+          if (attribute.values.length !== 0) {
+            return (
+              <MultipleSelectList
+                key={attribute.name}
+                placeholder={attribute.name}
+                elements={attribute.values}
+                selectedValues={selectedValues[attribute.name] || []}
+                onChange={(values) => handleListChange(attribute.name, values)}
+              />
+            );
+          }
+          return null;
+        })}
+      </Box>
+      <Box className="filter-box__bottom">
+        <Box className="filter-box__slider">
+          <MinimumDistanceSlider
+            value={sliderValue}
+            onChange={setSliderValue}
+          />
+        </Box>
+        <Box className="filter-box__buttons">
+          <Button
+            className="filter-box__button"
+            variant="contained"
+            onClick={handleSubmitAll}
+          >
+            Filter
+          </Button>
+          {filterParams && (
+            <Button
+              className="filter-box__button"
+              variant="contained"
+              onClick={handleResetFilters}
+            >
+              Clear
+            </Button>
+          )}
+        </Box>
+      </Box>
     </div>
   );
 }
