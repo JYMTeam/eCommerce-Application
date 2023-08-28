@@ -48,6 +48,8 @@ export const productsSlice = createSlice({
       state,
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
+      console.log("products loading result");
+      console.log(action.payload);
       state.loading = false;
       state.errorMessage = "";
       state.products = action.payload.results;
@@ -57,6 +59,7 @@ export const productsSlice = createSlice({
     },
     productsFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
+      state.isFiltered = false;
       state.errorMessage = formatProductsErrorMessage(action.payload);
       state.products = [];
     },
@@ -66,17 +69,19 @@ export const productsSlice = createSlice({
     productsPage(state, action: PayloadAction<pagePayload>) {
       state.page = action.payload.page;
     },
-    filterProductsFetching(state) {
-      state.loading = true;
-    },
     filterProductsFetchSuccess(
       state,
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
+      console.log("filter result");
+      console.log(action.payload);
       state.loading = false;
       state.errorMessage = "";
       state.products = action.payload.results;
       state.total = action.payload.total;
+      state.limit = action.payload.limit;
+      state.offset = action.payload.offset;
+      state.isFiltered = true;
     },
   },
 });
@@ -86,6 +91,7 @@ export const {
   productsFetchSuccess,
   productsFetchError,
   productsPage,
+  filterProductsFetchSuccess,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

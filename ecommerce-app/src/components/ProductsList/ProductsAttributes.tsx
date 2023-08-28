@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchAttributes } from "../../store/actions/attributesActions";
 import MultipleSelectList from "../MultipleSelect/MultipleSelect";
 import { Button } from "@mui/material";
+import { filterProducts } from "../../store/actions/productsActions";
 
-type SelectedValues = { [key: string]: string[] };
+export type SelectedFilterValues = { [key: string]: string[] };
 
 export default function ProductsAttributes() {
   const { errorMessage, loading, attributesData } = useAppSelector(
@@ -16,7 +17,9 @@ export default function ProductsAttributes() {
     dispatch(fetchAttributes());
   }, [dispatch]);
 
-  const [selectedValues, setSelectedValues] = useState<SelectedValues>({});
+  const [selectedValues, setSelectedValues] = useState<SelectedFilterValues>(
+    {},
+  );
   const handleListChange = (listName: string, values: string[]) => {
     setSelectedValues((prevSelectedValues) => ({
       ...prevSelectedValues,
@@ -26,9 +29,9 @@ export default function ProductsAttributes() {
 
   const handleSubmitAll = async () => {
     try {
-      const nonEmptySelectedValues: SelectedValues = Object.entries(
+      const nonEmptySelectedValues: SelectedFilterValues = Object.entries(
         selectedValues,
-      ).reduce<SelectedValues>((acc, [key, value]) => {
+      ).reduce<SelectedFilterValues>((acc, [key, value]) => {
         if (value.length > 0) {
           acc[key] = value;
         }
@@ -39,9 +42,10 @@ export default function ProductsAttributes() {
       if (Object.keys(nonEmptySelectedValues).length === 0) {
         console.log("No data to send");
         return;
+      } else {
+        dispatch(filterProducts(nonEmptySelectedValues));
       }
 
-      // await dispatch(sendSelectedValues(selectedValues));
       console.log("Data sent successfully");
       console.log(nonEmptySelectedValues);
     } catch (error) {

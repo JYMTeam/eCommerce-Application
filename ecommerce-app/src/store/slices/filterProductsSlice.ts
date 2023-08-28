@@ -31,16 +31,16 @@ export const filterProductsSlice = createSlice({
     filterProductsReset() {
       return { ...initialState };
     },
-    filterProductsFetchSuccess(
-      state,
-      action: PayloadAction<ProductProjectionPagedQueryResponse>,
-    ) {
-      state.loading = false;
-      state.isFiltered = false;
-      state.errorMessage = "";
-      state.filterData = action.payload;
-      state.isSuccessMessage = false;
-    },
+    // filterProductsFetchSuccess(
+    //   state,
+    //   action: PayloadAction<ProductProjectionPagedQueryResponse>,
+    // ) {
+    //   state.loading = false;
+    //   state.isFiltered = false;
+    //   state.errorMessage = "";
+    //   state.filterData = action.payload;
+    //   state.isSuccessMessage = false;
+    // },
     filterProductsFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
       state.errorMessage = formatAuthErrorMessage(action.payload);
@@ -59,7 +59,7 @@ export const filterProductsSlice = createSlice({
 export const {
   filterProductsFetching,
   filterProductsReset,
-  filterProductsFetchSuccess,
+  // filterProductsFetchSuccess,
   filterProductsFetchError,
   filterProductsClearErrorMessage,
   setIsSuccess,

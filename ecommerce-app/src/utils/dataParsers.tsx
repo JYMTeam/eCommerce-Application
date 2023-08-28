@@ -52,6 +52,8 @@ export const formatPrice = (centAmount: number, currencyCode: string) => {
 };
 
 export const parseProducts = (products: ProductProjection[]) => {
+  console.log("parse products");
+  console.log(products);
   return products.map((product) => {
     let image: Image = PRODUCT_IMAGE_PLACEHOLDER;
     let description = PRODUCT_DESCRIPTION_PLACEHOLDER;
@@ -61,7 +63,10 @@ export const parseProducts = (products: ProductProjection[]) => {
     if (product.masterVariant.images && product.masterVariant.images[0]) {
       image = product.masterVariant.images[0];
     }
-    if (product.masterVariant.prices) {
+    if (
+      product.masterVariant.prices &&
+      product.masterVariant.prices.length !== 0
+    ) {
       const country = product.masterVariant.prices.find(
         (price) => price.country === DEFAULT_PRICE_COUNTRY,
       );
@@ -72,10 +77,13 @@ export const parseProducts = (products: ProductProjection[]) => {
         price = `${formatedPrice}`;
       }
     }
+    if (product.description) {
+      description = product.description[DEFAULT_LOCALE];
+    }
     return {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
-      description: product.description || description,
+      description,
       image,
       price,
     };
