@@ -231,3 +231,32 @@ export const parseProducts = (products: ProductProjection[]) => {
     };
   });
 };
+
+export const parseProductDetails = (product: ProductProjection) => {
+  let image: Image = PRODUCT_IMAGE_PLACEHOLDER;
+  let description = PRODUCT_DESCRIPTION_PLACEHOLDER;
+  let price = `${
+    CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
+  }0`;
+  if (product.masterVariant.images && product.masterVariant.images[0]) {
+    image = product.masterVariant.images[0];
+  }
+  if (product.masterVariant.prices) {
+    const country = product.masterVariant.prices.find(
+      (price) => price.country === DEFAULT_PRICE_COUNTRY,
+    );
+    if (country) {
+      const centAmount = country.value.centAmount;
+      const currencyCode = country.value.currencyCode;
+      const formatedPrice = formatPrice(centAmount, currencyCode);
+      price = `${formatedPrice}`;
+    }
+  }
+  return {
+    id: product.id,
+    name: product.name[DEFAULT_LOCALE],
+    description: product.description || description,
+    image,
+    price,
+  };
+};
