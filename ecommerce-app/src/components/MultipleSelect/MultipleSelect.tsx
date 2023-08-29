@@ -8,12 +8,13 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
+const SELECT_WIDTH = 200;
 
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: SELECT_WIDTH,
     },
   },
 };
@@ -47,7 +48,7 @@ export default function MultipleSelectList(props: ISelectBasicProps) {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, width: 300 }}>
+      <FormControl sx={{ m: 1, width: SELECT_WIDTH }}>
         <InputLabel id={props.placeholder}>{props.placeholder}</InputLabel>
         <Select
           labelId={props.placeholder}

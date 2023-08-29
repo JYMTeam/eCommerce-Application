@@ -14,6 +14,7 @@
 
 .slider-header {
   text-align: center;
+  margin-bottom: -5px;
 }
 
 .filter-box {
@@ -25,7 +26,6 @@
   padding-bottom: 1rem;
 }
 .filter-box__lists {
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -40,7 +40,8 @@
 }
 .filter-box__slider {
   display: flex;
-  flex: 1 1 auto;
+  padding: 0 1em;
+  /* flex: 1 1 auto; */
 }
 .filter-box__buttons {
   display: flex;

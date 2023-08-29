@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchAttributes } from "../../store/actions/attributesActions";
 import MultipleSelectList from "../MultipleSelect/MultipleSelect";
-import { Button } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import FilterIcon from "@mui/icons-material/FilterAlt";
+import FilterOffIcon from "@mui/icons-material/FilterAltOff";
 import Box from "@mui/material/Box";
 import {
   resetFilterParams,
@@ -82,8 +84,6 @@ export default function ProductsAttributes() {
           }
           return null;
         })}
-      </Box>
-      <Box className="filter-box__bottom">
         <Box className="filter-box__slider">
           <MinimumDistanceSlider
             value={sliderValue}
@@ -92,24 +92,24 @@ export default function ProductsAttributes() {
             max={MAX_SLIDER_VALUE}
           />
         </Box>
-        <Box className="filter-box__buttons">
-          <Button
-            className="filter-box__button"
-            variant="contained"
-            onClick={handleSubmitAll}
+      </Box>
+      <Box className="filter-box__buttons">
+        <IconButton
+          aria-label="Filter"
+          title="Filter"
+          onClick={handleSubmitAll}
+        >
+          <FilterIcon color="primary" />
+        </IconButton>
+        {filterParams && (
+          <IconButton
+            aria-label="FilterOff"
+            title="FilterOff"
+            onClick={handleResetFilters}
           >
-            Filter
-          </Button>
-          {filterParams && (
-            <Button
-              className="filter-box__button"
-              variant="contained"
-              onClick={handleResetFilters}
-            >
-              Clear
-            </Button>
-          )}
-        </Box>
+            <FilterOffIcon color="primary" />
+          </IconButton>
+        )}
       </Box>
     </div>
   );

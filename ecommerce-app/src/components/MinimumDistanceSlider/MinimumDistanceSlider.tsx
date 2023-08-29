@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { CURRENCY_SIGN } from "../../utils/utils";
+import { DEFAULT_CURRENCY } from "../../constants/constants";
 
 function valuetext(value: number) {
   return `${value}`;
@@ -10,8 +12,8 @@ function valuetext(value: number) {
 
 const SLIDER_MIN_DISTANCE = 50;
 const SLIDER_STEP = 50;
-const SLIDER_WIDTH = 300;
-const SLIDER_THUMB_SIZE = 20;
+const SLIDER_WIDTH = 200;
+const SLIDER_THUMB_SIZE = 15;
 const SLIDER_MARK_WIDTH = 1;
 const SLIDER_MARK_HEIGHT = 8;
 const SLIDER_TOP_MARK_DISTANCE = 5;
@@ -26,7 +28,7 @@ const IOSSlider = styled(Slider)(({ theme }) => ({
   "& .MuiSlider-thumb": {
     height: SLIDER_THUMB_SIZE,
     width: SLIDER_THUMB_SIZE,
-    backgroundColor: "#fff",
+    backgroundColor: "primary",
     boxShadow: iOSBoxShadow,
     "&:focus, &:hover, &.Mui-active": {
       boxShadow:
@@ -107,7 +109,7 @@ export default function MinimumDistanceSlider({
   return (
     <Box sx={{ width: SLIDER_WIDTH }}>
       <Typography className="slider-header" gutterBottom>
-        Price
+        price, {CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]}
       </Typography>
       <IOSSlider
         getAriaLabel={() => "Price range"}
