@@ -19,7 +19,6 @@ export const fetchproductDetails = (id: string) => {
         .execute();
 
       dispatch(productDetailsFetchSuccess(response.body));
-      console.log(productDetailsFetchSuccess(response.body));
     } catch (err) {
       const error = err as ClientResponse<ErrorResponse>;
       const body = error.body;

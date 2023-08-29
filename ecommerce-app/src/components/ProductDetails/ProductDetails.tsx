@@ -21,16 +21,14 @@ export default function ProductDetail(props: object) {
     (state) => state.productDetails,
   );
   const dispatch = useAppDispatch();
-  console.log(product);
+
   const parsedProduct = parseProducts([product as ProductProjection]);
   useEffect(() => {
     if (id) {
       dispatch(fetchproductDetails(id));
     }
   }, [dispatch, id]);
-
-  console.log(id);
-  console.log(product);
+  console.log(parsedProduct);
   if (loading) {
     return <p className="notification-message">Loading...</p>;
   }
