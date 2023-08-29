@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchProducts } from "../../store/actions/productsActions";
-import { parseProducts } from "../../utils/utils";
+import {
+  fetchProducts,
+  filterProducts,
+} from "../../store/actions/productsActions";
 import {
   Button,
   Card,
@@ -12,6 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import { parseProducts } from "../../utils/dataParsers";
 
 const MD_COLS = 3;
 const SM_COLS = 6;
@@ -28,16 +31,19 @@ const BUTTON_COLOR = "#F9C152";
 const CARD_DESC_MB = 1.5;
 
 export default function ProductsList() {
-  const { errorMessage, loading, products, page, limit } = useAppSelector(
-    (state) => state.products,
-  );
+  const { errorMessage, loading, products, page, limit, filterParams } =
+    useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
   const parsedProducts = parseProducts(products);
   const offset = limit * (page - 1);
 
   useEffect(() => {
-    dispatch(fetchProducts(offset));
-  }, [dispatch, offset]);
+    if (filterParams) {
+      dispatch(filterProducts(filterParams, offset));
+    } else {
+      dispatch(fetchProducts(offset));
+    }
+  }, [dispatch, offset, filterParams]);
 
   if (loading) {
     return <p className="notification-message">Loading...</p>;

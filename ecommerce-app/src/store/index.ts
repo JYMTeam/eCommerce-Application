@@ -4,7 +4,8 @@ import storage from "redux-persist/lib/storage";
 import userLoginReducer from "./slices/userLoginSlice";
 import userSignupReducer from "./slices/userSignupSlice";
 import productsReducer from "./slices/productsSlice";
-// добавляем конфиг для сохранения состояния стейта
+import attributesReducer from "./slices/attributesSlice";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userSignup: userSignupReducer,
   products: productsReducer,
+  attributes: attributesReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -27,7 +29,6 @@ export function setupStore() {
   });
 }
 
-//оперделяем типы
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore["dispatch"];

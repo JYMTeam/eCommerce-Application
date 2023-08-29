@@ -1,4 +1,4 @@
-import { getApiTokenRoot } from "./ClientBuilderWithExistingToken"; // Подставьте правильный путь
+import { getApiTokenRoot } from "../ClientBuilderWithExistingToken";
 
 describe("getApiTokenRoot", () => {
   it("should create an API token root with existing token", () => {

@@ -1,4 +1,4 @@
-import { getApiAnonymRoot } from "./ClientBuilderAnonym";
+import { getApiAnonymRoot } from "../ClientBuilderAnonym";
 
 describe("getApiAnonymRoot", () => {
   it("should return an API builder with correct project key", () => {

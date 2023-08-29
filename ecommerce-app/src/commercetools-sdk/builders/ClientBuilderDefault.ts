@@ -21,26 +21,27 @@ export const getCustomerScopes = () => {
   return customerScopes;
 };
 
-// Configure authMiddlewareOptions
-export const authMiddlewareOptions: AuthMiddlewareOptions = {
-  host: process.env.REACT_APP_AUTH_URL || "",
-  projectKey: projectKey,
-  credentials: {
-    clientId: process.env.REACT_APP_CLIENT_ID || "",
-    clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
-  },
-  scopes: getCustomerScopes(),
-  fetch,
+export const getAuthMiddlewareOptions = () => {
+  const authMiddlewareOptions: AuthMiddlewareOptions = {
+    host: process.env.REACT_APP_AUTH_URL || "",
+    projectKey: projectKey,
+    credentials: {
+      clientId: process.env.REACT_APP_CLIENT_ID || "",
+      clientSecret: process.env.REACT_APP_CLIENT_SECRET || "",
+    },
+    scopes: getCustomerScopes(),
+    fetch,
+  };
+
+  return authMiddlewareOptions;
 };
 
-// Configure httpMiddlewareOptions
 export const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: process.env.REACT_APP_API_URL || "",
   fetch,
 };
 
 export const defaultClient = new ClientBuilder()
-  .withProjectKey(projectKey) // .withProjectKey() is not required if the projectKey is included in authMiddlewareOptions
-  // .withClientCredentialsFlow(authMiddlewareOptions)
+  .withProjectKey(projectKey)
   .withHttpMiddleware(httpMiddlewareOptions);
 // .withLoggerMiddleware(); // Include middleware for logging

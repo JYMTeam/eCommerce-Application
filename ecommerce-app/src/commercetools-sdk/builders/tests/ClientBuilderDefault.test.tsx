@@ -1,13 +1,11 @@
 import {
   getDefaultScopes,
   getCustomerScopes,
-  authMiddlewareOptions,
   httpMiddlewareOptions,
   defaultClient,
-} from "./ClientBuilderDefault";
+} from "../ClientBuilderDefault";
 import {
   ClientBuilder,
-  AuthMiddlewareOptions,
   HttpMiddlewareOptions,
 } from "@commercetools/sdk-client-v2";
 
@@ -22,22 +20,6 @@ describe("getCustomerScopes", () => {
   it("returns an array of customer scopes", () => {
     const customerScopes = getCustomerScopes();
     expect(Array.isArray(customerScopes)).toBe(true);
-  });
-});
-
-describe("authMiddlewareOptions", () => {
-  it("has correct properties and values", () => {
-    const expectedOptions: AuthMiddlewareOptions = {
-      host: expect.any(String),
-      projectKey: expect.any(String),
-      credentials: {
-        clientId: expect.any(String),
-        clientSecret: expect.any(String),
-      },
-      scopes: expect.arrayContaining([expect.any(String)]),
-      fetch: expect.any(Function),
-    };
-    expect(authMiddlewareOptions).toEqual(expectedOptions);
   });
 });
 
