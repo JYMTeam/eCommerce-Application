@@ -1,7 +1,18 @@
-import { BaseAddress, CustomerDraft } from "@commercetools/platform-sdk";
+import {
+  BaseAddress,
+  CustomerDraft,
+  ProductProjection,
+  Image,
+} from "@commercetools/platform-sdk";
 import { IFormInitialValues, ISignupInitialValues } from "../types";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { DEFAULT_LOCALE } from "../constants/constants";
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_LOCALE,
+  DEFAULT_PRICE_COUNTRY,
+  PRODUCT_DESCRIPTION_PLACEHOLDER,
+  PRODUCT_IMAGE_PLACEHOLDER,
+} from "../constants/constants";
 
 export const subtractYears = (date: Date, years: number) => {
   date.setFullYear(date.getFullYear() - years);
