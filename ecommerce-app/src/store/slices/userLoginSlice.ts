@@ -2,12 +2,11 @@ import { AuthErrorResponse, Customer } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TokenStore } from "@commercetools/sdk-client-v2";
 import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
-import { passToken } from "../../commercetools-sdk/PassTokenCache";
+import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 
 export interface IUserLoginState {
   loading: boolean;
   isLogged: boolean;
-  error: AuthErrorResponse | null;
   errorMessage: string;
   loginData: Customer | null;
   tokenData: TokenStore | null;
@@ -17,7 +16,6 @@ export interface IUserLoginState {
 const initialState: IUserLoginState = {
   loading: false,
   isLogged: false,
-  error: null,
   errorMessage: "",
   loginData: null,
   tokenData: null,
@@ -31,33 +29,25 @@ export const userLoginSlice = createSlice({
     userLoginFetching(state) {
       state.loading = true;
     },
-    userLoginReset(state) {
-      state.loading = false;
-      state.isLogged = false;
-      state.error = null;
-      state.errorMessage = "";
-      state.loginData = null;
-      state.tokenData = null;
-      state.isSuccessMessage = false;
-
+    userLoginReset() {
       const cache: TokenStore = {
         token: "",
         expirationTime: 0,
         refreshToken: undefined,
       };
       passToken.set(cache);
+      return { ...initialState };
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
       state.loading = false;
-      state.isLogged = true;
-      state.error = null;
       state.errorMessage = "";
-      state.loginData = action.payload;
       state.isSuccessMessage = false;
+
+      state.isLogged = true;
+      state.loginData = action.payload;
     },
     userLoginFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
       state.errorMessage = formatAuthErrorMessage(action.payload);
       state.loginData = null;
     },
@@ -73,7 +63,6 @@ export const userLoginSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   userLoginFetching,
   userLoginReset,

@@ -26,6 +26,12 @@ const countryOptions = [
   { label: "Germany", countryCode: "DE", postalCodeFormat: "12345" },
 ];
 
+const initialCountryOptions: ICountriesOptions = {
+  label: "",
+  countryCode: "",
+  postalCodeFormat: "",
+};
+
 const initialLoginValues: IFormInitialValues = {
   email: "",
   password: "",
@@ -52,12 +58,6 @@ const initialSignUpValues: ISignupInitialValues = {
   defaultBillingCheck: [],
 };
 
-const initialCountryOptions: ICountriesOptions = {
-  label: "",
-  countryCode: "",
-  postalCodeFormat: "",
-};
-
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
@@ -65,6 +65,8 @@ const PRODUCT_IMAGE_PLACEHOLDER: Image = {
   url: "images/product-placeholder.webp",
   dimensions: { h: 1000, w: 1000 },
 };
+
+const PRODUCT_TYPE_INDEX = 6; //TODO: set real index after uploading data to server
 
 export {
   AT_SIGN_DOMAIN_REGEX,
@@ -79,12 +81,13 @@ export {
   countryOptions,
   initialLoginValues,
   initialSignUpValues,
+  initialCountryOptions,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
+  PRODUCT_TYPE_INDEX,
   DEFAULT_PRICE_COUNTRY,
   DEFAULT_CURRENCY,
   FORM_DATE_FORMAT,
   DEFAULT_PRODUCTS_LIMIT,
-  initialCountryOptions,
 };

@@ -6,28 +6,29 @@ import {
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
+import { SelectedFilterValues } from "../../components/ProductsList/ProductsAttributes";
 
 const STR_PLACEHOLDER = "";
 export interface IProductsState {
   loading: boolean;
-  error: ErrorResponse | null;
   errorMessage: string;
   products: ProductProjection[];
   page: number;
   limit: number;
   total?: number | undefined;
   offset: number;
+  filterParams: SelectedFilterValues | null;
 }
 
 const initialState: IProductsState = {
   loading: false,
-  error: null,
   errorMessage: STR_PLACEHOLDER,
   products: [],
   page: 1,
   limit: DEFAULT_PRODUCTS_LIMIT,
   total: 0,
   offset: 0,
+  filterParams: null,
 };
 
 type pagePayload = {
@@ -41,7 +42,7 @@ export const productsSlice = createSlice({
     productsFetching(state) {
       state.loading = true;
     },
-    productsReset(state) {
+    productsReset() {
       return { ...initialState };
     },
     productsFetchSuccess(
@@ -49,7 +50,6 @@ export const productsSlice = createSlice({
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
       state.loading = false;
-      state.error = null;
       state.errorMessage = "";
       state.products = action.payload.results;
       state.total = action.payload.total;
@@ -58,16 +58,35 @@ export const productsSlice = createSlice({
     },
     productsFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
       state.errorMessage = formatProductsErrorMessage(action.payload);
       state.products = [];
     },
-    productsErrorMessage(state) {
-      state.error = null;
+    productsClearErrorMessage(state) {
       state.errorMessage = STR_PLACEHOLDER;
     },
     productsPage(state, action: PayloadAction<pagePayload>) {
       state.page = action.payload.page;
+    },
+    filterProductsFetchSuccess(
+      state,
+      action: PayloadAction<ProductProjectionPagedQueryResponse>,
+    ) {
+      state.loading = false;
+      state.errorMessage = "";
+      state.products = action.payload.results;
+      state.total = action.payload.total;
+      state.limit = action.payload.limit;
+      state.offset = action.payload.offset;
+    },
+    filterParams(state, action: PayloadAction<SelectedFilterValues>) {
+      state.page = 1;
+      state.limit = DEFAULT_PRODUCTS_LIMIT;
+      state.total = 0;
+      state.offset = 0;
+      state.filterParams = action.payload;
+    },
+    filterEmpty(state) {
+      state.filterParams = null;
     },
   },
 });
@@ -77,6 +96,10 @@ export const {
   productsFetchSuccess,
   productsFetchError,
   productsPage,
+  productsReset,
+  filterProductsFetchSuccess,
+  filterParams,
+  filterEmpty,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

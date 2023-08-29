@@ -6,7 +6,8 @@ import userSignupReducer from "./slices/userSignupSlice";
 import productsReducer from "./slices/productsSlice";
 import productDetailsReducer from "./slices/productDetailsSlice";
 
-// добавляем конфиг для сохранения состояния стейта
+import attributesReducer from "./slices/attributesSlice";
+
 const persistConfig = {
   key: "root",
   storage,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   userSignup: userSignupReducer,
   products: productsReducer,
   productDetails: productDetailsReducer,
+  attributes: attributesReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -30,7 +32,6 @@ export function setupStore() {
   });
 }
 
-//оперделяем типы
 export type RootState = ReturnType<typeof rootReducer>;
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore["dispatch"];
