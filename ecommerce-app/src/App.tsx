@@ -14,6 +14,7 @@ import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { fetchLoginWithToken } from "./store/actions/userLoginActions";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -64,6 +65,7 @@ function App() {
                 }
               ></Route>
               <Route path="/shop" element={<ShopPage />}></Route>
+              <Route path="/shop/:id" element={<ProductDetailsPage />}></Route>
               <Route path="/cart" element={<CartPage />}></Route>
               <Route path="*" element={<NotFoundPage />}></Route>
             </Routes>
