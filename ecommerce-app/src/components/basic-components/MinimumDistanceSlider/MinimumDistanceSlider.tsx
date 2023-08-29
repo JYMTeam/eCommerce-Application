@@ -3,8 +3,8 @@ import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { CURRENCY_SIGN } from "../../utils/utils";
-import { DEFAULT_CURRENCY } from "../../constants/constants";
+import { CURRENCY_SIGN } from "../../../utils/utils";
+import { DEFAULT_CURRENCY } from "../../../constants/constants";
 
 function valuetext(value: number) {
   return `${value}`;
@@ -108,8 +108,8 @@ export default function MinimumDistanceSlider({
 
   return (
     <Box sx={{ width: SLIDER_WIDTH }}>
-      <Typography className="slider-header" gutterBottom>
-        price, {CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]}
+      <Typography variant="body2" className="slider-header" gutterBottom>
+        PRICE, {CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]}
       </Typography>
       <IOSSlider
         getAriaLabel={() => "Price range"}

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchProducts,
-  filterProducts,
+  filterAndSortProducts,
   setProductsPage,
 } from "../../store/actions/productsActions";
 import { Pagination } from "@mui/material";
@@ -10,6 +10,7 @@ import "./products.css";
 export default function ProductsPagination() {
   const { loading, page, limit, total, errorMessage, filterParams } =
     useAppSelector((state) => state.products);
+
   const dispatch = useAppDispatch();
 
   const totalPages = total ? Math.ceil(total / limit) : 0;
@@ -18,7 +19,7 @@ export default function ProductsPagination() {
     const offset = limit * (pageNumber - 1);
     dispatch(setProductsPage(pageNumber));
     if (filterParams) {
-      dispatch(filterProducts(filterParams, offset));
+      dispatch(filterAndSortProducts(filterParams, offset));
     } else {
       dispatch(fetchProducts(offset));
     }

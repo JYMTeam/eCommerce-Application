@@ -48,3 +48,9 @@ export interface IProductsFormattedAttribute {
   name: string;
   values: string[];
 }
+
+export enum SortMethods {
+  PRICE_HIGH = "price high",
+  PRICE_LOW = "price low",
+  NAME = "name",
+}

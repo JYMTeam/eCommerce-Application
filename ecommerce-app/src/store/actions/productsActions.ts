@@ -11,13 +11,15 @@ import {
   filterEmpty,
 } from "../slices/productsSlice";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
-import { SelectedFilterValues } from "../../components/ProductsList/ProductsAttributes";
+import { SelectedFilterValues } from "../../components/ProductsNavigation/ProductsAttributes";
 import { convertUSDToCents } from "../../utils/utils";
+import { SortMethods } from "../../types";
 
 const FILTER_QUERY_ATTRIBUTES_BEGIN = "variants.attributes";
 const FILTER_QUERY_PRICE_BEGIN = "variants.price.centAmount";
 const FILTER_QUERY_KEY = "key";
 const FILTER_PRICE_ATTRIBUTE = "price";
+const SORT_ATTRIBUTE = "sort";
 
 export const fetchProducts = (offset = 0) => {
   return async (dispatch: AppDispatch) => {
@@ -57,18 +59,18 @@ export const setFilterParams = (lists: SelectedFilterValues) => {
   };
 };
 
-export const filterProducts = (
+export const filterAndSortProducts = (
   selectedValues: SelectedFilterValues,
   offset = 0,
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productsFetching());
-      const filterOptions = getFilterOptions(selectedValues);
+      const queryOptions = getFilterAndSortOptions(selectedValues);
       const queryArgs = {
         limit: DEFAULT_PRODUCTS_LIMIT,
         offset,
-        filter: filterOptions,
+        ...queryOptions,
       };
       const answer = await getApiEntryRoot()
         .productProjections()
@@ -92,8 +94,9 @@ export const resetFilterParams = () => {
   };
 };
 
-const getFilterOptions = (lists: SelectedFilterValues) => {
+const getFilterAndSortOptions = (lists: SelectedFilterValues) => {
   const filterOptions: string[] = [];
+  let sortOptions: string = "";
 
   Object.entries(lists).forEach((list) => {
     const [listName, listAttributes] = list;
@@ -105,6 +108,19 @@ const getFilterOptions = (lists: SelectedFilterValues) => {
 
       const filterOption = `${FILTER_QUERY_PRICE_BEGIN}:range (${centsMin} to ${centsMax})`;
       filterOptions.push(filterOption);
+    } else if (listName === SORT_ATTRIBUTE) {
+      const [sortMethod] = listAttributes;
+      switch (sortMethod) {
+        case SortMethods.PRICE_LOW:
+          sortOptions = `price asc`;
+          break;
+        case SortMethods.PRICE_HIGH:
+          sortOptions = `price desc`;
+          break;
+        case SortMethods.NAME:
+          sortOptions = "name.en-us asc";
+          break;
+      }
     } else {
       listAttributes.forEach((attribute) => {
         const filterOption = `${FILTER_QUERY_ATTRIBUTES_BEGIN}.${currentKeyList}.${FILTER_QUERY_KEY}:"${attribute}"`;
@@ -112,7 +128,14 @@ const getFilterOptions = (lists: SelectedFilterValues) => {
       });
     }
   });
-  return filterOptions;
+  const queryOptions: { [key: string]: string[] } = {
+    filter: filterOptions,
+  };
+
+  if (sortOptions !== "") {
+    queryOptions["sort"] = [sortOptions];
+  }
+  return queryOptions;
 };
 
 const convertPriceToCentsString = (usdAmount: string) => {

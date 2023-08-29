@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchProducts,
-  filterProducts,
+  filterAndSortProducts,
 } from "../../store/actions/productsActions";
 import {
   Button,
@@ -39,7 +39,7 @@ export default function ProductsList() {
 
   useEffect(() => {
     if (filterParams) {
-      dispatch(filterProducts(filterParams, offset));
+      dispatch(filterAndSortProducts(filterParams, offset));
     } else {
       dispatch(fetchProducts(offset));
     }

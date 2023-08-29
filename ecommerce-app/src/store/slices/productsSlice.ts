@@ -6,7 +6,7 @@ import {
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
-import { SelectedFilterValues } from "../../components/ProductsList/ProductsAttributes";
+import { SelectedFilterValues } from "../../components/ProductsNavigation/ProductsAttributes";
 
 const STR_PLACEHOLDER = "";
 export interface IProductsState {
