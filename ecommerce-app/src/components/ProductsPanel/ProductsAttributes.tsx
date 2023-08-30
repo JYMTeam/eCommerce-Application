@@ -28,9 +28,8 @@ const sortAttributes = {
   values: [SortMethods.PRICE_HIGH, SortMethods.PRICE_LOW, SortMethods.NAME],
 };
 export default function ProductsAttributes() {
-  const [selectedValues, setSelectedValues] = useState<SelectedFilterValues>(
-    {},
-  );
+  const [selectedListsValues, setSelectedListsValues] =
+    useState<SelectedFilterValues>({});
   const [priceValue, setPriceValue] = useState<number[]>([
     MIN_SLIDER_VALUE,
     MAX_SLIDER_VALUE,
@@ -44,24 +43,33 @@ export default function ProductsAttributes() {
 
   const { filterParams } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (filterParams) {
+      const { sort, price, otherLists } = filterParams;
+
+      if (sort) {
+        setSelectSortValue(sort);
+      }
+
+      if (price) {
+        setPriceValue(price);
+      }
+
+      if (otherLists) {
+        setSelectedListsValues(otherLists);
+      }
+    }
+  }, [filterParams]);
+
   useEffect(() => {
     if (!attributesData.length) {
       dispatch(fetchAttributes());
     }
   }, [dispatch, attributesData.length]);
 
-  // const setAllAttributes = (filterParams: SelectedFilterValues) => {
-  //   Object.keys(filterParams).forEach(filterName => {
-  //     const filterValues = filterParams[filterName];
-
-  //     switch(filterName) {
-  //       case
-  //     }
-  //   });
-  // }
-
   const handleListChange = (listName: string, values: string[]) => {
-    setSelectedValues((prevSelectedValues) => ({
+    setSelectedListsValues((prevSelectedValues) => ({
       ...prevSelectedValues,
       [listName]: values,
     }));
@@ -70,7 +78,7 @@ export default function ProductsAttributes() {
   const handleSubmitAll = async () => {
     try {
       const nonEmptySelectedValues: SelectedFilterValues =
-        getNonEmptySelectedValues(selectedValues);
+        getNonEmptySelectedValues(selectedListsValues);
 
       const updatedFilterParams: SelectedFilterAndSortValues = {
         [FilterAndSortNames.FILTER_OTHER_LISTS_ATTRIBUTE]:
@@ -90,7 +98,7 @@ export default function ProductsAttributes() {
   };
 
   const handleResetFilters = async () => {
-    setSelectedValues({});
+    setSelectedListsValues({});
     setSelectSortValue("");
     setPriceValue([MIN_SLIDER_VALUE, MAX_SLIDER_VALUE]);
     dispatch(resetFilterParams());
@@ -119,7 +127,7 @@ export default function ProductsAttributes() {
                 key={attribute.name}
                 placeholder={attribute.name}
                 elements={attribute.values}
-                selectedValues={selectedValues[attribute.name] || []}
+                selectedValues={selectedListsValues[attribute.name] || []}
                 onChange={(values) => handleListChange(attribute.name, values)}
               />
             );
