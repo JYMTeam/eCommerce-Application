@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./products-navigation.css";
+import "./products-panel.css";
 import { Box, Button, Drawer } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";

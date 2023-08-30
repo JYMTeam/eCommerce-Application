@@ -14,7 +14,12 @@ import MinimumDistanceSlider from "../basic-components/MinimumDistanceSlider/Min
 import BasicSelect from "../basic-components/BasicSelect/BasicSelect";
 import { Button, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import { SortMethods } from "../../types";
+import {
+  FilterAndSortNames,
+  SelectedFilterAndSortValues,
+  SelectedFilterValues,
+  SortMethods,
+} from "../../types";
 
 const MIN_SLIDER_VALUE = 0;
 const MAX_SLIDER_VALUE = 1000;
@@ -22,30 +27,38 @@ const sortAttributes = {
   name: "sort",
   values: [SortMethods.PRICE_HIGH, SortMethods.PRICE_LOW, SortMethods.NAME],
 };
-
-export type SelectedFilterValues = { [key: string]: string[] };
-
 export default function ProductsAttributes() {
+  const [selectedValues, setSelectedValues] = useState<SelectedFilterValues>(
+    {},
+  );
+  const [priceValue, setPriceValue] = useState<number[]>([
+    MIN_SLIDER_VALUE,
+    MAX_SLIDER_VALUE,
+  ]);
+
+  const [selectSortValue, setSelectSortValue] = useState("");
+
   const { errorMessage, attributesData } = useAppSelector(
     (state) => state.attributes,
   );
 
   const { filterParams } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
-
   useEffect(() => {
-    dispatch(fetchAttributes());
-  }, [dispatch]);
+    if (!attributesData.length) {
+      dispatch(fetchAttributes());
+    }
+  }, [dispatch, attributesData.length]);
 
-  const [selectedValues, setSelectedValues] = useState<SelectedFilterValues>(
-    {},
-  );
-  const [sliderValue, setSliderValue] = useState<number[]>([
-    MIN_SLIDER_VALUE,
-    MAX_SLIDER_VALUE,
-  ]);
+  // const setAllAttributes = (filterParams: SelectedFilterValues) => {
+  //   Object.keys(filterParams).forEach(filterName => {
+  //     const filterValues = filterParams[filterName];
 
-  const [selectSortValue, setSelectSortValue] = useState("");
+  //     switch(filterName) {
+  //       case
+  //     }
+  //   });
+  // }
 
   const handleListChange = (listName: string, values: string[]) => {
     setSelectedValues((prevSelectedValues) => ({
@@ -57,11 +70,19 @@ export default function ProductsAttributes() {
   const handleSubmitAll = async () => {
     try {
       const nonEmptySelectedValues: SelectedFilterValues =
-        getNonEmptySelectedValues(selectedValues, selectSortValue);
-      const updatedFilterParams = {
-        ...nonEmptySelectedValues,
-        price: sliderValue.map(String),
+        getNonEmptySelectedValues(selectedValues);
+
+      const updatedFilterParams: SelectedFilterAndSortValues = {
+        [FilterAndSortNames.FILTER_OTHER_LISTS_ATTRIBUTE]:
+          nonEmptySelectedValues,
+        [FilterAndSortNames.FILTER_PRICE_ATTRIBUTE]: priceValue,
       };
+
+      if (selectSortValue !== "") {
+        updatedFilterParams[FilterAndSortNames.SORT_ATTRIBUTE] =
+          selectSortValue;
+      }
+
       dispatch(setFilterParams(updatedFilterParams));
     } catch (error) {
       console.error("Error sending data:", error);
@@ -71,7 +92,7 @@ export default function ProductsAttributes() {
   const handleResetFilters = async () => {
     setSelectedValues({});
     setSelectSortValue("");
-    setSliderValue([MIN_SLIDER_VALUE, MAX_SLIDER_VALUE]);
+    setPriceValue([MIN_SLIDER_VALUE, MAX_SLIDER_VALUE]);
     dispatch(resetFilterParams());
   };
 
@@ -107,8 +128,8 @@ export default function ProductsAttributes() {
         })}
         <Box className="filter-box__slider">
           <MinimumDistanceSlider
-            value={sliderValue}
-            onChange={setSliderValue}
+            value={priceValue}
+            onChange={setPriceValue}
             min={MIN_SLIDER_VALUE}
             max={MAX_SLIDER_VALUE}
           />
@@ -132,10 +153,7 @@ export default function ProductsAttributes() {
   );
 }
 
-const getNonEmptySelectedValues = (
-  selectedValues: SelectedFilterValues,
-  sortValue: string,
-) => {
+const getNonEmptySelectedValues = (selectedValues: SelectedFilterValues) => {
   const nonEmptySelectedValues = Object.entries(
     selectedValues,
   ).reduce<SelectedFilterValues>((acc, [key, value]) => {
@@ -144,10 +162,6 @@ const getNonEmptySelectedValues = (
     }
     return acc;
   }, {});
-
-  if (sortValue !== "") {
-    nonEmptySelectedValues[sortAttributes.name] = [sortValue];
-  }
 
   return nonEmptySelectedValues;
 };

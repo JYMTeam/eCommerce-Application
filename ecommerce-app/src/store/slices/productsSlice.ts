@@ -6,7 +6,7 @@ import {
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
-import { SelectedFilterValues } from "../../components/ProductsNavigation/ProductsAttributes";
+import { SelectedFilterAndSortValues } from "../../types";
 
 const STR_PLACEHOLDER = "";
 export interface IProductsState {
@@ -17,7 +17,7 @@ export interface IProductsState {
   limit: number;
   total?: number | undefined;
   offset: number;
-  filterParams: SelectedFilterValues | null;
+  filterParams: SelectedFilterAndSortValues | null;
 }
 
 const initialState: IProductsState = {
@@ -78,7 +78,7 @@ export const productsSlice = createSlice({
       state.limit = action.payload.limit;
       state.offset = action.payload.offset;
     },
-    filterParams(state, action: PayloadAction<SelectedFilterValues>) {
+    filterParams(state, action: PayloadAction<SelectedFilterAndSortValues>) {
       state.page = 1;
       state.limit = DEFAULT_PRODUCTS_LIMIT;
       state.total = 0;

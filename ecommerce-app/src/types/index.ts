@@ -54,3 +54,16 @@ export enum SortMethods {
   PRICE_LOW = "price low",
   NAME = "name",
 }
+
+export enum FilterAndSortNames {
+  FILTER_PRICE_ATTRIBUTE = "price",
+  SORT_ATTRIBUTE = "sort",
+  FILTER_OTHER_LISTS_ATTRIBUTE = "otherLists",
+}
+
+export type SelectedFilterAndSortValues = {
+  [FilterAndSortNames.SORT_ATTRIBUTE]?: string;
+  [FilterAndSortNames.FILTER_PRICE_ATTRIBUTE]?: number[];
+  [FilterAndSortNames.FILTER_OTHER_LISTS_ATTRIBUTE]?: SelectedFilterValues;
+};
+export type SelectedFilterValues = { [key: string]: string[] };
