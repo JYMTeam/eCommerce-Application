@@ -4,6 +4,8 @@ import storage from "redux-persist/lib/storage";
 import userLoginReducer from "./slices/userLoginSlice";
 import userSignupReducer from "./slices/userSignupSlice";
 import productsReducer from "./slices/productsSlice";
+import productDetailsReducer from "./slices/productDetailsSlice";
+
 import attributesReducer from "./slices/attributesSlice";
 
 const persistConfig = {
@@ -15,6 +17,7 @@ const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userSignup: userSignupReducer,
   products: productsReducer,
+  productDetails: productDetailsReducer,
   attributes: attributesReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
