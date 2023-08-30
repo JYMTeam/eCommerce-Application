@@ -7,18 +7,18 @@ import {
 } from "../slices/productDetailsSlice";
 import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
 
-export const fetchproductDetails = (id: string) => {
+export const fetchProductDetails = (id: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productDetailsFetching());
 
-      const response = await getApiEntryRoot()
+      const answer = await getApiEntryRoot()
         .productProjections()
         .withId({ ID: id })
         .get()
         .execute();
 
-      dispatch(productDetailsFetchSuccess(response.body));
+      dispatch(productDetailsFetchSuccess(answer.body));
     } catch (err) {
       const error = err as ClientResponse<ErrorResponse>;
       const body = error.body;

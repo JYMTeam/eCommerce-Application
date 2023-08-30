@@ -1,3 +1,5 @@
+import { Image } from "@commercetools/platform-sdk";
+
 export interface IFormInitialValues {
   email: string;
   password: string;
@@ -47,4 +49,12 @@ export interface ICountriesOptions {
 export interface IProductsFormattedAttribute {
   name: string;
   values: string[];
+}
+
+export interface IParcedProduct {
+  id: string;
+  name: string;
+  description: string;
+  image: Image;
+  price: string;
 }

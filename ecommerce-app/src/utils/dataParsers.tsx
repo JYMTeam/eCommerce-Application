@@ -24,7 +24,7 @@ import {
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
 } from "../constants/constants";
-import { IProductsFormattedAttribute } from "../types";
+import { IParcedProduct, IProductsFormattedAttribute } from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
 export const parseProducts = (products: ProductProjection[]) => {
@@ -34,6 +34,7 @@ export const parseProducts = (products: ProductProjection[]) => {
     let price = `${
       CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
     }0`;
+
     if (product.masterVariant.images && product.masterVariant.images[0]) {
       image = product.masterVariant.images[0];
     }
@@ -54,13 +55,14 @@ export const parseProducts = (products: ProductProjection[]) => {
     if (product.description) {
       description = product.description[DEFAULT_LOCALE];
     }
-    return {
+    const parcedProduct: IParcedProduct = {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
       description,
       image,
       price,
     };
+    return parcedProduct;
   });
 };
 

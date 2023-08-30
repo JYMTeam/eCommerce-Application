@@ -1,39 +1,45 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchproductDetails } from "../../store/actions/productDetailsActions";
-import { ProductProjection } from "@commercetools/platform-sdk";
+import { fetchProductDetails } from "../../store/actions/productDetailsActions";
 import { parseProducts } from "../../utils/dataParsers";
 import { Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import { IParcedProduct } from "../../types";
+
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;
 const IMG_HEIGHT = "auto";
 const IMG_WIDTH = "100%";
-const PROUCT_TITLE_FONTSIZE = "2em";
-const PROUCT_DESC_FONTSIZE = "1em";
-const PROUCT_PRICE_FONTSIZE = "1.4em";
-const PROUCT_DESC_MARGIN = 3;
-export default function ProductDetail(props: object) {
+const PRODUCT_TITLE_FONTSIZE = "2em";
+const PRODUCT_DESC_FONTSIZE = "1em";
+const PRODUCT_PRICE_FONTSIZE = "1.4em";
+const PRODUCT_DESC_MARGIN = 3;
+
+export default function ProductDetail() {
   const { id } = useParams();
-  fetchproductDetails(id as string);
   const { errorMessage, loading, product } = useAppSelector(
     (state) => state.productDetails,
   );
+
   const dispatch = useAppDispatch();
 
-  const parsedProduct = parseProducts([product as ProductProjection]);
   useEffect(() => {
     if (id) {
-      dispatch(fetchproductDetails(id));
+      dispatch(fetchProductDetails(id));
     }
   }, [dispatch, id]);
-  console.log(parsedProduct);
+
   if (loading) {
     return <p className="notification-message">Loading...</p>;
   }
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
+  }
+
+  let parsedProduct: IParcedProduct[] = [];
+  if (product) {
+    parsedProduct = parseProducts([product]);
   }
   return (
     <div>
@@ -81,7 +87,7 @@ export default function ProductDetail(props: object) {
               gutterBottom
               variant="h3"
               component="h3"
-              sx={{ fontSize: PROUCT_TITLE_FONTSIZE }}
+              sx={{ fontSize: PRODUCT_TITLE_FONTSIZE }}
             >
               {name}
             </Typography>
@@ -89,9 +95,9 @@ export default function ProductDetail(props: object) {
               variant="body2"
               color="text.secondary"
               sx={{
-                mt: PROUCT_DESC_MARGIN,
-                mb: PROUCT_DESC_MARGIN,
-                fontSize: PROUCT_DESC_FONTSIZE,
+                mt: PRODUCT_DESC_MARGIN,
+                mb: PRODUCT_DESC_MARGIN,
+                fontSize: PRODUCT_DESC_FONTSIZE,
               }}
             >
               {description as unknown as string}
@@ -99,9 +105,9 @@ export default function ProductDetail(props: object) {
             <Typography
               color="text.secondary"
               sx={{
-                mt: PROUCT_DESC_MARGIN,
-                mb: PROUCT_DESC_MARGIN,
-                fontSize: PROUCT_PRICE_FONTSIZE,
+                mt: PRODUCT_DESC_MARGIN,
+                mb: PRODUCT_DESC_MARGIN,
+                fontSize: PRODUCT_PRICE_FONTSIZE,
               }}
             >
               {price}
