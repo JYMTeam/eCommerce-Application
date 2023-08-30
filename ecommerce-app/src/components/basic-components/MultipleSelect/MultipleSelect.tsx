@@ -25,6 +25,8 @@ function getStyles(name: string, personName: string[], theme: Theme) {
       personName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
+    backgroundColor:
+      personName.indexOf(name) !== -1 ? "#f9c15266" : "transparent",
   };
 }
 

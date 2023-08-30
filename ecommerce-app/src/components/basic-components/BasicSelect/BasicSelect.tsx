@@ -4,6 +4,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import "./BasicSelect.css";
 
 interface IBasicSelectProps {
   placeholder: string;
@@ -31,7 +32,16 @@ export default function BasicSelect(props: IBasicSelectProps) {
           onChange={handleChange}
         >
           {props.elements.map((element) => (
-            <MenuItem key={element} value={element}>
+            <MenuItem
+              key={element}
+              value={element}
+              classes={{
+                root:
+                  element === selectedValue
+                    ? "selectedMenuItem"
+                    : "unselectedMenuItem",
+              }}
+            >
               {element}
             </MenuItem>
           ))}

@@ -47,18 +47,9 @@ export default function ProductsAttributes() {
   useEffect(() => {
     if (filterParams) {
       const { sort, price, otherLists } = filterParams;
-
-      if (sort) {
-        setSelectSortValue(sort);
-      }
-
-      if (price) {
-        setPriceValue(price);
-      }
-
-      if (otherLists) {
-        setSelectedListsValues(otherLists);
-      }
+      if (sort) setSelectSortValue(sort);
+      if (price) setPriceValue(price);
+      if (otherLists) setSelectedListsValues(otherLists);
     }
   }, [filterParams]);
 
@@ -109,7 +100,12 @@ export default function ProductsAttributes() {
   }
   return (
     <div className="filter-box">
-      <Typography variant="h6" component="h3" sx={{ flexGrow: 1 }}>
+      <Typography
+        className="filter-box__header"
+        variant="h6"
+        component="h3"
+        sx={{ flexGrow: 1 }}
+      >
         FILTER & SORT
       </Typography>
       <BasicSelect

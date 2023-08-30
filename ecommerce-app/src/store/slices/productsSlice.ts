@@ -18,6 +18,7 @@ export interface IProductsState {
   total?: number | undefined;
   offset: number;
   filterParams: SelectedFilterAndSortValues | null;
+  filterCount: number;
 }
 
 const initialState: IProductsState = {
@@ -29,6 +30,7 @@ const initialState: IProductsState = {
   total: 0,
   offset: 0,
   filterParams: null,
+  filterCount: 0,
 };
 
 type pagePayload = {
@@ -87,6 +89,10 @@ export const productsSlice = createSlice({
     },
     filterEmpty(state) {
       state.filterParams = null;
+      state.filterCount = 0;
+    },
+    filterCount(state, action: PayloadAction<number>) {
+      state.filterCount = action.payload;
     },
   },
 });
@@ -100,6 +106,7 @@ export const {
   filterProductsFetchSuccess,
   filterParams,
   filterEmpty,
+  filterCount,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

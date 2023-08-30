@@ -11,8 +11,12 @@
   justify-content: space-between;
   flex-wrap: nowrap;
   align-items: center;
+  padding-bottom: 1.5rem;
+}
+.filter-box__header {
   padding-bottom: 1rem;
 }
+
 .filter-box__lists {
   display: flex;
   flex-direction: column;
@@ -21,6 +25,7 @@
   justify-content: flex-start;
   align-items: center;
   padding-bottom: 1rem;
+  padding-top: 1rem;
 }
 
 .filter-box__slider {
@@ -41,4 +46,9 @@
   display: flex;
   width: 100%;
   justify-content: right;
+}
+
+.filter-box__divider {
+  width: 200px;
+  padding-top: 1em;
 }

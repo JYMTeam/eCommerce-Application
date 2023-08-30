@@ -9,6 +9,7 @@ import {
   filterProductsFetchSuccess,
   filterParams,
   filterEmpty,
+  filterCount,
 } from "../slices/productsSlice";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { convertUSDToCents } from "../../utils/utils";
@@ -88,6 +89,12 @@ export const filterAndSortProducts = (
 export const resetFilterParams = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(filterEmpty());
+  };
+};
+
+export const setFilterCount = (count: number) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(filterCount(count));
   };
 };
 
