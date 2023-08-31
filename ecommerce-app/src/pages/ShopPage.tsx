@@ -1,12 +1,12 @@
 import React from "react";
 import ProductsList from "../components/ProductsList/ProductsList";
 import ProductsPagination from "../components/ProductsList/ProductsPagination";
-import ProductsAttributes from "../components/ProductsList/ProductsAttributes";
+import { ProductsPanel } from "../components/ProductsPanel/ProductsPanel";
 
 export function ShopPage() {
   return (
     <>
-      <ProductsAttributes />
+      <ProductsPanel />
       <ProductsList />
       <ProductsPagination />
     </>

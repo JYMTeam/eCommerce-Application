@@ -45,16 +45,54 @@ export interface ICountriesOptions {
   countryCode: string;
   postalCodeFormat: string;
 }
-
-export interface IProductsFormattedAttribute {
-  name: string;
-  values: string[];
-}
-
 export interface IParcedProduct {
   id: string;
   name: string;
+  images: Image[];
+  price: string;
+  description: string;
+  longDescription: string;
+  designer: string;
+  sizeList: string;
+  color: string;
+}
+export interface IProductsFormattedAttribute {
+  name: string;
+}
+
+export interface AttributesObject {
   description: string;
   images: Image[];
   price: string;
+  longDescription: string;
+  designer: string;
+  sizeList: string;
+  color: string;
+}
+
+export enum SortMethods {
+  PRICE_HIGH = "price high",
+  PRICE_LOW = "price low",
+  NAME = "name",
+}
+
+export enum FilterAndSortNames {
+  FILTER_PRICE_ATTRIBUTE = "price",
+  SORT_ATTRIBUTE = "sort",
+  FILTER_OTHER_LISTS_ATTRIBUTE = "otherLists",
+}
+
+export type SelectedFilterAndSortValues = {
+  [FilterAndSortNames.SORT_ATTRIBUTE]?: string;
+  [FilterAndSortNames.FILTER_PRICE_ATTRIBUTE]?: number[];
+  [FilterAndSortNames.FILTER_OTHER_LISTS_ATTRIBUTE]?: SelectedFilterValues;
+};
+export type SelectedFilterValues = { [key: string]: string[] };
+
+export enum AttributesNames {
+  SHORT_DESCRIPTION = "short-description",
+  LONG_DESCRIPTION = "long-description",
+  DESIGNER = "designer",
+  SIZE_LIST = "size-list",
+  COLOR = "color",
 }

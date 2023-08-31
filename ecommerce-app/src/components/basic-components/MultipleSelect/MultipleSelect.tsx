@@ -25,17 +25,19 @@ function getStyles(name: string, personName: string[], theme: Theme) {
       personName.indexOf(name) === -1
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
+    backgroundColor:
+      personName.indexOf(name) !== -1 ? "#f9c15266" : "transparent",
   };
 }
 
-interface ISelectBasicProps {
+interface IMultipleSelectProps {
   placeholder: string;
   elements: string[];
   selectedValues: string[];
   onChange: (selectedValues: string[]) => void;
 }
 
-export default function MultipleSelectList(props: ISelectBasicProps) {
+export default function MultipleSelectList(props: IMultipleSelectProps) {
   const theme = useTheme();
   const { selectedValues, onChange } = props;
 

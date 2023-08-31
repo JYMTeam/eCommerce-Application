@@ -39,7 +39,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       product.masterVariant.images &&
       product.masterVariant.images.length !== 0
     ) {
-      images = product.masterVariant.images;
+      images = product.masterVariant.images[0];
     }
     if (
       product.masterVariant.prices &&

@@ -41,9 +41,6 @@ export default function ProductDetail() {
   if (product) {
     parsedProduct = parseProducts([product]);
   }
-  console.log(product);
-  console.log(parsedProduct[0].images);
-
   return (
     <div>
       {parsedProduct.map(({ id, name, description, images, price }) => (

@@ -15,11 +15,12 @@ const NO_SPECIAL_CHARS_REGEX = /^(?!.*[()[\]{}*&^%$#@!"+=:;<>?,./\\|_]).*$/;
 const NO_DIGIT_REGEX = /^(?!.*[0-9]).*$/;
 const USER_AGE_ALLOWED = 14;
 const MAX_HUMAN_AGE = 130;
-const DEFAULT_LOCALE = "en-US";
+const DEFAULT_LOCALE = "en";
 const DEFAULT_PRICE_COUNTRY = "US";
 const DEFAULT_CURRENCY = "USD";
 const FORM_DATE_FORMAT = "YYYY-MM-DD";
 const DEFAULT_PRODUCTS_LIMIT = 8;
+const PRODUCT_TYPE_INDEX = 0;
 
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },
@@ -67,8 +68,6 @@ const PRODUCT_IMAGE_PLACEHOLDER: Image[] = [
     dimensions: { h: 1000, w: 1000 },
   },
 ];
-
-const PRODUCT_TYPE_INDEX = 6; //TODO: set real index after uploading data to server
 
 export {
   AT_SIGN_DOMAIN_REGEX,

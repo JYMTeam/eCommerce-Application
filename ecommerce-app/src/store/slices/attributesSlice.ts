@@ -4,7 +4,7 @@ import {
 } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
-import { parseAttributes } from "../../utils/dataParsers";
+import { parseAttributesDefinition } from "../../utils/dataParsers";
 import { IProductsFormattedAttribute } from "../../types";
 
 export interface IFilterProductsState {
@@ -39,7 +39,7 @@ export const filterProductsSlice = createSlice({
       state.isSuccess = false;
       state.errorMessage = "";
       if (action.payload) {
-        state.attributesData = parseAttributes(action.payload);
+        state.attributesData = parseAttributesDefinition(action.payload);
       }
     },
     attributesFetchError(state, action: PayloadAction<ErrorResponse>) {
