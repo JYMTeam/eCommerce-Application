@@ -29,14 +29,17 @@ import { CURRENCY_SIGN, formatPrice } from "./utils";
 
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
-    let image: Image = PRODUCT_IMAGE_PLACEHOLDER;
+    let images: Image[] = PRODUCT_IMAGE_PLACEHOLDER;
     let description = PRODUCT_DESCRIPTION_PLACEHOLDER;
     let price = `${
       CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
     }0`;
 
-    if (product.masterVariant.images && product.masterVariant.images[0]) {
-      image = product.masterVariant.images[0];
+    if (
+      product.masterVariant.images &&
+      product.masterVariant.images.length !== 0
+    ) {
+      images = product.masterVariant.images;
     }
     if (
       product.masterVariant.prices &&
@@ -59,7 +62,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
       description,
-      image,
+      images,
       price,
     };
     return parcedProduct;

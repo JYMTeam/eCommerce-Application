@@ -55,6 +55,6 @@ export interface IParcedProduct {
   id: string;
   name: string;
   description: string;
-  image: Image;
+  images: Image[];
   price: string;
 }

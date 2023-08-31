@@ -61,10 +61,12 @@ const initialSignUpValues: ISignupInitialValues = {
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
-const PRODUCT_IMAGE_PLACEHOLDER: Image = {
-  url: "images/product-placeholder.webp",
-  dimensions: { h: 1000, w: 1000 },
-};
+const PRODUCT_IMAGE_PLACEHOLDER: Image[] = [
+  {
+    url: "images/product-placeholder.webp",
+    dimensions: { h: 1000, w: 1000 },
+  },
+];
 
 const PRODUCT_TYPE_INDEX = 6; //TODO: set real index after uploading data to server
 

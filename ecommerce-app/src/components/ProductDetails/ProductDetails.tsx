@@ -41,9 +41,12 @@ export default function ProductDetail() {
   if (product) {
     parsedProduct = parseProducts([product]);
   }
+  console.log(product);
+  console.log(parsedProduct[0].images);
+
   return (
     <div>
-      {parsedProduct.map(({ id, name, description, image, price }) => (
+      {parsedProduct.map(({ id, name, description, images, price }) => (
         <Grid container spacing={GRID_SPACING} key={id}>
           <Grid
             item
@@ -67,7 +70,7 @@ export default function ProductDetail() {
             >
               <img
                 className="product-img"
-                src={image.url}
+                src={images[0].url}
                 alt={name as unknown as string}
               />
             </Paper>
