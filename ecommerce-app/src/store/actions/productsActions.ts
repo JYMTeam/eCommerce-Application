@@ -9,15 +9,15 @@ import {
   filterProductsFetchSuccess,
   filterParams,
   filterEmpty,
+  filterCount,
 } from "../slices/productsSlice";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
-import { SelectedFilterValues } from "../../components/ProductsList/ProductsAttributes";
 import { convertUSDToCents } from "../../utils/utils";
+import { SelectedFilterAndSortValues, SortMethods } from "../../types";
 
 const FILTER_QUERY_ATTRIBUTES_BEGIN = "variants.attributes";
 const FILTER_QUERY_PRICE_BEGIN = "variants.price.centAmount";
 const FILTER_QUERY_KEY = "key";
-const FILTER_PRICE_ATTRIBUTE = "price";
 
 export const fetchProducts = (offset = 0) => {
   return async (dispatch: AppDispatch) => {
@@ -51,24 +51,24 @@ export const setProductsPage = (page: number) => {
   };
 };
 
-export const setFilterParams = (lists: SelectedFilterValues) => {
+export const setFilterParams = (lists: SelectedFilterAndSortValues) => {
   return async (dispatch: AppDispatch) => {
     dispatch(filterParams(lists));
   };
 };
 
-export const filterProducts = (
-  selectedValues: SelectedFilterValues,
+export const filterAndSortProducts = (
+  selectedValues: SelectedFilterAndSortValues,
   offset = 0,
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productsFetching());
-      const filterOptions = getFilterOptions(selectedValues);
+      const queryOptions = getFilterAndSortOptions(selectedValues);
       const queryArgs = {
         limit: DEFAULT_PRODUCTS_LIMIT,
         offset,
-        filter: filterOptions,
+        ...queryOptions,
       };
       const answer = await getApiEntryRoot()
         .productProjections()
@@ -92,30 +92,61 @@ export const resetFilterParams = () => {
   };
 };
 
-const getFilterOptions = (lists: SelectedFilterValues) => {
+export const setFilterCount = (count: number) => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(filterCount(count));
+  };
+};
+
+const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
+  const { sort, price, otherLists } = lists;
   const filterOptions: string[] = [];
+  let sortOptions: string = "";
 
-  Object.entries(lists).forEach((list) => {
-    const [listName, listAttributes] = list;
-    const currentKeyList = listName;
-    if (listName === FILTER_PRICE_ATTRIBUTE) {
-      const [minUSD, maxUSD] = listAttributes;
-      const centsMin = convertPriceToCentsString(minUSD);
-      const centsMax = convertPriceToCentsString(maxUSD);
+  if (sort) {
+    switch (sort) {
+      case SortMethods.PRICE_LOW:
+        sortOptions = `price asc`;
+        break;
+      case SortMethods.PRICE_HIGH:
+        sortOptions = `price desc`;
+        break;
+      case SortMethods.NAME:
+        sortOptions = "name.en asc";
+        break;
+    }
+  }
 
-      const filterOption = `${FILTER_QUERY_PRICE_BEGIN}:range (${centsMin} to ${centsMax})`;
-      filterOptions.push(filterOption);
-    } else {
+  if (price) {
+    const [minUSD, maxUSD] = price;
+    const centsMin = convertPriceToCentsString(minUSD);
+    const centsMax = convertPriceToCentsString(maxUSD);
+
+    const filterOption = `${FILTER_QUERY_PRICE_BEGIN}:range (${centsMin} to ${centsMax})`;
+    filterOptions.push(filterOption);
+  }
+
+  if (otherLists) {
+    Object.entries(otherLists).forEach((list) => {
+      const [listName, listAttributes] = list;
+      const currentKeyList = listName;
       listAttributes.forEach((attribute) => {
         const filterOption = `${FILTER_QUERY_ATTRIBUTES_BEGIN}.${currentKeyList}.${FILTER_QUERY_KEY}:"${attribute}"`;
         filterOptions.push(filterOption);
       });
-    }
-  });
-  return filterOptions;
+    });
+  }
+
+  const queryOptions: { [key: string]: string[] } = {
+    filter: filterOptions,
+  };
+
+  if (sortOptions !== "") {
+    queryOptions["sort"] = [sortOptions];
+  }
+  return queryOptions;
 };
 
-const convertPriceToCentsString = (usdAmount: string) => {
-  const amountAsNumber = parseInt(usdAmount, 10);
-  return convertUSDToCents(amountAsNumber).toString();
+const convertPriceToCentsString = (usdAmount: number) => {
+  return convertUSDToCents(usdAmount).toString();
 };

@@ -43,7 +43,7 @@ export default function ProductDetail() {
   }
   return (
     <div>
-      {parsedProduct.map(({ id, name, description, image, price }) => (
+      {parsedProduct.map(({ id, name, longDescription, image, price }) => (
         <Grid container spacing={GRID_SPACING} key={id}>
           <Grid
             item
@@ -100,7 +100,7 @@ export default function ProductDetail() {
                 fontSize: PRODUCT_DESC_FONTSIZE,
               }}
             >
-              {description as unknown as string}
+              {longDescription as unknown as string}
             </Typography>
             <Typography
               color="text.secondary"
