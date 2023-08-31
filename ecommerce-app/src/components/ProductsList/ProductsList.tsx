@@ -98,8 +98,14 @@ export default function ProductsList() {
                   <Chip label={price} size="small" />
                 </CardContent>
                 <CardActions>
-                  <Button size="small" sx={{ color: BUTTON_COLOR }}>
-                    Learn More
+                  <Button
+                    size="small"
+                    sx={{ color: BUTTON_COLOR }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                  >
+                    Add to cart
                   </Button>
                 </CardActions>
               </CardActionArea>
