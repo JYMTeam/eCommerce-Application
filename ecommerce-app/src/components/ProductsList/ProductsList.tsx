@@ -7,6 +7,7 @@ import {
 import {
   Button,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
@@ -14,6 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
+import { Link } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 
 const MD_COLS = 3;
@@ -70,35 +72,37 @@ export default function ProductsList() {
                 },
               }}
             >
-              <CardMedia
-                component="img"
-                alt={name as unknown as string}
-                height={CARD_MEDIA_HEIGHT}
-                image={image.url}
-              />
-              <CardContent>
-                <Typography
-                  gutterBottom
-                  variant="h4"
-                  component="h4"
-                  sx={{ fontSize: CARD_TITLE_FONTSIZE }}
-                >
-                  {name}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: CARD_DESC_MB, fontSize: CARD_DESC_FONTSIZE }}
-                >
-                  {description as unknown as string}
-                </Typography>
-                <Chip label={price} size="small" />
-              </CardContent>
-              <CardActions>
-                <Button size="small" sx={{ color: BUTTON_COLOR }}>
-                  Learn More
-                </Button>
-              </CardActions>
+              <CardActionArea component={Link} to={`/shop/${id}`}>
+                <CardMedia
+                  component="img"
+                  alt={name as unknown as string}
+                  height={CARD_MEDIA_HEIGHT}
+                  image={image.url}
+                />
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h4"
+                    component="h4"
+                    sx={{ fontSize: CARD_TITLE_FONTSIZE }}
+                  >
+                    {name}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: CARD_DESC_MB, fontSize: CARD_DESC_FONTSIZE }}
+                  >
+                    {description as unknown as string}
+                  </Typography>
+                  <Chip label={price} size="small" />
+                </CardContent>
+                <CardActions>
+                  <Button size="small" sx={{ color: BUTTON_COLOR }}>
+                    Learn More
+                  </Button>
+                </CardActions>
+              </CardActionArea>
             </Card>
           </Grid>
         ))}
