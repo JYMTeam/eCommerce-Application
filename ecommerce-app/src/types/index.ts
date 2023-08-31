@@ -1,3 +1,5 @@
+import { Image } from "@commercetools/platform-sdk";
+
 export interface IFormInitialValues {
   email: string;
   password: string;
@@ -43,10 +45,28 @@ export interface ICountriesOptions {
   countryCode: string;
   postalCodeFormat: string;
 }
-
+export interface IParcedProduct {
+  id: string;
+  name: string;
+  image: Image;
+  price: string;
+  description: string;
+  longDescription: string;
+  designer: string;
+  sizeList: string;
+  color: string;
+}
 export interface IProductsFormattedAttribute {
   name: string;
   values: string[];
+}
+
+export interface AttributesObject {
+  description: string;
+  longDescription: string;
+  designer: string;
+  sizeList: string;
+  color: string;
 }
 
 export enum SortMethods {
@@ -67,3 +87,11 @@ export type SelectedFilterAndSortValues = {
   [FilterAndSortNames.FILTER_OTHER_LISTS_ATTRIBUTE]?: SelectedFilterValues;
 };
 export type SelectedFilterValues = { [key: string]: string[] };
+
+export enum AttributesNames {
+  SHORT_DESCRIPTION = "short-description",
+  LONG_DESCRIPTION = "long-description",
+  DESIGNER = "designer",
+  SIZE_LIST = "size-list",
+  COLOR = "color",
+}

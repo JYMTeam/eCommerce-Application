@@ -112,7 +112,7 @@ const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
         sortOptions = `price desc`;
         break;
       case SortMethods.NAME:
-        sortOptions = "name.en-us asc";
+        sortOptions = "name.en asc";
         break;
     }
   }

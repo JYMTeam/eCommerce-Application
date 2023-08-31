@@ -1,4 +1,5 @@
 import {
+  Attribute,
   AttributeBooleanType,
   AttributeDateTimeType,
   AttributeDateType,
@@ -24,16 +25,29 @@ import {
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
 } from "../constants/constants";
-import { IProductsFormattedAttribute } from "../types";
+import {
+  AttributesNames,
+  AttributesObject,
+  IParcedProduct,
+  IProductsFormattedAttribute,
+} from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
     let image: Image = PRODUCT_IMAGE_PLACEHOLDER;
-    let description = PRODUCT_DESCRIPTION_PLACEHOLDER;
+    let attributesObject: AttributesObject = {
+      description: PRODUCT_DESCRIPTION_PLACEHOLDER,
+      longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
+      designer: "",
+      sizeList: "",
+      color: "",
+    };
+
     let price = `${
       CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
     }0`;
+
     if (product.masterVariant.images && product.masterVariant.images[0]) {
       image = product.masterVariant.images[0];
     }
@@ -51,20 +65,55 @@ export const parseProducts = (products: ProductProjection[]) => {
         price = `${formatedPrice}`;
       }
     }
-    if (product.description) {
-      description = product.description[DEFAULT_LOCALE];
+    if (product.masterVariant.attributes) {
+      attributesObject = parseAttributes(product.masterVariant.attributes);
     }
-    return {
+
+    const parcedProduct: IParcedProduct = {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
-      description,
       image,
       price,
+      ...attributesObject,
     };
+    return parcedProduct;
   });
 };
 
-export const parseAttributes = (attributes: AttributeDefinition[]) => {
+const parseAttributes = (attributes: Attribute[]) => {
+  const attributesObject: AttributesObject = {
+    description: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    designer: "",
+    sizeList: "",
+    color: "",
+  };
+  attributes.forEach((attribute) => {
+    switch (attribute.name) {
+      case AttributesNames.SHORT_DESCRIPTION:
+        attributesObject.description = attribute.value[0];
+        break;
+      case AttributesNames.LONG_DESCRIPTION:
+        attributesObject.longDescription = attribute.value[0];
+        break;
+      case AttributesNames.DESIGNER:
+        attributesObject.designer = attribute.value[0];
+        break;
+      case AttributesNames.SIZE_LIST:
+        attributesObject.sizeList = attribute.value[0];
+        break;
+      case AttributesNames.COLOR:
+        attributesObject.color = attribute.value[0];
+        break;
+    }
+  });
+
+  return attributesObject;
+};
+
+export const parseAttributesDefinition = (
+  attributes: AttributeDefinition[],
+) => {
   return attributes.map((attribute) => {
     const formattedAttribute: IProductsFormattedAttribute = {
       name: attribute.name,
