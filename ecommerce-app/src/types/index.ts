@@ -55,6 +55,7 @@ export interface IParcedProduct {
   designer: string;
   sizeList: string;
   color: string;
+  discount: string;
 }
 export interface IProductsFormattedAttribute {
   name: string;
