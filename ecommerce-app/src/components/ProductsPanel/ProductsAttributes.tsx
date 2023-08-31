@@ -140,13 +140,29 @@ export default function ProductsAttributes() {
         </Box>
       </Box>
       <Box className="filter-box__buttons">
-        <Button aria-label="Filter" title="Filter" onClick={handleSubmitAll}>
+        <Button
+          aria-label="Filter"
+          title="Filter"
+          sx={{
+            ":hover": {
+              bgcolor: "transparent",
+              color: "primary.dark",
+            },
+          }}
+          onClick={handleSubmitAll}
+        >
           Show results
         </Button>
         {filterParams && (
           <IconButton
             aria-label="FilterOff"
             title="FilterOff"
+            sx={{
+              ":hover": {
+                bgcolor: "transparent",
+                color: "primary.dark",
+              },
+            }}
             onClick={handleResetFilters}
           >
             <FilterOffIcon color="primary" />

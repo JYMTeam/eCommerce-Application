@@ -43,9 +43,13 @@
 }
 
 .filter-button {
-  display: flex;
   width: 100%;
+  min-height: 3.75rem;
+  display: flex;
   justify-content: right;
+  flex-wrap: wrap-reverse;
+  align-items: end;
+  margin-bottom: 1rem;
 }
 
 .filter-box__divider {

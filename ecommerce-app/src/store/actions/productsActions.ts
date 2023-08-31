@@ -57,6 +57,34 @@ export const setFilterParams = (lists: SelectedFilterAndSortValues) => {
   };
 };
 
+export const searchProducts = (text: string, offset = 0) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(productsFetching());
+      dispatch(filterEmpty());
+      const queryArgs = {
+        limit: DEFAULT_PRODUCTS_LIMIT,
+        offset,
+        "text.en": text,
+        fuzzy: true,
+        fuzzyLevel: 1,
+      };
+      const answer = await getApiEntryRoot()
+        .productProjections()
+        .search()
+        .get({ queryArgs })
+        .execute();
+      dispatch(filterProductsFetchSuccess(answer.body));
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(productsFetchError(body));
+      }
+    }
+  };
+};
+
 export const filterAndSortProducts = (
   selectedValues: SelectedFilterAndSortValues,
   offset = 0,
@@ -130,10 +158,16 @@ const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
     Object.entries(otherLists).forEach((list) => {
       const [listName, listAttributes] = list;
       const currentKeyList = listName;
+      const currentParams: string[] = [];
+
       listAttributes.forEach((attribute) => {
-        const filterOption = `${FILTER_QUERY_ATTRIBUTES_BEGIN}.${currentKeyList}.${FILTER_QUERY_KEY}:"${attribute}"`;
-        filterOptions.push(filterOption);
+        currentParams.push(`"${attribute}"`);
       });
+
+      const filterOption = `${FILTER_QUERY_ATTRIBUTES_BEGIN}.${currentKeyList}.${FILTER_QUERY_KEY}:${currentParams.join(
+        ",",
+      )}`;
+      filterOptions.push(filterOption);
     });
   }
 

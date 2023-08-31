@@ -1,0 +1,11 @@
+.search-panel {
+  display: flex;
+  flex-grow: 1;
+  justify-content: right;
+  align-items: end;
+}
+
+.search-panel__input {
+  flex-grow: 1;
+  margin-bottom: 5px;
+}
