@@ -15,7 +15,7 @@ import {
   AttributeTextType,
   AttributeTimeType,
   AttributeType,
-  Image,
+  Price,
   ProductProjection,
 } from "@commercetools/platform-sdk";
 import {
@@ -33,20 +33,27 @@ import {
 } from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
+const initialParsedProduct = {
+  image: PRODUCT_IMAGE_PLACEHOLDER,
+  attributesObject: {
+    description: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    designer: "",
+    sizeList: "",
+    color: "",
+  },
+  price: `${CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]}0`,
+  discount: "",
+};
+
+const getDiscount = (priceInfo: Price) => {
+  if (!priceInfo.discounted) return;
+  return priceInfo.discounted.value.centAmount;
+};
+
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
-    let image: Image = PRODUCT_IMAGE_PLACEHOLDER;
-    let attributesObject: AttributesObject = {
-      description: PRODUCT_DESCRIPTION_PLACEHOLDER,
-      longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
-      designer: "",
-      sizeList: "",
-      color: "",
-    };
-
-    let price = `${
-      CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
-    }0`;
+    let { image, attributesObject, price, discount } = initialParsedProduct;
 
     if (product.masterVariant.images && product.masterVariant.images[0]) {
       image = product.masterVariant.images[0];
@@ -55,14 +62,21 @@ export const parseProducts = (products: ProductProjection[]) => {
       product.masterVariant.prices &&
       product.masterVariant.prices.length !== 0
     ) {
-      const country = product.masterVariant.prices.find(
+      const priceInfo = product.masterVariant.prices.find(
         (price) => price.country === DEFAULT_PRICE_COUNTRY,
       );
-      if (country) {
-        const centAmount = country.value.centAmount;
-        const currencyCode = country.value.currencyCode;
+      if (priceInfo) {
+        const currencyCode = priceInfo.value.currencyCode;
+        const centAmount = priceInfo.value.centAmount;
+        const discountCentAmount = getDiscount(priceInfo);
+
         const formatedPrice = formatPrice(centAmount, currencyCode);
+        const formatedDiscount = discountCentAmount
+          ? formatPrice(discountCentAmount, currencyCode)
+          : "";
+
         price = `${formatedPrice}`;
+        discount = `${formatedDiscount}`;
       }
     }
     if (product.masterVariant.attributes) {
@@ -74,6 +88,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       name: product.name[DEFAULT_LOCALE],
       image,
       price,
+      discount,
       ...attributesObject,
     };
     return parcedProduct;

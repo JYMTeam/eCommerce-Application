@@ -33,3 +33,8 @@ h2 {
   flex-direction: column;
   justify-content: center;
 }
+
+.discount {
+  text-decoration: line-through;
+  color: darkgrey;
+}
