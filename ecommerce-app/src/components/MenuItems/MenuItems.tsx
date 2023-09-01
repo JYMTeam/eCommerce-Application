@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import CartIcon from "../../assets/cart.svg";
 import { Divider, useMediaQuery } from "@mui/material";
 import { Button, Box } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { userLoginReset } from "../../store/slices/userLoginSlice";
+import { useAppSelector } from "../../hooks/redux";
 import { Theme } from "../Theme";
+import { UserProfileMenuItem } from "./UserProfileMenuItem";
+
 export const MenuItems = () => {
   const { isLogged } = useAppSelector((state) => state.userLogin);
-  const dispatch = useAppDispatch();
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
   return (
     <>
@@ -39,41 +39,31 @@ export const MenuItems = () => {
         Shop
       </Button>
       {isMobile && <Divider />}
-      <Button
-        component={Link}
-        to="login"
-        color="primary"
-        variant="contained"
-        size="large"
-        sx={{ whiteSpace: "nowrap" }}
-      >
-        Login
-      </Button>
-      {isLogged && (
+      {!isLogged && (
         <Button
           component={Link}
-          to="/"
+          to="login"
+          color="primary"
+          variant="contained"
+          size="large"
+          sx={{ whiteSpace: "nowrap" }}
+        >
+          Login
+        </Button>
+      )}
+      {!isLogged && (
+        <Button
+          component={Link}
+          to="signup"
           variant="contained"
           color="primary"
           size="large"
           sx={{ whiteSpace: "nowrap" }}
-          onClick={() => {
-            dispatch(userLoginReset());
-          }}
         >
-          Log out
+          Sign Up
         </Button>
       )}
-      <Button
-        component={Link}
-        to="signup"
-        variant="contained"
-        color="primary"
-        size="large"
-        sx={{ whiteSpace: "nowrap" }}
-      >
-        Sign Up
-      </Button>
+      {isLogged && <UserProfileMenuItem />}
       {isMobile && <Divider />}
       <Button
         component={Link}

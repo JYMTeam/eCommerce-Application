@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import WorkInProgress from "./WorkInProrgess";
+import WorkInProgress from "./WorkInProgress";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import { Provider } from "react-redux";

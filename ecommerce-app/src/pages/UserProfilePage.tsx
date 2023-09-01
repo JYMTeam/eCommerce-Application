@@ -1,5 +1,5 @@
 import React from "react";
 import WorkInProgress from "../components/WorkInProgress";
-export function CartPage() {
+export function UserProfilePage() {
   return <WorkInProgress />;
 }
