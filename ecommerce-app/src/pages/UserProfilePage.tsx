@@ -1,5 +1,6 @@
 import React from "react";
-import WorkInProgress from "../components/WorkInProgress";
+import BasicTabs from "../components/UserProfile/UserProfile";
+
 export function UserProfilePage() {
-  return <WorkInProgress />;
+  return <BasicTabs />;
 }
