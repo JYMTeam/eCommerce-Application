@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import "./products-panel.css";
+import "./ProductsPanel.css";
 import { Badge, Box, Button, Drawer } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ProductsAttributes from "./ProductsAttributes";
+import ProductsFilters from "./ProductsFilters";
 import { useAppSelector } from "../../hooks/redux";
-import SearchComponent from "../basic-components/Search/Search";
+import SearchComponent from "./ProductsSearchPanel/ProductsSearchPanel";
 
 export const ProductsPanel = () => {
   const [openFilter, setOpenFilter] = useState(false);
@@ -21,7 +21,7 @@ export const ProductsPanel = () => {
   }, [filterParams]);
   return (
     <>
-      <Box className="filter-button">
+      <Box className="products-panel">
         <SearchComponent />
         <Badge
           color="secondary"
@@ -54,7 +54,7 @@ export const ProductsPanel = () => {
             <CloseIcon color="primary" fontSize="medium" />
           </IconButton>
         </div>
-        <ProductsAttributes />
+        <ProductsFilters />
       </Drawer>
     </>
   );

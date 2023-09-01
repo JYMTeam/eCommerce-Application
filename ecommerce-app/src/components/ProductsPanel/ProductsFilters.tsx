@@ -27,6 +27,7 @@ const sortAttributes = {
   name: "sort",
   values: [SortMethods.PRICE_HIGH, SortMethods.PRICE_LOW, SortMethods.NAME],
 };
+
 export default function ProductsAttributes() {
   const [selectedListsValues, setSelectedListsValues] =
     useState<SelectedFilterValues>({});

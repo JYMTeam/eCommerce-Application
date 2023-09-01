@@ -1,5 +1,5 @@
-import "./Search.css";
 import React, { useEffect, useState, useRef } from "react";
+import "./ProductsSearchPanel.css";
 import { TextField, Box, IconButton } from "@mui/material";
 import { Search, Clear } from "@mui/icons-material";
 import { useAppDispatch } from "../../../hooks/redux";

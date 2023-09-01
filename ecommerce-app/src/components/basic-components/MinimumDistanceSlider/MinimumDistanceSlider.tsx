@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./MinimumDistanceSlider.css";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
