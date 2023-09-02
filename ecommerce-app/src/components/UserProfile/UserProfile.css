@@ -1,0 +1,14 @@
+.tabs__header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.personal-info {
+  position: relative;
+}
+
+.personal-info__edit {
+  transform: translate(0, 100%);
+  left: calc(100% - 50px);
+}

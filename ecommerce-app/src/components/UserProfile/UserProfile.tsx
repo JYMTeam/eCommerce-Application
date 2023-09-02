@@ -1,8 +1,10 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material";
+import UserInformation from "./UserInformation";
+import UserAddresses from "./UserAddresses";
+import "./UserProfile.css";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -12,7 +14,6 @@ interface TabPanelProps {
 
 function CustomTabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -22,8 +23,9 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+        <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
+          {children}
+          {/* <Typography>{children}</Typography> */}
         </Box>
       )}
     </div>
@@ -46,7 +48,7 @@ export default function BasicTabs() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box>
+      <Box className="tabs__header">
         <Tabs
           value={value}
           onChange={handleChange}
@@ -58,12 +60,22 @@ export default function BasicTabs() {
           <Tab label="Personal Information" {...a11yProps(0)} />
           <Tab label="Addresses" {...a11yProps(1)} />
         </Tabs>
+        {/* <IconButton className="tabs__edit-button" color="primary">
+          <EditIcon />
+        </IconButton> */}
+        {/* <Button
+          color="primary"
+          variant="contained"
+          size="large"
+          sx={{ whiteSpace: "nowrap" }}>
+          Save Changes
+        </Button> */}
       </Box>
       <CustomTabPanel value={value} index={0}>
-        Personal Information
+        <UserInformation />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        Addresses
+        <UserAddresses />
       </CustomTabPanel>
     </Box>
   );
