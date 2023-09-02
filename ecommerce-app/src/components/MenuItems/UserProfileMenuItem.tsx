@@ -13,14 +13,21 @@ import { userLoginReset } from "../../store/slices/userLoginSlice";
 import PersonIcon from "@mui/icons-material/Person";
 
 const settings = ["Profile", "Log out"];
-export const UserProfileMenuItem = () => {
+export const UserProfileMenuItem = ({
+  shouldCloseDrawer = true,
+}: {
+  shouldCloseDrawer: boolean;
+}) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
   const dispatch = useAppDispatch();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
+    event.stopPropagation();
+    if (shouldCloseDrawer) {
+      setAnchorElUser(event.currentTarget);
+    }
   };
 
   const handleCloseUserMenu = () => {

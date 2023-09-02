@@ -7,7 +7,11 @@ import { useAppSelector } from "../../hooks/redux";
 import { Theme } from "../Theme";
 import { UserProfileMenuItem } from "./UserProfileMenuItem";
 
-export const MenuItems = () => {
+export const MenuItems = ({
+  shouldCloseDrawer = true,
+}: {
+  shouldCloseDrawer?: boolean;
+}) => {
   const { isLogged } = useAppSelector((state) => state.userLogin);
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
   return (
@@ -63,7 +67,9 @@ export const MenuItems = () => {
           Sign Up
         </Button>
       )}
-      {isLogged && <UserProfileMenuItem />}
+      {isLogged && (
+        <UserProfileMenuItem shouldCloseDrawer={shouldCloseDrawer} />
+      )}
       {isMobile && <Divider />}
       <Button
         component={Link}

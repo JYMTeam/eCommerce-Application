@@ -1,3 +1,4 @@
+import * as React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import { Container, useMediaQuery } from "@mui/material";
@@ -8,6 +9,8 @@ import { MenuItems } from "../MenuItems/MenuItems";
 
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
+  const [shouldCloseDrawer] = React.useState(true);
+
   return (
     <AppBar
       position="static"
@@ -33,10 +36,10 @@ export function Navigation() {
             />
           </IconButton>
           {isMobile ? (
-            <Drawer />
+            <Drawer shouldCloseDrawer={shouldCloseDrawer} />
           ) : (
             <Stack spacing={3} direction="row">
-              <MenuItems />
+              <MenuItems shouldCloseDrawer={shouldCloseDrawer} />
             </Stack>
           )}
         </Toolbar>
