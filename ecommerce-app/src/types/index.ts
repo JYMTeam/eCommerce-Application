@@ -55,27 +55,24 @@ export interface IParcedProduct {
   designer: string;
   sizeList: string;
   color: string;
+  discount: string;
 }
 export interface IProductsFormattedAttribute {
   name: string;
+  values: string[];
 }
-
 export interface AttributesObject {
   description: string;
-  images: Image[];
-  price: string;
   longDescription: string;
   designer: string;
   sizeList: string;
   color: string;
 }
-
 export enum SortMethods {
   PRICE_HIGH = "price high",
   PRICE_LOW = "price low",
   NAME = "name",
 }
-
 export enum FilterAndSortNames {
   FILTER_PRICE_ATTRIBUTE = "price",
   SORT_ATTRIBUTE = "sort",

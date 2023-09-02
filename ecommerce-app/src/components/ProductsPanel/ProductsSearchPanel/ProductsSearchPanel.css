@@ -1,0 +1,12 @@
+.search-panel {
+  display: flex;
+  flex-grow: 1;
+  justify-content: right;
+  flex-wrap: nowrap;
+  min-height: 60px;
+}
+
+.search-panel__input {
+  flex-grow: 1;
+  margin-bottom: 5px;
+}

@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "./products-panel.css";
+import "./ProductsPanel.css";
 import { Badge, Box, Button, Drawer } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import ProductsAttributes from "./ProductsAttributes";
+import ProductsFilters from "./ProductsFilters";
 import { useAppSelector } from "../../hooks/redux";
+import SearchComponent from "./ProductsSearchPanel/ProductsSearchPanel";
 
 export const ProductsPanel = () => {
-  const [open, setOpen] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
   const { filterParams } = useAppSelector((state) => state.products);
 
@@ -20,7 +21,8 @@ export const ProductsPanel = () => {
   }, [filterParams]);
   return (
     <>
-      <Box className="filter-button">
+      <Box className="products-panel">
+        <SearchComponent />
         <Badge
           color="secondary"
           badgeContent=" "
@@ -35,20 +37,24 @@ export const ProductsPanel = () => {
                 color: "primary.dark",
               },
             }}
-            onClick={() => setOpen(true)}
+            onClick={() => setOpenFilter(true)}
           >
             Filter & Sort
           </Button>
         </Badge>
       </Box>
 
-      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
-        <div onClick={() => setOpen(false)} role="button" tabIndex={0}>
+      <Drawer
+        anchor="right"
+        open={openFilter}
+        onClose={() => setOpenFilter(false)}
+      >
+        <div onClick={() => setOpenFilter(false)} role="button" tabIndex={0}>
           <IconButton>
             <CloseIcon color="primary" fontSize="medium" />
           </IconButton>
         </div>
-        <ProductsAttributes />
+        <ProductsFilters />
       </Drawer>
     </>
   );

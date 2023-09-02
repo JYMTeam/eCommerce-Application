@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./MinimumDistanceSlider.css";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import { styled } from "@mui/material/styles";
@@ -11,7 +12,7 @@ function valuetext(value: number) {
 }
 
 const SLIDER_MIN_DISTANCE = 50;
-const SLIDER_STEP = 50;
+const SLIDER_STEP = 10;
 const SLIDER_WIDTH = 200;
 const SLIDER_THUMB_SIZE = 15;
 const SLIDER_MARK_WIDTH = 1;

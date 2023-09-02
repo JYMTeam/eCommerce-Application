@@ -1,4 +1,5 @@
 import {
+  Attribute,
   AttributeBooleanType,
   AttributeDateTimeType,
   AttributeDateType,
@@ -14,7 +15,7 @@ import {
   AttributeTextType,
   AttributeTimeType,
   AttributeType,
-  Image,
+  Price,
   ProductProjection,
 } from "@commercetools/platform-sdk";
 import {
@@ -24,52 +25,112 @@ import {
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
 } from "../constants/constants";
-import { IParcedProduct, IProductsFormattedAttribute } from "../types";
+import {
+  AttributesNames,
+  AttributesObject,
+  IParcedProduct,
+  IProductsFormattedAttribute,
+} from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
+
+const initialParsedProduct = {
+  images: PRODUCT_IMAGE_PLACEHOLDER,
+  attributesObject: {
+    description: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    designer: "",
+    sizeList: "",
+    color: "",
+  },
+  price: `${CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]}0`,
+  discount: "",
+};
+
+const getDiscount = (priceInfo: Price) => {
+  if (!priceInfo.discounted) return;
+  return priceInfo.discounted.value.centAmount;
+};
 
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
-    let images: Image[] = PRODUCT_IMAGE_PLACEHOLDER;
-    let description = PRODUCT_DESCRIPTION_PLACEHOLDER;
-    let price = `${
-      CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
-    }0`;
+    let { images, attributesObject, price, discount } = initialParsedProduct;
 
     if (
       product.masterVariant.images &&
       product.masterVariant.images.length !== 0
     ) {
-      images = product.masterVariant.images[0];
+      images = product.masterVariant.images;
     }
     if (
       product.masterVariant.prices &&
       product.masterVariant.prices.length !== 0
     ) {
-      const country = product.masterVariant.prices.find(
+      const priceInfo = product.masterVariant.prices.find(
         (price) => price.country === DEFAULT_PRICE_COUNTRY,
       );
-      if (country) {
-        const centAmount = country.value.centAmount;
-        const currencyCode = country.value.currencyCode;
+      if (priceInfo) {
+        const currencyCode = priceInfo.value.currencyCode;
+        const centAmount = priceInfo.value.centAmount;
+        const discountCentAmount = getDiscount(priceInfo);
+
         const formatedPrice = formatPrice(centAmount, currencyCode);
+        const formatedDiscount = discountCentAmount
+          ? formatPrice(discountCentAmount, currencyCode)
+          : "";
+
         price = `${formatedPrice}`;
+        discount = `${formatedDiscount}`;
       }
     }
-    if (product.description) {
-      description = product.description[DEFAULT_LOCALE];
+    if (product.masterVariant.attributes) {
+      attributesObject = parseAttributes(product.masterVariant.attributes);
     }
     const parcedProduct: IParcedProduct = {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
-      description,
       images,
       price,
+      discount,
+      ...attributesObject,
     };
     return parcedProduct;
   });
 };
 
-export const parseAttributes = (attributes: AttributeDefinition[]) => {
+const parseAttributes = (attributes: Attribute[]) => {
+  const attributesObject: AttributesObject = {
+    description: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
+    designer: "",
+    sizeList: "",
+    color: "",
+  };
+  attributes.forEach((attribute) => {
+    switch (attribute.name) {
+      case AttributesNames.SHORT_DESCRIPTION:
+        attributesObject.description = attribute.value[0];
+        break;
+      case AttributesNames.LONG_DESCRIPTION:
+        attributesObject.longDescription = attribute.value[0];
+        break;
+      case AttributesNames.DESIGNER:
+        attributesObject.designer = attribute.value[0];
+        break;
+      case AttributesNames.SIZE_LIST:
+        attributesObject.sizeList = attribute.value[0];
+        break;
+      case AttributesNames.COLOR:
+        attributesObject.color = attribute.value[0];
+        break;
+    }
+  });
+
+  return attributesObject;
+};
+
+export const parseAttributesDefinition = (
+  attributes: AttributeDefinition[],
+) => {
   return attributes.map((attribute) => {
     const formattedAttribute: IProductsFormattedAttribute = {
       name: attribute.name,
@@ -93,7 +154,6 @@ export const parseAttributes = (attributes: AttributeDefinition[]) => {
         );
       }
     }
-
     //TODO: add others types
 
     return formattedAttribute;
