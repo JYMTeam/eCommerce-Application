@@ -3,14 +3,13 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchProductDetails } from "../../store/actions/productDetailsActions";
 import { parseProducts } from "../../utils/dataParsers";
-import { Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { IParcedProduct } from "../../types";
+import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
 
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;
-const IMG_HEIGHT = "auto";
-const IMG_WIDTH = "100%";
 const PRODUCT_TITLE_FONTSIZE = "2em";
 const PRODUCT_DESC_FONTSIZE = "1em";
 const PRODUCT_PRICE_FONTSIZE = "1.4em";
@@ -43,7 +42,7 @@ export default function ProductDetail() {
   }
   return (
     <div>
-      {parsedProduct.map(({ id, name, description, images, price }) => (
+      {parsedProduct.map(({ id, name, longDescription, images, price }) => (
         <Grid container spacing={GRID_SPACING} key={id}>
           <Grid
             item
@@ -54,23 +53,7 @@ export default function ProductDetail() {
               justifyContent: "center",
             }}
           >
-            <Paper
-              component={Stack}
-              direction="column"
-              elevation={0}
-              justifyContent="center"
-              sx={{
-                width: { IMG_WIDTH },
-                height: { IMG_HEIGHT },
-                overflow: "hidden",
-              }}
-            >
-              <img
-                className="product-img"
-                src={images[0].url}
-                alt={name as unknown as string}
-              />
-            </Paper>
+            <ProductCarousel images={images} />
           </Grid>
           <Grid
             item
@@ -100,7 +83,7 @@ export default function ProductDetail() {
                 fontSize: PRODUCT_DESC_FONTSIZE,
               }}
             >
-              {description as unknown as string}
+              {longDescription as unknown as string}
             </Typography>
             <Typography
               color="text.secondary"
