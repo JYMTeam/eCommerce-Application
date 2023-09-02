@@ -62,7 +62,6 @@ export const searchProducts = (text: string, offset = 0) => {
     try {
       dispatch(productsFetching());
       dispatch(filterEmpty());
-
       let fuzzyLevel = 2;
       const textLength = text.length;
 
