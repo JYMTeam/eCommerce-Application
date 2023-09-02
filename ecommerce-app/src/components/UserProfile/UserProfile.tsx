@@ -25,7 +25,6 @@ function CustomTabPanel(props: TabPanelProps) {
       {value === index && (
         <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
           {children}
-          {/* <Typography>{children}</Typography> */}
         </Box>
       )}
     </div>
@@ -39,7 +38,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function BasicTabs() {
+export default function UserProfile() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {

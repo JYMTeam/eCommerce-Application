@@ -4,6 +4,7 @@ import { useAppSelector } from "../../hooks/redux";
 import { Button, IconButton, Stack, TextField, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../basic-components/InfoCard/InfoCard";
+import { formatDateYYYYMMDDToDDMMYYYY } from "../../utils/utils";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -31,21 +32,25 @@ export default function UserInformation() {
   }
   if (loginData) {
     const { email, firstName, lastName, dateOfBirth } = loginData;
+    const lDateOfBirth = formatDateYYYYMMDDToDDMMYYYY(dateOfBirth || "");
     const userData = [
       { label: "First Name", value: loginData.firstName as unknown as string },
       { label: "Last Name", value: loginData.lastName as unknown as string },
       { label: "E-mail", value: loginData.email as unknown as string },
       {
         label: "Date of Birth",
-        value: loginData.dateOfBirth as unknown as string,
+        value: lDateOfBirth,
       },
     ];
     return (
-      <Box className="personal-info" sx={{ width: "50%" }}>
+      <Box className="personal-info" sx={{ width: "50%", minWidth: "280px" }}>
         <Tooltip
           className="personal-info__edit"
           sx={{
             justifyContent: "center",
+            position: "absolute",
+            top: 16,
+            right: 16,
           }}
           title="Edit mode"
         >
@@ -79,7 +84,7 @@ export default function UserInformation() {
             <TextField
               id="user-date-of-birth"
               label="Date of Birth"
-              defaultValue={dateOfBirth as unknown as string}
+              defaultValue={lDateOfBirth}
             />
             <Button onClick={handelEditMode}>Save changes</Button>
           </Stack>
