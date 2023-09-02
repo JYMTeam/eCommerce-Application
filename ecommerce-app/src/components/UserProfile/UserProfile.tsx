@@ -1,9 +1,11 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import UserInformation from "./UserInformation";
 import UserAddresses from "./UserAddresses";
+import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import "./UserProfile.css";
 
 interface TabPanelProps {
@@ -39,6 +41,9 @@ function a11yProps(index: number) {
 }
 
 export default function UserProfile() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -51,24 +56,24 @@ export default function UserProfile() {
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="basic tabs example"
+          aria-label="User Profile Navigation"
+          color="primary"
           textColor="secondary"
           indicatorColor="secondary"
           centered
         >
-          <Tab label="Personal Information" {...a11yProps(0)} />
-          <Tab label="Addresses" {...a11yProps(1)} />
+          <Tab
+            color="secondary"
+            icon={isMobile ? <AccountBoxIcon /> : undefined}
+            label={!isMobile ? "Personal Information" : ""}
+            {...a11yProps(0)}
+          />
+          <Tab
+            icon={isMobile ? <ImportContactsIcon /> : undefined}
+            label={!isMobile ? "Addresses" : ""}
+            {...a11yProps(1)}
+          />
         </Tabs>
-        {/* <IconButton className="tabs__edit-button" color="primary">
-          <EditIcon />
-        </IconButton> */}
-        {/* <Button
-          color="primary"
-          variant="contained"
-          size="large"
-          sx={{ whiteSpace: "nowrap" }}>
-          Save Changes
-        </Button> */}
       </Box>
       <CustomTabPanel value={value} index={0}>
         <UserInformation />
