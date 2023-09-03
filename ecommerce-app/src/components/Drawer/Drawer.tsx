@@ -13,27 +13,27 @@ export const Drawer = ({
 }) => {
   const [open, setOpen] = useState(false);
 
-  const handleOpenDrawer = () => {
-    setOpen(true);
-  };
-
-  const handleCloseDrawer = () => {
-    setOpen(false);
-  };
-
   return (
     <>
-      <IconButton onClick={handleOpenDrawer}>
+      <IconButton
+        onClick={() => {
+          setOpen(!open);
+        }}
+      >
         <MenuIcon color="primary" fontSize="large" />
       </IconButton>
       <SwipeableDrawer
         anchor="right"
         open={open}
-        onOpen={handleOpenDrawer}
-        onClose={handleCloseDrawer}
+        onOpen={() => {
+          setOpen(!open);
+        }}
+        onClose={() => {
+          setOpen(!open);
+        }}
         onClick={() => {
           if (shouldCloseDrawer) {
-            handleCloseDrawer();
+            setOpen(false);
           }
         }}
       >
