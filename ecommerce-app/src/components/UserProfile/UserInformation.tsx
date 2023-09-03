@@ -1,10 +1,11 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { useAppSelector } from "../../hooks/redux";
-import { Button, IconButton, Stack, TextField, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../basic-components/InfoCard/InfoCard";
 import { formatDateYYYYMMDDToDDMMYYYY } from "../../utils/utils";
+import { UpdatePersonalForm } from "../UpdatePersonalForm/UpdatePersonalForm";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -31,7 +32,7 @@ export default function UserInformation() {
     return <p className="notification-message">{errorMessage}</p>;
   }
   if (loginData) {
-    const { email, firstName, lastName, dateOfBirth } = loginData;
+    const { dateOfBirth } = loginData;
     const lDateOfBirth = formatDateYYYYMMDDToDDMMYYYY(dateOfBirth || "");
     const userData = [
       { label: "First Name", value: loginData.firstName as unknown as string },
@@ -65,29 +66,35 @@ export default function UserInformation() {
         </Tooltip>
         {!isEdit && <InfoCard infoData={userData} />}
         {isEdit && (
-          <Stack spacing={2}>
-            <TextField
-              id="user-first-name"
-              label="First Name"
-              defaultValue={firstName as unknown as string}
-            />
-            <TextField
-              id="user-last-name"
-              label="Last Name"
-              defaultValue={lastName as unknown as string}
-            />
-            <TextField
-              id="user-email"
-              label="Email"
-              defaultValue={email as unknown as string}
-            />
-            <TextField
-              id="user-date-of-birth"
-              label="Date of Birth"
-              defaultValue={lDateOfBirth}
-            />
-            <Button onClick={handelEditMode}>Save changes</Button>
-          </Stack>
+          <UpdatePersonalForm
+            email={loginData.email}
+            firstName={loginData.firstName}
+            lastName={loginData.lastName}
+            dateOfBirth={loginData.dateOfBirth}
+          />
+          // <Stack spacing={2}>
+          //   <TextField
+          //     id="user-first-name"
+          //     label="First Name"
+          //     defaultValue={firstName as unknown as string}
+          //   />
+          //   <TextField
+          //     id="user-last-name"
+          //     label="Last Name"
+          //     defaultValue={lastName as unknown as string}
+          //   />
+          //   <TextField
+          //     id="user-email"
+          //     label="Email"
+          //     defaultValue={email as unknown as string}
+          //   />
+          //   <TextField
+          //     id="user-date-of-birth"
+          //     label="Date of Birth"
+          //     defaultValue={lDateOfBirth}
+          //   />
+          //   <Button onClick={handelEditMode}>Save changes</Button>
+          // </Stack>
         )}
       </Box>
     );

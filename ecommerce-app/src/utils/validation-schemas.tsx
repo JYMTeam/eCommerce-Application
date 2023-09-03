@@ -55,4 +55,13 @@ const setLoginSchema = () => {
   });
 };
 
-export { setSignupSchema, setLoginSchema };
+const setUpdatePersonalSchema = () => {
+  return object().shape({
+    firstName: validateName("First name"),
+    lastName: validateName("Last name"),
+    email: validateEmail(),
+    dateOfBirth: validateDateOfBirth(),
+  });
+};
+
+export { setSignupSchema, setLoginSchema, setUpdatePersonalSchema };
