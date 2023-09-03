@@ -15,6 +15,7 @@ import { Theme } from "./components/Theme";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
+import { UserProfilePage } from "./pages/UserProfilePage";
 import CategoryPage from "./pages/CategoryPage";
 
 function App() {
@@ -22,6 +23,14 @@ function App() {
   const LoggedIn = ({ children }: MyComponentProps) => {
     const { isLogged } = useAppSelector((state) => state.userLogin);
     if (isLogged) {
+      return <Navigate to="/" replace={true} />;
+    }
+    return <>{children}</>;
+  };
+
+  const LoggedOut = ({ children }: MyComponentProps) => {
+    const { isLogged } = useAppSelector((state) => state.userLogin);
+    if (!isLogged) {
       return <Navigate to="/" replace={true} />;
     }
     return <>{children}</>;
@@ -48,7 +57,7 @@ function App() {
           <ThemeProvider theme={Theme}>
             <Navigation />
             <Routes>
-              <Route path="/" element={<MainPage />}></Route>
+              <Route path="/" element={<MainPage />} />
               <Route
                 path="/login"
                 element={
@@ -56,7 +65,7 @@ function App() {
                     <LoginPage />
                   </LoggedIn>
                 }
-              ></Route>
+              />
               <Route
                 path="/signup"
                 element={
@@ -64,12 +73,20 @@ function App() {
                     <SignupPage />
                   </LoggedIn>
                 }
-              ></Route>
-              <Route path="/shop" element={<ShopPage />}></Route>
-              <Route path="/shop/:id" element={<ProductDetailsPage />}></Route>
+              />
+              <Route
+                path="/user-profile"
+                element={
+                  <LoggedOut>
+                    <UserProfilePage />
+                  </LoggedOut>
+                }
+              />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/shop/:id" element={<ProductDetailsPage />} />
               <Route path="/categories/:id" element={<CategoryPage />}></Route>
-              <Route path="/cart" element={<CartPage />}></Route>
-              <Route path="*" element={<NotFoundPage />}></Route>
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </ThemeProvider>
         </div>
