@@ -1,14 +1,10 @@
 import React from "react";
-import ProductsList from "../components/ProductsList/ProductsList";
-import ProductsPagination from "../components/ProductsList/ProductsPagination";
-import { ProductsPanel } from "../components/ProductsPanel/ProductsPanel";
+import ProductsSidebar from "../components/ProductsSidebar/ProductsSidebar";
 
 export function ShopPage() {
   return (
     <>
-      <ProductsPanel />
-      <ProductsList />
-      <ProductsPagination />
+      <ProductsSidebar />
     </>
   );
 }

@@ -45,7 +45,7 @@ export interface ICountriesOptions {
   countryCode: string;
   postalCodeFormat: string;
 }
-export interface IParcedProduct {
+export interface IParsedProduct {
   id: string;
   name: string;
   image: Image;
@@ -56,6 +56,13 @@ export interface IParcedProduct {
   sizeList: string;
   color: string;
   discount: string;
+}
+
+export interface IParsedCategory {
+  id: string;
+  text: string;
+  children: [];
+  sub?: boolean;
 }
 export interface IProductsFormattedAttribute {
   name: string;
@@ -95,4 +102,13 @@ export enum AttributesNames {
   DESIGNER = "designer",
   SIZE_LIST = "size-list",
   COLOR = "color",
+}
+
+export interface IProductsPanelProps {
+  onCategoriesIconClick: () => void;
+}
+
+export interface IProductsDrawerProps {
+  mobileOpen: boolean;
+  onCategoriesIconClick: () => void;
 }

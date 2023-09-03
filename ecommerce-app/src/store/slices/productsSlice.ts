@@ -52,7 +52,7 @@ export const productsSlice = createSlice({
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
       state.loading = false;
-      state.errorMessage = "";
+      state.errorMessage = STR_PLACEHOLDER;
       state.products = action.payload.results;
       state.total = action.payload.total;
       state.limit = action.payload.limit;

@@ -15,6 +15,7 @@ import {
   AttributeTextType,
   AttributeTimeType,
   AttributeType,
+  Category,
   Price,
   ProductProjection,
 } from "@commercetools/platform-sdk";
@@ -28,7 +29,8 @@ import {
 import {
   AttributesNames,
   AttributesObject,
-  IParcedProduct,
+  IParsedProduct,
+  IParsedCategory,
   IProductsFormattedAttribute,
 } from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
@@ -54,7 +56,6 @@ const getDiscount = (priceInfo: Price) => {
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
     let { image, attributesObject, price, discount } = initialParsedProduct;
-
     if (product.masterVariant.images && product.masterVariant.images[0]) {
       image = product.masterVariant.images[0];
     }
@@ -83,7 +84,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       attributesObject = parseAttributes(product.masterVariant.attributes);
     }
 
-    const parcedProduct: IParcedProduct = {
+    const parsedProduct: IParsedProduct = {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
       image,
@@ -91,7 +92,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       discount,
       ...attributesObject,
     };
-    return parcedProduct;
+    return parsedProduct;
   });
 };
 
@@ -237,3 +238,34 @@ export function isAttributeTimeType(
 ): attribute is AttributeTimeType {
   return (attribute as AttributeTimeType).name === "time";
 }
+
+export const parseCategories = (categories: Category[]) => {
+  console.log(categories);
+  return categories.map(({ id, name, ancestors }) => {
+    const text = name[DEFAULT_LOCALE];
+
+    let parsedCategory: IParsedCategory = {
+      id: "",
+      text: "default",
+      children: [],
+    };
+
+    if (ancestors.length > 0) {
+      //if subcategory
+      parsedCategory = {
+        ...parsedCategory,
+        id,
+        text,
+        sub: true,
+      };
+    } else {
+      parsedCategory = {
+        ...parsedCategory,
+        id,
+        text,
+      };
+    }
+
+    return parsedCategory;
+  });
+};

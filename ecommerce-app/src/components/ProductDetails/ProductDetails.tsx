@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchProductDetails } from "../../store/actions/productDetailsActions";
 import { parseProducts } from "../../utils/dataParsers";
 import { Button, Grid, Paper, Stack, Typography } from "@mui/material";
-import { IParcedProduct } from "../../types";
+import { IParsedProduct } from "../../types";
 
 const MD_COLS = 6;
 const SM_COLS = 12;
@@ -37,7 +37,7 @@ export default function ProductDetail() {
     return <p className="notification-message">{errorMessage}</p>;
   }
 
-  let parsedProduct: IParcedProduct[] = [];
+  let parsedProduct: IParsedProduct[] = [];
   if (product) {
     parsedProduct = parseProducts([product]);
   }

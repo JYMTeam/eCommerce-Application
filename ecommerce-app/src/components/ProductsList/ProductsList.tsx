@@ -5,6 +5,7 @@ import {
   filterAndSortProducts,
 } from "../../store/actions/productsActions";
 import {
+  Box,
   Button,
   Card,
   CardActionArea,
@@ -17,8 +18,9 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import { Link } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
+import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
 
-const MD_COLS = 3;
+const MD_COLS = 4;
 const SM_COLS = 6;
 const XS_COLS = 12;
 const GRID_SPACING = 2;
@@ -58,7 +60,13 @@ export default function ProductsList() {
   }
 
   return (
-    <div>
+    <Box
+      sx={{
+        flexGrow: 1,
+        p: 3,
+        width: { md: `calc(100% - ${SIDEBAR_WIDTH}px)` },
+      }}
+    >
       <Grid container spacing={GRID_SPACING}>
         {parsedProducts.map(
           ({ id, name, description, image, price, discount }) => (
@@ -140,6 +148,6 @@ export default function ProductsList() {
           ),
         )}
       </Grid>
-    </div>
+    </Box>
   );
 }

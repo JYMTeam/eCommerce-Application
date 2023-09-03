@@ -62,23 +62,12 @@ export const searchProducts = (text: string, offset = 0) => {
     try {
       dispatch(productsFetching());
       dispatch(filterEmpty());
-      let fuzzyLevel = 2;
-      const textLength = text.length;
-
-      if (textLength <= 2) {
-        fuzzyLevel = 0;
-      }
-
-      if (textLength >= 3 && textLength <= 5) {
-        fuzzyLevel = 1;
-      }
-
       const queryArgs = {
         limit: DEFAULT_PRODUCTS_LIMIT,
         offset,
         "text.en": text,
         fuzzy: true,
-        fuzzyLevel,
+        fuzzyLevel: 1,
       };
       const answer = await getApiEntryRoot()
         .productProjections()
