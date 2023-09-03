@@ -32,6 +32,7 @@ import {
   IParsedProduct,
   IParsedCategory,
   IProductsFormattedAttribute,
+  IAncestorInfo,
 } from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
@@ -283,4 +284,34 @@ export const parseCategories = (categories: Category[]) => {
     }
   });
   return result;
+};
+
+export const parseCategoriesBreadcrumb = (categories: Category[]) => {
+  let id2path = new Map<string, Array<string>>();
+  let id2name = new Map<string, string>();
+
+  categories.forEach(({ id, name, ancestors }) => {
+    const text = name[DEFAULT_LOCALE];
+    let path = ancestors.map((value) => {
+      return value.id;
+    });
+    path.unshift(id);
+    id2path.set(id, path);
+    id2name.set(id, text);
+  });
+
+  let id2ancestorsInfo = new Map<string, Array<IAncestorInfo>>();
+
+  id2path.forEach((_, key) => {
+    let ancestorsInfo = id2path.get(key)!.map((ancestorId) => {
+      let info = {
+        id: ancestorId,
+        text: id2name.get(ancestorId)!,
+      };
+      return info;
+    });
+
+    id2ancestorsInfo.set(key, ancestorsInfo.reverse());
+  });
+  return id2ancestorsInfo;
 };

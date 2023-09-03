@@ -4,6 +4,7 @@ import ProductsList from "../ProductsList/ProductsList";
 import ProductsPagination from "../ProductsList/ProductsPagination";
 import ProductsDrawer from "./ProductsDrawer";
 import { Box } from "@mui/material";
+import CategoriesBreadcrumbs from "./CategoriesBreadcrumb";
 
 export const SIDEBAR_WIDTH = 240;
 
@@ -17,6 +18,7 @@ export default function ProductsSidebar() {
   return (
     <>
       <ProductsPanel onCategoriesIconClick={handleSidebarToggle} />
+      <CategoriesBreadcrumbs />
       <Box sx={{ display: "flex" }} component="main">
         <ProductsDrawer
           mobileOpen={mobileOpen}

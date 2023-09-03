@@ -2,7 +2,7 @@ import React from "react";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-
+import { Link } from "react-router-dom";
 interface ISingleListItemProps {
   id: string;
   text: string;
@@ -11,7 +11,7 @@ interface ISingleListItemProps {
 export default function SingleListItem({ id, text }: ISingleListItemProps) {
   return (
     <ListItem disablePadding>
-      <ListItemButton>
+      <ListItemButton component={Link} to={`/categories/${id}`}>
         <ListItemText primary={text} />
       </ListItemButton>
     </ListItem>

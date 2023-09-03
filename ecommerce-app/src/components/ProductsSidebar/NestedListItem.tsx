@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 import SingleListItem from "./SingleListItem";
+import { Link } from "react-router-dom";
 
 interface INestedListItemProps {
   id: string;
@@ -29,14 +30,18 @@ export default function NestedListItem({
   return (
     <>
       <ListItem disablePadding>
-        <ListItemButton onClick={handleCategoryClick}>
+        <ListItemButton
+          onClick={handleCategoryClick}
+          component={Link}
+          to={`/categories/${id}`}
+        >
           <ListItemText primary={text} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="ul" disablePadding>
-          {children.map(({ text, children }) =>
+          {children.map(({ id, text, children }) =>
             children.length > 0 ? (
               <NestedListItem
                 key={text}

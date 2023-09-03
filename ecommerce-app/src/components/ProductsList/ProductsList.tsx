@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
 
@@ -36,6 +36,7 @@ const CARD_DESC_MB = 1.5;
 const PRICE_MR = 1;
 const PRICE_BG_COLOR = "rgba(0, 0, 0, 0.08)";
 const DISCOUNT_BG_COLOR = "#00ffbb7d";
+export const PRODUCT_LIST_PADDING = 3;
 
 export default function ProductsList() {
   const { errorMessage, loading, products, page, limit, filterParams } =
@@ -43,14 +44,15 @@ export default function ProductsList() {
   const dispatch = useAppDispatch();
   const parsedProducts = parseProducts(products);
   const offset = limit * (page - 1);
+  const { id: categoryId } = useParams();
 
   useEffect(() => {
     if (filterParams) {
       dispatch(filterAndSortProducts(filterParams, offset));
     } else {
-      dispatch(fetchProducts(offset));
+      dispatch(fetchProducts(offset, categoryId));
     }
-  }, [dispatch, offset, filterParams]);
+  }, [dispatch, offset, filterParams, categoryId]);
 
   if (loading) {
     return <p className="notification-message">Loading...</p>;
@@ -63,7 +65,7 @@ export default function ProductsList() {
     <Box
       sx={{
         flexGrow: 1,
-        p: 3,
+        p: PRODUCT_LIST_PADDING,
         width: { md: `calc(100% - ${SIDEBAR_WIDTH}px)` },
       }}
     >

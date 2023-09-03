@@ -19,15 +19,26 @@ const FILTER_QUERY_ATTRIBUTES_BEGIN = "variants.attributes";
 const FILTER_QUERY_PRICE_BEGIN = "variants.price.centAmount";
 const FILTER_QUERY_KEY = "key";
 
-export const fetchProducts = (offset = 0) => {
+type QueryArgs = {
+  limit: number;
+  offset: number;
+  where?: string;
+};
+
+export const fetchProducts = (offset = 0, categoryId?: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productsFetching());
 
-      const queryArgs = {
+      let queryArgs: QueryArgs = {
         limit: DEFAULT_PRODUCTS_LIMIT,
         offset,
       };
+      if (categoryId) {
+        queryArgs.where = `categories(id="${categoryId}")`;
+      }
+
+      console.log(queryArgs);
 
       const answer = await getApiEntryRoot()
         .productProjections()
@@ -195,3 +206,15 @@ const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
 const convertPriceToCentsString = (usdAmount: number) => {
   return convertUSDToCents(usdAmount).toString();
 };
+
+// export const setCategory = (categoryId: string) => {
+//   return async (dispatch: AppDispatch) => {
+//     dispatch(categorySet(categoryId));
+//   };
+// };
+
+// export const resetCategory = () => {
+//   return async (dispatch: AppDispatch) => {
+//     dispatch(categoryReset());
+//   };
+// };
