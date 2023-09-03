@@ -16,6 +16,8 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import { useSnackbar } from "notistack";
+import { hideNotification } from "./store/actions/notificationActions";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -37,7 +39,12 @@ function App() {
 
   //check token after loading
   const [isTokenVerified, setTokenVerified] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const { tokenData } = useAppSelector((state) => state.userLogin);
+  const { isNotification, notificationObject } = useAppSelector(
+    (state) => state.notification,
+  );
+
   const dispatch = useAppDispatch();
   useEffect(() => {
     const tokenVerification = () => {
@@ -47,7 +54,22 @@ function App() {
       }
     };
     tokenVerification();
-  }, [dispatch, tokenData, isTokenVerified]);
+
+    if (isNotification) {
+      console.log("success notification");
+      enqueueSnackbar(notificationObject.message, {
+        variant: notificationObject.type,
+      });
+      dispatch(hideNotification());
+    }
+  }, [
+    dispatch,
+    tokenData,
+    isTokenVerified,
+    isNotification,
+    notificationObject,
+    enqueueSnackbar,
+  ]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

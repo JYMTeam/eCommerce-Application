@@ -181,7 +181,6 @@ const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
       filterOptions.push(filterOption);
     });
   }
-
   const queryOptions: { [key: string]: string[] } = {
     filter: filterOptions,
   };

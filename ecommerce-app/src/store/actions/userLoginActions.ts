@@ -22,6 +22,7 @@ import {
 } from "@commercetools/platform-sdk";
 import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 import { IUpdatePersonalValues } from "../../types";
+import { INotification, notificationActive } from "../slices/notificationSlice";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
   return async (dispatch: AppDispatch) => {
@@ -99,10 +100,13 @@ export const fetchUpdateUserPersonalInfo = (
           body: updateCustomer,
         })
         .execute();
-      dispatch(setIsSuccess());
-      // setTimeout(() => {
+      // dispatch(setIsSuccess());
       dispatch(userLoginFetchSuccess(answer.body));
-      // }, 1500);
+      const successMessage: INotification = {
+        message: "Your data has been successfully updated",
+        type: "success",
+      };
+      dispatch(notificationActive(successMessage));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;

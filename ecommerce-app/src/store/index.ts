@@ -5,7 +5,7 @@ import userLoginReducer from "./slices/userLoginSlice";
 import userSignupReducer from "./slices/userSignupSlice";
 import productsReducer from "./slices/productsSlice";
 import productDetailsReducer from "./slices/productDetailsSlice";
-
+import notificationReducer from "./slices/notificationSlice";
 import attributesReducer from "./slices/attributesSlice";
 
 const persistConfig = {
@@ -19,6 +19,7 @@ const rootReducer = combineReducers({
   products: productsReducer,
   productDetails: productDetailsReducer,
   attributes: attributesReducer,
+  notification: notificationReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 

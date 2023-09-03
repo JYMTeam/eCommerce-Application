@@ -8,19 +8,21 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import { setupStore } from "./store";
 import { BrowserRouter } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 const store = setupStore();
 let persistor = persistStore(store);
-// test commit
 
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
-        <App />{" "}
+        <SnackbarProvider>
+          <App />{" "}
+        </SnackbarProvider>
       </BrowserRouter>
     </PersistGate>
   </Provider>,
