@@ -1,11 +1,30 @@
 import Carousel from "react-material-ui-carousel";
-import { Paper, Stack } from "@mui/material";
+import { Paper, Stack, Box, Modal } from "@mui/material";
 import { Image } from "@commercetools/platform-sdk";
+import React, { useState } from "react";
+
 const HEIGHT = "auto";
 const WIDTH = "100%";
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 export function ProductCarousel(props: { images: Image[] }) {
-  function Item(props: { image: Image }) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  function Item(props: { image: Image; i: number }) {
+    console.log(props.i);
     return (
       <Paper
         component={Stack}
@@ -19,11 +38,28 @@ export function ProductCarousel(props: { images: Image[] }) {
         }}
       >
         <img
+          onClick={handleOpen}
           width={WIDTH}
           className="product-img"
           src={props.image.url}
           alt={props.image.label as unknown as string}
         />
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <img
+              onClick={handleOpen}
+              width={WIDTH}
+              className="product-img"
+              src={props.image.url}
+              alt={props.image.label as unknown as string}
+            />
+          </Box>
+        </Modal>
       </Paper>
     );
   }
@@ -35,7 +71,7 @@ export function ProductCarousel(props: { images: Image[] }) {
       navButtonsAlwaysInvisible={props.images.length > 1 ? false : true}
     >
       {props.images.map((image, i) => (
-        <Item key={i} image={image} />
+        <Item key={i} image={image} i={i} />
       ))}
     </Carousel>
   );

@@ -14,6 +14,7 @@ const PRODUCT_TITLE_FONTSIZE = "2em";
 const PRODUCT_DESC_FONTSIZE = "1em";
 const PRODUCT_PRICE_FONTSIZE = "1.4em";
 const PRODUCT_DESC_MARGIN = 3;
+const BUTTON_COLOR = "#F9C152";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -95,7 +96,15 @@ export default function ProductDetail() {
             >
               {price}
             </Typography>
-            <Button variant="outlined">Add to Cart</Button>
+            <Button
+              size="small"
+              sx={{ color: BUTTON_COLOR }}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              Add to cart
+            </Button>
           </Grid>
         </Grid>
       ))}
