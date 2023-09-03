@@ -31,6 +31,8 @@ export function ProductCarousel(props: { images: Image[] }) {
     <Carousel
       sx={{ width: WIDTH }}
       indicators={props.images.length > 1 ? true : false}
+      navButtonsAlwaysVisible={true}
+      navButtonsAlwaysInvisible={props.images.length > 1 ? false : true}
     >
       {props.images.map((image, i) => (
         <Item key={i} image={image} />
