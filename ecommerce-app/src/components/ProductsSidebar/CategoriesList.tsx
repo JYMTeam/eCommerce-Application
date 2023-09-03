@@ -7,6 +7,7 @@ import { fetchCategories } from "../../store/actions/categoriesActions";
 import { parseCategories } from "../../utils/dataParsers";
 import SingleListItem from "./SingleListItem";
 import NestedListItem from "./NestedListItem";
+import { IParsedCategory } from "../../types";
 
 export default function CategoriesList() {
   const dispatch = useAppDispatch();
@@ -25,13 +26,6 @@ export default function CategoriesList() {
   }
 
   const parsedCategories = parseCategories(categories);
-  console.log(parsedCategories);
-
-  const sub = [
-    { text: "sub1", sub: [] },
-    { text: "sub2", sub: [] },
-    { text: "sub3", sub: [{ text: "subsub1", sub: [] }] },
-  ];
 
   return (
     <>
@@ -42,16 +36,16 @@ export default function CategoriesList() {
       </Toolbar>
       <Divider />
       <List component="ul">
-        {[
-          { text: "Inbox", id: 1, sub: [] },
-          { text: "Starred", id: 2, sub: sub },
-          { text: "Email", id: 3, sub: [] },
-          { text: "Drafts", id: 4, sub: sub },
-        ].map(({ text, sub }) => {
-          return sub.length > 0 ? ( //if a category has sub children
-            <NestedListItem key={text} text={text} sub={sub} />
+        {parsedCategories.map(({ id, text, children }: IParsedCategory) => {
+          return children.length > 0 ? ( //if a category has sub children
+            <NestedListItem
+              key={text}
+              text={text}
+              children={children}
+              id={id}
+            />
           ) : (
-            <SingleListItem key={text} text={text} />
+            <SingleListItem key={text} text={text} id={id} />
           );
         })}
       </List>

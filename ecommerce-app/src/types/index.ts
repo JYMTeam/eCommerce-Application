@@ -61,8 +61,7 @@ export interface IParsedProduct {
 export interface IParsedCategory {
   id: string;
   text: string;
-  children: [];
-  sub?: boolean;
+  children: IParsedCategory[];
 }
 export interface IProductsFormattedAttribute {
   name: string;

@@ -240,32 +240,47 @@ export function isAttributeTimeType(
 }
 
 export const parseCategories = (categories: Category[]) => {
-  console.log(categories);
-  return categories.map(({ id, name, ancestors }) => {
+  const parentId2ChildrenId = new Map<string, string[]>(); // map of categoryId: subcategories[]
+  const id2Obj = new Map<string, IParsedCategory>(); //map of id: category/subcategory obj
+
+  categories.forEach(({ id, name, ancestors }) => {
     const text = name[DEFAULT_LOCALE];
 
     let parsedCategory: IParsedCategory = {
       id: "",
-      text: "default",
+      text: "",
       children: [],
     };
 
-    if (ancestors.length > 0) {
-      //if subcategory
-      parsedCategory = {
-        ...parsedCategory,
-        id,
-        text,
-        sub: true,
-      };
-    } else {
-      parsedCategory = {
-        ...parsedCategory,
-        id,
-        text,
-      };
-    }
+    parsedCategory.id = id;
+    parsedCategory.text = text;
 
-    return parsedCategory;
+    id2Obj.set(parsedCategory.id, parsedCategory);
+
+    let parentId =
+      ancestors.length !== 0 && ancestors[0].obj ? ancestors[0].obj.id : "";
+
+    if (!parentId2ChildrenId.has(parentId)) {
+      parentId2ChildrenId.set(parentId, []);
+    }
+    parentId2ChildrenId.get(parentId)!.push(id);
   });
+
+  parentId2ChildrenId.forEach((children, parentId) => {
+    if (parentId !== "") {
+      for (let childId of children) {
+        id2Obj.get(parentId)!.children.push(id2Obj.get(childId)!);
+      }
+    }
+  });
+
+  let result: IParsedCategory[] = [];
+  parentId2ChildrenId.forEach((children, key) => {
+    if (key === "") {
+      for (let child of children) {
+        result.push(id2Obj.get(child)!);
+      }
+    }
+  });
+  return result;
 };

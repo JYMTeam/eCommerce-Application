@@ -4,10 +4,11 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 
 interface ISingleListItemProps {
+  id: string;
   text: string;
 }
 
-export default function SingleListItem({ text }: ISingleListItemProps) {
+export default function SingleListItem({ id, text }: ISingleListItemProps) {
   return (
     <ListItem disablePadding>
       <ListItemButton>

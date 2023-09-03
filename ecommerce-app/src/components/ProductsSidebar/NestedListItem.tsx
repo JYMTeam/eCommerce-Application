@@ -10,11 +10,16 @@ import React from "react";
 import SingleListItem from "./SingleListItem";
 
 interface INestedListItemProps {
+  id: string;
   text: string;
-  sub: INestedListItemProps[];
+  children: INestedListItemProps[];
 }
 
-export default function NestedListItem({ text, sub }: INestedListItemProps) {
+export default function NestedListItem({
+  id,
+  text,
+  children,
+}: INestedListItemProps) {
   const [open, setOpen] = React.useState(false);
 
   const handleCategoryClick = () => {
@@ -31,11 +36,16 @@ export default function NestedListItem({ text, sub }: INestedListItemProps) {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="ul" disablePadding>
-          {sub.map(({ text, sub }) =>
-            sub.length > 0 ? (
-              <NestedListItem key={text} text={text} sub={sub} />
+          {children.map(({ text, children }) =>
+            children.length > 0 ? (
+              <NestedListItem
+                key={text}
+                text={text}
+                children={children}
+                id={id}
+              />
             ) : (
-              <SingleListItem key={text} text={text} />
+              <SingleListItem key={text} text={text} id={id} />
             ),
           )}
         </List>
