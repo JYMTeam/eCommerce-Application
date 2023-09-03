@@ -96,14 +96,6 @@ export const productsSlice = createSlice({
     filterCount(state, action: PayloadAction<number>) {
       state.filterCount = action.payload;
     },
-    // categorySet(state, action: PayloadAction<string>){
-    //   state.page = 1;
-    //   //state.offset = 0;
-    //   state.categoryId = action.payload;
-    // },
-    // categoryReset(state){
-    //   state.categoryId = null;
-    // }
   },
 });
 
@@ -117,8 +109,6 @@ export const {
   filterParams,
   filterEmpty,
   filterCount,
-  // categorySet,
-  // categoryReset,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;
