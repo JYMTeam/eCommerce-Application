@@ -38,8 +38,6 @@ export const fetchProducts = (offset = 0, categoryId?: string) => {
         queryArgs.where = `categories(id="${categoryId}")`;
       }
 
-      console.log(queryArgs);
-
       const answer = await getApiEntryRoot()
         .productProjections()
         .get({ queryArgs })
