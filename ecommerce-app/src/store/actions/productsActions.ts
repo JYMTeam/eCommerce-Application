@@ -108,12 +108,16 @@ export const searchProducts = (text: string, offset = 0) => {
 export const filterAndSortProducts = (
   selectedValues: SelectedFilterAndSortValues,
   offset = 0,
+  categoryId?: string,
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productsFetching());
       const queryOptions = getFilterAndSortOptions(selectedValues);
-      const queryArgs = {
+      if (categoryId) {
+        queryOptions.filter.push(`categories.id:"${categoryId}"`);
+      }
+      const queryArgs: QueryArgs = {
         limit: DEFAULT_PRODUCTS_LIMIT,
         offset,
         ...queryOptions,

@@ -48,7 +48,7 @@ export default function ProductsList() {
 
   useEffect(() => {
     if (filterParams) {
-      dispatch(filterAndSortProducts(filterParams, offset));
+      dispatch(filterAndSortProducts(filterParams, offset, categoryId));
     } else {
       dispatch(fetchProducts(offset, categoryId));
     }
