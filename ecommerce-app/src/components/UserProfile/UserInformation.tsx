@@ -4,7 +4,7 @@ import { useAppSelector } from "../../hooks/redux";
 import { Button, IconButton, Stack, TextField, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../basic-components/InfoCard/InfoCard";
-import { formatDateYYYYMMDDToDDMMYYYY } from "../../utils/utils";
+import { formatDateYYYYMMDDToMMDDYYYY } from "../../utils/utils";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -32,7 +32,7 @@ export default function UserInformation() {
   }
   if (loginData) {
     const { email, firstName, lastName, dateOfBirth } = loginData;
-    const lDateOfBirth = formatDateYYYYMMDDToDDMMYYYY(dateOfBirth || "");
+    const lDateOfBirth = formatDateYYYYMMDDToMMDDYYYY(dateOfBirth || "");
     const userData = [
       { label: "First Name", value: loginData.firstName as unknown as string },
       { label: "Last Name", value: loginData.lastName as unknown as string },

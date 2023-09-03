@@ -37,19 +37,19 @@ export const formatPrice = (centAmount: number, currencyCode: string) => {
   return formatedPrice;
 };
 
-// "YYYY-MM-DD" -> "DD/MM/YYYY"
-export function formatDateYYYYMMDDToDDMMYYYY(dateString: string) {
+// "YYYY-MM-DD" -> "MM/DD/YYYY"
+export function formatDateYYYYMMDDToMMDDYYYY(dateString: string) {
   const parts = dateString.split("-");
   if (parts.length !== 3) return "";
   const [year, month, day] = parts;
-  return `${day}/${month}/${year}`;
+  return `${month}/${day}/${year}`;
 }
 
-// "DD/MM/YYYY" -> "YYYY-MM-DD"
-export function formatDateDDMMYYYYToYYYYMMDD(dateString: string) {
+// "MM/DD/YYYY" -> "YYYY-MM-DD"
+export function formatDateMMDDYYYYToYYYYMMDD(dateString: string) {
   const parts = dateString.split("/");
   if (parts.length !== 3) return "";
-  const [day, month, year] = parts;
+  const [month, day, year] = parts;
   return `${year}-${month}-${day}`;
 }
 
