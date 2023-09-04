@@ -6,6 +6,7 @@ import {
   NO_SPACE_REGEX,
   NO_SPECIAL_CHARS_REGEX,
   NO_DIGIT_REGEX,
+  NO_END_HYPHEN_SIGN,
 } from "./constants";
 
 describe("domain and at sign regex", () => {
@@ -94,5 +95,17 @@ describe("no digit regex", () => {
   it("does not pass if there is at least one digit", () => {
     const exampleStr = "Secret1";
     expect(exampleStr).not.toMatch(NO_DIGIT_REGEX);
+  });
+});
+
+describe("no end hyphen sign regex", () => {
+  it("does not ends with hyphen", () => {
+    const exampleStr = "12345";
+    expect(exampleStr).toMatch(NO_END_HYPHEN_SIGN);
+  });
+
+  it("does not pass if value ends with hyphen sign", () => {
+    const exampleStr = "12345-";
+    expect(exampleStr).not.toMatch(NO_END_HYPHEN_SIGN);
   });
 });
