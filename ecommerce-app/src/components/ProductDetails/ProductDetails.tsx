@@ -57,17 +57,23 @@ export default function ProductDetail() {
           sizeList,
           color,
         }) => (
-          <Grid container spacing={GRID_SPACING} key={id} pt={5}>
+          <Grid
+            container
+            spacing={GRID_SPACING}
+            key={id}
+            pt={5}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Grid
               item
               md={MD_COLS}
               sm={SM_COLS}
               sx={{
                 display: "flex",
-                justifyContent: {
-                  md: "center",
-                  sm: "center",
-                },
+                justifyContent: "center",
               }}
             >
               <ProductCarousel images={images} />
