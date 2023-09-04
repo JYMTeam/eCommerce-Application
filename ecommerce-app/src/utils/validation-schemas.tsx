@@ -8,7 +8,7 @@ import {
   validateDateOfBirth,
   validatePostalCode,
 } from "./validation-rules";
-import { ISignedUpSchemaOptions } from "../types";
+import { ISignedUpSchemaOptions, IUpdateAddressSchemaOptions } from "../types";
 
 const setSignupSchema = ({
   isCommonAddressChecked,
@@ -64,4 +64,25 @@ const setUpdateUserInfoSchema = () => {
   });
 };
 
-export { setSignupSchema, setLoginSchema, setUpdateUserInfoSchema };
+const setUpdateUserAddressSchema = ({
+  countryCode,
+  postalCodeFormat,
+  isBillingAddress = false,
+  isShippingAddress = false,
+  isDefaultAddress = false,
+}: IUpdateAddressSchemaOptions) => {
+  console.log(isBillingAddress, isShippingAddress, isDefaultAddress);
+  return object().shape({
+    city: validateCity(),
+    streetName: validateStreetName(),
+    country: string().required("Country is required"),
+    postalCode: validatePostalCode(countryCode, postalCodeFormat),
+  });
+};
+
+export {
+  setSignupSchema,
+  setLoginSchema,
+  setUpdateUserInfoSchema,
+  setUpdateUserAddressSchema,
+};

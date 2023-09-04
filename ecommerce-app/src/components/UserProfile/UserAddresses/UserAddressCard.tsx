@@ -2,10 +2,10 @@ import React from "react";
 import {
   Box,
   IconButton,
-  Stack,
-  TextField,
+  // Stack,
+  // TextField,
   Tooltip,
-  Button,
+  // Button,
   Chip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -13,6 +13,7 @@ import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
 import { Address } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
+import { UpdateUserAddressCardForm } from "./UpdateUserAddressCardForm";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -97,34 +98,40 @@ export const UserAddressCard = ({
         </>
       )}
       {isEdit && (
-        <Stack spacing={2}>
-          <TextField
-            id={`user-street-${id}`}
-            label="Street"
-            defaultValue={streetName || ""}
-          />
-          <TextField
-            id={`user-city-${id}`}
-            label="City"
-            defaultValue={city || ""}
-          />
-          <TextField
-            id={`user-postal-code-${id}`}
-            label="Postal Code"
-            defaultValue={postalCode || ""}
-          />
-          <TextField
-            id={`user-state-${id}`}
-            label="State"
-            defaultValue={state || ""}
-          />
-          <TextField
-            id={`user-country-${id}`}
-            label="Country"
-            defaultValue={lCountry || ""}
-          />
-          <Button onClick={handleEditMode}>Save changes</Button>
-        </Stack>
+        <UpdateUserAddressCardForm
+          streetName={streetName || ""}
+          city={city || ""}
+          country={country || ""}
+          postalCode={postalCode || ""}
+        />
+        // <Stack spacing={2}>
+        //   <TextField
+        //     id={`user-street-${id}`}
+        //     label="Street"
+        //     defaultValue={streetName || ""}
+        //   />
+        //   <TextField
+        //     id={`user-city-${id}`}
+        //     label="City"
+        //     defaultValue={city || ""}
+        //   />
+        //   <TextField
+        //     id={`user-postal-code-${id}`}
+        //     label="Postal Code"
+        //     defaultValue={postalCode || ""}
+        //   />
+        //   <TextField
+        //     id={`user-state-${id}`}
+        //     label="State"
+        //     defaultValue={state || ""}
+        //   />
+        //   <TextField
+        //     id={`user-country-${id}`}
+        //     label="Country"
+        //     defaultValue={lCountry || ""}
+        //   />
+        //   <Button onClick={handleEditMode}>Save changes</Button>
+        // </Stack>
       )}
     </Box>
   );

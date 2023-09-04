@@ -5,7 +5,7 @@ import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
 import { formatDateYYYYMMDDToMMDDYYYY } from "../../../utils/utils";
-import { UpdateUserInfoForm } from "./UpdateUserInfoForm/UpdateUserInfoForm";
+import { UpdateUserInfoForm } from "./UpdateUserInfoForm";
 import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
 
 const EditButtonStyles = {

@@ -22,6 +22,16 @@ export interface ISignupInitialValues extends IFormInitialValues {
   defaultBillingCheck?: string[];
 }
 
+export interface IUpdateAddressInitialValues {
+  streetName: string;
+  city: string;
+  country: string;
+  postalCode: string;
+  isBilling: boolean;
+  isShipping: boolean;
+  isDefault: boolean;
+}
+
 export interface IUpdatePersonalValues {
   firstName: string;
   lastName: string;
@@ -37,6 +47,14 @@ export interface ISignedUpSchemaOptions {
   postalCodeFormatShipping: string;
   postalCodeFormatBilling: string;
   isCommonAddressChecked: boolean;
+}
+
+export interface IUpdateAddressSchemaOptions {
+  countryCode: string;
+  postalCodeFormat: string;
+  isBillingAddress?: boolean;
+  isShippingAddress?: boolean;
+  isDefaultAddress?: boolean;
 }
 
 export enum statusCode {

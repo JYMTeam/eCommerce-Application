@@ -2,6 +2,7 @@ import {
   ICountriesOptions,
   IFormInitialValues,
   ISignupInitialValues,
+  IUpdateAddressInitialValues,
   IUpdatePersonalValues,
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
@@ -67,6 +68,16 @@ const initialUpdatePersonalValues: IUpdatePersonalValues = {
   dateOfBirth: "",
 };
 
+const initialUpdateAddressValues: IUpdateAddressInitialValues = {
+  streetName: "",
+  city: "",
+  country: "",
+  postalCode: "",
+  isBilling: false,
+  isShipping: false,
+  isDefault: false,
+};
+
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
@@ -90,6 +101,7 @@ export {
   initialSignUpValues,
   initialCountryOptions,
   initialUpdatePersonalValues,
+  initialUpdateAddressValues,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
