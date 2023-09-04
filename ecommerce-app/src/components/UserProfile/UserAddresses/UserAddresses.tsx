@@ -1,7 +1,23 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppSelector } from "../../../hooks/redux";
 import { UserAddressCard } from "./UserAddressCard";
+import { Address } from "@commercetools/platform-sdk";
+
+const emptyAddress: Address = {
+  country: "",
+  streetName: "",
+  postalCode: "",
+  state: "",
+  city: "",
+};
+
+const emptyAddressFlags = {
+  isBilling: false,
+  isShipping: false,
+  isDefaultBilling: false,
+  isDefaultShipping: false,
+};
 
 export default function UserAddresses() {
   const { errorMessage, loading, loginData } = useAppSelector(
@@ -27,8 +43,8 @@ export default function UserAddresses() {
         sx={{
           display: "flex",
           flexWrap: "wrap",
-          columnGap: "20px",
           justifyContent: "center",
+          gap: "30px 20px",
         }}
       >
         {loginData.addresses.map((address, index) => {
@@ -44,12 +60,20 @@ export default function UserAddresses() {
           return (
             <UserAddressCard
               key={index}
+              isNew={false}
               address={address}
               id={index}
               {...addressFlags}
             />
           );
         })}
+        <UserAddressCard
+          key={loginData.addresses.length}
+          isNew={true}
+          address={emptyAddress}
+          id={loginData.addresses.length}
+          {...emptyAddressFlags}
+        />
       </Box>
     );
   }

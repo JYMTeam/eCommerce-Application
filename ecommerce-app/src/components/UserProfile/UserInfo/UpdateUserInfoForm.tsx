@@ -1,52 +1,62 @@
 import React from "react";
-import { setUpdatePersonalSchema } from "../../utils/validation-schemas";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setUpdateUserInfoSchema } from "../../../utils/validation-schemas";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Formik, Form } from "formik";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { FORM_DATE_FORMAT, MAX_HUMAN_AGE } from "../../constants/constants";
+import { FORM_DATE_FORMAT, MAX_HUMAN_AGE } from "../../../constants/constants";
 import { Alert, AlertTitle, Stack } from "@mui/material";
-import { subtractYears } from "../../utils/utils";
+import { subtractYears } from "../../../utils/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
-import { IUpdatePersonalValues } from "../../types";
-import { fetchUpdateUserPersonalInfo } from "../../store/actions/userLoginActions";
-import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
-import { successMessageHandler } from "../SignupForm/signupHelpers";
+import { IUpdatePersonalValues } from "../../../types";
+import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userLoginActions";
+import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
+import { successMessageHandler } from "../../SignupForm/signupHelpers";
+import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
 
-export interface UpdatePersonalProps {
+export interface IUpdateUserInfoProps {
   email: string;
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
 }
 
-export function UpdatePersonalForm({
+export function UpdateUserInfoForm({
   email,
   firstName,
   lastName,
   dateOfBirth,
-}: UpdatePersonalProps) {
-  const UpdatePersonalSchema = setUpdatePersonalSchema();
+}: IUpdateUserInfoProps) {
+  const UpdateUserInfoSchema = setUpdateUserInfoSchema();
   const { loading, errorMessage, loginData, tokenData, isSuccessMessage } =
     useAppSelector((state) => state.userLogin);
+  const isUserInfoEdit = useAppSelector(
+    (state) => state.userEditMode.userInfoEdit,
+  );
   const BIRTHDAY_INPUT_NAME = "dateOfBirth";
 
-  const initialUpdatePersonalValues: IUpdatePersonalValues = {
+  const initialUpdateUserInfoValues: IUpdatePersonalValues = {
     firstName: firstName || "",
     lastName: lastName || "",
     email: email || "",
     dateOfBirth: dateOfBirth || "",
   };
+
   const dispatch = useAppDispatch();
+
+  const handleEditMode = () => {
+    dispatch(setUserInfoEdit(!isUserInfoEdit));
+  };
   return (
     <Formik
-      initialValues={initialUpdatePersonalValues}
-      validationSchema={UpdatePersonalSchema}
+      initialValues={initialUpdateUserInfoValues}
+      validationSchema={UpdateUserInfoSchema}
       onSubmit={(values) => {
         if (loginData && tokenData && tokenData?.token !== "") {
           dispatch(fetchUpdateUserPersonalInfo(tokenData, loginData, values));
+          handleEditMode();
         }
       }}
     >
@@ -127,7 +137,7 @@ export function UpdatePersonalForm({
                   }}
                   defaultValue={dayjs(new Date(dateOfBirth || ""))}
                 />
-                <Button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading} variant="contained">
                   Save Changes
                 </Button>
                 {isSuccessMessage && (

@@ -1,12 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { InfoCard } from "../basic-components/InfoCard/InfoCard";
-import { formatDateYYYYMMDDToMMDDYYYY } from "../../utils/utils";
-import { UpdatePersonalForm } from "../UpdatePersonalForm/UpdatePersonalForm";
-import { setUserInformationEdit } from "../../store/slices/userEditModeSlice";
+import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
+import { formatDateYYYYMMDDToMMDDYYYY } from "../../../utils/utils";
+import { UpdateUserInfoForm } from "./UpdateUserInfoForm";
+import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -16,9 +16,9 @@ const EditButtonStyles = {
   },
 };
 
-export default function UserInformation() {
-  const isUserInformationEdit = useAppSelector(
-    (state) => state.userEditMode.userInformationEdit,
+export default function UserInfo() {
+  const isUserInfoEdit = useAppSelector(
+    (state) => state.userEditMode.userInfoEdit,
   );
   const dispatch = useAppDispatch();
 
@@ -26,7 +26,7 @@ export default function UserInformation() {
     (state) => state.userLogin,
   );
   const handleEditMode = () => {
-    dispatch(setUserInformationEdit(!isUserInformationEdit));
+    dispatch(setUserInfoEdit(!isUserInfoEdit));
   };
 
   if (loading) {
@@ -69,9 +69,9 @@ export default function UserInformation() {
             <EditIcon />
           </IconButton>
         </Tooltip>
-        {!isUserInformationEdit && <InfoCard infoData={userData} />}
-        {isUserInformationEdit && (
-          <UpdatePersonalForm
+        {!isUserInfoEdit && <InfoCard infoData={userData} />}
+        {isUserInfoEdit && (
+          <UpdateUserInfoForm
             email={loginData.email}
             firstName={loginData.firstName}
             lastName={loginData.lastName}

@@ -3,8 +3,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import UserInformation from "./UserInformation";
-import UserAddresses from "./UserAddresses";
+import UserInfo from "./UserInfo/UserInfo";
+import UserAddresses from "./UserAddresses/UserAddresses";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import "./UserProfile.css";
 
@@ -76,7 +76,7 @@ export default function UserProfile() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <UserInformation />
+        <UserInfo />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <UserAddresses />

@@ -7,8 +7,9 @@ import {
   validateCity,
   validateDateOfBirth,
   validatePostalCode,
+  validateState,
 } from "./validation-rules";
-import { ISignedUpSchemaOptions } from "../types";
+import { ISignedUpSchemaOptions, IUpdateAddressSchemaOptions } from "../types";
 import { USER_AGE_ALLOWED } from "../constants/constants";
 
 const setSignupSchema = ({
@@ -58,7 +59,7 @@ const setLoginSchema = () => {
   });
 };
 
-const setUpdatePersonalSchema = () => {
+const setUpdateUserInfoSchema = () => {
   return object().shape({
     firstName: validateName("First name"),
     lastName: validateName("Last name"),
@@ -69,4 +70,22 @@ const setUpdatePersonalSchema = () => {
   });
 };
 
-export { setSignupSchema, setLoginSchema, setUpdatePersonalSchema };
+const setUpdateUserAddressSchema = ({
+  countryCode,
+  postalCodeFormat,
+}: IUpdateAddressSchemaOptions) => {
+  return object().shape({
+    city: validateCity(),
+    streetName: validateStreetName(),
+    state: validateState(),
+    country: string().required("Country is required"),
+    postalCode: validatePostalCode(countryCode, postalCodeFormat),
+  });
+};
+
+export {
+  setSignupSchema,
+  setLoginSchema,
+  setUpdateUserInfoSchema,
+  setUpdateUserAddressSchema,
+};
