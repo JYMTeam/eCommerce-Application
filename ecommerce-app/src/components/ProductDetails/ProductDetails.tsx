@@ -16,6 +16,7 @@ const BUTTON_COLOR = "#F9C152";
 const PRICE_MR = 1;
 const PRICE_BG_COLOR = "rgba(0, 0, 0, 0.08)";
 const DISCOUNT_BG_COLOR = "#00ffbb7d";
+const BUTTON_ML = 2;
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -133,6 +134,7 @@ export default function ProductDetail() {
               >
                 Size: {sizeList.slice(1, -1)}
               </Typography>
+
               <Chip
                 label={discount ? discount : price}
                 size="small"
@@ -145,6 +147,7 @@ export default function ProductDetail() {
               <Button
                 size="small"
                 sx={{
+                  ml: BUTTON_ML,
                   color: BUTTON_COLOR,
                 }}
                 onClick={(e) => {
