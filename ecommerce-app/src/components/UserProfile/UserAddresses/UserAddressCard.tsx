@@ -7,6 +7,7 @@ import {
   Tooltip,
   // Button,
   Chip,
+  Typography,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -19,6 +20,7 @@ import { fetchDeleteUserAddress } from "../../../store/actions/userLoginActions"
 
 const EditButtonStyles = {
   zIndex: "1",
+  marginBottom: "10px",
   justifyContent: "flex-end",
   ":hover": {
     bgcolor: "transparent",
@@ -29,6 +31,7 @@ const EditButtonStyles = {
 export const UserAddressCard = ({
   address,
   id,
+  isNew,
   isDefaultShipping,
   isDefaultBilling,
   isBilling,
@@ -36,6 +39,7 @@ export const UserAddressCard = ({
 }: {
   address: Address;
   id: number;
+  isNew: boolean;
   isDefaultBilling: boolean;
   isDefaultShipping: boolean;
   isBilling: boolean;
@@ -58,7 +62,10 @@ export const UserAddressCard = ({
   };
 
   const { streetName, city, postalCode, state, country } = address;
-  const lCountry = country === "DE" ? "Germany" : "USA";
+  let lCountry = "";
+  if (country) {
+    lCountry = country === "DE" ? "Germany" : "USA";
+  }
   return (
     <Box className="personal-info" sx={{ width: "280px" }}>
       <Box
@@ -67,7 +74,7 @@ export const UserAddressCard = ({
           flexDirection: "column",
           justifyContent: "center",
           position: "absolute",
-          top: 16,
+          top: 56,
           right: 16,
         }}
       >
@@ -81,7 +88,7 @@ export const UserAddressCard = ({
             <EditIcon />
           </IconButton>
         </Tooltip>
-        {!isEdit && (
+        {!isEdit && !isNew && (
           <Tooltip className="address-info__edit" title="Delete">
             <IconButton
               color="primary"
@@ -94,6 +101,18 @@ export const UserAddressCard = ({
           </Tooltip>
         )}
       </Box>
+      <Typography
+        sx={{
+          display: "block",
+          marginBottom: "14px",
+          minHeight: "32px",
+          textAlign: "center",
+        }}
+        variant="subtitle1"
+        component="p"
+      >
+        {isNew && "Add new address"}
+      </Typography>
       {!isEdit && (
         <>
           <InfoCard
@@ -122,6 +141,7 @@ export const UserAddressCard = ({
       )}
       {isEdit && (
         <UpdateUserAddressCardForm
+          isNew={isNew}
           addressArrIndex={id}
           streetName={streetName || ""}
           city={city || ""}
@@ -132,34 +152,6 @@ export const UserAddressCard = ({
           isBilling={isBilling}
           isShipping={isShipping}
         />
-        // <Stack spacing={2}>
-        //   <TextField
-        //     id={`user-street-${id}`}
-        //     label="Street"
-        //     defaultValue={streetName || ""}
-        //   />
-        //   <TextField
-        //     id={`user-city-${id}`}
-        //     label="City"
-        //     defaultValue={city || ""}
-        //   />
-        //   <TextField
-        //     id={`user-postal-code-${id}`}
-        //     label="Postal Code"
-        //     defaultValue={postalCode || ""}
-        //   />
-        //   <TextField
-        //     id={`user-state-${id}`}
-        //     label="State"
-        //     defaultValue={state || ""}
-        //   />
-        //   <TextField
-        //     id={`user-country-${id}`}
-        //     label="Country"
-        //     defaultValue={lCountry || ""}
-        //   />
-        //   <Button onClick={handleEditMode}>Save changes</Button>
-        // </Stack>
       )}
     </Box>
   );

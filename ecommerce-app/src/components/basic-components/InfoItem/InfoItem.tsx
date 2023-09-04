@@ -13,6 +13,7 @@ const itemBoxStyles = {
   width: "100%",
   padding: "14px 18px",
   borderBottom: "1px solid #e7e7e7",
+  minHeight: "60px",
 };
 
 interface InfoItemProps {

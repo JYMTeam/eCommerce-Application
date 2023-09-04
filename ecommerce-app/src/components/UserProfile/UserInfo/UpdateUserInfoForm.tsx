@@ -137,7 +137,7 @@ export function UpdateUserInfoForm({
                   }}
                   defaultValue={dayjs(new Date(dateOfBirth || ""))}
                 />
-                <Button type="submit" disabled={loading}>
+                <Button type="submit" disabled={loading} variant="contained">
                   Save Changes
                 </Button>
                 {isSuccessMessage && (

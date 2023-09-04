@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import FormControl from "@mui/material/FormControl";
 import {
-  // Alert,
-  // AlertTitle,
   Autocomplete,
   Checkbox,
   FormControlLabel,
@@ -11,7 +9,6 @@ import {
   Box,
   Button,
   Stack,
-  // Grid,
 } from "@mui/material";
 import { setUpdateUserAddressSchema } from "../../../utils/validation-schemas";
 import {
@@ -22,12 +19,15 @@ import {
 import {
   countryOptions,
   initialCountryOptions,
-  // initialUpdateAddressValues,
 } from "../../../constants/constants";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { fetchUpdateUserAddress } from "../../../store/actions/userLoginActions";
+import {
+  fetchCreateUserAddress,
+  fetchUpdateUserAddress,
+} from "../../../store/actions/userLoginActions";
 
 export interface IUpdateUserAddressProps {
+  isNew: boolean;
   addressArrIndex: number;
   streetName: string;
   city: string;
@@ -41,6 +41,7 @@ export interface IUpdateUserAddressProps {
 const COUNTRY_INPUT_NAME = "country";
 
 export function UpdateUserAddressCardForm({
+  isNew,
   addressArrIndex,
   streetName,
   city,
@@ -78,9 +79,13 @@ export function UpdateUserAddressCardForm({
 
   const onSubmit = (values: IUpdateAddressInitialValues) => {
     if (loginData && tokenData && tokenData?.token !== "") {
-      dispatch(
-        fetchUpdateUserAddress(tokenData, loginData, addressArrIndex, values),
-      );
+      if (!isNew) {
+        dispatch(
+          fetchUpdateUserAddress(tokenData, loginData, addressArrIndex, values),
+        );
+      } else {
+        dispatch(fetchCreateUserAddress(tokenData, loginData, values));
+      }
     }
   };
 

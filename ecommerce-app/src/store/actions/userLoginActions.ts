@@ -235,6 +235,120 @@ export const fetchUpdateUserAddress = (
   };
 };
 
+export const fetchCreateUserAddress = (
+  existingToken: TokenStore,
+  userCurrentData: Customer,
+  values: IUpdateAddressInitialValues,
+) => {
+  const {
+    streetName,
+    city,
+    country,
+    postalCode,
+    isBilling,
+    isShipping,
+    isDefaultBilling,
+    isDefaultShipping,
+  } = values;
+  const actions: MyCustomerUpdateAction[] = [
+    {
+      action: "addAddress",
+      address: {
+        country,
+        streetName,
+        postalCode,
+        city,
+      },
+    },
+  ];
+  const createAddressCustomer: MyCustomerUpdate = {
+    version: userCurrentData.version,
+    actions,
+  };
+
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(userLoginFetching());
+      const answerAddress = await getApiTokenRoot(existingToken.token)
+        .me()
+        .post({
+          body: createAddressCustomer,
+        })
+        .execute();
+      if (isBilling || isShipping || isDefaultBilling || isDefaultShipping) {
+        const updateFlagsCustomer = updateShippingBillingFlags(
+          answerAddress.body,
+          values,
+        );
+        const answerFlags = await getApiTokenRoot(existingToken.token)
+          .me()
+          .post({
+            body: updateFlagsCustomer,
+          })
+          .execute();
+        dispatch(userLoginFetchSuccess(answerFlags.body));
+      } else {
+        dispatch(userLoginFetchSuccess(answerAddress.body));
+      }
+
+      const successUpdateMessage: INotification = {
+        message: "Your address has been successfully created",
+        type: "success",
+      };
+      dispatch(notificationActive(successUpdateMessage));
+    } catch (e) {
+      const error = e as ClientResponse<AuthErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(userLoginFetchError(body));
+      }
+    }
+  };
+};
+
+const updateShippingBillingFlags = (
+  userCurrentData: Customer,
+  values: IUpdateAddressInitialValues,
+) => {
+  const { isBilling, isShipping, isDefaultBilling, isDefaultShipping } = values;
+  const actions: MyCustomerUpdateAction[] = [];
+  const addressArrIndex = userCurrentData.addresses.length - 1;
+
+  if (isDefaultBilling) {
+    actions.push({
+      action: "setDefaultBillingAddress",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  }
+
+  if (isDefaultShipping) {
+    actions.push({
+      action: "setDefaultShippingAddress",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  }
+
+  if (isBilling) {
+    actions.push({
+      action: "addBillingAddressId",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  }
+
+  if (isShipping) {
+    actions.push({
+      action: "addShippingAddressId",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  }
+  const updateFlagsCustomer: MyCustomerUpdate = {
+    version: userCurrentData.version,
+    actions,
+  };
+
+  return updateFlagsCustomer;
+};
+
 export const fetchDeleteUserAddress = (
   existingToken: TokenStore,
   userCurrentData: Customer,
