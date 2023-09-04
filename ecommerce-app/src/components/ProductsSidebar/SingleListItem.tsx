@@ -11,7 +11,7 @@ interface ISingleListItemProps {
 export default function SingleListItem({ id, text }: ISingleListItemProps) {
   return (
     <ListItem disablePadding>
-      <ListItemButton component={Link} to={`/categories/${id}`}>
+      <ListItemButton component={Link} to={`/shop/${id}`}>
         <ListItemText primary={text} />
       </ListItemButton>
     </ListItem>

@@ -37,26 +37,22 @@ export default function CategoriesBreadcrumbs() {
       }}
     >
       <Breadcrumbs aria-label="breadcrumb">
-        <LinkRouter underline="hover" color="text.primary" to="/">
-          Main
+        <LinkRouter underline="hover" color="text.primary" to="/shop">
+          Shop
         </LinkRouter>
         {breadcumbPath &&
           breadcumbPath.map(({ id, text }, index) => {
             if (!breadcumbPath) return <></>;
             const last = index === breadcumbPath.length - 1;
             return last ? (
-              <LinkRouter
-                color="text.primary"
-                to={`/categories/${id}`}
-                key={id}
-              >
+              <LinkRouter color="text.primary" to={`/shop/${id}`} key={id}>
                 {text}
               </LinkRouter>
             ) : (
               <LinkRouter
                 underline="hover"
                 color="text.primary"
-                to={`/categories/${id}`}
+                to={`/shop/${id}`}
                 key={id}
               >
                 {text}

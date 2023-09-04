@@ -83,8 +83,8 @@ function App() {
                 }
               />
               <Route path="/shop" element={<ShopPage />} />
-              <Route path="/shop/:id" element={<ProductDetailsPage />} />
-              <Route path="/categories/:id" element={<CategoryPage />}></Route>
+              <Route path="/product/:id" element={<ProductDetailsPage />} />
+              <Route path="/shop/:id" element={<CategoryPage />}></Route>
               <Route path="/cart" element={<CartPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

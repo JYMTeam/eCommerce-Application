@@ -86,7 +86,7 @@ export default function ProductsList() {
               >
                 <CardActionArea
                   component={Link}
-                  to={`/shop/${id}`}
+                  to={`/product/${id}`}
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
