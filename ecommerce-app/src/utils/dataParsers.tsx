@@ -49,7 +49,7 @@ const initialParsedProduct = {
   discount: "",
 };
 
-const getDiscount = (priceInfo: Price) => {
+export const getDiscount = (priceInfo: Price) => {
   if (!priceInfo.discounted) return;
   return priceInfo.discounted.value.centAmount;
 };
