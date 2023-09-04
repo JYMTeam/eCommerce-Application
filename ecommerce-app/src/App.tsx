@@ -108,7 +108,6 @@ function App() {
     },
     { path: "/shop", element: <ShopPage /> },
     { path: "/shop/:id", element: <ProductDetailsPage /> },
-    { path: "/shop/:id", element: <ProductDetailsPage /> },
     { path: "/categories/:id", element: <CategoryPage /> },
     { path: "/cart", element: <CartPage /> },
     { path: "*", element: <NotFoundPage /> },
