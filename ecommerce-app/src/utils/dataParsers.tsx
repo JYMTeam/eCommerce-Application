@@ -37,7 +37,7 @@ import {
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
 const initialParsedProduct = {
-  image: PRODUCT_IMAGE_PLACEHOLDER,
+  images: PRODUCT_IMAGE_PLACEHOLDER,
   attributesObject: {
     description: PRODUCT_DESCRIPTION_PLACEHOLDER,
     longDescription: PRODUCT_DESCRIPTION_PLACEHOLDER,
@@ -56,9 +56,13 @@ const getDiscount = (priceInfo: Price) => {
 
 export const parseProducts = (products: ProductProjection[]) => {
   return products.map((product) => {
-    let { image, attributesObject, price, discount } = initialParsedProduct;
-    if (product.masterVariant.images && product.masterVariant.images[0]) {
-      image = product.masterVariant.images[0];
+    let { images, attributesObject, price, discount } = initialParsedProduct;
+
+    if (
+      product.masterVariant.images &&
+      product.masterVariant.images.length !== 0
+    ) {
+      images = product.masterVariant.images;
     }
     if (
       product.masterVariant.prices &&
@@ -84,11 +88,10 @@ export const parseProducts = (products: ProductProjection[]) => {
     if (product.masterVariant.attributes) {
       attributesObject = parseAttributes(product.masterVariant.attributes);
     }
-
     const parsedProduct: IParsedProduct = {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
-      image,
+      images,
       price,
       discount,
       ...attributesObject,
@@ -154,7 +157,6 @@ export const parseAttributesDefinition = (
         );
       }
     }
-
     //TODO: add others types
 
     return formattedAttribute;

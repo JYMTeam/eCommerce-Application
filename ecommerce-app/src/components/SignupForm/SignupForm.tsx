@@ -458,7 +458,13 @@ export function SignupForm() {
                 >
                   Sign up
                 </Button>
-                {isSuccessMessage && <>{successMessageHandler()}</>}
+                {isSuccessMessage && (
+                  <>
+                    {successMessageHandler(
+                      "You have successfully signed up and logged in",
+                    )}
+                  </>
+                )}
                 {errorMessage && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>

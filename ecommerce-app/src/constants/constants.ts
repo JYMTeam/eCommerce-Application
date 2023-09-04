@@ -2,6 +2,7 @@ import {
   ICountriesOptions,
   IFormInitialValues,
   ISignupInitialValues,
+  IUpdatePersonalValues,
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
 
@@ -59,13 +60,22 @@ const initialSignUpValues: ISignupInitialValues = {
   defaultBillingCheck: [],
 };
 
+const initialUpdatePersonalValues: IUpdatePersonalValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  dateOfBirth: "",
+};
+
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
-const PRODUCT_IMAGE_PLACEHOLDER: Image = {
-  url: "images/product-placeholder.webp",
-  dimensions: { h: 1000, w: 1000 },
-};
+const PRODUCT_IMAGE_PLACEHOLDER: Image[] = [
+  {
+    url: "images/product-placeholder.webp",
+    dimensions: { h: 1000, w: 1000 },
+  },
+];
 
 export {
   AT_SIGN_DOMAIN_REGEX,
@@ -81,6 +91,7 @@ export {
   initialLoginValues,
   initialSignUpValues,
   initialCountryOptions,
+  initialUpdatePersonalValues,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
