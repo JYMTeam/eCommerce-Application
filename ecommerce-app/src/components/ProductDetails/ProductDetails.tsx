@@ -42,10 +42,22 @@ export default function ProductDetail() {
   if (product) {
     parsedProduct = parseProducts([product]);
   }
+  console.log(parsedProduct);
+  console.log(product);
   return (
     <div>
       {parsedProduct.map(
-        ({ id, name, longDescription, images, price, discount }) => (
+        ({
+          id,
+          name,
+          longDescription,
+          images,
+          price,
+          discount,
+          designer,
+          sizeList,
+          color,
+        }) => (
           <Grid container spacing={GRID_SPACING} key={id}>
             <Grid
               item
@@ -88,6 +100,39 @@ export default function ProductDetail() {
               >
                 {longDescription as unknown as string}
               </Typography>
+              <Typography
+                variant="h3"
+                color="text.secondary"
+                sx={{
+                  mt: PRODUCT_DESC_MARGIN,
+                  mb: PRODUCT_DESC_MARGIN,
+                  fontSize: PRODUCT_DESC_FONTSIZE,
+                }}
+              >
+                Designer: {designer.slice(1, -1)}
+              </Typography>
+              <Typography
+                variant="h3"
+                color="text.secondary"
+                sx={{
+                  mt: PRODUCT_DESC_MARGIN,
+                  mb: PRODUCT_DESC_MARGIN,
+                  fontSize: PRODUCT_DESC_FONTSIZE,
+                }}
+              >
+                Color: {color.slice(1, -1)}
+              </Typography>
+              <Typography
+                variant="h3"
+                color="text.secondary"
+                sx={{
+                  mt: PRODUCT_DESC_MARGIN,
+                  mb: PRODUCT_DESC_MARGIN,
+                  fontSize: PRODUCT_DESC_FONTSIZE,
+                }}
+              >
+                Size: {sizeList.slice(1, -1)}
+              </Typography>
               <Chip
                 label={discount ? discount : price}
                 size="small"
@@ -99,7 +144,9 @@ export default function ProductDetail() {
               <span className="discount">{discount ? price : discount}</span>
               <Button
                 size="small"
-                sx={{ color: BUTTON_COLOR }}
+                sx={{
+                  color: BUTTON_COLOR,
+                }}
                 onClick={(e) => {
                   e.preventDefault();
                 }}
