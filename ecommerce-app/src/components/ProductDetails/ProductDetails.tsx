@@ -43,8 +43,6 @@ export default function ProductDetail() {
   if (product) {
     parsedProduct = parseProducts([product]);
   }
-  console.log(parsedProduct);
-  console.log(product);
   return (
     <div>
       {parsedProduct.map(

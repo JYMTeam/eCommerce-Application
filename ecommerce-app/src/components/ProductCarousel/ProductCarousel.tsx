@@ -24,7 +24,7 @@ export function ProductCarousel(props: { images: Image[] }) {
   const handleClose = () => setOpen(false);
 
   function Item(props: { image: Image; i: number }) {
-    console.log(props.i);
+    // console.log(props.i);
     return (
       <Paper
         component={Stack}
