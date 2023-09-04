@@ -3,18 +3,17 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchProductDetails } from "../../store/actions/productDetailsActions";
 import { parseProducts } from "../../utils/dataParsers";
-import { Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { IParsedProduct } from "../../types";
-
+import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;
-const IMG_HEIGHT = "auto";
-const IMG_WIDTH = "100%";
 const PRODUCT_TITLE_FONTSIZE = "2em";
 const PRODUCT_DESC_FONTSIZE = "1em";
 const PRODUCT_PRICE_FONTSIZE = "1.4em";
 const PRODUCT_DESC_MARGIN = 3;
+const BUTTON_COLOR = "#F9C152";
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -43,7 +42,7 @@ export default function ProductDetail() {
   }
   return (
     <div>
-      {parsedProduct.map(({ id, name, longDescription, image, price }) => (
+      {parsedProduct.map(({ id, name, longDescription, images, price }) => (
         <Grid container spacing={GRID_SPACING} key={id}>
           <Grid
             item
@@ -54,23 +53,7 @@ export default function ProductDetail() {
               justifyContent: "center",
             }}
           >
-            <Paper
-              component={Stack}
-              direction="column"
-              elevation={0}
-              justifyContent="center"
-              sx={{
-                width: { IMG_WIDTH },
-                height: { IMG_HEIGHT },
-                overflow: "hidden",
-              }}
-            >
-              <img
-                className="product-img"
-                src={image.url}
-                alt={name as unknown as string}
-              />
-            </Paper>
+            <ProductCarousel images={images} />
           </Grid>
           <Grid
             item
@@ -112,7 +95,15 @@ export default function ProductDetail() {
             >
               {price}
             </Typography>
-            <Button variant="outlined">Add to Cart</Button>
+            <Button
+              size="small"
+              sx={{ color: BUTTON_COLOR }}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+            >
+              Add to cart
+            </Button>
           </Grid>
         </Grid>
       ))}

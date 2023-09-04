@@ -71,7 +71,7 @@ export default function ProductsList() {
     >
       <Grid container spacing={GRID_SPACING}>
         {parsedProducts.map(
-          ({ id, name, description, image, price, discount }) => (
+          ({ id, name, description, images, price, discount }) => (
             <Grid md={MD_COLS} sm={SM_COLS} xs={XS_COLS} key={id}>
               <Card
                 sx={{
@@ -100,7 +100,7 @@ export default function ProductsList() {
                       component="img"
                       alt={name as unknown as string}
                       height={CARD_MEDIA_HEIGHT}
-                      image={image.url}
+                      image={images[0].url}
                     />
                     <CardContent>
                       <Typography

@@ -48,7 +48,7 @@ export interface ICountriesOptions {
 export interface IParsedProduct {
   id: string;
   name: string;
-  image: Image;
+  images: Image[];
   price: string;
   description: string;
   longDescription: string;
@@ -68,7 +68,6 @@ export interface IProductsFormattedAttribute {
   name: string;
   values: string[];
 }
-
 export interface AttributesObject {
   description: string;
   longDescription: string;
@@ -76,13 +75,11 @@ export interface AttributesObject {
   sizeList: string;
   color: string;
 }
-
 export enum SortMethods {
   PRICE_HIGH = "price high",
   PRICE_LOW = "price low",
   NAME = "name",
 }
-
 export enum FilterAndSortNames {
   FILTER_PRICE_ATTRIBUTE = "price",
   SORT_ATTRIBUTE = "sort",
