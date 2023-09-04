@@ -20,7 +20,7 @@ const DEFAULT_LOCALE = "en";
 const DEFAULT_PRICE_COUNTRY = "US";
 const DEFAULT_CURRENCY = "USD";
 const FORM_DATE_FORMAT = "YYYY-MM-DD";
-const DEFAULT_PRODUCTS_LIMIT = 8;
+const DEFAULT_PRODUCTS_LIMIT = 9;
 const PRODUCT_TYPE_INDEX = 0;
 
 const countryOptions = [
@@ -70,10 +70,12 @@ const initialUpdatePersonalValues: IUpdatePersonalValues = {
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
-const PRODUCT_IMAGE_PLACEHOLDER: Image = {
-  url: "images/product-placeholder.webp",
-  dimensions: { h: 1000, w: 1000 },
-};
+const PRODUCT_IMAGE_PLACEHOLDER: Image[] = [
+  {
+    url: "images/product-placeholder.webp",
+    dimensions: { h: 1000, w: 1000 },
+  },
+];
 
 export {
   AT_SIGN_DOMAIN_REGEX,

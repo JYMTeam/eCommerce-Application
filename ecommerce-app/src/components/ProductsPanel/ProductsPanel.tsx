@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import "./ProductsPanel.css";
 import { Badge, Box, Button, Drawer } from "@mui/material";
 import { IconButton } from "@mui/material";
+import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
 import ProductsFilters from "./ProductsFilters";
 import { useAppSelector } from "../../hooks/redux";
 import SearchComponent from "./ProductsSearchPanel/ProductsSearchPanel";
+import { IProductsPanelProps } from "../../types";
 
-export const ProductsPanel = () => {
+export const ProductsPanel = ({
+  onCategoriesIconClick,
+}: IProductsPanelProps) => {
   const [openFilter, setOpenFilter] = useState(false);
   const [isFilter, setIsFilter] = useState(false);
   const { filterParams } = useAppSelector((state) => state.products);
@@ -22,6 +26,15 @@ export const ProductsPanel = () => {
   return (
     <>
       <Box className="products-panel">
+        <IconButton
+          color="primary"
+          aria-label="open sidevar drawer"
+          edge="start"
+          onClick={onCategoriesIconClick}
+          sx={{ mr: 2, display: { md: "none" } }}
+        >
+          <CategoryIcon />
+        </IconButton>
         <SearchComponent />
         <Badge
           color="secondary"
