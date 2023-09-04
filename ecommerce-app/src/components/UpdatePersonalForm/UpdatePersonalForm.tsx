@@ -45,9 +45,6 @@ export function UpdatePersonalForm({
       initialValues={initialUpdatePersonalValues}
       validationSchema={UpdatePersonalSchema}
       onSubmit={(values) => {
-        console.log("save values");
-        console.log(values);
-
         if (loginData && tokenData && tokenData?.token !== "") {
           dispatch(fetchUpdateUserPersonalInfo(tokenData, loginData, values));
         }

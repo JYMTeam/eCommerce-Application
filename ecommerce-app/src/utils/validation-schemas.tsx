@@ -9,6 +9,7 @@ import {
   validatePostalCode,
 } from "./validation-rules";
 import { ISignedUpSchemaOptions } from "../types";
+import { USER_AGE_ALLOWED } from "../constants/constants";
 
 const setSignupSchema = ({
   isCommonAddressChecked,
@@ -22,7 +23,9 @@ const setSignupSchema = ({
     password: validatePassword(),
     firstName: validateName("First name"),
     lastName: validateName("Last name"),
-    dateOfBirth: validateDateOfBirth(),
+    dateOfBirth: validateDateOfBirth(
+      `You must be ${USER_AGE_ALLOWED} years old or above to register`,
+    ),
     cityShipping: validateCity(),
     streetNameShipping: validateStreetName(),
     countryShipping: string().required("Country is required"),
@@ -60,7 +63,9 @@ const setUpdatePersonalSchema = () => {
     firstName: validateName("First name"),
     lastName: validateName("Last name"),
     email: validateEmail(),
-    dateOfBirth: validateDateOfBirth(),
+    dateOfBirth: validateDateOfBirth(
+      `You must be ${USER_AGE_ALLOWED} years old or above`,
+    ),
   });
 };
 
