@@ -33,7 +33,7 @@ export default function NestedListItem({
         <ListItemButton
           onClick={handleCategoryClick}
           component={Link}
-          to={`/categories/${id}`}
+          to={`/shop/${id}`}
         >
           <ListItemText primary={text} />
           {open ? <ExpandLess /> : <ExpandMore />}
