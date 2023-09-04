@@ -2,9 +2,10 @@ import Carousel from "react-material-ui-carousel";
 import { Paper, Stack, Box, Modal } from "@mui/material";
 import { Image } from "@commercetools/platform-sdk";
 import React, { useState } from "react";
+import "./productCarousel.css";
 
-const HEIGHT = "auto";
-const WIDTH = "100%";
+const HEIGHT = "400px";
+const WIDTH = "400px";
 
 const style = {
   position: "absolute" as "absolute",
@@ -12,6 +13,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
+  height: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
@@ -35,11 +37,11 @@ export function ProductCarousel(props: { images: Image[] }) {
           width: { WIDTH },
           height: { HEIGHT },
           overflow: "hidden",
+          objectFit: "contain",
         }}
       >
         <img
           onClick={handleOpen}
-          width={WIDTH}
           className="product-img"
           src={props.image.url}
           alt={props.image.label as unknown as string}
