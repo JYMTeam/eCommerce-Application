@@ -15,6 +15,7 @@ import {
   AttributeTextType,
   AttributeTimeType,
   AttributeType,
+  Category,
   Price,
   ProductProjection,
 } from "@commercetools/platform-sdk";
@@ -28,8 +29,10 @@ import {
 import {
   AttributesNames,
   AttributesObject,
-  IParcedProduct,
+  IParsedProduct,
+  IParsedCategory,
   IProductsFormattedAttribute,
+  IAncestorInfo,
 } from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
@@ -85,7 +88,7 @@ export const parseProducts = (products: ProductProjection[]) => {
     if (product.masterVariant.attributes) {
       attributesObject = parseAttributes(product.masterVariant.attributes);
     }
-    const parcedProduct: IParcedProduct = {
+    const parsedProduct: IParsedProduct = {
       id: product.id,
       name: product.name[DEFAULT_LOCALE],
       images,
@@ -93,7 +96,7 @@ export const parseProducts = (products: ProductProjection[]) => {
       discount,
       ...attributesObject,
     };
-    return parcedProduct;
+    return parsedProduct;
   });
 };
 
@@ -238,3 +241,79 @@ export function isAttributeTimeType(
 ): attribute is AttributeTimeType {
   return (attribute as AttributeTimeType).name === "time";
 }
+
+export const parseCategories = (categories: Category[]) => {
+  const parentId2ChildrenId = new Map<string, string[]>(); // map of categoryId: subcategories[]
+  const id2Obj = new Map<string, IParsedCategory>(); //map of id: category/subcategory obj
+
+  categories.forEach(({ id, name, ancestors }) => {
+    const text = name[DEFAULT_LOCALE];
+
+    let parsedCategory: IParsedCategory = {
+      id: "",
+      text: "",
+      children: [],
+    };
+
+    parsedCategory.id = id;
+    parsedCategory.text = text;
+
+    id2Obj.set(parsedCategory.id, parsedCategory);
+
+    let parentId =
+      ancestors.length !== 0 && ancestors[0].obj ? ancestors[0].obj.id : "";
+
+    if (!parentId2ChildrenId.has(parentId)) {
+      parentId2ChildrenId.set(parentId, []);
+    }
+    parentId2ChildrenId.get(parentId)!.push(id);
+  });
+
+  parentId2ChildrenId.forEach((children, parentId) => {
+    if (parentId !== "") {
+      for (let childId of children) {
+        id2Obj.get(parentId)!.children.push(id2Obj.get(childId)!);
+      }
+    }
+  });
+
+  let result: IParsedCategory[] = [];
+  parentId2ChildrenId.forEach((children, key) => {
+    if (key === "") {
+      for (let child of children) {
+        result.push(id2Obj.get(child)!);
+      }
+    }
+  });
+  return result;
+};
+
+export const parseCategoriesBreadcrumb = (categories: Category[]) => {
+  let id2path = new Map<string, Array<string>>();
+  let id2name = new Map<string, string>();
+
+  categories.forEach(({ id, name, ancestors }) => {
+    const text = name[DEFAULT_LOCALE];
+    let path = ancestors.map((value) => {
+      return value.id;
+    });
+    path.unshift(id);
+    id2path.set(id, path);
+    id2name.set(id, text);
+  });
+
+  let id2ancestorsInfo = new Map<string, Array<IAncestorInfo>>();
+
+  id2path.forEach((_, key) => {
+    let ancestorsInfo = id2path.get(key)!.map((ancestorId) => {
+      let info = {
+        id: ancestorId,
+        text: id2name.get(ancestorId)!,
+      };
+      return info;
+    });
+
+    id2ancestorsInfo.set(key, ancestorsInfo.reverse());
+  });
+  return id2ancestorsInfo;
+};

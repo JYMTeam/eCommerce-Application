@@ -14,7 +14,6 @@ const root = ReactDOM.createRoot(
 );
 const store = setupStore();
 let persistor = persistStore(store);
-// test commit
 
 root.render(
   <Provider store={store}>
