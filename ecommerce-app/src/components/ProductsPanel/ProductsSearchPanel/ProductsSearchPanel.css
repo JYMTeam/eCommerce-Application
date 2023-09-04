@@ -10,3 +10,9 @@
   flex-grow: 1;
   margin-bottom: 5px;
 }
+
+@media (min-width: 930px) {
+  .search-panel__input {
+    padding-left: 270px;
+  }
+}
