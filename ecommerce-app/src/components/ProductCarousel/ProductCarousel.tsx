@@ -18,11 +18,10 @@ const style = {
 
 export function ProductCarousel(props: { images: Image[] }) {
   const [open, setOpen] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  function Item(props: { image: Image; i: number }) {
-    console.log(props.i);
+  function Item(props: { image: Image }) {
     return (
       <Paper
         component={Stack}
@@ -37,7 +36,10 @@ export function ProductCarousel(props: { images: Image[] }) {
         }}
       >
         <img
-          onClick={handleOpen}
+          onClick={() => {
+            handleOpen();
+            setCurrentUrl(props.image.url);
+          }}
           className="product-img"
           src={props.image.url}
           alt={props.image.label as unknown as string}
@@ -66,17 +68,9 @@ export function ProductCarousel(props: { images: Image[] }) {
                 onClick={handleOpen}
                 width={WIDTH}
                 className="modal-img"
-                src={props.image.url}
+                src={currentUrl}
                 alt={props.image.label as unknown as string}
               />
-              <Carousel
-                sx={{ width: WIDTH }}
-                indicators={false}
-                navButtonsAlwaysVisible={true}
-                //navButtonsAlwaysInvisible={props.images.length > 1 ? false : true}
-              >
-                test carousel
-              </Carousel>
             </Box>
           </>
         </Modal>
@@ -91,7 +85,7 @@ export function ProductCarousel(props: { images: Image[] }) {
       navButtonsAlwaysInvisible={props.images.length > 1 ? false : true}
     >
       {props.images.map((image, i) => (
-        <Item key={i} image={image} i={i} />
+        <Item key={i} image={image} />
       ))}
     </Carousel>
   );
