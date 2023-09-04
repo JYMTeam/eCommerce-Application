@@ -9,6 +9,7 @@ import {
 import { fetchUserLogin } from "./userLoginActions";
 import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
 import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
+import { INotification, notificationActive } from "../slices/notificationSlice";
 
 export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
   return async (dispatch: AppDispatch) => {
@@ -23,7 +24,12 @@ export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
         })
         .execute();
       dispatch(userSignupFetchSuccess());
-
+      const successMessage: INotification = {
+        message: "You have successfully signed up",
+        type: "success",
+      };
+      // setTimeout(() => {
+      dispatch(notificationActive(successMessage));
       //login
       const existingUser =
         convertCustomerDraftToUserAuthOptions(userSignupOptions);

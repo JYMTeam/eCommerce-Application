@@ -16,6 +16,8 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import { useSnackbar } from "notistack";
+import { hideNotification } from "./store/actions/notificationActions";
 import CategoryPage from "./pages/CategoryPage";
 
 function App() {
@@ -36,19 +38,80 @@ function App() {
     return <>{children}</>;
   };
 
+  //notification state
+  const { enqueueSnackbar } = useSnackbar();
+  const { isNotification, notificationObject } = useAppSelector(
+    (state) => state.notification,
+  );
+
   //check token after loading
   const [isTokenVerified, setTokenVerified] = useState(false);
   const { tokenData } = useAppSelector((state) => state.userLogin);
+
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    const tokenVerification = () => {
+    const checkTokenAndFetchLogin = () => {
       if (!isTokenVerified && tokenData && tokenData?.token !== "") {
         dispatch(fetchLoginWithToken(tokenData));
         setTokenVerified(true);
       }
     };
-    tokenVerification();
-  }, [dispatch, tokenData, isTokenVerified]);
+
+    const showNotification = () => {
+      if (isNotification) {
+        enqueueSnackbar(notificationObject.message, {
+          variant: notificationObject.type,
+          onClose: () => {
+            dispatch(hideNotification());
+          },
+        });
+      }
+    };
+
+    checkTokenAndFetchLogin();
+    showNotification();
+  }, [
+    dispatch,
+    tokenData,
+    isTokenVerified,
+    isNotification,
+    notificationObject,
+    enqueueSnackbar,
+  ]);
+
+  const routes = [
+    { path: "/", element: <MainPage /> },
+    {
+      path: "/login",
+      element: (
+        <LoggedIn>
+          <LoginPage />
+        </LoggedIn>
+      ),
+    },
+    {
+      path: "/signup",
+      element: (
+        <LoggedIn>
+          <SignupPage />
+        </LoggedIn>
+      ),
+    },
+    {
+      path: "/user-profile",
+      element: (
+        <LoggedOut>
+          <UserProfilePage />
+        </LoggedOut>
+      ),
+    },
+    { path: "/shop", element: <ShopPage /> },
+    { path: "/shop/:id", element: <ProductDetailsPage /> },
+    { path: "/categories/:id", element: <CategoryPage /> },
+    { path: "/cart", element: <CartPage /> },
+    { path: "*", element: <NotFoundPage /> },
+  ];
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -57,36 +120,9 @@ function App() {
           <ThemeProvider theme={Theme}>
             <Navigation />
             <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route
-                path="/login"
-                element={
-                  <LoggedIn>
-                    <LoginPage />
-                  </LoggedIn>
-                }
-              />
-              <Route
-                path="/signup"
-                element={
-                  <LoggedIn>
-                    <SignupPage />
-                  </LoggedIn>
-                }
-              />
-              <Route
-                path="/user-profile"
-                element={
-                  <LoggedOut>
-                    <UserProfilePage />
-                  </LoggedOut>
-                }
-              />
-              <Route path="/shop" element={<ShopPage />} />
-              <Route path="/shop/:id" element={<ProductDetailsPage />} />
-              <Route path="/categories/:id" element={<CategoryPage />}></Route>
-              <Route path="/cart" element={<CartPage />} />
-              <Route path="*" element={<NotFoundPage />} />
+              {routes.map((route, index) => (
+                <Route key={index} path={route.path} element={route.element} />
+              ))}
             </Routes>
           </ThemeProvider>
         </div>

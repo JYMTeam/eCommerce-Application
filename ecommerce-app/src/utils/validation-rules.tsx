@@ -81,13 +81,13 @@ const validateCity = () => {
     });
 };
 
-const validateDateOfBirth = () => {
+const validateDateOfBirth = (message: string) => {
   return lazy(() =>
     string()
       .required("Birthday is required")
       .test(
         "is-allowed-age",
-        () => `You must be ${USER_AGE_ALLOWED} years old or above to register`,
+        () => message,
         (value) => {
           if (!value) return false;
           return new Date(value) < subtractYears(new Date(), USER_AGE_ALLOWED);

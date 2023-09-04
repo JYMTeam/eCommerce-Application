@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   IconButton,
@@ -11,6 +11,8 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../basic-components/InfoCard/InfoCard";
 import { Address } from "@commercetools/platform-sdk";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setUserAddressCardEdit } from "../../store/slices/userEditModeSlice";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -36,10 +38,13 @@ export const UserAddressCard = ({
   isBilling: boolean;
   isShipping: boolean;
 }) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const isEdit = useAppSelector(
+    (state) => state.userEditMode.userAddressCardEdits[id],
+  );
+  const dispatch = useAppDispatch();
 
   const handleEditMode = () => {
-    setIsEdit(!isEdit);
+    dispatch(setUserAddressCardEdit({ cardId: id, isEdit: !isEdit }));
   };
 
   const { streetName, city, postalCode, state, country } = address;
