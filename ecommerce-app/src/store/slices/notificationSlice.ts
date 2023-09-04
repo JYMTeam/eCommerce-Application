@@ -22,8 +22,12 @@ export const notificationSlice = createSlice({
   name: "notification",
   initialState,
   reducers: {
-    notificationInactive() {
-      return { ...initialState };
+    notificationInactive(state) {
+      state.isNotification = false;
+      state.notificationObject = {
+        message: "",
+        type: "success",
+      };
     },
     notificationActive(state, action: PayloadAction<INotification>) {
       state.isNotification = true;

@@ -39,10 +39,15 @@ export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
         })
         .execute();
       dispatch(setIsSuccess());
-      setTimeout(() => {
-        dispatch(userLoginFetchSuccess(answer.body.customer));
-        dispatch(setUserToken(passToken.get()));
-      }, 1500);
+
+      const successLoginMessage: INotification = {
+        message: "You have successfully logged in!",
+        type: "success",
+      };
+
+      dispatch(userLoginFetchSuccess(answer.body.customer));
+      dispatch(setUserToken(passToken.get()));
+      dispatch(notificationActive(successLoginMessage));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
@@ -100,13 +105,12 @@ export const fetchUpdateUserPersonalInfo = (
           body: updateCustomer,
         })
         .execute();
-      // dispatch(setIsSuccess());
       dispatch(userLoginFetchSuccess(answer.body));
-      const successMessage: INotification = {
+      const successUpdateMessage: INotification = {
         message: "Your data has been successfully updated",
         type: "success",
       };
-      dispatch(notificationActive(successMessage));
+      dispatch(notificationActive(successUpdateMessage));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;

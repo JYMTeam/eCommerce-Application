@@ -1,11 +1,12 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../basic-components/InfoCard/InfoCard";
 import { formatDateYYYYMMDDToDDMMYYYY } from "../../utils/utils";
 import { UpdatePersonalForm } from "../UpdatePersonalForm/UpdatePersonalForm";
+import { setUserInformationEdit } from "../../store/slices/userEditModeSlice";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -16,14 +17,18 @@ const EditButtonStyles = {
 };
 
 export default function UserInformation() {
-  const [isEdit, setIsEdit] = React.useState(false);
+  const isUserInformationEdit = useAppSelector(
+    (state) => state.userEditMode.userInformationEdit,
+  );
+  const dispatch = useAppDispatch();
+
   const { errorMessage, loading, loginData } = useAppSelector(
     (state) => state.userLogin,
   );
-
-  const handelEditMode = () => {
-    setIsEdit(!isEdit);
+  const handleEditMode = () => {
+    dispatch(setUserInformationEdit(!isUserInformationEdit));
   };
+
   if (loading) {
     return <p className="notification-message">Loading...</p>;
   }
@@ -59,13 +64,13 @@ export default function UserInformation() {
             color="primary"
             aria-label="edit mode"
             sx={EditButtonStyles}
-            onClick={handelEditMode}
+            onClick={handleEditMode}
           >
             <EditIcon />
           </IconButton>
         </Tooltip>
-        {!isEdit && <InfoCard infoData={userData} />}
-        {isEdit && (
+        {!isUserInformationEdit && <InfoCard infoData={userData} />}
+        {isUserInformationEdit && (
           <UpdatePersonalForm
             email={loginData.email}
             firstName={loginData.firstName}

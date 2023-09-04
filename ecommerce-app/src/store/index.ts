@@ -7,15 +7,18 @@ import productsReducer from "./slices/productsSlice";
 import productDetailsReducer from "./slices/productDetailsSlice";
 import notificationReducer from "./slices/notificationSlice";
 import attributesReducer from "./slices/attributesSlice";
+import userEditModeReducer from "./slices/userEditModeSlice";
 
 const persistConfig = {
   key: "root",
   storage,
+  whitelist: ["userLogin", "attributes", "products"],
 };
 
 const rootReducer = combineReducers({
   userLogin: userLoginReducer,
   userSignup: userSignupReducer,
+  userEditMode: userEditModeReducer,
   products: productsReducer,
   productDetails: productDetailsReducer,
   attributes: attributesReducer,
