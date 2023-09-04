@@ -14,6 +14,7 @@ const DIGIT_REGEX = /[0-9]/;
 const NO_SPACE_REGEX = /^\S*$/;
 const NO_SPECIAL_CHARS_REGEX = /^(?!.*[()[\]{}*&^%$#@!"+=:;<>?,./\\|_]).*$/;
 const NO_DIGIT_REGEX = /^(?!.*[0-9]).*$/;
+const NO_END_HYPHEN_SIGN = /.*(?<!-)$/;
 const USER_AGE_ALLOWED = 14;
 const MAX_HUMAN_AGE = 130;
 const DEFAULT_LOCALE = "en";
@@ -100,4 +101,5 @@ export {
   DEFAULT_CURRENCY,
   FORM_DATE_FORMAT,
   DEFAULT_PRODUCTS_LIMIT,
+  NO_END_HYPHEN_SIGN,
 };

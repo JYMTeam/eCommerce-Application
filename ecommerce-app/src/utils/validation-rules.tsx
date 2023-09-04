@@ -8,6 +8,7 @@ import {
   NO_SPECIAL_CHARS_REGEX,
   UPPERCASE_LETTER_REGEX,
   USER_AGE_ALLOWED,
+  NO_END_HYPHEN_SIGN,
 } from "../constants/constants";
 import { string, lazy } from "yup";
 import { subtractYears } from "./utils";
@@ -108,6 +109,8 @@ const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
   return lazy(() =>
     string()
       .required("Postal code is required")
+      .trim("Postal code must not contain leading or trailing whitespace")
+      .strict(true)
       .test(
         "is-correct-postal-code",
         () =>
@@ -116,7 +119,10 @@ const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
           if (!value || !countryCode) return false;
           return typeof postalCodes.validate(countryCode, value) === "boolean";
         },
-      ),
+      )
+      .matches(NO_END_HYPHEN_SIGN, {
+        message: `Postal code must follow the country ${countryCode} format e.g. ${postalCodeFormat}`,
+      }),
   );
 };
 
