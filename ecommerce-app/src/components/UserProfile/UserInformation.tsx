@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { IconButton, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { InfoCard } from "../basic-components/InfoCard/InfoCard";
-import { formatDateYYYYMMDDToDDMMYYYY } from "../../utils/utils";
+import { formatDateYYYYMMDDToMMDDYYYY } from "../../utils/utils";
 import { UpdatePersonalForm } from "../UpdatePersonalForm/UpdatePersonalForm";
 import { setUserInformationEdit } from "../../store/slices/userEditModeSlice";
 
@@ -38,7 +38,7 @@ export default function UserInformation() {
   }
   if (loginData) {
     const { dateOfBirth } = loginData;
-    const lDateOfBirth = formatDateYYYYMMDDToDDMMYYYY(dateOfBirth || "");
+    const lDateOfBirth = formatDateYYYYMMDDToMMDDYYYY(dateOfBirth || "");
     const userData = [
       { label: "First Name", value: loginData.firstName as unknown as string },
       { label: "Last Name", value: loginData.lastName as unknown as string },
@@ -77,29 +77,6 @@ export default function UserInformation() {
             lastName={loginData.lastName}
             dateOfBirth={loginData.dateOfBirth}
           />
-          // <Stack spacing={2}>
-          //   <TextField
-          //     id="user-first-name"
-          //     label="First Name"
-          //     defaultValue={firstName as unknown as string}
-          //   />
-          //   <TextField
-          //     id="user-last-name"
-          //     label="Last Name"
-          //     defaultValue={lastName as unknown as string}
-          //   />
-          //   <TextField
-          //     id="user-email"
-          //     label="Email"
-          //     defaultValue={email as unknown as string}
-          //   />
-          //   <TextField
-          //     id="user-date-of-birth"
-          //     label="Date of Birth"
-          //     defaultValue={lDateOfBirth}
-          //   />
-          //   <Button onClick={handelEditMode}>Save changes</Button>
-          // </Stack>
         )}
       </Box>
     );
