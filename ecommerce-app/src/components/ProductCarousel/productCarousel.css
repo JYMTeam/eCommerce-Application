@@ -3,3 +3,9 @@
   height: 400px;
   object-fit: cover;
 }
+.modal-img {
+  .product-img {
+    width: auto;
+    height: 100vh;
+  }
+}

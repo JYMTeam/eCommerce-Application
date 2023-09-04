@@ -1,7 +1,8 @@
 import Carousel from "react-material-ui-carousel";
-import { Paper, Stack, Box, Modal } from "@mui/material";
+import { Paper, Stack, Box, Modal, IconButton } from "@mui/material";
 import { Image } from "@commercetools/platform-sdk";
 import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import "./productCarousel.css";
 
 const HEIGHT = "400px";
@@ -12,12 +13,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  height: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
+  width: "auto",
 };
 
 export function ProductCarousel(props: { images: Image[] }) {
@@ -52,15 +48,37 @@ export function ProductCarousel(props: { images: Image[] }) {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
-            <img
-              onClick={handleOpen}
-              width={WIDTH}
-              className="product-img"
-              src={props.image.url}
-              alt={props.image.label as unknown as string}
-            />
-          </Box>
+          <>
+            <IconButton
+              aria-label="close"
+              onClick={handleClose}
+              sx={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                color: (theme) => theme.palette.grey[500],
+              }}
+            >
+              <CloseIcon />
+            </IconButton>
+            <Box sx={style}>
+              <img
+                onClick={handleOpen}
+                width={WIDTH}
+                className="modal-img"
+                src={props.image.url}
+                alt={props.image.label as unknown as string}
+              />
+              <Carousel
+                sx={{ width: WIDTH }}
+                indicators={false}
+                navButtonsAlwaysVisible={true}
+                //navButtonsAlwaysInvisible={props.images.length > 1 ? false : true}
+              >
+                test carousel
+              </Carousel>
+            </Box>
+          </>
         </Modal>
       </Paper>
     );
