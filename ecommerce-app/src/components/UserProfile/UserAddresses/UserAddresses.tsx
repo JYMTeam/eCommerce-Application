@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { useAppSelector } from "../../hooks/redux";
+import { useAppSelector } from "../../../hooks/redux";
 import { UserAddressCard } from "./UserAddressCard";
 
 export default function UserAddresses() {

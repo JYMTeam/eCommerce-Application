@@ -1,39 +1,42 @@
 import React from "react";
-import { setUpdatePersonalSchema } from "../../utils/validation-schemas";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setUpdateUserInfoSchema } from "../../../../utils/validation-schemas";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { Formik, Form } from "formik";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { FORM_DATE_FORMAT, MAX_HUMAN_AGE } from "../../constants/constants";
+import {
+  FORM_DATE_FORMAT,
+  MAX_HUMAN_AGE,
+} from "../../../../constants/constants";
 import { Alert, AlertTitle, Stack } from "@mui/material";
-import { subtractYears } from "../../utils/utils";
+import { subtractYears } from "../../../../utils/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
-import { IUpdatePersonalValues } from "../../types";
-import { fetchUpdateUserPersonalInfo } from "../../store/actions/userLoginActions";
-import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
-import { successMessageHandler } from "../SignupForm/signupHelpers";
+import { IUpdatePersonalValues } from "../../../../types";
+import { fetchUpdateUserPersonalInfo } from "../../../../store/actions/userLoginActions";
+import { userLoginClearErrorMessage } from "../../../../store/slices/userLoginSlice";
+import { successMessageHandler } from "../../../SignupForm/signupHelpers";
 
-export interface UpdatePersonalProps {
+export interface UpdateUserInfoProps {
   email: string;
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
 }
 
-export function UpdatePersonalForm({
+export function UpdateUserInfoForm({
   email,
   firstName,
   lastName,
   dateOfBirth,
-}: UpdatePersonalProps) {
-  const UpdatePersonalSchema = setUpdatePersonalSchema();
+}: UpdateUserInfoProps) {
+  const UpdateUserInfoSchema = setUpdateUserInfoSchema();
   const { loading, errorMessage, loginData, tokenData, isSuccessMessage } =
     useAppSelector((state) => state.userLogin);
   const BIRTHDAY_INPUT_NAME = "dateOfBirth";
 
-  const initialUpdatePersonalValues: IUpdatePersonalValues = {
+  const initialUpdateUserInfoValues: IUpdatePersonalValues = {
     firstName: firstName || "",
     lastName: lastName || "",
     email: email || "",
@@ -42,8 +45,8 @@ export function UpdatePersonalForm({
   const dispatch = useAppDispatch();
   return (
     <Formik
-      initialValues={initialUpdatePersonalValues}
-      validationSchema={UpdatePersonalSchema}
+      initialValues={initialUpdateUserInfoValues}
+      validationSchema={UpdateUserInfoSchema}
       onSubmit={(values) => {
         console.log("save values");
         console.log(values);

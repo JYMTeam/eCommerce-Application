@@ -9,10 +9,10 @@ import {
   Chip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { InfoCard } from "../basic-components/InfoCard/InfoCard";
+import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
 import { Address } from "@commercetools/platform-sdk";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { setUserAddressCardEdit } from "../../store/slices/userEditModeSlice";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 
 const EditButtonStyles = {
   zIndex: "1",

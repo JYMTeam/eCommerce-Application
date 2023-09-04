@@ -55,7 +55,7 @@ const setLoginSchema = () => {
   });
 };
 
-const setUpdatePersonalSchema = () => {
+const setUpdateUserInfoSchema = () => {
   return object().shape({
     firstName: validateName("First name"),
     lastName: validateName("Last name"),
@@ -64,4 +64,4 @@ const setUpdatePersonalSchema = () => {
   });
 };
 
-export { setSignupSchema, setLoginSchema, setUpdatePersonalSchema };
+export { setSignupSchema, setLoginSchema, setUpdateUserInfoSchema };
