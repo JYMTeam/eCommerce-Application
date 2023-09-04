@@ -16,6 +16,7 @@ import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -83,6 +84,7 @@ function App() {
               />
               <Route path="/shop" element={<ShopPage />} />
               <Route path="/shop/:id" element={<ProductDetailsPage />} />
+              <Route path="/categories/:id" element={<CategoryPage />}></Route>
               <Route path="/cart" element={<CartPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

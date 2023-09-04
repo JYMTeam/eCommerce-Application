@@ -19,6 +19,7 @@ export interface IProductsState {
   offset: number;
   filterParams: SelectedFilterAndSortValues | null;
   filterCount: number;
+  categoryId: string | null;
 }
 
 const initialState: IProductsState = {
@@ -31,6 +32,7 @@ const initialState: IProductsState = {
   offset: 0,
   filterParams: null,
   filterCount: 0,
+  categoryId: null,
 };
 
 type pagePayload = {
@@ -52,7 +54,7 @@ export const productsSlice = createSlice({
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
       state.loading = false;
-      state.errorMessage = "";
+      state.errorMessage = STR_PLACEHOLDER;
       state.products = action.payload.results;
       state.total = action.payload.total;
       state.limit = action.payload.limit;
@@ -74,7 +76,7 @@ export const productsSlice = createSlice({
       action: PayloadAction<ProductProjectionPagedQueryResponse>,
     ) {
       state.loading = false;
-      state.errorMessage = "";
+      state.errorMessage = STR_PLACEHOLDER;
       state.products = action.payload.results;
       state.total = action.payload.total;
       state.limit = action.payload.limit;
