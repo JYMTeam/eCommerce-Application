@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import "./productCarousel.css";
 
-const HEIGHT = "400px";
-const WIDTH = "400px";
+const HEIGHT = "380px";
+const WIDTH = "380px";
 
 const style = {
   position: "absolute" as "absolute",
