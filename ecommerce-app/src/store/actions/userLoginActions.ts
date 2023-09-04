@@ -189,7 +189,11 @@ export const fetchUpdateUserAddress = (
       action: "addBillingAddressId",
       addressId: userCurrentData.addresses[addressArrIndex].id,
     });
-  } else {
+  } else if (
+    userCurrentData.billingAddressIds?.includes(
+      userCurrentData.addresses[addressArrIndex].id || "",
+    )
+  ) {
     actions.push({
       action: "removeBillingAddressId",
       addressId: userCurrentData.addresses[addressArrIndex].id,
@@ -201,7 +205,11 @@ export const fetchUpdateUserAddress = (
       action: "addShippingAddressId",
       addressId: userCurrentData.addresses[addressArrIndex].id,
     });
-  } else {
+  } else if (
+    userCurrentData.shippingAddressIds?.includes(
+      userCurrentData.addresses[addressArrIndex].id || "",
+    )
+  ) {
     actions.push({
       action: "removeShippingAddressId",
       addressId: userCurrentData.addresses[addressArrIndex].id,
