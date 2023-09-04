@@ -87,7 +87,7 @@ const validateDateOfBirth = () => {
       .required("Birthday is required")
       .test(
         "is-allowed-age",
-        () => `You must be ${USER_AGE_ALLOWED} years old or above to register`,
+        () => `You must be ${USER_AGE_ALLOWED} years old or above`,
         (value) => {
           if (!value) return false;
           return new Date(value) < subtractYears(new Date(), USER_AGE_ALLOWED);

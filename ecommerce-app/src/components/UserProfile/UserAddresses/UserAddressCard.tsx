@@ -99,10 +99,15 @@ export const UserAddressCard = ({
       )}
       {isEdit && (
         <UpdateUserAddressCardForm
+          addressArrIndex={id}
           streetName={streetName || ""}
           city={city || ""}
           country={country || ""}
           postalCode={postalCode || ""}
+          isDefaultBilling={isDefaultBilling}
+          isDefaultShipping={isDefaultShipping}
+          isBilling={isBilling}
+          isShipping={isShipping}
         />
         // <Stack spacing={2}>
         //   <TextField

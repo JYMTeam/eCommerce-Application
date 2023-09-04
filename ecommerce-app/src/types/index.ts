@@ -29,7 +29,8 @@ export interface IUpdateAddressInitialValues {
   postalCode: string;
   isBilling: boolean;
   isShipping: boolean;
-  isDefault: boolean;
+  isDefaultBilling: boolean;
+  isDefaultShipping: boolean;
 }
 
 export interface IUpdatePersonalValues {
@@ -54,7 +55,8 @@ export interface IUpdateAddressSchemaOptions {
   postalCodeFormat: string;
   isBillingAddress?: boolean;
   isShippingAddress?: boolean;
-  isDefaultAddress?: boolean;
+  isDefaultShippingAddress?: boolean;
+  isDefaultBillingAddress?: boolean;
 }
 
 export enum statusCode {

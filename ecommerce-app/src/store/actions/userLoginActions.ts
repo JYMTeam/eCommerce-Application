@@ -21,7 +21,10 @@ import {
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
 import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
-import { IUpdatePersonalValues } from "../../types";
+import {
+  IUpdateAddressInitialValues,
+  IUpdatePersonalValues,
+} from "../../types";
 import { INotification, notificationActive } from "../slices/notificationSlice";
 
 export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
@@ -92,6 +95,119 @@ export const fetchUpdateUserPersonalInfo = (
     { action: "setFirstName", firstName },
     { action: "setLastName", lastName },
   ];
+  const updateCustomer: MyCustomerUpdate = {
+    version: userCurrentData.version,
+    actions,
+  };
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(userLoginFetching());
+      const answer = await getApiTokenRoot(existingToken.token)
+        .me()
+        .post({
+          body: updateCustomer,
+        })
+        .execute();
+      dispatch(userLoginFetchSuccess(answer.body));
+      const successUpdateMessage: INotification = {
+        message: "Your data has been successfully updated",
+        type: "success",
+      };
+      dispatch(notificationActive(successUpdateMessage));
+    } catch (e) {
+      const error = e as ClientResponse<AuthErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(userLoginFetchError(body));
+      }
+    }
+  };
+};
+
+export const fetchUpdateUserAddress = (
+  existingToken: TokenStore,
+  userCurrentData: Customer,
+  addressArrIndex: number,
+  values: IUpdateAddressInitialValues,
+) => {
+  const {
+    streetName,
+    city,
+    country,
+    postalCode,
+    isBilling,
+    isShipping,
+    isDefaultBilling,
+    isDefaultShipping,
+  } = values;
+  console.log("addressArrIndex");
+  console.log(addressArrIndex);
+  const actions: MyCustomerUpdateAction[] = [
+    {
+      action: "changeAddress",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+      address: {
+        country,
+        streetName,
+        postalCode,
+        city,
+        // state: "NEWSTATE"
+      },
+    },
+  ];
+  if (isDefaultBilling) {
+    actions.push({
+      action: "setDefaultBillingAddress",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  } else if (
+    userCurrentData.addresses[addressArrIndex].id ===
+    userCurrentData.defaultBillingAddressId
+  ) {
+    actions.push({
+      action: "setDefaultBillingAddress",
+      addressId: undefined,
+    });
+  }
+
+  if (isDefaultShipping) {
+    actions.push({
+      action: "setDefaultShippingAddress",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  } else if (
+    userCurrentData.addresses[addressArrIndex].id ===
+    userCurrentData.defaultShippingAddressId
+  ) {
+    actions.push({
+      action: "setDefaultShippingAddress",
+      addressId: undefined,
+    });
+  }
+
+  if (isBilling) {
+    actions.push({
+      action: "addBillingAddressId",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  } else {
+    actions.push({
+      action: "removeBillingAddressId",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  }
+
+  if (isShipping) {
+    actions.push({
+      action: "addShippingAddressId",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  } else {
+    actions.push({
+      action: "removeShippingAddressId",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    });
+  }
   const updateCustomer: MyCustomerUpdate = {
     version: userCurrentData.version,
     actions,

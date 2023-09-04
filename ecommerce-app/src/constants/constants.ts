@@ -75,7 +75,8 @@ const initialUpdateAddressValues: IUpdateAddressInitialValues = {
   postalCode: "",
   isBilling: false,
   isShipping: false,
-  isDefault: false,
+  isDefaultBilling: false,
+  isDefaultShipping: false,
 };
 
 const PRODUCT_DESCRIPTION_PLACEHOLDER =

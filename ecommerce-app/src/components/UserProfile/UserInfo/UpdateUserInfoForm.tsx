@@ -14,6 +14,7 @@ import { IUpdatePersonalValues } from "../../../types";
 import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userLoginActions";
 import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
 import { successMessageHandler } from "../../SignupForm/signupHelpers";
+import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
 
 export interface IUpdateUserInfoProps {
   email: string;
@@ -31,6 +32,9 @@ export function UpdateUserInfoForm({
   const UpdateUserInfoSchema = setUpdateUserInfoSchema();
   const { loading, errorMessage, loginData, tokenData, isSuccessMessage } =
     useAppSelector((state) => state.userLogin);
+  const isUserInfoEdit = useAppSelector(
+    (state) => state.userEditMode.userInfoEdit,
+  );
   const BIRTHDAY_INPUT_NAME = "dateOfBirth";
 
   const initialUpdateUserInfoValues: IUpdatePersonalValues = {
@@ -39,17 +43,20 @@ export function UpdateUserInfoForm({
     email: email || "",
     dateOfBirth: dateOfBirth || "",
   };
+
   const dispatch = useAppDispatch();
+
+  const handleEditMode = () => {
+    dispatch(setUserInfoEdit(!isUserInfoEdit));
+  };
   return (
     <Formik
       initialValues={initialUpdateUserInfoValues}
       validationSchema={UpdateUserInfoSchema}
       onSubmit={(values) => {
-        console.log("save values");
-        console.log(values);
-
         if (loginData && tokenData && tokenData?.token !== "") {
           dispatch(fetchUpdateUserPersonalInfo(tokenData, loginData, values));
+          handleEditMode();
         }
       }}
     >

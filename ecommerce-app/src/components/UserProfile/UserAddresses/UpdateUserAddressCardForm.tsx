@@ -22,59 +22,78 @@ import {
 import {
   countryOptions,
   initialCountryOptions,
-  initialUpdateAddressValues,
+  // initialUpdateAddressValues,
 } from "../../../constants/constants";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { fetchUpdateUserAddress } from "../../../store/actions/userLoginActions";
 
 export interface IUpdateUserAddressProps {
+  addressArrIndex: number;
   streetName: string;
   city: string;
   country: string;
   postalCode: string;
   isBilling?: boolean;
   isShipping?: boolean;
-  isDefault?: boolean;
+  isDefaultBilling?: boolean;
+  isDefaultShipping?: boolean;
 }
-const EMPTY_STR = "";
-const COUNTRY_SHIPPING_INPUT_NAME = "countryShipping";
-// const COUNTRY_BILLING_INPUT_NAME = "countryBilling";
+const COUNTRY_INPUT_NAME = "country";
 
 export function UpdateUserAddressCardForm({
+  addressArrIndex,
   streetName,
   city,
   country,
   postalCode,
   isBilling = false,
   isShipping = false,
-  isDefault = false,
+  isDefaultBilling = false,
+  isDefaultShipping = false,
 }: IUpdateUserAddressProps) {
-  const [countryCode, setCountryCode] = useState(EMPTY_STR);
-  const [postalCodeFormat, setPostalCodeFormat] = useState(EMPTY_STR);
-  const [isDefaultChecked] = useState(false);
-  const [isShippingChecked] = useState(false);
-  const [isBillingChecked] = useState(false);
+  const [countryCode, setCountryCode] = useState(country);
+  const [postalCodeFormat, setPostalCodeFormat] = useState(postalCode);
+  const [isDefaultBillingChecked, setIsDefaultBillingChecked] =
+    useState(isDefaultBilling);
+  const [isDefaultShippingChecked, setIsDefaultShippingChecked] =
+    useState(isDefaultShipping);
+  const [isDefaultBillingNotDisabled, setIsDefaultBillingNotDisabled] =
+    useState(isBilling);
+  const [isDefaultShippingNotDisabled, setIsDefaultShippingNotDisabled] =
+    useState(isShipping);
+  const [isShippingChecked, setIsShippingChecked] = useState(isShipping);
+  const [isBillingChecked, setIsBillingChecked] = useState(isBilling);
   const schemaOptions: IUpdateAddressSchemaOptions = {
     countryCode,
     postalCodeFormat,
     isBillingAddress: isBillingChecked,
     isShippingAddress: isShippingChecked,
-    isDefaultAddress: isDefaultChecked,
+    isDefaultBillingAddress: isDefaultBillingChecked,
+    isDefaultShippingAddress: isDefaultShippingChecked,
   };
-  console.log(
+
+  const UpdateAddressSchema = setUpdateUserAddressSchema(schemaOptions);
+  const { loginData, tokenData } = useAppSelector((state) => state.userLogin);
+  const dispatch = useAppDispatch();
+
+  const onSubmit = (values: IUpdateAddressInitialValues) => {
+    if (loginData && tokenData && tokenData?.token !== "") {
+      dispatch(
+        fetchUpdateUserAddress(tokenData, loginData, addressArrIndex, values),
+      );
+    }
+  };
+
+  const initialUpdateAddressValues: IUpdateAddressInitialValues = {
     streetName,
     city,
     country,
     postalCode,
     isBilling,
     isShipping,
-    isDefault,
-  );
-  const UpdateAddressSchema = setUpdateUserAddressSchema(schemaOptions);
-
-  const onSubmit = (values: IUpdateAddressInitialValues) => {
-    console.log("update values address");
-    console.log(values);
+    isDefaultBilling,
+    isDefaultShipping,
   };
-
   return (
     <Formik
       initialValues={initialUpdateAddressValues}
@@ -106,23 +125,98 @@ export function UpdateUserAddressCardForm({
           const { countryCode, postalCodeFormat } = newValue;
           setCountryCode(countryCode);
           setPostalCodeFormat(postalCodeFormat);
-          setFieldValue(COUNTRY_SHIPPING_INPUT_NAME, countryCode, true);
+          setFieldValue(COUNTRY_INPUT_NAME, countryCode, true);
         };
-
-        const onCheckboxChange = (
+        const onDefaultBillingCheckBoxChange = (
           event: React.ChangeEvent<HTMLInputElement>,
         ) => {
-          // setIsCommonAddressChecked(event.target.checked);
+          setIsDefaultBillingChecked(event.target.checked);
           handleChange(event);
         };
-
+        const onDefaultShippingCheckBoxChange = (
+          event: React.ChangeEvent<HTMLInputElement>,
+        ) => {
+          setIsDefaultShippingChecked(event.target.checked);
+          handleChange(event);
+        };
+        const onBillingCheckBoxChange = (
+          event: React.ChangeEvent<HTMLInputElement>,
+        ) => {
+          setIsBillingChecked(event.target.checked);
+          if (!event.target.checked) {
+            setIsDefaultBillingNotDisabled(false);
+          } else {
+            setIsDefaultBillingNotDisabled(true);
+          }
+          handleChange(event);
+        };
+        const onShippingCheckBoxChange = (
+          event: React.ChangeEvent<HTMLInputElement>,
+        ) => {
+          setIsShippingChecked(event.target.checked);
+          if (!event.target.checked) {
+            setIsDefaultShippingNotDisabled(false);
+          } else {
+            setIsDefaultShippingNotDisabled(true);
+          }
+          handleChange(event);
+        };
         return (
           <Form data-testid="update-address-form" noValidate autoComplete="off">
             <FormControl>
-              <Stack spacing={2}>
+              <Stack
+                spacing={2}
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  borderRadius: "4px",
+                }}
+              >
+                <TextField
+                  name="streetName"
+                  label="Street"
+                  required={true}
+                  autoComplete="off"
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
+                  helperText={errors.streetName}
+                  error={!!errors.streetName}
+                  defaultValue={streetName}
+                />
+                <TextField
+                  name="city"
+                  label="City / Town"
+                  required={true}
+                  autoComplete="off"
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
+                  helperText={errors.city}
+                  error={!!errors.city}
+                  defaultValue={city}
+                />
+                <TextField
+                  name="postalCode"
+                  label="Postal code"
+                  required={true}
+                  autoComplete="off"
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
+                  helperText={!!values.country && errors.postalCode}
+                  error={!!values.country && !!errors.postalCode}
+                  disabled={!values.country}
+                  defaultValue={postalCode}
+                />
                 <Autocomplete
                   options={countryOptions}
+                  defaultValue={countryOptions.find(
+                    (option) => option.countryCode === country,
+                  )}
                   onChange={onCountryChange}
+                  // value={{
+                  //   label: "Germany",
+                  //   countryCode: "DE",
+                  //   postalCodeFormat:"12345"
+                  // }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -135,75 +229,137 @@ export function UpdateUserAddressCardForm({
                     />
                   )}
                 />
-                <TextField
-                  name="city"
-                  label="City / Town"
-                  required={true}
-                  autoComplete="off"
-                  onChange={onInputChange}
-                  onFocus={onInputFocus}
-                  helperText={errors.city}
-                  error={!!errors.city}
-                />
-                <TextField
-                  name="streetName"
-                  label="Street"
-                  required={true}
-                  autoComplete="off"
-                  onChange={onInputChange}
-                  onFocus={onInputFocus}
-                  helperText={errors.streetName}
-                  error={!!errors.streetName}
-                />
-                <TextField
-                  name="postalCode"
-                  label="Postal code"
-                  required={true}
-                  autoComplete="off"
-                  onChange={onInputChange}
-                  onFocus={onInputFocus}
-                  helperText={!!values.country && errors.postalCode}
-                  error={!!values.country && !!errors.postalCode}
-                  disabled={!values.country}
-                />
-                <Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                    gap: "5px",
+                  }}
+                >
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={onCheckboxChange}
+                        onChange={onBillingCheckBoxChange}
                         // onFocus={onInputFocus}
-                        name="defaultCheck"
+                        name="isBilling"
                         size="small"
+                        checked={isBillingChecked}
                       />
                     }
-                    label={<span style={{ fontSize: "15px" }}>Default</span>}
+                    label={
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          marginLeft: "-7px",
+                        }}
+                      >
+                        Billing
+                      </span>
+                    }
+                    sx={{
+                      backgroundColor: "#00000014",
+                      padding: "1px 12px 0px 1px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   />
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={onCheckboxChange}
+                        onChange={onShippingCheckBoxChange}
                         // onFocus={onInputFocus}
-                        name="billingCheck"
+                        name="isShipping"
                         size="small"
+                        checked={isShippingChecked}
                       />
                     }
-                    label={"Billing"}
+                    label={
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          marginLeft: "-7px",
+                        }}
+                      >
+                        Shipping
+                      </span>
+                    }
+                    sx={{
+                      backgroundColor: "#00000014",
+                      padding: "1px 12px 0px 1px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   />
                   <FormControlLabel
                     control={
                       <Checkbox
-                        onChange={onCheckboxChange}
+                        onChange={onDefaultBillingCheckBoxChange}
                         // onFocus={onInputFocus}
-                        name="shippingCheck"
+                        name="isDefaultBilling"
                         size="small"
+                        disabled={!isDefaultBillingNotDisabled}
+                        checked={
+                          isDefaultBillingChecked && isDefaultBillingNotDisabled
+                        }
                       />
                     }
-                    label={"Shipping"}
+                    label={
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          marginLeft: "-7px",
+                        }}
+                      >
+                        Default B.
+                      </span>
+                    }
+                    sx={{
+                      backgroundColor: "#00000014",
+                      padding: "1px 12px 0px 1px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={onDefaultShippingCheckBoxChange}
+                        // onFocus={onInputFocus}
+                        name="isDefaultShipping"
+                        size="small"
+                        disabled={!isDefaultShippingNotDisabled}
+                        checked={
+                          isDefaultShippingChecked &&
+                          isDefaultShippingNotDisabled
+                        }
+                      />
+                    }
+                    label={
+                      <span
+                        style={{
+                          fontSize: "14px",
+                          marginLeft: "-7px",
+                        }}
+                      >
+                        Default S.
+                      </span>
+                    }
+                    sx={{
+                      backgroundColor: "#00000014",
+                      padding: "1px 12px 0px 1px",
+                      borderRadius: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
                   />
                 </Box>
                 <Button
                   type="submit"
-                  // variant="contained"
+                  variant="contained"
                   size="large"
                   // disabled={loading || isLogged || isSuccessMessage}
                 >

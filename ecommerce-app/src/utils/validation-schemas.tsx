@@ -67,11 +67,7 @@ const setUpdateUserInfoSchema = () => {
 const setUpdateUserAddressSchema = ({
   countryCode,
   postalCodeFormat,
-  isBillingAddress = false,
-  isShippingAddress = false,
-  isDefaultAddress = false,
 }: IUpdateAddressSchemaOptions) => {
-  console.log(isBillingAddress, isShippingAddress, isDefaultAddress);
   return object().shape({
     city: validateCity(),
     streetName: validateStreetName(),
