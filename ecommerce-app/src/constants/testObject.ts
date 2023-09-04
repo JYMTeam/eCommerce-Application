@@ -5,8 +5,15 @@ import {
   AttributeEnumType,
   AttributeLocalizableTextType,
   AttributeLocalizedEnumType,
+  AttributeMoneyType,
   Price,
   ProductProjection,
+  AttributeNestedType,
+  AttributeNumberType,
+  AttributeReferenceType,
+  AttributeSetType,
+  AttributeTextType,
+  AttributeTimeType,
 } from "@commercetools/platform-sdk";
 
 export const priceInfoTest: Price = {
@@ -155,4 +162,35 @@ export const attrubuteLtextTestObj: AttributeLocalizableTextType = {
 export const attrubuteLenumTestObj: AttributeLocalizedEnumType = {
   name: "lenum",
   values: [],
+};
+
+export const attrubuteMoneyTestObj: AttributeMoneyType = {
+  name: "money",
+};
+
+export const attrubuteNestedTestObj: AttributeNestedType = {
+  name: "nested",
+  typeReference: { typeId: "product-type", id: "" },
+};
+
+export const attrubuteNumberTestObj: AttributeNumberType = {
+  name: "number",
+};
+
+export const attrubuteReferenceTestObj: AttributeReferenceType = {
+  name: "reference",
+  referenceTypeId: "",
+};
+
+export const attrubuteSetTestObj: AttributeSetType = {
+  name: "set",
+  elementType: { name: "text" },
+};
+
+export const attrubuteTextTestObj: AttributeTextType = {
+  name: "text",
+};
+
+export const attrubuteTimeTestObj: AttributeTimeType = {
+  name: "time",
 };

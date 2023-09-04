@@ -203,49 +203,42 @@ export function isAttributeLocalizedEnumType(
 export function isAttributeMoneyType(
   attribute: AttributeType,
 ): attribute is AttributeMoneyType {
-  console.log(attribute);
   return (attribute as AttributeMoneyType).name === "money";
 }
 
 export function isAttributeNestedType(
   attribute: AttributeType,
 ): attribute is AttributeNestedType {
-  console.log(attribute);
   return (attribute as AttributeNestedType).name === "nested";
 }
 
 export function isAttributeNumberType(
   attribute: AttributeType,
 ): attribute is AttributeNumberType {
-  console.log(attribute);
   return (attribute as AttributeNumberType).name === "number";
 }
 
 export function isAttributeReferenceType(
   attribute: AttributeType,
 ): attribute is AttributeReferenceType {
-  console.log(attribute);
   return (attribute as AttributeReferenceType).name === "reference";
 }
 
 export function isAttributeSetType(
   attribute: AttributeType,
 ): attribute is AttributeSetType {
-  console.log(attribute);
   return (attribute as AttributeSetType).name === "set";
 }
 
 export function isAttributeTextType(
   attribute: AttributeType,
 ): attribute is AttributeTextType {
-  console.log(attribute);
   return (attribute as AttributeTextType).name === "text";
 }
 
 export function isAttributeTimeType(
   attribute: AttributeType,
 ): attribute is AttributeTimeType {
-  console.log(attribute);
   return (attribute as AttributeTimeType).name === "time";
 }
 
