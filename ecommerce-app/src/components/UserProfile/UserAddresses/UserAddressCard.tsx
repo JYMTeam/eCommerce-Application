@@ -9,11 +9,13 @@ import {
   Chip,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
 import { Address } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 import { UpdateUserAddressCardForm } from "./UpdateUserAddressCardForm";
+import { fetchDeleteUserAddress } from "../../../store/actions/userLoginActions";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -42,35 +44,56 @@ export const UserAddressCard = ({
   const isEdit = useAppSelector(
     (state) => state.userEditMode.userAddressCardEdits[id],
   );
+  const { loginData, tokenData } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();
 
   const handleEditMode = () => {
     dispatch(setUserAddressCardEdit({ cardId: id, isEdit: !isEdit }));
   };
 
+  const handleDelete = () => {
+    if (loginData && tokenData && tokenData?.token !== "") {
+      dispatch(fetchDeleteUserAddress(tokenData, loginData, id));
+    }
+  };
+
   const { streetName, city, postalCode, state, country } = address;
   const lCountry = country === "DE" ? "Germany" : "USA";
   return (
     <Box className="personal-info" sx={{ width: "280px" }}>
-      <Tooltip
-        className="personal-info__edit"
+      <Box
         sx={{
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           position: "absolute",
           top: 16,
           right: 16,
         }}
-        title="Edit mode"
       >
-        <IconButton
-          color="primary"
-          aria-label="edit mode"
-          sx={EditButtonStyles}
-          onClick={handleEditMode}
-        >
-          <EditIcon />
-        </IconButton>
-      </Tooltip>
+        <Tooltip className="address-info__edit" title="Edit mode">
+          <IconButton
+            color="primary"
+            aria-label="edit mode"
+            sx={EditButtonStyles}
+            onClick={handleEditMode}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        {!isEdit && (
+          <Tooltip className="address-info__edit" title="Delete">
+            <IconButton
+              color="primary"
+              aria-label="delete mode"
+              sx={EditButtonStyles}
+              onClick={handleDelete}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Box>
       {!isEdit && (
         <>
           <InfoCard

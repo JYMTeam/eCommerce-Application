@@ -140,8 +140,6 @@ export const fetchUpdateUserAddress = (
     isDefaultBilling,
     isDefaultShipping,
   } = values;
-  console.log("addressArrIndex");
-  console.log(addressArrIndex);
   const actions: MyCustomerUpdateAction[] = [
     {
       action: "changeAddress",
@@ -224,6 +222,46 @@ export const fetchUpdateUserAddress = (
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
         message: "Your data has been successfully updated",
+        type: "success",
+      };
+      dispatch(notificationActive(successUpdateMessage));
+    } catch (e) {
+      const error = e as ClientResponse<AuthErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(userLoginFetchError(body));
+      }
+    }
+  };
+};
+
+export const fetchDeleteUserAddress = (
+  existingToken: TokenStore,
+  userCurrentData: Customer,
+  addressArrIndex: number,
+) => {
+  const actions: MyCustomerUpdateAction[] = [
+    {
+      action: "removeAddress",
+      addressId: userCurrentData.addresses[addressArrIndex].id,
+    },
+  ];
+  const updateCustomer: MyCustomerUpdate = {
+    version: userCurrentData.version,
+    actions,
+  };
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(userLoginFetching());
+      const answer = await getApiTokenRoot(existingToken.token)
+        .me()
+        .post({
+          body: updateCustomer,
+        })
+        .execute();
+      dispatch(userLoginFetchSuccess(answer.body));
+      const successUpdateMessage: INotification = {
+        message: "Your address has been successfully deleted",
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
