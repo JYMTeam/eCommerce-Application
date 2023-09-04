@@ -31,6 +31,7 @@ export interface IUpdateUserAddressProps {
   addressArrIndex: number;
   streetName: string;
   city: string;
+  state: string;
   country: string;
   postalCode: string;
   isBilling?: boolean;
@@ -44,6 +45,7 @@ export function UpdateUserAddressCardForm({
   isNew,
   addressArrIndex,
   streetName,
+  state,
   city,
   country,
   postalCode,
@@ -78,6 +80,8 @@ export function UpdateUserAddressCardForm({
   const dispatch = useAppDispatch();
 
   const onSubmit = (values: IUpdateAddressInitialValues) => {
+    console.log("valid values");
+    console.log(values);
     if (loginData && tokenData && tokenData?.token !== "") {
       if (!isNew) {
         dispatch(
@@ -92,6 +96,7 @@ export function UpdateUserAddressCardForm({
   const initialUpdateAddressValues: IUpdateAddressInitialValues = {
     streetName,
     city,
+    state,
     country,
     postalCode,
     isBilling,
@@ -198,6 +203,17 @@ export function UpdateUserAddressCardForm({
                   helperText={errors.city}
                   error={!!errors.city}
                   defaultValue={city}
+                />
+                <TextField
+                  name="state"
+                  label="State"
+                  required={false}
+                  autoComplete="off"
+                  onChange={onInputChange}
+                  onFocus={onInputFocus}
+                  helperText={errors.state}
+                  error={!!errors.state}
+                  defaultValue={state}
                 />
                 <TextField
                   name="postalCode"

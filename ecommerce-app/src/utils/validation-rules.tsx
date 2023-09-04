@@ -68,6 +68,19 @@ const validateStreetName = () => {
     .strict(true);
 };
 
+const validateState = () => {
+  return string()
+    .notRequired()
+    .trim("State must not contain leading or trailing whitespace")
+    .strict(true)
+    .matches(NO_SPECIAL_CHARS_REGEX, {
+      message: "State must not contain special characters",
+    })
+    .matches(NO_DIGIT_REGEX, {
+      message: "State must not contain numbers",
+    });
+};
+
 const validateCity = () => {
   return string()
     .required("City is required")
@@ -125,6 +138,7 @@ export {
   validatePassword,
   validateName,
   validateStreetName,
+  validateState,
   validateCity,
   validateDateOfBirth,
   validatePostalCode,

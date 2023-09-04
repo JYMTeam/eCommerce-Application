@@ -25,6 +25,7 @@ export interface ISignupInitialValues extends IFormInitialValues {
 export interface IUpdateAddressInitialValues {
   streetName: string;
   city: string;
+  state: string;
   country: string;
   postalCode: string;
   isBilling: boolean;

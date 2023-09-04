@@ -145,6 +145,7 @@ export const UserAddressCard = ({
           addressArrIndex={id}
           streetName={streetName || ""}
           city={city || ""}
+          state={state || ""}
           country={country || ""}
           postalCode={postalCode || ""}
           isDefaultBilling={isDefaultBilling}

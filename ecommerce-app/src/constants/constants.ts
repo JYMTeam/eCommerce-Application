@@ -70,6 +70,7 @@ const initialUpdatePersonalValues: IUpdatePersonalValues = {
 
 const initialUpdateAddressValues: IUpdateAddressInitialValues = {
   streetName: "",
+  state: "",
   city: "",
   country: "",
   postalCode: "",

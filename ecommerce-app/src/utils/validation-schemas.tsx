@@ -7,6 +7,7 @@ import {
   validateCity,
   validateDateOfBirth,
   validatePostalCode,
+  validateState,
 } from "./validation-rules";
 import { ISignedUpSchemaOptions, IUpdateAddressSchemaOptions } from "../types";
 
@@ -71,6 +72,7 @@ const setUpdateUserAddressSchema = ({
   return object().shape({
     city: validateCity(),
     streetName: validateStreetName(),
+    state: validateState(),
     country: string().required("Country is required"),
     postalCode: validatePostalCode(countryCode, postalCodeFormat),
   });

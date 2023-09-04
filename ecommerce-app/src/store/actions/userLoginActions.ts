@@ -133,6 +133,7 @@ export const fetchUpdateUserAddress = (
   const {
     streetName,
     city,
+    state,
     country,
     postalCode,
     isBilling,
@@ -149,7 +150,7 @@ export const fetchUpdateUserAddress = (
         streetName,
         postalCode,
         city,
-        // state: "NEWSTATE"
+        state,
       },
     },
   ];
@@ -243,6 +244,7 @@ export const fetchCreateUserAddress = (
   const {
     streetName,
     city,
+    state,
     country,
     postalCode,
     isBilling,
@@ -258,6 +260,7 @@ export const fetchCreateUserAddress = (
         streetName,
         postalCode,
         city,
+        state,
       },
     },
   ];
