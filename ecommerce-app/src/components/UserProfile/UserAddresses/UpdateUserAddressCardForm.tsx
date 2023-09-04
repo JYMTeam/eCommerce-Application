@@ -25,6 +25,7 @@ import {
   fetchCreateUserAddress,
   fetchUpdateUserAddress,
 } from "../../../store/actions/userLoginActions";
+import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 
 export interface IUpdateUserAddressProps {
   isNew: boolean;
@@ -66,6 +67,7 @@ export function UpdateUserAddressCardForm({
     useState(isShipping);
   const [isShippingChecked, setIsShippingChecked] = useState(isShipping);
   const [isBillingChecked, setIsBillingChecked] = useState(isBilling);
+
   const schemaOptions: IUpdateAddressSchemaOptions = {
     countryCode,
     postalCodeFormat,
@@ -76,12 +78,21 @@ export function UpdateUserAddressCardForm({
   };
 
   const UpdateAddressSchema = setUpdateUserAddressSchema(schemaOptions);
-  const { loginData, tokenData } = useAppSelector((state) => state.userLogin);
+  const { loginData, tokenData, loading } = useAppSelector(
+    (state) => state.userLogin,
+  );
+  const isUserEdit = useAppSelector(
+    (state) => state.userEditMode.userAddressCardEdits[addressArrIndex],
+  );
   const dispatch = useAppDispatch();
 
+  const handleEditMode = () => {
+    dispatch(
+      setUserAddressCardEdit({ cardId: addressArrIndex, isEdit: !isUserEdit }),
+    );
+  };
+
   const onSubmit = (values: IUpdateAddressInitialValues) => {
-    console.log("valid values");
-    console.log(values);
     if (loginData && tokenData && tokenData?.token !== "") {
       if (!isNew) {
         dispatch(
@@ -90,6 +101,7 @@ export function UpdateUserAddressCardForm({
       } else {
         dispatch(fetchCreateUserAddress(tokenData, loginData, values));
       }
+      handleEditMode();
     }
   };
 
@@ -115,17 +127,10 @@ export function UpdateUserAddressCardForm({
         const onInputChange = (
           event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         ) => {
-          // if (errorMessage) {
-          //   dispatch(userSignupClearErrorMessage());
-          // }
           handleChange(event);
         };
 
-        const onInputFocus = () => {
-          // if (errorMessage) {
-          //   dispatch(userSignupClearErrorMessage());
-          // }
-        };
+        const onInputFocus = () => {};
 
         const onCountryChange = (
           _: React.SyntheticEvent<Element, Event>,
@@ -207,7 +212,7 @@ export function UpdateUserAddressCardForm({
                 <TextField
                   name="state"
                   label="State"
-                  required={false}
+                  required={true}
                   autoComplete="off"
                   onChange={onInputChange}
                   onFocus={onInputFocus}
@@ -233,11 +238,6 @@ export function UpdateUserAddressCardForm({
                     (option) => option.countryCode === country,
                   )}
                   onChange={onCountryChange}
-                  // value={{
-                  //   label: "Germany",
-                  //   countryCode: "DE",
-                  //   postalCodeFormat:"12345"
-                  // }}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -262,7 +262,6 @@ export function UpdateUserAddressCardForm({
                     control={
                       <Checkbox
                         onChange={onBillingCheckBoxChange}
-                        // onFocus={onInputFocus}
                         name="isBilling"
                         size="small"
                         checked={isBillingChecked}
@@ -290,7 +289,6 @@ export function UpdateUserAddressCardForm({
                     control={
                       <Checkbox
                         onChange={onShippingCheckBoxChange}
-                        // onFocus={onInputFocus}
                         name="isShipping"
                         size="small"
                         checked={isShippingChecked}
@@ -318,7 +316,6 @@ export function UpdateUserAddressCardForm({
                     control={
                       <Checkbox
                         onChange={onDefaultBillingCheckBoxChange}
-                        // onFocus={onInputFocus}
                         name="isDefaultBilling"
                         size="small"
                         disabled={!isDefaultBillingNotDisabled}
@@ -349,7 +346,6 @@ export function UpdateUserAddressCardForm({
                     control={
                       <Checkbox
                         onChange={onDefaultShippingCheckBoxChange}
-                        // onFocus={onInputFocus}
                         name="isDefaultShipping"
                         size="small"
                         disabled={!isDefaultShippingNotDisabled}
@@ -382,7 +378,7 @@ export function UpdateUserAddressCardForm({
                   type="submit"
                   variant="contained"
                   size="large"
-                  // disabled={loading || isLogged || isSuccessMessage}
+                  disabled={loading}
                 >
                   Save Changes
                 </Button>
