@@ -8,6 +8,7 @@ import {
   NO_SPECIAL_CHARS_REGEX,
   UPPERCASE_LETTER_REGEX,
   USER_AGE_ALLOWED,
+  NO_END_HYPHEN_SIGN,
 } from "../constants/constants";
 import { string, lazy } from "yup";
 import { subtractYears } from "./utils";
@@ -94,13 +95,13 @@ const validateCity = () => {
     });
 };
 
-const validateDateOfBirth = () => {
+const validateDateOfBirth = (message: string) => {
   return lazy(() =>
     string()
       .required("Birthday is required")
       .test(
         "is-allowed-age",
-        () => `You must be ${USER_AGE_ALLOWED} years old or above`,
+        () => message,
         (value) => {
           if (!value) return false;
           return new Date(value) < subtractYears(new Date(), USER_AGE_ALLOWED);
@@ -121,6 +122,8 @@ const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
   return lazy(() =>
     string()
       .required("Postal code is required")
+      .trim("Postal code must not contain leading or trailing whitespace")
+      .strict(true)
       .test(
         "is-correct-postal-code",
         () =>
@@ -129,7 +132,10 @@ const validatePostalCode = (countryCode: string, postalCodeFormat: string) => {
           if (!value || !countryCode) return false;
           return typeof postalCodes.validate(countryCode, value) === "boolean";
         },
-      ),
+      )
+      .matches(NO_END_HYPHEN_SIGN, {
+        message: `Postal code must follow the country ${countryCode} format e.g. ${postalCodeFormat}`,
+      }),
   );
 };
 

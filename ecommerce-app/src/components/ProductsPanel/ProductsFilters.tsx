@@ -4,7 +4,6 @@ import { fetchAttributes } from "../../store/actions/attributesActions";
 import MultipleSelectList from "../basic-components/MultipleSelect/MultipleSelect";
 import IconButton from "@mui/material/IconButton";
 import FilterOffIcon from "@mui/icons-material/FilterAltOff";
-
 import Box from "@mui/material/Box";
 import {
   resetFilterParams,

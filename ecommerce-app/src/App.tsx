@@ -18,6 +18,7 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { useSnackbar } from "notistack";
 import { hideNotification } from "./store/actions/notificationActions";
+import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -106,7 +107,8 @@ function App() {
       ),
     },
     { path: "/shop", element: <ShopPage /> },
-    { path: "/shop/:id", element: <ProductDetailsPage /> },
+    { path: "/product/:id", element: <ProductDetailsPage /> },
+    { path: "/shop/:id", element: <CategoryPage /> },
     { path: "/cart", element: <CartPage /> },
     { path: "*", element: <NotFoundPage /> },
   ];

@@ -8,6 +8,7 @@ import productDetailsReducer from "./slices/productDetailsSlice";
 import notificationReducer from "./slices/notificationSlice";
 import attributesReducer from "./slices/attributesSlice";
 import userEditModeReducer from "./slices/userEditModeSlice";
+import categoriesReducer from "./slices/categoriesSlice";
 
 const persistConfig = {
   key: "root",
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   productDetails: productDetailsReducer,
   attributes: attributesReducer,
   notification: notificationReducer,
+  categories: categoriesReducer,
 });
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
 
