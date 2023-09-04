@@ -57,7 +57,16 @@ export default function ProductDetail() {
           sizeList,
           color,
         }) => (
-          <Grid container spacing={GRID_SPACING} key={id}>
+          <Grid
+            container
+            spacing={GRID_SPACING}
+            key={id}
+            pt={5}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Grid
               item
               md={MD_COLS}
