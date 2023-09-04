@@ -1,9 +1,9 @@
 import { Alert, AlertTitle } from "@mui/material";
 
-const successMessageHandler = () => {
+const successMessageHandler = (message: string) => {
   return (
     <Alert severity="success">
-      <AlertTitle>You have successfully signed up and logged in</AlertTitle>
+      <AlertTitle>{message}</AlertTitle>
       Redirecting...
     </Alert>
   );

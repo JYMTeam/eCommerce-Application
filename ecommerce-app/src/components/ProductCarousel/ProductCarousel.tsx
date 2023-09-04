@@ -21,6 +21,7 @@ export function ProductCarousel(props: { images: Image[] }) {
   const [currentUrl, setCurrentUrl] = useState("");
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   function Item(props: { image: Image }) {
     return (
       <Paper

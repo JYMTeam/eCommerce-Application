@@ -2,6 +2,7 @@ import {
   ICountriesOptions,
   IFormInitialValues,
   ISignupInitialValues,
+  IUpdatePersonalValues,
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
 
@@ -13,6 +14,7 @@ const DIGIT_REGEX = /[0-9]/;
 const NO_SPACE_REGEX = /^\S*$/;
 const NO_SPECIAL_CHARS_REGEX = /^(?!.*[()[\]{}*&^%$#@!"+=:;<>?,./\\|_]).*$/;
 const NO_DIGIT_REGEX = /^(?!.*[0-9]).*$/;
+const NO_END_HYPHEN_SIGN = /.*(?<!-)$/;
 const USER_AGE_ALLOWED = 14;
 const MAX_HUMAN_AGE = 130;
 const DEFAULT_LOCALE = "en";
@@ -59,6 +61,13 @@ const initialSignUpValues: ISignupInitialValues = {
   defaultBillingCheck: [],
 };
 
+const initialUpdatePersonalValues: IUpdatePersonalValues = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  dateOfBirth: "",
+};
+
 const PRODUCT_DESCRIPTION_PLACEHOLDER =
   "There will be a description of a product";
 
@@ -83,6 +92,7 @@ export {
   initialLoginValues,
   initialSignUpValues,
   initialCountryOptions,
+  initialUpdatePersonalValues,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,
@@ -91,4 +101,5 @@ export {
   DEFAULT_CURRENCY,
   FORM_DATE_FORMAT,
   DEFAULT_PRODUCTS_LIMIT,
+  NO_END_HYPHEN_SIGN,
 };

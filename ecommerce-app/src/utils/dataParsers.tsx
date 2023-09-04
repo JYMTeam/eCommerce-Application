@@ -117,13 +117,13 @@ const parseAttributes = (attributes: Attribute[]) => {
         attributesObject.longDescription = attribute.value[0];
         break;
       case AttributesNames.DESIGNER:
-        attributesObject.designer = attribute.value[0];
+        attributesObject.designer = JSON.stringify(attribute.value.label);
         break;
       case AttributesNames.SIZE_LIST:
-        attributesObject.sizeList = attribute.value[0];
+        attributesObject.sizeList = JSON.stringify(attribute.value.label);
         break;
       case AttributesNames.COLOR:
-        attributesObject.color = attribute.value[0];
+        attributesObject.color = JSON.stringify(attribute.value.label);
         break;
     }
   });

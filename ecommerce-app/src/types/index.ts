@@ -21,6 +21,13 @@ export interface ISignupInitialValues extends IFormInitialValues {
   defaultShippingCheck?: string[];
   defaultBillingCheck?: string[];
 }
+
+export interface IUpdatePersonalValues {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfBirth: string;
+}
 export interface IPostalCodes {
   validate: (countryCode: string, value: string) => {};
 }

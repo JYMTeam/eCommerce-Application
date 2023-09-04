@@ -112,7 +112,11 @@ export function LoginForm() {
                 >
                   Log in
                 </Button>
-                {isSuccessMessage && <>{successMessageHandler()}</>}
+                {isSuccessMessage && (
+                  <>
+                    {successMessageHandler("You have successfully logged in!")}
+                  </>
+                )}
                 {errorMessage && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>
