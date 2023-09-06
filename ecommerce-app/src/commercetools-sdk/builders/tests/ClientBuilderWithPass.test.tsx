@@ -1,5 +1,5 @@
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
-import { getApiPassRoot } from "./ClientBuilderWithPass"; // Замените на актуальный путь
+import { getApiPassRoot } from "../ClientBuilderWithPass";
 
 describe("getApiPassRoot", () => {
   it("should create an API pass root with user authentication options", () => {

@@ -1,9 +1,5 @@
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
-import {
-  // Client,
-  ExistingTokenMiddlewareOptions,
-} from "@commercetools/sdk-client-v2";
-// import { passToken } from "../PassTokenCache";
+import { ExistingTokenMiddlewareOptions } from "@commercetools/sdk-client-v2";
 import { defaultClient, projectKey } from "./ClientBuilderDefault";
 
 export const getApiTokenRoot = (existingToken: string) => {
@@ -11,6 +7,7 @@ export const getApiTokenRoot = (existingToken: string) => {
   const options: ExistingTokenMiddlewareOptions = {
     force: true,
   };
+
   const client = defaultClient
     .withExistingTokenFlow(authorization, options)
     .build();

@@ -1,4 +1,4 @@
-import { ClientResponse, UserAuthOptions } from "@commercetools/sdk-client-v2";
+import { ClientResponse } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "..";
 import { AuthErrorResponse, CustomerDraft } from "@commercetools/platform-sdk";
 import {
@@ -8,26 +8,32 @@ import {
 } from "../slices/userSignupSlice";
 import { fetchUserLogin } from "./userLoginActions";
 import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
+import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
+import { INotification, notificationActive } from "../slices/notificationSlice";
 
 export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userSignupFetching());
 
-      const answer = await getApiSignupRoot()
+      //signup
+      await getApiSignupRoot()
         .customers()
         .post({
           body: userSignupOptions,
         })
         .execute();
-      dispatch(userSignupFetchSuccess(answer.body));
-
-      const { email, password } = userSignupOptions;
-      if (email && password) {
-        const existingUser: UserAuthOptions = {
-          username: userSignupOptions.email,
-          password,
-        };
+      dispatch(userSignupFetchSuccess());
+      const successMessage: INotification = {
+        message: "You have successfully signed up",
+        type: "success",
+      };
+      // setTimeout(() => {
+      dispatch(notificationActive(successMessage));
+      //login
+      const existingUser =
+        convertCustomerDraftToUserAuthOptions(userSignupOptions);
+      if (existingUser) {
         dispatch(fetchUserLogin(existingUser));
       }
     } catch (e) {

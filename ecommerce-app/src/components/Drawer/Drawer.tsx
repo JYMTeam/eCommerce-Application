@@ -6,19 +6,30 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { MenuItems } from "../MenuItems/MenuItems";
 
-export const Drawer = () => {
+export const Drawer = ({
+  shouldCloseDrawer,
+}: {
+  shouldCloseDrawer: boolean;
+}) => {
   const [open, setOpen] = useState(false);
+  const handleToggleOpen = () => {
+    setOpen(!open);
+  };
   return (
     <>
-      <IconButton onClick={() => setOpen(true)}>
+      <IconButton onClick={handleToggleOpen}>
         <MenuIcon color="primary" fontSize="large" />
       </IconButton>
       <SwipeableDrawer
         anchor="right"
         open={open}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-        onClick={() => setOpen(false)}
+        onOpen={handleToggleOpen}
+        onClose={handleToggleOpen}
+        onClick={() => {
+          if (shouldCloseDrawer) {
+            setOpen(false);
+          }
+        }}
       >
         <div onClick={() => setOpen(false)} role="button" tabIndex={0}>
           <IconButton>
@@ -27,7 +38,7 @@ export const Drawer = () => {
         </div>
 
         <Stack spacing={3} direction="column" alignItems="center">
-          <MenuItems />
+          <MenuItems shouldCloseDrawer={shouldCloseDrawer} />
         </Stack>
       </SwipeableDrawer>
     </>

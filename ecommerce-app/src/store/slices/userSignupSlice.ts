@@ -1,24 +1,17 @@
-import {
-  AuthErrorResponse,
-  CustomerSignInResult,
-} from "@commercetools/platform-sdk";
+import { AuthErrorResponse } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { formatErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 
 interface IUserSignupState {
   loading: boolean;
   isSignedUp: boolean;
-  error: AuthErrorResponse | null;
   errorMessage: string;
-  signupData: CustomerSignInResult | null;
 }
 
 const initialState: IUserSignupState = {
   loading: false,
   isSignedUp: false,
-  error: null,
   errorMessage: "",
-  signupData: null,
 };
 
 export const userSignupSlice = createSlice({
@@ -28,18 +21,14 @@ export const userSignupSlice = createSlice({
     userSignupFetching(state) {
       state.loading = true;
     },
-    userSignupFetchSuccess(state, action: PayloadAction<CustomerSignInResult>) {
+    userSignupFetchSuccess(state) {
       state.loading = false;
       state.isSignedUp = true;
-      state.error = null;
       state.errorMessage = "";
-      state.signupData = action.payload;
     },
     userSignupFetchError(state, action: PayloadAction<AuthErrorResponse>) {
       state.loading = false;
-      state.error = action.payload;
-      state.errorMessage = formatErrorMessage(action.payload);
-      state.signupData = null;
+      state.errorMessage = formatAuthErrorMessage(action.payload);
     },
     userSignupClearErrorMessage(state) {
       state.errorMessage = "";
@@ -47,7 +36,6 @@ export const userSignupSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   userSignupFetching,
   userSignupFetchSuccess,

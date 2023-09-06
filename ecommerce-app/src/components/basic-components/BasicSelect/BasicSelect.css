@@ -1,0 +1,8 @@
+.selectedMenuItem {
+  background-color: rgba(249, 193, 82, 0.4) !important;
+}
+
+.unselectedMenuItem {
+  background-color: transparent;
+  color: inherit;
+}

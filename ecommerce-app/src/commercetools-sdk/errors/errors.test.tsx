@@ -4,9 +4,9 @@ import {
   InvalidCredentialsError,
   InvalidFieldError,
 } from "@commercetools/platform-sdk";
-import { formatErrorMessage } from "./errors";
+import { formatAuthErrorMessage } from "./errors";
 
-describe("formatErrorMessage", () => {
+describe("formatAuthErrorMessage", () => {
   it("should return server error message for 5xx status codes", () => {
     const error: AuthErrorResponse = {
       statusCode: 500,
@@ -14,7 +14,7 @@ describe("formatErrorMessage", () => {
       errors: [],
       message: "Server error",
     };
-    const errorMessage = formatErrorMessage(error);
+    const errorMessage = formatAuthErrorMessage(error);
     expect(errorMessage).toBe("Server error. Please try again later.");
   });
 
@@ -25,7 +25,7 @@ describe("formatErrorMessage", () => {
       errors: [{ code: "InvalidCredentials" } as InvalidCredentialsError],
       message: "Invalid account credentials",
     };
-    const errorMessage = formatErrorMessage(error);
+    const errorMessage = formatAuthErrorMessage(error);
     expect(errorMessage).toBe(
       "User with this password and/or email was not found",
     );
@@ -38,7 +38,7 @@ describe("formatErrorMessage", () => {
       errors: [{ code: "DuplicateField" } as DuplicateFieldError],
       message: "Email already exists",
     };
-    const errorMessage = formatErrorMessage(error);
+    const errorMessage = formatAuthErrorMessage(error);
     expect(errorMessage).toBe("User with this email already exists");
   });
 
@@ -49,7 +49,9 @@ describe("formatErrorMessage", () => {
       errors: [{ code: "InvalidField" } as InvalidFieldError],
       message: "Invalid field",
     };
-    const errorMessage = formatErrorMessage(error);
-    expect(errorMessage).toBe("An error occurred. Please try again later.");
+    const errorMessage = formatAuthErrorMessage(error);
+    expect(errorMessage).toBe(
+      "An unexpected error occurred. Please try again later.",
+    );
   });
 });

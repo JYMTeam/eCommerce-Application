@@ -14,6 +14,7 @@ import { convertToUserAuthOptions } from "../../utils/utils";
 import { userLoginClearErrorMessage } from "../../store/slices/userLoginSlice";
 import { Alert, AlertTitle } from "@mui/material";
 import { setLoginSchema } from "../../utils/validation-schemas";
+import { successMessageHandler } from "./loginHelpers";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -22,15 +23,6 @@ export function LoginForm() {
     (state) => state.userLogin,
   );
   const dispatch = useAppDispatch();
-
-  const successMessageHandler = () => {
-    return (
-      <Alert severity="success">
-        <AlertTitle>You have successfully logged in!</AlertTitle>
-        Redirecting...
-      </Alert>
-    );
-  };
 
   return (
     <Formik
@@ -58,6 +50,8 @@ export function LoginForm() {
             dispatch(userLoginClearErrorMessage());
           }
         };
+
+        const onPasswordCheckChange = () => setShowPassword(!showPassword);
 
         return (
           <Form data-testid="login-form" noValidate autoComplete="off">
@@ -102,7 +96,7 @@ export function LoginForm() {
                 <FormControlLabel
                   control={
                     <Checkbox
-                      onChange={() => setShowPassword(!showPassword)}
+                      onChange={onPasswordCheckChange}
                       name="check"
                       disabled={isSuccessMessage}
                     />
@@ -118,7 +112,11 @@ export function LoginForm() {
                 >
                   Log in
                 </Button>
-                {isSuccessMessage && <>{successMessageHandler()}</>}
+                {isSuccessMessage && (
+                  <>
+                    {successMessageHandler("You have successfully logged in!")}
+                  </>
+                )}
                 {errorMessage && (
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>

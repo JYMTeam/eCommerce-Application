@@ -1,5 +1,10 @@
 import React from "react";
-import WorkInProgress from "../components/WorkInProrgess";
+import ProductsSidebar from "../components/ProductsSidebar/ProductsSidebar";
+
 export function ShopPage() {
-  return <WorkInProgress />;
+  return (
+    <>
+      <ProductsSidebar />
+    </>
+  );
 }
