@@ -42,6 +42,19 @@ export const MenuItems = ({
       >
         Shop
       </Button>
+      <Button
+        variant="text"
+        component={Link}
+        to="aboutus"
+        sx={{
+          ":hover": {
+            bgcolor: "transparent",
+            color: "primary.dark",
+          },
+        }}
+      >
+        About Us
+      </Button>
       {isMobile && <Divider />}
       {!isLogged && (
         <Button
