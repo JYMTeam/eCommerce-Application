@@ -22,6 +22,7 @@ export function LoginForm() {
   const { errorMessage, loading, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+  const { tokenAnonymData } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   return (
@@ -30,7 +31,14 @@ export function LoginForm() {
       validationSchema={LoginSchema}
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
-        dispatch(fetchUserLogin(existingUser));
+        if (tokenAnonymData) {
+          console.log("login with anonym");
+          console.log(tokenAnonymData.token);
+          dispatch(fetchUserLogin(existingUser, tokenAnonymData.token));
+        } else {
+          console.log("login without");
+          dispatch(fetchUserLogin(existingUser));
+        }
       }}
     >
       {(formik) => {

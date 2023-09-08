@@ -23,3 +23,5 @@ export const getApiSignupRoot = () => {
     projectKey,
   });
 };
+
+export const apiSignupRoot = getApiSignupRoot();

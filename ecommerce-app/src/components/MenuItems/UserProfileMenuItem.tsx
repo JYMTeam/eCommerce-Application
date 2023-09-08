@@ -11,6 +11,7 @@ import {
 import { useAppDispatch } from "../../hooks/redux";
 import { userLoginReset } from "../../store/slices/userLoginSlice";
 import PersonIcon from "@mui/icons-material/Person";
+import { cartReset } from "../../store/slices/cartSlice";
 
 const settings = ["Profile", "Log out"];
 export const UserProfileMenuItem = ({
@@ -37,6 +38,7 @@ export const UserProfileMenuItem = ({
   const handleLogout = () => {
     handleCloseUserMenu();
     dispatch(userLoginReset());
+    dispatch(cartReset());
   };
 
   return (

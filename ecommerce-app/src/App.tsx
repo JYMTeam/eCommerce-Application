@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./styles/App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
@@ -13,12 +13,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
-import { fetchLoginWithToken } from "./store/actions/userLoginActions";
+// import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { useSnackbar } from "notistack";
 import { hideNotification } from "./store/actions/notificationActions";
 import CategoryPage from "./pages/CategoryPage";
+// import { fetchGetCart } from "./store/actions/cartActions";
+import { TokenManager } from "./components/TokenManager";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -45,18 +47,23 @@ function App() {
   );
 
   //check token after loading
-  const [isTokenVerified, setTokenVerified] = useState(false);
-  const { tokenData } = useAppSelector((state) => state.userLogin);
+  // const [isTokenVerified, setTokenVerified] = useState(false);
+  // const [isTokenAnonymVerified, setTokenAnonymVerified] = useState(false);
+  // const { tokenData } = useAppSelector((state) => state.userLogin);
+  // const { tokenAnonymData } = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const checkTokenAndFetchLogin = () => {
-      if (!isTokenVerified && tokenData && tokenData?.token !== "") {
-        dispatch(fetchLoginWithToken(tokenData));
-        setTokenVerified(true);
-      }
-    };
+    // const checkTokenAndFetchLogin = () => {
+    //   if (!isTokenVerified && tokenData && tokenData?.token !== "") {
+    //     dispatch(fetchLoginWithToken(tokenData));
+    //     setTokenVerified(true);
+    //   } else if (!isTokenAnonymVerified && tokenAnonymData && tokenAnonymData?.token !== "") {
+    //     dispatch(fetchGetCart(tokenAnonymData?.token));
+    //     setTokenAnonymVerified(true);
+    //   }
+    // };
 
     const showNotification = () => {
       if (isNotification) {
@@ -69,12 +76,12 @@ function App() {
       }
     };
 
-    checkTokenAndFetchLogin();
+    // checkTokenAndFetchLogin();
     showNotification();
   }, [
     dispatch,
-    tokenData,
-    isTokenVerified,
+    // tokenData,
+    // isTokenVerified,
     isNotification,
     notificationObject,
     enqueueSnackbar,
@@ -117,6 +124,7 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg">
         <div className="App">
+          <TokenManager />
           <ThemeProvider theme={Theme}>
             <Navigation />
             <Routes>

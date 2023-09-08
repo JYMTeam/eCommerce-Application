@@ -13,10 +13,15 @@ import {
   setIsSuccess,
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
-import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
+import {
+  anonymTokenCache,
+  passToken,
+} from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import {
   AuthErrorResponse,
+  // Cart,
   Customer,
+  // CustomerSignInResult,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
@@ -26,31 +31,69 @@ import {
   IUpdatePersonalValues,
 } from "../../types";
 import { INotification, notificationActive } from "../slices/notificationSlice";
+import { fetchGetCart } from "./cartActions";
 
-export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
+export const fetchUserLogin = (
+  userAuthOptions: UserAuthOptions,
+  existingAnonymToken?: string,
+) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiPassRoot(userAuthOptions)
-        .me()
-        .login()
-        .post({
-          body: {
-            email: userAuthOptions.username,
-            password: userAuthOptions.password,
-          },
-        })
-        .execute();
-      dispatch(setIsSuccess());
+      // const apiRoot = getApiPassRoot(userAuthOptions);
+      if (existingAnonymToken) {
+        const cache: TokenStore = {
+          token: "",
+          expirationTime: 0,
+          refreshToken: undefined,
+        };
+        passToken.set({ ...cache });
 
-      const successLoginMessage: INotification = {
-        message: "You have successfully logged in!",
-        type: "success",
-      };
+        const apiRoot = getApiTokenRoot(existingAnonymToken);
+        const bodyParams = {
+          activeCartSignInMode: "MergeWithExistingCustomerCart",
+          // updateProductData: true,
+        };
 
-      dispatch(userLoginFetchSuccess(answer.body.customer));
-      dispatch(setUserToken(passToken.get()));
-      dispatch(notificationActive(successLoginMessage));
+        const answer = await apiRoot
+          .me()
+          .login()
+          .post({
+            body: {
+              email: userAuthOptions.username,
+              password: userAuthOptions.password,
+              ...bodyParams,
+            },
+          })
+          .execute();
+        console.log(answer);
+        // dispatch(setIsSuccess());
+
+        anonymTokenCache.set({ ...cache });
+        const answer2 = await getApiPassRoot(userAuthOptions)
+          .me()
+          .get()
+          .execute();
+        dispatch(setIsSuccess());
+
+        const successLoginMessage: INotification = {
+          message: "You have successfully logged in!",
+          type: "success",
+        };
+        dispatch(userLoginFetchSuccess(answer2.body));
+        // if (!existingAnonymToken) {
+        dispatch(setUserToken(passToken.get()));
+        dispatch(fetchGetCart(passToken.get().token));
+        // } else {
+        // dispatch(fetchGetCart(existingAnonymToken));
+
+        // }
+        console.log("token after login");
+        // console.log(passToken.get());
+        console.log(anonymTokenCache.get());
+        console.log(passToken.get());
+        dispatch(notificationActive(successLoginMessage));
+      }
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
@@ -72,6 +115,7 @@ export const fetchLoginWithToken = (existingToken: TokenStore) => {
         .execute();
 
       dispatch(userLoginFetchSuccess(answer.body));
+      dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;

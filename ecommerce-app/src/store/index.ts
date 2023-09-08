@@ -9,15 +9,17 @@ import notificationReducer from "./slices/notificationSlice";
 import attributesReducer from "./slices/attributesSlice";
 import userEditModeReducer from "./slices/userEditModeSlice";
 import categoriesReducer from "./slices/categoriesSlice";
+import cartReducer from "./slices/cartSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["userLogin", "attributes", "products"],
+  whitelist: ["userLogin", "attributes", "products", "cart"],
 };
 
 const rootReducer = combineReducers({
   userLogin: userLoginReducer,
+  cart: cartReducer,
   userSignup: userSignupReducer,
   userEditMode: userEditModeReducer,
   products: productsReducer,
