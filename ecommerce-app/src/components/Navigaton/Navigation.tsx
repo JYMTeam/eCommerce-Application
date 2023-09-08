@@ -7,6 +7,8 @@ import { Drawer } from "../Drawer/Drawer";
 import { Theme } from "../Theme";
 import { MenuItems } from "../MenuItems/MenuItems";
 
+export const HEADER_MIN_HEIGHT = 6;
+
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
   const [shouldCloseDrawer] = React.useState(true);
@@ -15,7 +17,7 @@ export function Navigation() {
     <AppBar
       position="static"
       style={{ background: "transparent", boxShadow: "none" }}
-      sx={{ minHeight: "6rem" }}
+      sx={{ minHeight: `${HEADER_MIN_HEIGHT}rem` }}
     >
       <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: "space-between" }}>
