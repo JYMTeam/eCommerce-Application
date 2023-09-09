@@ -7,7 +7,7 @@ import {
   userSignupFetching,
 } from "../slices/userSignupSlice";
 import { fetchUserLogin } from "./userLoginActions";
-import { apiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
+import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
 import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
 import { INotification, notificationActive } from "../slices/notificationSlice";
 
@@ -17,7 +17,7 @@ export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
       dispatch(userSignupFetching());
 
       //signup
-      await apiSignupRoot
+      await getApiSignupRoot()
         .customers()
         .post({
           body: userSignupOptions,

@@ -11,7 +11,7 @@ export interface IUserLoginState {
   isLogged: boolean;
   errorMessage: string;
   loginData: Customer | null;
-  tokenData: TokenStore | null;
+  tokenPassData: TokenStore | null;
   isSuccessMessage: boolean;
 }
 
@@ -20,7 +20,7 @@ const initialState: IUserLoginState = {
   isLogged: false,
   errorMessage: "",
   loginData: null,
-  tokenData: null,
+  tokenPassData: null,
   isSuccessMessage: false,
 };
 
@@ -58,7 +58,7 @@ export const userLoginSlice = createSlice({
       state.errorMessage = "";
     },
     setUserToken(state, action: PayloadAction<TokenStore>) {
-      state.tokenData = action.payload;
+      state.tokenPassData = action.payload;
     },
     setIsSuccess(state) {
       state.isSuccessMessage = true;

@@ -1,13 +1,9 @@
-import {
-  AnonymousAuthMiddlewareOptions,
-  ClientBuilder,
-} from "@commercetools/sdk-client-v2";
+import { AnonymousAuthMiddlewareOptions } from "@commercetools/sdk-client-v2";
 
 import { createApiBuilderFromCtpClient } from "@commercetools/platform-sdk";
 import {
-  // defaultClient,
+  defaultClient,
   getAuthMiddlewareOptions,
-  httpMiddlewareOptions,
   projectKey,
 } from "./ClientBuilderDefault";
 import { anonymTokenCache } from "../PassTokenCache/PassTokenCache";
@@ -19,14 +15,11 @@ export const getApiAnonymRoot = () => {
     tokenCache: anonymTokenCache,
   };
 
-  const anonymClient = new ClientBuilder()
+  const anonymClient = defaultClient
     .withAnonymousSessionFlow(anonymAuthMiddlewareOptions)
-    .withHttpMiddleware(httpMiddlewareOptions)
     .build();
 
   return createApiBuilderFromCtpClient(anonymClient).withProjectKey({
     projectKey,
   });
 };
-
-export const anonymRoot = getApiAnonymRoot();

@@ -9,9 +9,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppDispatch } from "../../hooks/redux";
-import { userLoginReset } from "../../store/slices/userLoginSlice";
 import PersonIcon from "@mui/icons-material/Person";
 import { cartReset } from "../../store/slices/cartSlice";
+import { logoutUser } from "../../store/actions/userLoginActions";
 
 const settings = ["Profile", "Log out"];
 export const UserProfileMenuItem = ({
@@ -35,9 +35,10 @@ export const UserProfileMenuItem = ({
     setAnchorElUser(null);
   };
 
-  const handleLogout = () => {
+  const handleLogout = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     handleCloseUserMenu();
-    dispatch(userLoginReset());
+    dispatch(logoutUser());
     dispatch(cartReset());
   };
 

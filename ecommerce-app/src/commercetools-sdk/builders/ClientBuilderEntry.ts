@@ -15,5 +15,3 @@ export const getApiEntryRoot = () => {
     projectKey,
   });
 };
-
-export const apiEntryRoot = getApiEntryRoot();

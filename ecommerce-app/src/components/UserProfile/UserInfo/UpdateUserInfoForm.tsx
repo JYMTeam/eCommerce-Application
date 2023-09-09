@@ -30,7 +30,7 @@ export function UpdateUserInfoForm({
   dateOfBirth,
 }: IUpdateUserInfoProps) {
   const UpdateUserInfoSchema = setUpdateUserInfoSchema();
-  const { loading, errorMessage, loginData, tokenData, isSuccessMessage } =
+  const { loading, errorMessage, loginData, tokenPassData, isSuccessMessage } =
     useAppSelector((state) => state.userLogin);
   const isUserInfoEdit = useAppSelector(
     (state) => state.userEditMode.userInfoEdit,
@@ -54,8 +54,10 @@ export function UpdateUserInfoForm({
       initialValues={initialUpdateUserInfoValues}
       validationSchema={UpdateUserInfoSchema}
       onSubmit={(values) => {
-        if (loginData && tokenData && tokenData?.token !== "") {
-          dispatch(fetchUpdateUserPersonalInfo(tokenData, loginData, values));
+        if (loginData && tokenPassData && tokenPassData?.token !== "") {
+          dispatch(
+            fetchUpdateUserPersonalInfo(tokenPassData, loginData, values),
+          );
           handleEditMode();
         }
       }}

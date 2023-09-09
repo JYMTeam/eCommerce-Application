@@ -19,9 +19,7 @@ import {
 } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import {
   AuthErrorResponse,
-  // Cart,
   Customer,
-  // CustomerSignInResult,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
@@ -31,7 +29,7 @@ import {
   IUpdatePersonalValues,
 } from "../../types";
 import { INotification, notificationActive } from "../slices/notificationSlice";
-import { fetchGetCart } from "./cartActions";
+import { cartReset } from "../slices/cartSlice";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,
@@ -40,7 +38,6 @@ export const fetchUserLogin = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      // const apiRoot = getApiPassRoot(userAuthOptions);
       if (existingAnonymToken) {
         const cache: TokenStore = {
           token: "",
@@ -83,7 +80,7 @@ export const fetchUserLogin = (
         dispatch(userLoginFetchSuccess(answer2.body));
         // if (!existingAnonymToken) {
         dispatch(setUserToken(passToken.get()));
-        dispatch(fetchGetCart(passToken.get().token));
+        // dispatch(fetchGetCart(passToken.get().token));
         // } else {
         // dispatch(fetchGetCart(existingAnonymToken));
 
@@ -92,6 +89,28 @@ export const fetchUserLogin = (
         // console.log(passToken.get());
         console.log(anonymTokenCache.get());
         console.log(passToken.get());
+        dispatch(notificationActive(successLoginMessage));
+      } else {
+        dispatch(userLoginFetching());
+        const answer = await getApiPassRoot(userAuthOptions)
+          .me()
+          .login()
+          .post({
+            body: {
+              email: userAuthOptions.username,
+              password: userAuthOptions.password,
+            },
+          })
+          .execute();
+        dispatch(setIsSuccess());
+
+        const successLoginMessage: INotification = {
+          message: "You have successfully logged in!",
+          type: "success",
+        };
+
+        dispatch(userLoginFetchSuccess(answer.body.customer));
+        dispatch(setUserToken(passToken.get()));
         dispatch(notificationActive(successLoginMessage));
       }
     } catch (e) {
@@ -115,7 +134,7 @@ export const fetchLoginWithToken = (existingToken: TokenStore) => {
         .execute();
 
       dispatch(userLoginFetchSuccess(answer.body));
-      dispatch(fetchGetCart(existingToken.token));
+      // dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
@@ -441,5 +460,12 @@ export const fetchDeleteUserAddress = (
         dispatch(userLoginFetchError(body));
       }
     }
+  };
+};
+
+export const logoutUser = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(userLoginReset());
+    dispatch(cartReset());
   };
 };
