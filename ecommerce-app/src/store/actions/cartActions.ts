@@ -14,6 +14,7 @@ import {
 import { anonymTokenCache } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 import { getApiAnonymRoot } from "../../commercetools-sdk/builders/ClientBuilderAnonym";
+import { INotification, notificationActive } from "../slices/notificationSlice";
 
 export const fetchCreateCart = (existingToken?: string) => {
   return async (dispatch: AppDispatch) => {
@@ -71,7 +72,12 @@ export const fetchAddProductsCart = (
           },
         })
         .execute();
+      const successLoginMessage: INotification = {
+        message: "Bag successfully added to cart",
+        type: "success",
+      };
       dispatch(cartFetchSuccess(answer.body));
+      dispatch(notificationActive(successLoginMessage));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
