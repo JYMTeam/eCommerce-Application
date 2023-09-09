@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import WorkInProgress from "../components/WorkInProgress";
-import { Button } from "@mui/material";
+import { Button, SxProps, Theme } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchAddProductsCart,
@@ -8,15 +7,26 @@ import {
   fetchGetCart,
 } from "../../store/actions/cartActions";
 
-export function Cart() {
-  const { cart, tokenAnonymData } = useAppSelector((state) => state.cart);
+export interface IAddProductButtonProps {
+  productArrId: number;
+  sxProps?: SxProps<Theme>;
+}
+
+export function AddProductManager({
+  productArrId,
+  sxProps,
+}: IAddProductButtonProps) {
+  const { loading, cart, tokenAnonymData } = useAppSelector(
+    (state) => state.cart,
+  );
   const { tokenPassData, isLogged } = useAppSelector(
     (state) => state.userLogin,
   );
   const { products } = useAppSelector((state) => state.products);
   const [isAddProduct, setIsAddProduct] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState("");
+
   const dispatch = useAppDispatch();
-  const productId = 1;
   const productQuantity = 1;
 
   useEffect(() => {
@@ -26,7 +36,7 @@ export function Cart() {
           fetchAddProductsCart(
             tokenAnonymData?.token,
             cart,
-            products[productId],
+            products[productArrId],
             productQuantity,
           ),
         );
@@ -35,7 +45,7 @@ export function Cart() {
           fetchAddProductsCart(
             tokenPassData?.token,
             cart,
-            products[productId],
+            products[productArrId],
             productQuantity,
           ),
         );
@@ -51,6 +61,7 @@ export function Cart() {
     isLogged,
     isAddProduct,
     setIsAddProduct,
+    productArrId,
     cart,
     tokenAnonymData,
     tokenPassData,
@@ -82,6 +93,7 @@ export function Cart() {
         setIsAddProduct(true);
       }
     } catch (error) {
+      // setErrorMessage("Something went wrong. Try again!");
       console.log("catch => !");
       console.log(error);
     }
@@ -90,25 +102,16 @@ export function Cart() {
   return (
     <>
       <Button
-        onClick={() => {
+        size="small"
+        sx={sxProps}
+        disabled={loading}
+        onClick={(e) => {
+          e.preventDefault();
           getOrCreateCart();
         }}
       >
-        add first product
+        Add to cart
       </Button>
-      <Button
-        onClick={() => {
-          const currentToken = isLogged
-            ? tokenPassData?.token
-            : tokenAnonymData?.token;
-          if (currentToken) {
-            dispatch(fetchGetCart(currentToken));
-          }
-        }}
-      >
-        get Active Cart
-      </Button>{" "}
-      --- worked After Adding Product!!!
     </>
   );
 }

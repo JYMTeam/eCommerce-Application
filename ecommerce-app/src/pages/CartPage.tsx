@@ -1,6 +1,6 @@
 import React from "react";
-import { Cart } from "../components/Cart/Cart";
+// import { Cart } from "../components/AddProductButton/AddProductButton";
 
 export function CartPage() {
-  return <Cart />;
+  return <>Empty Cart</>;
 }

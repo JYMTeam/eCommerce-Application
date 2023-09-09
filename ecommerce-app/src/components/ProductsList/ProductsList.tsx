@@ -6,7 +6,6 @@ import {
 } from "../../store/actions/productsActions";
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
   CardActions,
@@ -19,6 +18,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
+import { AddProductManager } from "../AddProductManager/AddProductManager";
 
 const MD_COLS = 4;
 const SM_COLS = 6;
@@ -71,7 +71,7 @@ export default function ProductsList() {
     >
       <Grid container spacing={GRID_SPACING}>
         {parsedProducts.map(
-          ({ id, name, description, images, price, discount }) => (
+          ({ id, name, description, images, price, discount }, arrId) => (
             <Grid md={MD_COLS} sm={SM_COLS} xs={XS_COLS} key={id}>
               <Card
                 sx={{
@@ -134,15 +134,10 @@ export default function ProductsList() {
                     </CardContent>
                   </div>
                   <CardActions>
-                    <Button
-                      size="small"
-                      sx={{ color: BUTTON_COLOR }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                      }}
-                    >
-                      Add to cart
-                    </Button>
+                    <AddProductManager
+                      productArrId={arrId}
+                      sxProps={{ color: BUTTON_COLOR }}
+                    />
                   </CardActions>
                 </CardActionArea>
               </Card>
