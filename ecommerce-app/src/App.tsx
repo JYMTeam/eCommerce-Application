@@ -110,7 +110,7 @@ function App() {
     { path: "/shop", element: <ShopPage /> },
     { path: "/product/:id", element: <ProductDetailsPage /> },
     { path: "/shop/:id", element: <CategoryPage /> },
-    { path: "/aboutus", element: <AboutUsPage /> },
+    { path: "/about", element: <AboutUsPage /> },
     { path: "/cart", element: <CartPage /> },
     { path: "*", element: <NotFoundPage /> },
   ];

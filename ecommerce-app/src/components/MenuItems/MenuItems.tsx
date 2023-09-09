@@ -45,7 +45,7 @@ export const MenuItems = ({
       <Button
         variant="text"
         component={Link}
-        to="aboutus"
+        to="about"
         sx={{
           ":hover": {
             bgcolor: "transparent",

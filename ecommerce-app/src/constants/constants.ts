@@ -2,6 +2,7 @@ import {
   ICountriesOptions,
   IFormInitialValues,
   ISignupInitialValues,
+  ITeamMembersInfo,
   IUpdateAddressInitialValues,
   IUpdatePersonalValues,
 } from "../types";
@@ -92,6 +93,36 @@ const PRODUCT_IMAGE_PLACEHOLDER: Image[] = [
   },
 ];
 
+const teamMembersInfo: ITeamMembersInfo[] = [
+  {
+    name: "Julia Khvatova",
+    role: "Web developer",
+    bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
+    image: "",
+    githubLink: "https://github.com/jkhvatova",
+    contributionDesc:
+      "The will be a short bio.The will be a short bio.The will be a short bio.",
+  },
+  {
+    name: "Yaroslava Hryzadubova",
+    role: "Web developer",
+    bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
+    image: "",
+    githubLink: "https://github.com/yaroslavagd",
+    contributionDesc:
+      "The will be a short bio.The will be a short bio.The will be a short bio.",
+  },
+  {
+    name: "Mariya Demidovich",
+    role: "Web developer",
+    bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
+    image: "",
+    githubLink: "https://github.com/mariyademy",
+    contributionDesc:
+      "The will be a short bio.The will be a short bio.The will be a short bio.",
+  },
+];
+
 export {
   AT_SIGN_DOMAIN_REGEX,
   UPPERCASE_LETTER_REGEX,
@@ -118,4 +149,5 @@ export {
   DEFAULT_PRODUCTS_LIMIT,
   NO_END_HYPHEN_SIGN,
   CURRENT_YEAR,
+  teamMembersInfo,
 };
