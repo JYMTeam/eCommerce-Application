@@ -53,15 +53,20 @@ export function SignupForm() {
   };
 
   const SignupSchema = setSignupSchema(SchemaOptions);
-  const dispatch = useAppDispatch();
   const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
   const { isLogged, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+  const { tokenAnonymData } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const onSubmit = (values: ISignupInitialValues) => {
     const newUser: CustomerDraft = convertToCustomerDraft(values);
-    dispatch(fetchUserSignup(newUser));
+    if (tokenAnonymData) {
+      dispatch(fetchUserSignup(newUser, tokenAnonymData.token));
+    } else {
+      dispatch(fetchUserSignup(newUser));
+    }
   };
 
   return (
