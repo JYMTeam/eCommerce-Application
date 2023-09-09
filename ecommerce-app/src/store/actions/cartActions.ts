@@ -16,10 +16,8 @@ import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderW
 import { getApiAnonymRoot } from "../../commercetools-sdk/builders/ClientBuilderAnonym";
 
 export const fetchCreateCart = (existingToken?: string) => {
-  console.log("fetch create cart out");
   return async (dispatch: AppDispatch) => {
     try {
-      console.log("fetch create cart in");
       dispatch(cartFetching());
       const apiRoot = existingToken
         ? getApiTokenRoot(existingToken)
@@ -34,8 +32,6 @@ export const fetchCreateCart = (existingToken?: string) => {
           },
         })
         .execute();
-      console.log("answer cart added");
-      console.log(answer);
 
       dispatch(cartFetchSuccess(answer.body));
       dispatch(setAnonymToken(anonymTokenCache.get()));
@@ -55,10 +51,8 @@ export const fetchAddProductsCart = (
   product: ProductProjection,
   quantity: number,
 ) => {
-  console.log("fetchAddProductsCart out");
   return async (dispatch: AppDispatch) => {
     try {
-      console.log("fetchAddProductsCart in");
       dispatch(cartFetching());
       const answer = await getApiTokenRoot(existingToken)
         .me()
@@ -77,8 +71,6 @@ export const fetchAddProductsCart = (
           },
         })
         .execute();
-      console.log("answer products added");
-      console.log(answer);
       dispatch(cartFetchSuccess(answer.body));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
@@ -99,8 +91,6 @@ export const fetchGetCart = (existingToken: string) => {
         .activeCart()
         .get()
         .execute();
-      console.log("answer active cart");
-      console.log(answer);
       dispatch(cartFetchSuccess(answer.body));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;

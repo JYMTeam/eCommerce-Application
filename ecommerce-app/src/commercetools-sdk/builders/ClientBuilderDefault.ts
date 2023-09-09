@@ -3,7 +3,6 @@ import {
   type AuthMiddlewareOptions, // Required for auth
   type HttpMiddlewareOptions, // Required for sending HTTP requests
 } from "@commercetools/sdk-client-v2";
-import { defaultTokenCache } from "../PassTokenCache/PassTokenCache";
 
 export const projectKey = process.env.REACT_APP_PROJECT_KEY || "";
 
@@ -32,7 +31,6 @@ export const getAuthMiddlewareOptions = () => {
     },
     scopes: getCustomerScopes(),
     fetch,
-    tokenCache: defaultTokenCache,
   };
 
   return authMiddlewareOptions;
@@ -45,5 +43,5 @@ export const httpMiddlewareOptions: HttpMiddlewareOptions = {
 
 export const defaultClient = new ClientBuilder()
   .withProjectKey(projectKey)
-  .withHttpMiddleware(httpMiddlewareOptions)
-  .withLoggerMiddleware();
+  .withHttpMiddleware(httpMiddlewareOptions);
+// .withLoggerMiddleware();

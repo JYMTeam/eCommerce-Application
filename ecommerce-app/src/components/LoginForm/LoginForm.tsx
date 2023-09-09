@@ -32,11 +32,8 @@ export function LoginForm() {
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         if (tokenAnonymData) {
-          console.log("login with anonym");
-          console.log(tokenAnonymData.token);
           dispatch(fetchUserLogin(existingUser, tokenAnonymData.token));
         } else {
-          console.log("login without");
           dispatch(fetchUserLogin(existingUser));
         }
       }}

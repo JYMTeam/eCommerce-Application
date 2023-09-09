@@ -13,13 +13,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
-// import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { useSnackbar } from "notistack";
 import { hideNotification } from "./store/actions/notificationActions";
 import CategoryPage from "./pages/CategoryPage";
-// import { fetchGetCart } from "./store/actions/cartActions";
 import { TokenManager } from "./components/TokenManager";
 
 function App() {
@@ -46,25 +44,9 @@ function App() {
     (state) => state.notification,
   );
 
-  //check token after loading
-  // const [isTokenVerified, setTokenVerified] = useState(false);
-  // const [isTokenAnonymVerified, setTokenAnonymVerified] = useState(false);
-  // const { tokenData } = useAppSelector((state) => state.userLogin);
-  // const { tokenAnonymData } = useAppSelector((state) => state.cart);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // const checkTokenAndFetchLogin = () => {
-    //   if (!isTokenVerified && tokenData && tokenData?.token !== "") {
-    //     dispatch(fetchLoginWithToken(tokenData));
-    //     setTokenVerified(true);
-    //   } else if (!isTokenAnonymVerified && tokenAnonymData && tokenAnonymData?.token !== "") {
-    //     dispatch(fetchGetCart(tokenAnonymData?.token));
-    //     setTokenAnonymVerified(true);
-    //   }
-    // };
-
     const showNotification = () => {
       if (isNotification) {
         enqueueSnackbar(notificationObject.message, {
@@ -75,17 +57,8 @@ function App() {
         });
       }
     };
-
-    // checkTokenAndFetchLogin();
     showNotification();
-  }, [
-    dispatch,
-    // tokenData,
-    // isTokenVerified,
-    isNotification,
-    notificationObject,
-    enqueueSnackbar,
-  ]);
+  }, [dispatch, isNotification, notificationObject, enqueueSnackbar]);
 
   const routes = [
     { path: "/", element: <MainPage /> },
