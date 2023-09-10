@@ -20,6 +20,7 @@ import {
 import {
   AuthErrorResponse,
   Customer,
+  ErrorResponse,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
@@ -29,7 +30,8 @@ import {
   IUpdatePersonalValues,
 } from "../../types";
 import { INotification, notificationActive } from "../slices/notificationSlice";
-import { cartReset } from "../slices/cartSlice";
+import { cartFetchError, cartReset } from "../slices/cartSlice";
+import { fetchGetCart } from "./cartActions";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,
@@ -113,8 +115,18 @@ export const fetchUserLogin = (
         dispatch(setUserToken(passToken.get()));
         dispatch(notificationActive(successLoginMessage));
       }
-    } catch (e) {
-      const error = e as ClientResponse<AuthErrorResponse>;
+
+      try {
+        dispatch(fetchGetCart(passToken.get().token));
+      } catch (cartError) {
+        const error = cartError as ClientResponse<ErrorResponse>;
+        const body = error.body;
+        if (body) {
+          dispatch(cartFetchError(body));
+        }
+      }
+    } catch (loginError) {
+      const error = loginError as ClientResponse<AuthErrorResponse>;
       const body = error.body;
       if (body) {
         dispatch(userLoginFetchError(body));

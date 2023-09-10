@@ -15,6 +15,10 @@ import { anonymTokenCache } from "../../commercetools-sdk/PassTokenCache/PassTok
 import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 import { getApiAnonymRoot } from "../../commercetools-sdk/builders/ClientBuilderAnonym";
 import { INotification, notificationActive } from "../slices/notificationSlice";
+import {
+  DEFAULT_CURRENCY,
+  DEFAULT_PRICE_COUNTRY,
+} from "../../constants/constants";
 
 export const fetchCreateCart = (existingToken?: string) => {
   return async (dispatch: AppDispatch) => {
@@ -28,8 +32,8 @@ export const fetchCreateCart = (existingToken?: string) => {
         .carts()
         .post({
           body: {
-            currency: "USD",
-            country: "US",
+            currency: DEFAULT_CURRENCY,
+            country: DEFAULT_PRICE_COUNTRY,
           },
         })
         .execute();
