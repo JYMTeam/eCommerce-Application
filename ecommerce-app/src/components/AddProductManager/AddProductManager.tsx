@@ -63,6 +63,8 @@ export function AddProductManager({
         (element) => element.productId === products[productArrId].id,
       );
       if (isInCart) setSuccess(true);
+    } else {
+      setSuccess(false);
     }
 
     if (isAddProduct && cart) {
