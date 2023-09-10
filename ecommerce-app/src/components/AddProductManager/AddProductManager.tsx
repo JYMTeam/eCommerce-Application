@@ -22,6 +22,7 @@ export function AddProductManager({
     (state) => state.userLogin,
   );
   const { products } = useAppSelector((state) => state.products);
+  const productsLoading = useAppSelector((state) => state.products.loading);
   const [isAddProduct, setIsAddProduct] = useState(false);
 
   const [loadingButton, setLoadingButton] = React.useState(false);
@@ -132,7 +133,7 @@ export function AddProductManager({
       <Button
         size="small"
         sx={buttonSx}
-        disabled={loadingButton || success}
+        disabled={loadingButton || success || productsLoading}
         onClick={(e) => {
           e.preventDefault();
           getOrCreateCart();
