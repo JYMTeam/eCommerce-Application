@@ -18,6 +18,7 @@ import { INotification, notificationActive } from "../slices/notificationSlice";
 import {
   DEFAULT_CURRENCY,
   DEFAULT_PRICE_COUNTRY,
+  NOTIFICATION_MESSAGES,
 } from "../../constants/constants";
 
 export const fetchCreateCart = (existingToken?: string) => {
@@ -77,7 +78,7 @@ export const fetchAddProductsCart = (
         })
         .execute();
       const successLoginMessage: INotification = {
-        message: "Bag successfully added to cart",
+        message: NOTIFICATION_MESSAGES.SUCCESS_PRODUCT_ADD,
         type: "success",
       };
       dispatch(cartFetchSuccess(answer.body));

@@ -10,6 +10,7 @@ import { fetchUserLogin } from "./userLoginActions";
 import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
 import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
 import { INotification, notificationActive } from "../slices/notificationSlice";
+import { NOTIFICATION_MESSAGES } from "../../constants/constants";
 
 export const fetchUserSignup = (
   userSignupOptions: CustomerDraft,
@@ -28,7 +29,7 @@ export const fetchUserSignup = (
         .execute();
       dispatch(userSignupFetchSuccess());
       const successMessage: INotification = {
-        message: "You have successfully signed up",
+        message: NOTIFICATION_MESSAGES.SUCCESS_SIGNUP,
         type: "success",
       };
       dispatch(notificationActive(successMessage));

@@ -32,6 +32,7 @@ import {
 import { INotification, notificationActive } from "../slices/notificationSlice";
 import { cartFetchError, cartReset } from "../slices/cartSlice";
 import { fetchGetCart } from "./cartActions";
+import { NOTIFICATION_MESSAGES } from "../../constants/constants";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,
@@ -76,7 +77,7 @@ export const fetchUserLogin = (
         dispatch(setIsSuccess());
 
         const successLoginMessage: INotification = {
-          message: "You have successfully logged in!",
+          message: NOTIFICATION_MESSAGES.SUCCESS_LOGIN,
           type: "success",
         };
         dispatch(userLoginFetchSuccess(answer2.body));
@@ -185,7 +186,7 @@ export const fetchUpdateUserPersonalInfo = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: "Your data has been successfully updated",
+        message: NOTIFICATION_MESSAGES.SUCCESS_DATA_UPDATE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -305,7 +306,7 @@ export const fetchUpdateUserAddress = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: "Your data has been successfully updated",
+        message: NOTIFICATION_MESSAGES.SUCCESS_DATA_UPDATE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -378,7 +379,7 @@ export const fetchCreateUserAddress = (
       }
 
       const successUpdateMessage: INotification = {
-        message: "Your address has been successfully created",
+        message: NOTIFICATION_MESSAGES.SUCCESS_ADDRESS_CREATE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -461,7 +462,7 @@ export const fetchDeleteUserAddress = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: "Your address has been successfully deleted",
+        message: NOTIFICATION_MESSAGES.SUCCESS_ADDRESS_DELETE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
