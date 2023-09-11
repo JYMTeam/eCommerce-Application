@@ -14,6 +14,8 @@ export interface IAddProductButtonProps {
   sxProps?: SxProps<Theme>;
 }
 
+const ERROR_GET_CART = "404: Sorry, resource not found";
+
 export function CartProductManager({
   productArrId,
   sxProps,
@@ -62,24 +64,28 @@ export function CartProductManager({
       }
     };
 
-    if (cart && cart.lineItems.length !== 0) {
-      const isInCart = cart.lineItems.find(
-        (element) => element.productId === products[productArrId].id,
-      );
-      if (isInCart) setSuccess(true);
-    } else {
-      setSuccess(false);
-    }
+    const setButtonsStatus = () => {
+      if (cart && cart.lineItems.length !== 0) {
+        const isInCart = cart.lineItems.find(
+          (element) => element.productId === products[productArrId].id,
+        );
+        if (isInCart) setSuccess(true);
+      } else {
+        setSuccess(false);
+      }
+
+      if (errorMessage && errorMessage !== "404: Sorry, resource not found") {
+        setSuccess(false);
+        setIsAddProduct(false);
+      }
+    };
 
     if (isAddProduct && cart) {
       addProduct();
       setIsAddProduct(false);
     }
 
-    if (errorMessage && errorMessage !== "404: Sorry, resource not found") {
-      setSuccess(false);
-      setIsAddProduct(false);
-    }
+    setButtonsStatus();
   }, [
     dispatch,
     isLogged,
@@ -100,7 +106,7 @@ export function CartProductManager({
     };
   }, []);
 
-  const getOrCreateCart = async () => {
+  const clearAnimation = () => {
     if (!loadingButton) {
       setSuccess(false);
       setLoadingButton(true);
@@ -108,16 +114,22 @@ export function CartProductManager({
         setSuccess(true);
         setLoadingButton(false);
 
-        if (errorMessage && errorMessage !== "404: Sorry, resource not found") {
+        if (errorMessage && errorMessage !== ERROR_GET_CART) {
           setSuccess(false);
           setIsAddProduct(false);
         }
       }, 600);
     }
+  };
+
+  const getOrCreateCart = async () => {
+    clearAnimation();
+
     if (cart) {
       setIsAddProduct(true);
       return;
     }
+
     const currentToken = isLogged
       ? tokenPassData?.token
       : tokenAnonymData?.token;
