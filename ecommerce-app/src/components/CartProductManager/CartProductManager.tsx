@@ -169,7 +169,7 @@ export function CartProductManager({
   };
 
   return (
-    <Box sx={{ m: 1, position: "relative" }}>
+    <Box sx={{ m: 1, position: "relative", maxWidth: "fit-content" }}>
       <Button
         size="small"
         sx={buttonSx}
