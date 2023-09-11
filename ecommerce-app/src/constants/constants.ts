@@ -8,6 +8,7 @@ import {
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
 import MariyaPhoto from "../assets/Mariya.jpg";
+import YaraPhoto from "../assets/Yara.jpg";
 
 const AT_SIGN_DOMAIN_REGEX =
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/u;
@@ -108,7 +109,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     name: "Yaroslava Hryzadubova",
     role: "Web developer",
     bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
-    image: "",
+    image: YaraPhoto,
     githubLink: "https://github.com/yaroslavagd",
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
