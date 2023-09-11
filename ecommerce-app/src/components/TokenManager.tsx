@@ -11,15 +11,9 @@ export function TokenManager() {
   useEffect(() => {
     const checkTokenAndFetchLogin = () => {
       if (!isTokenVerified && tokenPassData && tokenPassData?.token !== "") {
-        console.log("------token manager login------");
         dispatch(fetchLoginWithToken(tokenPassData));
         setTokenVerified(true);
       }
-      // else if (!isTokenAnonymVerified && tokenAnonymData && tokenAnonymData?.token !== "") {
-      //   console.log('------token manager anonym------');
-      //   // dispatch(fetchGetCart(tokenAnonymData?.token));
-      //   setTokenAnonymVerified(true);
-      // }
     };
 
     checkTokenAndFetchLogin();

@@ -16,6 +16,7 @@ import {
   AttributeTimeType,
   AttributeType,
   Category,
+  LineItem,
   Price,
   ProductProjection,
 } from "@commercetools/platform-sdk";
@@ -33,6 +34,7 @@ import {
   IParsedCategory,
   IProductsFormattedAttribute,
   IAncestorInfo,
+  IParsedCartItem,
 } from "../types";
 import { CURRENCY_SIGN, formatPrice } from "./utils";
 
@@ -316,4 +318,47 @@ export const parseCategoriesBreadcrumb = (categories: Category[]) => {
     id2ancestorsInfo.set(key, ancestorsInfo.reverse());
   });
   return id2ancestorsInfo;
+};
+
+const initialCartItem = {
+  image: PRODUCT_IMAGE_PLACEHOLDER[0].url,
+  price: `${CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]}0`,
+  discount: "",
+  quantity: 1,
+  totalCost: `${
+    CURRENCY_SIGN[DEFAULT_CURRENCY as keyof typeof CURRENCY_SIGN]
+  }0`,
+};
+
+export const parseCartListItems = (cartItems: LineItem[]) => {
+  let { image, price, discount, quantity, totalCost } = initialCartItem;
+  return cartItems.map(({ name, variant, price: itemPrice, totalPrice }) => {
+    if (variant.images && variant.images.length !== 0) {
+      image = variant.images[0].url;
+    }
+    const currencyCode = itemPrice.value.currencyCode;
+    const centAmount = itemPrice.value.centAmount;
+    const totalCentAmount = totalPrice.centAmount;
+    const discountCentAmount = getDiscount(itemPrice);
+
+    const formatedPrice = formatPrice(centAmount, currencyCode);
+    const formatedTotalPrice = formatPrice(totalCentAmount, currencyCode);
+    const formatedDiscount = discountCentAmount
+      ? formatPrice(discountCentAmount, currencyCode)
+      : "";
+
+    price = `${formatedPrice}`;
+    discount = `${formatedDiscount}`;
+    totalCost = `${formatedTotalPrice}`;
+
+    const parsedCartItem: IParsedCartItem = {
+      name: name[DEFAULT_LOCALE],
+      image,
+      price,
+      discount,
+      quantity,
+      totalCost,
+    };
+    return parsedCartItem;
+  });
 };
