@@ -58,5 +58,9 @@ export const formatProductsErrorMessage = (error: ErrorResponse): string => {
     return "401: Unauthorized. Sorry, your request could not be processed";
   }
 
+  if (error.statusCode === statusCode.NOT_FOUND) {
+    return "404: Sorry, resource not found";
+  }
+
   return DEFAULT_ERROR_MESSAGE;
 };
