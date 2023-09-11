@@ -44,4 +44,4 @@ export const httpMiddlewareOptions: HttpMiddlewareOptions = {
 export const defaultClient = new ClientBuilder()
   .withProjectKey(projectKey)
   .withHttpMiddleware(httpMiddlewareOptions);
-// .withLoggerMiddleware(); // Include middleware for logging
+// .withLoggerMiddleware();

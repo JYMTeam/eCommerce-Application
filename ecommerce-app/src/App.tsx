@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import "./styles/App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { MainPage } from "./pages/MainPage";
@@ -13,12 +13,12 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Container, ThemeProvider } from "@mui/material";
 import { Theme } from "./components/Theme";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
-import { fetchLoginWithToken } from "./store/actions/userLoginActions";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { UserProfilePage } from "./pages/UserProfilePage";
 import { useSnackbar } from "notistack";
 import { hideNotification } from "./store/actions/notificationActions";
 import CategoryPage from "./pages/CategoryPage";
+import { TokenManager } from "./components/TokenManager";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -44,20 +44,9 @@ function App() {
     (state) => state.notification,
   );
 
-  //check token after loading
-  const [isTokenVerified, setTokenVerified] = useState(false);
-  const { tokenData } = useAppSelector((state) => state.userLogin);
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const checkTokenAndFetchLogin = () => {
-      if (!isTokenVerified && tokenData && tokenData?.token !== "") {
-        dispatch(fetchLoginWithToken(tokenData));
-        setTokenVerified(true);
-      }
-    };
-
     const showNotification = () => {
       if (isNotification) {
         enqueueSnackbar(notificationObject.message, {
@@ -68,17 +57,8 @@ function App() {
         });
       }
     };
-
-    checkTokenAndFetchLogin();
     showNotification();
-  }, [
-    dispatch,
-    tokenData,
-    isTokenVerified,
-    isNotification,
-    notificationObject,
-    enqueueSnackbar,
-  ]);
+  }, [dispatch, isNotification, notificationObject, enqueueSnackbar]);
 
   const routes = [
     { path: "/", element: <MainPage /> },
@@ -117,6 +97,7 @@ function App() {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Container maxWidth="lg">
         <div className="App">
+          <TokenManager />
           <ThemeProvider theme={Theme}>
             <Navigation />
             <Routes>

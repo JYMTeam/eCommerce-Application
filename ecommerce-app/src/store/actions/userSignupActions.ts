@@ -10,8 +10,12 @@ import { fetchUserLogin } from "./userLoginActions";
 import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
 import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
 import { INotification, notificationActive } from "../slices/notificationSlice";
+import { NOTIFICATION_MESSAGES } from "../../constants/constants";
 
-export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
+export const fetchUserSignup = (
+  userSignupOptions: CustomerDraft,
+  existingAnonymToken?: string,
+) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userSignupFetching());
@@ -25,16 +29,18 @@ export const fetchUserSignup = (userSignupOptions: CustomerDraft) => {
         .execute();
       dispatch(userSignupFetchSuccess());
       const successMessage: INotification = {
-        message: "You have successfully signed up",
+        message: NOTIFICATION_MESSAGES.SUCCESS_SIGNUP,
         type: "success",
       };
-      // setTimeout(() => {
       dispatch(notificationActive(successMessage));
-      //login
       const existingUser =
         convertCustomerDraftToUserAuthOptions(userSignupOptions);
       if (existingUser) {
-        dispatch(fetchUserLogin(existingUser));
+        if (existingAnonymToken) {
+          dispatch(fetchUserLogin(existingUser, existingAnonymToken));
+        } else {
+          dispatch(fetchUserLogin(existingUser));
+        }
       }
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;

@@ -22,6 +22,7 @@ export function LoginForm() {
   const { errorMessage, loading, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+  const { tokenAnonymData } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   return (
@@ -30,7 +31,11 @@ export function LoginForm() {
       validationSchema={LoginSchema}
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
-        dispatch(fetchUserLogin(existingUser));
+        if (tokenAnonymData) {
+          dispatch(fetchUserLogin(existingUser, tokenAnonymData.token));
+        } else {
+          dispatch(fetchUserLogin(existingUser));
+        }
       }}
     >
       {(formik) => {

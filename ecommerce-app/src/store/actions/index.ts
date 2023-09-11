@@ -5,6 +5,7 @@ import * as ProductDetailsActionCreators from "./productDetailsActions";
 import * as AttributeActionsCreators from "./attributesActions";
 import * as NotificationActionsCreators from "./notificationActions";
 import * as CategoriesActionsCreators from "./attributesActions";
+import * as CartActionsCreators from "./cartActions";
 
 const ActionCreators = {
   ...LoginActionCreators,
@@ -14,6 +15,7 @@ const ActionCreators = {
   ...AttributeActionsCreators,
   ...NotificationActionsCreators,
   ...CategoriesActionsCreators,
+  ...CartActionsCreators,
 };
 
 export default ActionCreators;

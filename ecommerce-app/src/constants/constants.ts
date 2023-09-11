@@ -91,6 +91,15 @@ const PRODUCT_IMAGE_PLACEHOLDER: Image[] = [
   },
 ];
 
+const NOTIFICATION_MESSAGES = {
+  SUCCESS_SIGNUP: "You have successfully signed up",
+  SUCCESS_LOGIN: "You have successfully logged in!",
+  SUCCESS_DATA_UPDATE: "Your data has been successfully updated",
+  SUCCESS_ADDRESS_CREATE: "Your address has been successfully created",
+  SUCCESS_ADDRESS_DELETE: "Your address has been successfully deleted",
+  SUCCESS_PRODUCT_ADD: "Bag successfully added to cart",
+};
+
 export {
   AT_SIGN_DOMAIN_REGEX,
   UPPERCASE_LETTER_REGEX,
@@ -101,6 +110,7 @@ export {
   NO_DIGIT_REGEX,
   USER_AGE_ALLOWED,
   MAX_HUMAN_AGE,
+  NOTIFICATION_MESSAGES,
   countryOptions,
   initialLoginValues,
   initialSignUpValues,

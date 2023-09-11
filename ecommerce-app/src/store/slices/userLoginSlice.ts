@@ -2,14 +2,16 @@ import { AuthErrorResponse, Customer } from "@commercetools/platform-sdk";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TokenStore } from "@commercetools/sdk-client-v2";
 import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
-import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
-
+import {
+  anonymTokenCache,
+  passToken,
+} from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 export interface IUserLoginState {
   loading: boolean;
   isLogged: boolean;
   errorMessage: string;
   loginData: Customer | null;
-  tokenData: TokenStore | null;
+  tokenPassData: TokenStore | null;
   isSuccessMessage: boolean;
 }
 
@@ -18,7 +20,7 @@ const initialState: IUserLoginState = {
   isLogged: false,
   errorMessage: "",
   loginData: null,
-  tokenData: null,
+  tokenPassData: null,
   isSuccessMessage: false,
 };
 
@@ -35,7 +37,8 @@ export const userLoginSlice = createSlice({
         expirationTime: 0,
         refreshToken: undefined,
       };
-      passToken.set(cache);
+      passToken.set({ ...cache });
+      anonymTokenCache.set({ ...cache });
       return { ...initialState };
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {
@@ -55,7 +58,7 @@ export const userLoginSlice = createSlice({
       state.errorMessage = "";
     },
     setUserToken(state, action: PayloadAction<TokenStore>) {
-      state.tokenData = action.payload;
+      state.tokenPassData = action.payload;
     },
     setIsSuccess(state) {
       state.isSuccessMessage = true;

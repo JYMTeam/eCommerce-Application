@@ -6,11 +6,13 @@ import {
   getAuthMiddlewareOptions,
   projectKey,
 } from "./ClientBuilderDefault";
+import { anonymTokenCache } from "../PassTokenCache/PassTokenCache";
 
 export const getApiAnonymRoot = () => {
   const authMiddlewareOptions = getAuthMiddlewareOptions();
   const anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     ...authMiddlewareOptions,
+    tokenCache: anonymTokenCache,
   };
 
   const anonymClient = defaultClient

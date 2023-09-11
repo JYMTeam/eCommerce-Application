@@ -13,10 +13,14 @@ import {
   setIsSuccess,
 } from "../slices/userLoginSlice";
 import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
-import { passToken } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
+import {
+  anonymTokenCache,
+  passToken,
+} from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import {
   AuthErrorResponse,
   Customer,
+  ErrorResponse,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
@@ -26,33 +30,104 @@ import {
   IUpdatePersonalValues,
 } from "../../types";
 import { INotification, notificationActive } from "../slices/notificationSlice";
+import { cartFetchError, cartReset } from "../slices/cartSlice";
+import { fetchGetCart } from "./cartActions";
+import { NOTIFICATION_MESSAGES } from "../../constants/constants";
 
-export const fetchUserLogin = (userAuthOptions: UserAuthOptions) => {
+export const fetchUserLogin = (
+  userAuthOptions: UserAuthOptions,
+  existingAnonymToken?: string,
+) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiPassRoot(userAuthOptions)
-        .me()
-        .login()
-        .post({
-          body: {
-            email: userAuthOptions.username,
-            password: userAuthOptions.password,
-          },
-        })
-        .execute();
-      dispatch(setIsSuccess());
+      if (existingAnonymToken) {
+        const cache: TokenStore = {
+          token: "",
+          expirationTime: 0,
+          refreshToken: undefined,
+        };
+        passToken.set({ ...cache });
 
-      const successLoginMessage: INotification = {
-        message: "You have successfully logged in!",
-        type: "success",
-      };
+        const apiRoot = getApiTokenRoot(existingAnonymToken);
+        const bodyParams = {
+          activeCartSignInMode: "MergeWithExistingCustomerCart",
+          // updateProductData: true,
+        };
 
-      dispatch(userLoginFetchSuccess(answer.body.customer));
-      dispatch(setUserToken(passToken.get()));
-      dispatch(notificationActive(successLoginMessage));
-    } catch (e) {
-      const error = e as ClientResponse<AuthErrorResponse>;
+        const answer = await apiRoot
+          .me()
+          .login()
+          .post({
+            body: {
+              email: userAuthOptions.username,
+              password: userAuthOptions.password,
+              ...bodyParams,
+            },
+          })
+          .execute();
+        console.log(answer);
+        // dispatch(setIsSuccess());
+
+        anonymTokenCache.set({ ...cache });
+        const answer2 = await getApiPassRoot(userAuthOptions)
+          .me()
+          .get()
+          .execute();
+        dispatch(setIsSuccess());
+
+        const successLoginMessage: INotification = {
+          message: NOTIFICATION_MESSAGES.SUCCESS_LOGIN,
+          type: "success",
+        };
+        dispatch(userLoginFetchSuccess(answer2.body));
+        // if (!existingAnonymToken) {
+        dispatch(setUserToken(passToken.get()));
+        // dispatch(fetchGetCart(passToken.get().token));
+        // } else {
+        // dispatch(fetchGetCart(existingAnonymToken));
+
+        // }
+        console.log("token after login");
+        // console.log(passToken.get());
+        console.log(anonymTokenCache.get());
+        console.log(passToken.get());
+        dispatch(notificationActive(successLoginMessage));
+      } else {
+        dispatch(userLoginFetching());
+        const answer = await getApiPassRoot(userAuthOptions)
+          .me()
+          .login()
+          .post({
+            body: {
+              email: userAuthOptions.username,
+              password: userAuthOptions.password,
+            },
+          })
+          .execute();
+        dispatch(setIsSuccess());
+
+        const successLoginMessage: INotification = {
+          message: "You have successfully logged in!",
+          type: "success",
+        };
+
+        dispatch(userLoginFetchSuccess(answer.body.customer));
+        dispatch(setUserToken(passToken.get()));
+        dispatch(notificationActive(successLoginMessage));
+      }
+
+      try {
+        dispatch(fetchGetCart(passToken.get().token));
+      } catch (cartError) {
+        const error = cartError as ClientResponse<ErrorResponse>;
+        const body = error.body;
+        if (body) {
+          dispatch(cartFetchError(body));
+        }
+      }
+    } catch (loginError) {
+      const error = loginError as ClientResponse<AuthErrorResponse>;
       const body = error.body;
       if (body) {
         dispatch(userLoginFetchError(body));
@@ -72,6 +147,7 @@ export const fetchLoginWithToken = (existingToken: TokenStore) => {
         .execute();
 
       dispatch(userLoginFetchSuccess(answer.body));
+      // dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
@@ -110,7 +186,7 @@ export const fetchUpdateUserPersonalInfo = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: "Your data has been successfully updated",
+        message: NOTIFICATION_MESSAGES.SUCCESS_DATA_UPDATE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -230,7 +306,7 @@ export const fetchUpdateUserAddress = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: "Your data has been successfully updated",
+        message: NOTIFICATION_MESSAGES.SUCCESS_DATA_UPDATE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -303,7 +379,7 @@ export const fetchCreateUserAddress = (
       }
 
       const successUpdateMessage: INotification = {
-        message: "Your address has been successfully created",
+        message: NOTIFICATION_MESSAGES.SUCCESS_ADDRESS_CREATE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -386,7 +462,7 @@ export const fetchDeleteUserAddress = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: "Your address has been successfully deleted",
+        message: NOTIFICATION_MESSAGES.SUCCESS_ADDRESS_DELETE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));
@@ -397,5 +473,12 @@ export const fetchDeleteUserAddress = (
         dispatch(userLoginFetchError(body));
       }
     }
+  };
+};
+
+export const logoutUser = () => {
+  return async (dispatch: AppDispatch) => {
+    dispatch(userLoginReset());
+    dispatch(cartReset());
   };
 };

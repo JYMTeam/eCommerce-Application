@@ -6,7 +6,6 @@ import {
 } from "../../store/actions/productsActions";
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
   CardActions,
@@ -20,6 +19,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
+import { AddProductManager } from "../AddProductManager/AddProductManager";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { IParsedProduct } from "../../types";
 
@@ -162,16 +162,10 @@ export default function ProductsList() {
                   )}
                 </div>
                 <CardActions>
-                  <Button
-                    size="small"
-                    sx={{ color: BUTTON_COLOR }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
-                    disabled={loading}
-                  >
-                    Add to cart
-                  </Button>
+                  <AddProductManager
+                    productArrId={index}
+                    sxProps={{ color: BUTTON_COLOR }}
+                  />
                 </CardActions>
               </CardActionArea>
             </Card>

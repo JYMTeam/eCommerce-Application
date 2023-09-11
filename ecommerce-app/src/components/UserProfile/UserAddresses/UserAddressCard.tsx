@@ -39,7 +39,9 @@ export const UserAddressCard = ({
   const isEdit = useAppSelector(
     (state) => state.userEditMode.userAddressCardEdits[id],
   );
-  const { loginData, tokenData } = useAppSelector((state) => state.userLogin);
+  const { loginData, tokenPassData } = useAppSelector(
+    (state) => state.userLogin,
+  );
   const dispatch = useAppDispatch();
 
   const handleEditMode = () => {
@@ -47,8 +49,8 @@ export const UserAddressCard = ({
   };
 
   const handleDelete = () => {
-    if (loginData && tokenData && tokenData?.token !== "") {
-      dispatch(fetchDeleteUserAddress(tokenData, loginData, id));
+    if (loginData && tokenPassData && tokenPassData?.token !== "") {
+      dispatch(fetchDeleteUserAddress(tokenPassData, loginData, id));
     }
   };
 
