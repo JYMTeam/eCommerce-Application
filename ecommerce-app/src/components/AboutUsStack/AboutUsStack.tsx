@@ -17,6 +17,7 @@ const CARD_TITLE_FONTSIZE = 18;
 const CARD_DESC_FONTSIZE = 14;
 const BUTTON_COLOR = "#F9C152";
 const CARD_DESC_MB = 1.5;
+const CARD_BOX_SHADOW = 3;
 
 export default function AboutUsStack() {
   return (
@@ -26,14 +27,13 @@ export default function AboutUsStack() {
       sx={{ mb: 2 }}
     >
       {teamMembersInfo.map(
-        ({ name, image, role, bio, githubLink, contributionDesc }) => {
+        ({ name, image, role, bio, githubLink, contributionDesc }, index) => {
           return (
             <Card
+              key={index}
               sx={{
                 maxWidth: CARD_MAX_WIDTH,
-                //boxShadow: CARD_BOX_SHADOW,
-                //minHeight: CARD_MIN_HEIGHT,
-                //height: CARD_HEIGHT,
+                boxShadow: CARD_BOX_SHADOW,
               }}
             >
               <Box

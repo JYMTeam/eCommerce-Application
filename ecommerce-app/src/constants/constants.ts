@@ -7,6 +7,7 @@ import {
   IUpdatePersonalValues,
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
+import MariyaPhoto from "../assets/Mariya.jpg";
 
 const AT_SIGN_DOMAIN_REGEX =
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/u;
@@ -116,7 +117,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     name: "Mariya Demidovich",
     role: "Web developer",
     bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
-    image: "",
+    image: MariyaPhoto,
     githubLink: "https://github.com/mariyademy",
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
