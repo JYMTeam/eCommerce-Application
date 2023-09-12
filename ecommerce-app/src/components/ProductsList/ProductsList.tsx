@@ -163,7 +163,7 @@ export default function ProductsList() {
                 </div>
                 <CardActions>
                   {loading && <Skeleton width="147px" height="66px"></Skeleton>}
-                  {!loading && (
+                  {!loading && parsedProducts.length !== 0 && (
                     <CartProductManager
                       productArrId={index}
                       sxProps={{ color: BUTTON_COLOR }}

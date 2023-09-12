@@ -47,6 +47,9 @@ export default function ProductDetail() {
 
   if (product) {
     parsedProduct = parseProducts([product]);
+  }
+
+  if (product && products && products.length !== 0) {
     productArrId = products.findIndex((element) => element.id === product.id);
   }
   return (
@@ -157,12 +160,15 @@ export default function ProductDetail() {
                 }}
               />
               <span className="discount">{discount ? price : discount}</span>
-              {productArrId !== null && (
-                <CartProductManager
-                  productArrId={productArrId}
-                  sxProps={{ ml: BUTTON_ML, color: BUTTON_COLOR }}
-                />
-              )}
+              {!loading &&
+                products.length !== 0 &&
+                productArrId !== null &&
+                productArrId !== -1 && (
+                  <CartProductManager
+                    productArrId={productArrId}
+                    sxProps={{ ml: BUTTON_ML, color: BUTTON_COLOR }}
+                  />
+                )}
             </Grid>
           </Grid>
         ),

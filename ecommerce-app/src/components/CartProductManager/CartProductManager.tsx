@@ -90,7 +90,12 @@ export function CartProductManager({
     };
 
     const setButtonsStatus = () => {
-      if (cart && cart.lineItems.length !== 0) {
+      if (
+        products &&
+        products.length !== 0 &&
+        cart &&
+        cart.lineItems.length !== 0
+      ) {
         const isInCart = cart.lineItems.find(
           (element) => element.productId === products[productArrId].id,
         );
