@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, SxProps, Theme } from "@mui/material";
-import { green } from "@mui/material/colors";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  SxProps,
+  Theme as MuiTheme,
+} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchAddProductsCart,
@@ -8,10 +13,11 @@ import {
   fetchGetCart,
   fetchRemoveProductFromCart,
 } from "../../store/actions/cartActions";
+import { Theme } from "../Theme";
 
 export interface IAddProductButtonProps {
   productArrId: number;
-  sxProps?: SxProps<Theme>;
+  sxProps?: SxProps<MuiTheme>;
 }
 
 const ERROR_GET_CART = "404: Sorry, resource not found";
@@ -37,8 +43,27 @@ export function CartProductManager({
   const dispatch = useAppDispatch();
   const productQuantity = 1;
 
+  const buttonsBoxSx = {
+    m: 1,
+    position: "relative",
+    maxWidth: "fit-content",
+  };
+
   const buttonSx = {
     ...sxProps,
+    ":hover": {
+      bgcolor: "transparent",
+      color: "primary.main",
+    },
+  };
+
+  const circularProgressSx = {
+    color: Theme.palette.primary.main,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: "-12px",
+    marginLeft: "-12px",
   };
 
   useEffect(() => {
@@ -65,7 +90,12 @@ export function CartProductManager({
     };
 
     const setButtonsStatus = () => {
-      if (cart && cart.lineItems.length !== 0) {
+      if (
+        products &&
+        products.length !== 0 &&
+        cart &&
+        cart.lineItems.length !== 0
+      ) {
         const isInCart = cart.lineItems.find(
           (element) => element.productId === products[productArrId].id,
         );
@@ -169,9 +199,11 @@ export function CartProductManager({
   };
 
   return (
-    <Box sx={{ m: 1, position: "relative", maxWidth: "fit-content" }}>
+    <Box sx={buttonsBoxSx}>
       <Button
         size="small"
+        variant="text"
+        color="secondary"
         sx={buttonSx}
         disabled={loadingButton || success || productsLoading}
         onClick={(e) => {
@@ -182,22 +214,12 @@ export function CartProductManager({
         {!success && "Add to cart"}
         {success && "Added"}
       </Button>
-      {loadingButton && (
-        <CircularProgress
-          size={24}
-          sx={{
-            color: green[500],
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            marginTop: "-12px",
-            marginLeft: "-12px",
-          }}
-        />
-      )}
+      {loadingButton && <CircularProgress size={24} sx={circularProgressSx} />}
       {success && (
         <Button
           size="small"
+          variant="text"
+          color="secondary"
           sx={buttonSx}
           disabled={loadingButton || productsLoading}
           onClick={(e) => {
