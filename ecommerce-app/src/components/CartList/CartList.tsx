@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Box, Divider, List } from "@mui/material";
 import CartListItem from "./CartListItem";
 import { parseCartListItems } from "../../utils/dataParsers";
 import { fetchGetCart } from "../../store/actions/cartActions";
+import { ClientResponse } from "@commercetools/sdk-client-v2";
+import { ErrorResponse } from "@commercetools/platform-sdk";
+import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
+import { statusCode } from "../../types";
 
 export default function CartList() {
   const { cart, errorMessage, tokenAnonymData } = useAppSelector(
@@ -13,6 +17,8 @@ export default function CartList() {
     (state) => state.userLogin,
   );
 
+  const [emptyCartError, setEmptyCartError] = useState(false);
+
   const dispatch = useAppDispatch();
   const currentToken = isLogged ? tokenPassData?.token : tokenAnonymData?.token;
 
@@ -20,7 +26,13 @@ export default function CartList() {
     const getActiveCart = async (currentToken: string) => {
       try {
         await dispatch(fetchGetCart(currentToken));
-      } catch (cartError) {}
+      } catch (cartError) {
+        const error = cartError as ClientResponse<ErrorResponse>;
+        const body = error.body;
+        if (body && body.statusCode === statusCode.NOT_FOUND) {
+          setEmptyCartError(true);
+        }
+      }
     };
 
     if (currentToken) {
@@ -28,12 +40,12 @@ export default function CartList() {
     }
   }, [dispatch, currentToken]);
 
-  if (errorMessage) {
+  if (errorMessage && errorMessage !== NOT_FOUND_MESSAGE) {
     return <p className="notification-message">{errorMessage}</p>;
   }
 
-  if (!cart || cart.lineItems.length === 0) {
-    return <div> Empty Cart</div>;
+  if (!cart || cart.lineItems.length === 0 || emptyCartError) {
+    return <div>Empty Cart</div>;
   }
 
   const parsedCartListItems = parseCartListItems(cart.lineItems);
