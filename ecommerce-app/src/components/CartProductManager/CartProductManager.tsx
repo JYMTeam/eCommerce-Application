@@ -6,7 +6,6 @@ import {
   SxProps,
   Theme as MuiTheme,
 } from "@mui/material";
-import { green } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchAddProductsCart,
@@ -14,6 +13,7 @@ import {
   fetchGetCart,
   fetchRemoveProductFromCart,
 } from "../../store/actions/cartActions";
+import { Theme } from "../Theme";
 
 export interface IAddProductButtonProps {
   productArrId: number;
@@ -43,12 +43,27 @@ export function CartProductManager({
   const dispatch = useAppDispatch();
   const productQuantity = 1;
 
+  const buttonsBoxSx = {
+    m: 1,
+    position: "relative",
+    maxWidth: "fit-content",
+  };
+
   const buttonSx = {
     ...sxProps,
     ":hover": {
       bgcolor: "transparent",
       color: "primary.main",
     },
+  };
+
+  const circularProgressSx = {
+    color: Theme.palette.primary.main,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: "-12px",
+    marginLeft: "-12px",
   };
 
   useEffect(() => {
@@ -179,7 +194,7 @@ export function CartProductManager({
   };
 
   return (
-    <Box sx={{ m: 1, position: "relative", maxWidth: "fit-content" }}>
+    <Box sx={buttonsBoxSx}>
       <Button
         size="small"
         variant="text"
@@ -194,19 +209,7 @@ export function CartProductManager({
         {!success && "Add to cart"}
         {success && "Added"}
       </Button>
-      {loadingButton && (
-        <CircularProgress
-          size={24}
-          sx={{
-            color: green[500],
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            marginTop: "-12px",
-            marginLeft: "-12px",
-          }}
-        />
-      )}
+      {loadingButton && <CircularProgress size={24} sx={circularProgressSx} />}
       {success && (
         <Button
           size="small"
