@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, SxProps, Theme } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  SxProps,
+  Theme as MuiTheme,
+} from "@mui/material";
 import { green } from "@mui/material/colors";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
@@ -11,7 +17,7 @@ import {
 
 export interface IAddProductButtonProps {
   productArrId: number;
-  sxProps?: SxProps<Theme>;
+  sxProps?: SxProps<MuiTheme>;
 }
 
 const ERROR_GET_CART = "404: Sorry, resource not found";
@@ -39,6 +45,10 @@ export function CartProductManager({
 
   const buttonSx = {
     ...sxProps,
+    ":hover": {
+      bgcolor: "transparent",
+      color: "primary.main",
+    },
   };
 
   useEffect(() => {
@@ -172,6 +182,8 @@ export function CartProductManager({
     <Box sx={{ m: 1, position: "relative", maxWidth: "fit-content" }}>
       <Button
         size="small"
+        variant="text"
+        color="secondary"
         sx={buttonSx}
         disabled={loadingButton || success || productsLoading}
         onClick={(e) => {
@@ -198,6 +210,8 @@ export function CartProductManager({
       {success && (
         <Button
           size="small"
+          variant="text"
+          color="secondary"
           sx={buttonSx}
           disabled={loadingButton || productsLoading}
           onClick={(e) => {
