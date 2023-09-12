@@ -11,7 +11,6 @@ export function TokenManager() {
   useEffect(() => {
     const checkTokenAndFetchLogin = () => {
       if (!isTokenVerified && tokenPassData && tokenPassData?.token !== "") {
-        console.log("------token manager login------");
         dispatch(fetchLoginWithToken(tokenPassData));
         setTokenVerified(true);
       }

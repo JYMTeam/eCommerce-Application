@@ -98,7 +98,6 @@ export const convertToCustomerDraft = (values: ISignupInitialValues) => {
     defaultShippingCheck,
     defaultBillingCheck,
   } = values;
-  console.log(values);
   const isCommonAddress = commonAddressCheck?.length !== 0;
   const isDefaultBilling = defaultBillingCheck?.length !== 0;
   const isDefaultShipping = defaultShippingCheck?.length !== 0;

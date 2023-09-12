@@ -96,8 +96,9 @@ const NOTIFICATION_MESSAGES = {
   SUCCESS_LOGIN: "You have successfully logged in!",
   SUCCESS_DATA_UPDATE: "Your data has been successfully updated",
   SUCCESS_ADDRESS_CREATE: "Your address has been successfully created",
-  SUCCESS_ADDRESS_DELETE: "Your address has been successfully deleted",
+  SUCCESS_ADDRESS_REMOVE: "Your address has been successfully removed",
   SUCCESS_PRODUCT_ADD: "Bag successfully added to cart",
+  SUCCESS_PRODUCT_REMOVE: "Bag successfully removed from cart",
 };
 
 export {

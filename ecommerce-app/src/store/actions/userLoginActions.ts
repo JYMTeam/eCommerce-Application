@@ -118,7 +118,7 @@ export const fetchUserLogin = (
       }
 
       try {
-        dispatch(fetchGetCart(passToken.get().token));
+        await dispatch(fetchGetCart(passToken.get().token));
       } catch (cartError) {
         const error = cartError as ClientResponse<ErrorResponse>;
         const body = error.body;
@@ -462,7 +462,7 @@ export const fetchDeleteUserAddress = (
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
       const successUpdateMessage: INotification = {
-        message: NOTIFICATION_MESSAGES.SUCCESS_ADDRESS_DELETE,
+        message: NOTIFICATION_MESSAGES.SUCCESS_ADDRESS_REMOVE,
         type: "success",
       };
       dispatch(notificationActive(successUpdateMessage));

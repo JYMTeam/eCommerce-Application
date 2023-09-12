@@ -6,6 +6,7 @@ import {
   fetchAddProductsCart,
   fetchCreateCart,
   fetchGetCart,
+  fetchRemoveProductFromCart,
 } from "../../store/actions/cartActions";
 
 export interface IAddProductButtonProps {
@@ -13,18 +14,22 @@ export interface IAddProductButtonProps {
   sxProps?: SxProps<Theme>;
 }
 
-export function AddProductManager({
+const ERROR_GET_CART = "404: Sorry, resource not found";
+
+export function CartProductManager({
   productArrId,
   sxProps,
 }: IAddProductButtonProps) {
-  const { cart, tokenAnonymData } = useAppSelector((state) => state.cart);
+  const { cart, tokenAnonymData, errorMessage } = useAppSelector(
+    (state) => state.cart,
+  );
   const { tokenPassData, isLogged } = useAppSelector(
     (state) => state.userLogin,
   );
   const { products } = useAppSelector((state) => state.products);
   const productsLoading = useAppSelector((state) => state.products.loading);
-  const [isAddProduct, setIsAddProduct] = useState(false);
 
+  const [isAddProduct, setIsAddProduct] = useState(false);
   const [loadingButton, setLoadingButton] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const timer = React.useRef<number>();
@@ -59,19 +64,28 @@ export function AddProductManager({
       }
     };
 
-    if (cart) {
-      const isInCart = cart.lineItems.find(
-        (element) => element.productId === products[productArrId].id,
-      );
-      if (isInCart) setSuccess(true);
-    } else {
-      setSuccess(false);
-    }
+    const setButtonsStatus = () => {
+      if (cart && cart.lineItems.length !== 0) {
+        const isInCart = cart.lineItems.find(
+          (element) => element.productId === products[productArrId].id,
+        );
+        if (isInCart) setSuccess(true);
+      } else {
+        setSuccess(false);
+      }
+
+      if (errorMessage && errorMessage !== "404: Sorry, resource not found") {
+        setSuccess(false);
+        setIsAddProduct(false);
+      }
+    };
 
     if (isAddProduct && cart) {
       addProduct();
       setIsAddProduct(false);
     }
+
+    setButtonsStatus();
   }, [
     dispatch,
     isLogged,
@@ -83,6 +97,7 @@ export function AddProductManager({
     tokenAnonymData,
     tokenPassData,
     products,
+    errorMessage,
   ]);
 
   React.useEffect(() => {
@@ -91,19 +106,30 @@ export function AddProductManager({
     };
   }, []);
 
-  const getOrCreateCart = async () => {
+  const clearAnimation = () => {
     if (!loadingButton) {
       setSuccess(false);
       setLoadingButton(true);
       timer.current = window.setTimeout(() => {
         setSuccess(true);
         setLoadingButton(false);
+
+        if (errorMessage && errorMessage !== ERROR_GET_CART) {
+          setSuccess(false);
+          setIsAddProduct(false);
+        }
       }, 600);
     }
+  };
+
+  const getOrCreateCart = async () => {
+    clearAnimation();
+
     if (cart) {
       setIsAddProduct(true);
       return;
     }
+
     const currentToken = isLogged
       ? tokenPassData?.token
       : tokenAnonymData?.token;
@@ -124,12 +150,26 @@ export function AddProductManager({
         setIsAddProduct(true);
       }
     } catch (error) {
-      console.log("");
+      console.log("error");
+    }
+  };
+
+  const removeHandlerClick = () => {
+    const currentToken = isLogged
+      ? tokenPassData?.token
+      : tokenAnonymData?.token;
+    const lineItem = cart?.lineItems.find(
+      (item) => item.productId === products[productArrId].id,
+    );
+
+    if (currentToken && lineItem && cart) {
+      dispatch(fetchRemoveProductFromCart(currentToken, cart, lineItem.id));
+      setSuccess(false);
     }
   };
 
   return (
-    <Box sx={{ m: 1, position: "relative" }}>
+    <Box sx={{ m: 1, position: "relative", maxWidth: "fit-content" }}>
       <Button
         size="small"
         sx={buttonSx}
@@ -154,6 +194,19 @@ export function AddProductManager({
             marginLeft: "-12px",
           }}
         />
+      )}
+      {success && (
+        <Button
+          size="small"
+          sx={buttonSx}
+          disabled={loadingButton || productsLoading}
+          onClick={(e) => {
+            e.preventDefault();
+            removeHandlerClick();
+          }}
+        >
+          Remove
+        </Button>
       )}
     </Box>
   );

@@ -6,7 +6,7 @@ import { parseProducts } from "../../utils/dataParsers";
 import { Grid, Typography, Chip } from "@mui/material";
 import { IParsedProduct } from "../../types";
 import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
-import { AddProductManager } from "../AddProductManager/AddProductManager";
+import { CartProductManager } from "../CartProductManager/CartProductManager";
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;
@@ -158,7 +158,7 @@ export default function ProductDetail() {
               />
               <span className="discount">{discount ? price : discount}</span>
               {productArrId !== null && (
-                <AddProductManager
+                <CartProductManager
                   productArrId={productArrId}
                   sxProps={{ ml: BUTTON_ML, color: BUTTON_COLOR }}
                 />
