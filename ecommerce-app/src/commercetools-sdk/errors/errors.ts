@@ -3,7 +3,7 @@ import {
   ErrorResponse,
 } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/error";
 
-enum statusCode {
+export enum statusCode {
   "OK" = 200,
   "BAD_REQUEST" = 400,
   "UNATHORIZED" = 401,
@@ -11,6 +11,8 @@ enum statusCode {
   "TOO_MANY_REQUESTS" = 429,
   "SERVER_ERROR" = 500,
 }
+
+export const NOT_FOUND_MESSAGE = "404: Sorry, resource not found";
 
 const DEFAULT_ERROR_MESSAGE =
   "An unexpected error occurred. Please try again later.";

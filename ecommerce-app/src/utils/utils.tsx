@@ -184,35 +184,22 @@ const getNewUser = (
   let newUser: CustomerDraft = {
     ...newUserMainData,
   };
-  console.log("idefaultShipping");
-  console.log(indexDefaultShipping);
-  console.log("idefaultBilling");
-  console.log(indexDefaultBilling);
   if (indexDefaultShipping !== -1 && indexDefaultBilling !== -1) {
     newUser = {
       ...newUserMainData,
       defaultShippingAddress: indexDefaultShipping,
       defaultBillingAddress: indexDefaultBilling,
     };
-
-    console.log("newUser ++ def ship bil");
-    console.log(newUser);
   } else if (indexDefaultShipping !== -1) {
     newUser = {
       ...newUserMainData,
       defaultShippingAddress: indexDefaultShipping,
     };
-    console.log("newUser ++ def bil");
-    console.log(newUser);
   } else if (indexDefaultBilling !== -1) {
     newUser = {
       ...newUserMainData,
       defaultBillingAddress: indexDefaultBilling,
     };
-    console.log("newUser ++ def ship");
-    console.log(newUser);
   }
-  console.log("new userObject = ");
-  console.log(newUser);
   return newUser;
 };
