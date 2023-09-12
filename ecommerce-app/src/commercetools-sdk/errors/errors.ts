@@ -6,7 +6,7 @@ import {
 enum statusCode {
   "OK" = 200,
   "BAD_REQUEST" = 400,
-  "UNATHORIZED" = 401,
+  "UNAUTHORIZED" = 401,
   "NOT_FOUND" = 404,
   "TOO_MANY_REQUESTS" = 429,
   "SERVER_ERROR" = 500,
@@ -54,7 +54,7 @@ export const formatProductsErrorMessage = (error: ErrorResponse): string => {
   const serverError = serverErrorMessage(error.statusCode);
   if (serverError) return serverError;
 
-  if (error.statusCode === statusCode.UNATHORIZED) {
+  if (error.statusCode === statusCode.UNAUTHORIZED) {
     return "401: Unauthorized. Sorry, your request could not be processed";
   }
 
