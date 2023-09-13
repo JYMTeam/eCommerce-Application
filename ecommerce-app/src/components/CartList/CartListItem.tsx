@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { IParsedCartItem } from "../../types";
-import { ButtonCartItemRemove } from "./ButtonCartItemRemove";
+import { ButtonCartRemoveItem } from "./ButtonCartRemoveItem";
 
 interface ICartListItemProps {
   data: IParsedCartItem;
@@ -58,7 +58,7 @@ export default function CartListItem({
             alignItems: "end",
           }}
         >
-          <ButtonCartItemRemove cartArrIndex={cartArrIndex} />
+          <ButtonCartRemoveItem cartArrIndex={cartArrIndex} />
           <ListItemText
             primary={
               <Box>
