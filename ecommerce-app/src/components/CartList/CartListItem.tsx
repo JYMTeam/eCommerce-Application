@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Box,
@@ -6,8 +7,8 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { IParsedCartItem } from "../../types";
+import { ButtonCartItemRemove } from "./ButtonCartItemRemove";
 
 interface ICartListItemProps {
   data: IParsedCartItem;
@@ -23,7 +24,7 @@ const DISCOUNT_COLOR = "darkgrey";
 const DISCOUNT_DECORATION = "line-through";
 
 export default function CartListItem({
-  data: { name, image, quantity, price, discount, totalCost },
+  data: { cartArrIndex, name, image, quantity, price, discount, totalCost },
 }: ICartListItemProps) {
   return (
     <ListItem alignItems="flex-start" sx={{ bgcolor: LIST_ITEM_BG_COLOR }}>
@@ -48,7 +49,16 @@ export default function CartListItem({
           secondary={quantity}
           sx={{ mr: TEXT_MR, minWidth: { sm: NAME_TEXT_MIN_WIDTH } }}
         />
-        <Box sx={{ minWidth: PRICE_BOX_MIN_WIDTH }}>
+        <Box
+          sx={{
+            minWidth: PRICE_BOX_MIN_WIDTH,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "right",
+            alignItems: "end",
+          }}
+        >
+          <ButtonCartItemRemove cartArrIndex={cartArrIndex} />
           <ListItemText
             primary={
               <Box>
