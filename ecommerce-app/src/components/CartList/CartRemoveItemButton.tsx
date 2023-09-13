@@ -8,7 +8,7 @@ interface ICartItemRemove {
   cartArrIndex: number;
 }
 
-export const ButtonCartRemoveItem = ({ cartArrIndex }: ICartItemRemove) => {
+export const CartRemoveItemButton = ({ cartArrIndex }: ICartItemRemove) => {
   const { cart, tokenAnonymData } = useAppSelector((state) => state.cart);
   const { tokenPassData, isLogged } = useAppSelector(
     (state) => state.userLogin,

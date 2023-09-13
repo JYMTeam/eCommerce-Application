@@ -3,6 +3,7 @@ import { AppDispatch } from "..";
 import {
   Cart,
   ErrorResponse,
+  MyCartUpdateAction,
   ProductProjection,
 } from "@commercetools/platform-sdk";
 import {
@@ -168,6 +169,63 @@ export const fetchRemoveProductFromCart = (
   };
 };
 
+export const fetchRemoveAllProductsFromCart = (
+  existingToken: string,
+  cart: Cart,
+) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(cartFetching());
+
+      const removeActions = cart.lineItems.map((item) => {
+        const removeAction: MyCartUpdateAction = {
+          action: "removeLineItem",
+          lineItemId: item.id,
+        };
+        return removeAction;
+      });
+
+      const answer = await getApiTokenRoot(existingToken)
+        .me()
+        .carts()
+        .withId({ ID: cart.id })
+        .post({
+          body: {
+            version: cart.version,
+            actions: removeActions,
+          },
+        })
+        .execute();
+
+      const successLoginMessage: INotification = {
+        message: NOTIFICATION_MESSAGES.SUCCESS_PRODUCT_REMOVE,
+        type: "success",
+      };
+
+      dispatch(cartFetchSuccess(answer.body));
+      dispatch(notificationActive(successLoginMessage));
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(cartFetchError(body));
+
+        if (body) {
+          dispatch(cartFetchError(body));
+
+          const message = formatProductsErrorMessage(body);
+          const errorMessage: INotification = {
+            message,
+            type: "error",
+          };
+
+          dispatch(notificationActive(errorMessage));
+        }
+      }
+    }
+  };
+};
+
 // ATTENTION: Throw ERROR!!
 export const fetchGetCart = (existingToken: string) => {
   return async (dispatch: AppDispatch) => {
@@ -202,6 +260,24 @@ export const fetchCheckCartAndRemoveProduct = (
       await dispatch(
         fetchRemoveProductFromCart(existingToken, cart, lineItemId, quantity),
       );
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(cartFetchError(body));
+      }
+    }
+  };
+};
+
+export const fetchCheckCartAndRemoveAll = (
+  existingToken: string,
+  cart: Cart,
+) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await dispatch(fetchGetCart(existingToken));
+      await dispatch(fetchRemoveAllProductsFromCart(existingToken, cart));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
