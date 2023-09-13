@@ -191,3 +191,47 @@ export const fetchGetCart = (existingToken: string) => {
     }
   };
 };
+
+export const checkCartAndRemoveProduct = (
+  existingToken: string,
+  cart: Cart,
+  lineItemId: string,
+  quantity?: number,
+) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await dispatch(fetchGetCart(existingToken));
+      await dispatch(
+        fetchRemoveProductFromCart(existingToken, cart, lineItemId, quantity),
+      );
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(cartFetchError(body));
+      }
+    }
+  };
+};
+
+export const checkCartAndAddProduct = (
+  existingToken: string,
+  cart: Cart,
+  product: ProductProjection,
+  quantity: number,
+) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      await dispatch(fetchGetCart(existingToken));
+      await dispatch(
+        fetchAddProductsCart(existingToken, cart, product, quantity),
+      );
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(cartFetchError(body));
+      }
+    }
+  };
+};
