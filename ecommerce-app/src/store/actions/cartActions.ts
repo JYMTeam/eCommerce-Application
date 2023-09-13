@@ -21,6 +21,7 @@ import {
   NOTIFICATION_MESSAGES,
 } from "../../constants/constants";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
+import { statusCode } from "../../types";
 
 export const fetchCreateCart = (existingToken?: string) => {
   return async (dispatch: AppDispatch) => {
@@ -167,6 +168,7 @@ export const fetchRemoveProductFromCart = (
   };
 };
 
+// ATTENTION: Throw ERROR!!
 export const fetchGetCart = (existingToken: string) => {
   return async (dispatch: AppDispatch) => {
     try {
@@ -181,18 +183,14 @@ export const fetchGetCart = (existingToken: string) => {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
       if (body) {
-        // if (body.statusCode === 404) {
-        //   dispatch(fetchCreateCart())
-        // } else {
         dispatch(cartFetchError(body));
         throw e;
-        // }
       }
     }
   };
 };
 
-export const checkCartAndRemoveProduct = (
+export const fetchCheckCartAndRemoveProduct = (
   existingToken: string,
   cart: Cart,
   lineItemId: string,
@@ -214,18 +212,26 @@ export const checkCartAndRemoveProduct = (
   };
 };
 
-export const checkCartAndAddProduct = (
-  existingToken: string,
-  cart: Cart,
-  product: ProductProjection,
-  quantity: number,
-) => {
+export const fetchGetOrCreateCart = (existingToken?: string) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart(existingToken));
-      await dispatch(
-        fetchAddProductsCart(existingToken, cart, product, quantity),
-      );
+      if (existingToken) {
+        try {
+          await dispatch(fetchGetCart(existingToken));
+        } catch (errorGetCart) {
+          const error = errorGetCart as ClientResponse<ErrorResponse>;
+          const body = error.body;
+          if (body) {
+            if (body.statusCode === statusCode.NOT_FOUND) {
+              dispatch(fetchCreateCart(existingToken));
+            } else {
+              dispatch(cartFetchError(body));
+            }
+          }
+        }
+      } else {
+        dispatch(fetchCreateCart());
+      }
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;

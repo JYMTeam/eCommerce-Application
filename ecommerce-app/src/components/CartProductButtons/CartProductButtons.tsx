@@ -8,21 +8,19 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
+  fetchGetOrCreateCart,
   fetchAddProductsCart,
-  fetchCreateCart,
-  fetchGetCart,
-  fetchRemoveProductFromCart,
+  fetchCheckCartAndRemoveProduct,
 } from "../../store/actions/cartActions";
 import { Theme } from "../Theme";
+import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
 
 export interface IAddProductButtonProps {
   productArrId: number;
   sxProps?: SxProps<MuiTheme>;
 }
 
-const ERROR_GET_CART = "404: Sorry, resource not found";
-
-export function CartProductManager({
+export function CartProductButtons({
   productArrId,
   sxProps,
 }: IAddProductButtonProps) {
@@ -104,7 +102,7 @@ export function CartProductManager({
         setSuccess(false);
       }
 
-      if (errorMessage && errorMessage !== "404: Sorry, resource not found") {
+      if (errorMessage && errorMessage !== NOT_FOUND_MESSAGE) {
         setSuccess(false);
         setIsAddProduct(false);
       }
@@ -144,7 +142,7 @@ export function CartProductManager({
         setSuccess(true);
         setLoadingButton(false);
 
-        if (errorMessage && errorMessage !== ERROR_GET_CART) {
+        if (errorMessage && errorMessage !== NOT_FOUND_MESSAGE) {
           setSuccess(false);
           setIsAddProduct(false);
         }
@@ -152,39 +150,16 @@ export function CartProductManager({
     }
   };
 
-  const getOrCreateCart = async () => {
+  const addButtonHandler = async () => {
     clearAnimation();
-
-    if (cart) {
-      setIsAddProduct(true);
-      return;
-    }
-
     const currentToken = isLogged
       ? tokenPassData?.token
       : tokenAnonymData?.token;
-
-    try {
-      if (currentToken) {
-        try {
-          await dispatch(fetchGetCart(currentToken));
-          setIsAddProduct(true);
-        } catch (error) {
-          // If we couldn't get the cart, create a new one
-          await dispatch(fetchCreateCart(currentToken));
-          setIsAddProduct(true);
-        }
-      } else {
-        // We create a new cart along with receiving an anonymous token
-        await dispatch(fetchCreateCart());
-        setIsAddProduct(true);
-      }
-    } catch (error) {
-      console.log("error");
-    }
+    await dispatch(fetchGetOrCreateCart(currentToken));
+    setIsAddProduct(true);
   };
 
-  const removeHandlerClick = () => {
+  const removeHandlerClick = async () => {
     const currentToken = isLogged
       ? tokenPassData?.token
       : tokenAnonymData?.token;
@@ -193,7 +168,9 @@ export function CartProductManager({
     );
 
     if (currentToken && lineItem && cart) {
-      dispatch(fetchRemoveProductFromCart(currentToken, cart, lineItem.id));
+      await dispatch(
+        fetchCheckCartAndRemoveProduct(currentToken, cart, lineItem.id),
+      );
       setSuccess(false);
     }
   };
@@ -208,7 +185,7 @@ export function CartProductManager({
         disabled={loadingButton || success || productsLoading}
         onClick={(e) => {
           e.preventDefault();
-          getOrCreateCart();
+          addButtonHandler();
         }}
       >
         {!success && "Add to cart"}

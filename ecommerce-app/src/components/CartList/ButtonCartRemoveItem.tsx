@@ -2,7 +2,7 @@ import React from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { checkCartAndRemoveProduct } from "../../store/actions/cartActions";
+import { fetchCheckCartAndRemoveProduct } from "../../store/actions/cartActions";
 
 interface ICartItemRemove {
   cartArrIndex: number;
@@ -33,7 +33,7 @@ export const ButtonCartRemoveItem = ({ cartArrIndex }: ICartItemRemove) => {
 
     if (currentToken && cart) {
       dispatch(
-        checkCartAndRemoveProduct(
+        fetchCheckCartAndRemoveProduct(
           currentToken,
           cart,
           cart.lineItems[cartArrIndex].id,
