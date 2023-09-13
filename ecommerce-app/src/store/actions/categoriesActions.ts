@@ -1,18 +1,19 @@
 import { ClientResponse } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "..";
 import { ErrorResponse } from "@commercetools/platform-sdk";
-import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
+// import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
 import {
   categoriesFetchError,
   categoriesFetchSuccess,
   categoriesFetching,
 } from "../slices/categoriesSlice";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchCategories = () => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(categoriesFetching());
-      const answer = await getApiEntryRoot()
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .categories()
         .get({
           queryArgs: {

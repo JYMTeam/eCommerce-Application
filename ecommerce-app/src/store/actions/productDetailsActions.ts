@@ -5,14 +5,15 @@ import {
   productDetailsFetchSuccess,
   productDetailsFetchError,
 } from "../slices/productDetailsSlice";
-import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
+// import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchProductDetails = (id: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(productDetailsFetching());
 
-      const answer = await getApiEntryRoot()
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .productProjections()
         .withId({ ID: id })
         .get()

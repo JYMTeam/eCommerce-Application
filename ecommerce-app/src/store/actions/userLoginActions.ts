@@ -33,6 +33,7 @@ import { INotification, notificationActive } from "../slices/notificationSlice";
 import { cartFetchError, cartReset } from "../slices/cartSlice";
 import { fetchGetCart } from "./cartActions";
 import { NOTIFICATION_MESSAGES } from "../../constants/constants";
+import { getApiRefreshTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithRefreshToken";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,
@@ -136,17 +137,25 @@ export const fetchUserLogin = (
   };
 };
 
-export const fetchLoginWithToken = (existingToken: TokenStore) => {
+export const fetchLoginWithToken = (existingRefreshToken: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
 
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await getApiRefreshTokenRoot(existingRefreshToken)
         .me()
         .get()
         .execute();
-
+      const answer2 = await getApiRefreshTokenRoot(existingRefreshToken)
+        .me()
+        .get()
+        .execute();
+      const answer3 = await getApiRefreshTokenRoot(existingRefreshToken)
+        .me()
+        .get()
+        .execute();
       dispatch(userLoginFetchSuccess(answer.body));
+      console.log(answer, answer2, answer3);
       // dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
