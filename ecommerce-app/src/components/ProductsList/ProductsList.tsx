@@ -8,6 +8,7 @@ import {
   Box,
   Card,
   CardActionArea,
+  CardActions,
   //CardActions,
   CardContent,
   CardMedia,
@@ -19,7 +20,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
-//import { CartProductManager } from "../CartProductManager/CartProductManager";
+import { CartProductManager } from "../CartProductManager/CartProductManager";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { IParsedProduct } from "../../types";
 
@@ -34,7 +35,7 @@ const CARD_HEIGHT = "100%";
 const CARD_MEDIA_HEIGHT = 250;
 const CARD_TITLE_FONTSIZE = 18;
 const CARD_DESC_FONTSIZE = 14;
-//const BUTTON_COLOR = "#F9C152";
+const BUTTON_COLOR = "#F9C152";
 const CARD_DESC_MB = 1.5;
 const PRICE_MR = 1;
 const PRICE_BG_COLOR = "rgba(0, 0, 0, 0.08)";
@@ -161,15 +162,15 @@ export default function ProductsList() {
                     </CardContent>
                   )}
                 </div>
-                {/* <CardActions>
+                <CardActions>
                   {loading && <Skeleton width="147px" height="66px"></Skeleton>}
                   {!loading && parsedProducts.length !== 0 && (
-                    // <CartProductManager
-                    //   productArrId={index}
-                    //   sxProps={{ color: BUTTON_COLOR }}
-                    // />
+                    <CartProductManager
+                      productArrId={index}
+                      sxProps={{ color: BUTTON_COLOR }}
+                    />
                   )}
-                </CardActions> */}
+                </CardActions>
               </CardActionArea>
             </Card>
           </Grid>

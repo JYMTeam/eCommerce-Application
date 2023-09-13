@@ -78,7 +78,7 @@ export function UpdateUserAddressCardForm({
   };
 
   const UpdateAddressSchema = setUpdateUserAddressSchema(schemaOptions);
-  const { loginData, tokenData, loading } = useAppSelector(
+  const { loginData, tokenPassData, loading } = useAppSelector(
     (state) => state.userLogin,
   );
   const isUserEdit = useAppSelector(
@@ -93,13 +93,18 @@ export function UpdateUserAddressCardForm({
   };
 
   const onSubmit = (values: IUpdateAddressInitialValues) => {
-    if (loginData && tokenData && tokenData?.token !== "") {
+    if (loginData && tokenPassData && tokenPassData?.token !== "") {
       if (!isNew) {
         dispatch(
-          fetchUpdateUserAddress(tokenData, loginData, addressArrIndex, values),
+          fetchUpdateUserAddress(
+            tokenPassData,
+            loginData,
+            addressArrIndex,
+            values,
+          ),
         );
       } else {
-        dispatch(fetchCreateUserAddress(tokenData, loginData, values));
+        dispatch(fetchCreateUserAddress(tokenPassData, loginData, values));
       }
       handleEditMode();
     }

@@ -3,9 +3,10 @@ import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchProductDetails } from "../../store/actions/productDetailsActions";
 import { parseProducts } from "../../utils/dataParsers";
-import { Button, Grid, Typography, Chip } from "@mui/material";
+import { Grid, Typography, Chip } from "@mui/material";
 import { IParsedProduct } from "../../types";
 import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
+import { CartProductManager } from "../CartProductManager/CartProductManager";
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;
@@ -24,6 +25,8 @@ export default function ProductDetail() {
     (state) => state.productDetails,
   );
 
+  const { products } = useAppSelector((state) => state.products);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -40,8 +43,14 @@ export default function ProductDetail() {
   }
 
   let parsedProduct: IParsedProduct[] = [];
+  let productArrId: number | null;
+
   if (product) {
     parsedProduct = parseProducts([product]);
+  }
+
+  if (product && products && products.length !== 0) {
+    productArrId = products.findIndex((element) => element.id === product.id);
   }
   return (
     <div>
@@ -151,18 +160,15 @@ export default function ProductDetail() {
                 }}
               />
               <span className="discount">{discount ? price : discount}</span>
-              <Button
-                size="small"
-                sx={{
-                  ml: BUTTON_ML,
-                  color: BUTTON_COLOR,
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                }}
-              >
-                Add to cart
-              </Button>
+              {!loading &&
+                products.length !== 0 &&
+                productArrId !== null &&
+                productArrId !== -1 && (
+                  <CartProductManager
+                    productArrId={productArrId}
+                    sxProps={{ ml: BUTTON_ML, color: BUTTON_COLOR }}
+                  />
+                )}
             </Grid>
           </Grid>
         ),

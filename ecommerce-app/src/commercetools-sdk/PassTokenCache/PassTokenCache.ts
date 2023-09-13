@@ -21,3 +21,4 @@ export class PassTokenCache implements TokenCache {
 }
 
 export const passToken = new PassTokenCache();
+export const anonymTokenCache = new PassTokenCache();

@@ -139,3 +139,11 @@ export interface IAncestorInfo {
   id: string;
   text: string;
 }
+export interface IParsedCartItem {
+  name: string;
+  image: string;
+  price: string;
+  discount: string;
+  quantity: number;
+  totalCost: string;
+}
