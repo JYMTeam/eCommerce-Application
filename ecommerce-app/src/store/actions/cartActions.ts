@@ -70,7 +70,6 @@ export const fetchCreateCart = (existingToken?: string) => {
 };
 
 export const fetchAddProductsCart = (
-  existingToken: string,
   cart: Cart,
   product: ProductProjection,
   quantity: number,
@@ -120,7 +119,6 @@ export const fetchAddProductsCart = (
 };
 
 const fetchRemoveProductFromCart = (
-  existingToken: string,
   cart: Cart,
   lineItemId: string,
   quantity?: number,
@@ -173,7 +171,7 @@ const fetchRemoveProductFromCart = (
   };
 };
 
-const fetchRemoveAllProductsFromCart = (existingToken: string, cart: Cart) => {
+const fetchRemoveAllProductsFromCart = (cart: Cart) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
@@ -227,7 +225,7 @@ const fetchRemoveAllProductsFromCart = (existingToken: string, cart: Cart) => {
   };
 };
 
-const fetchRemoveCart = (existingToken: string, cart: Cart) => {
+const fetchRemoveCart = (cart: Cart) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
@@ -273,7 +271,7 @@ const fetchRemoveCart = (existingToken: string, cart: Cart) => {
 };
 
 // ATTENTION: Throw ERROR!!
-export const fetchGetCart = (existingToken: string) => {
+export const fetchGetCart = () => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
@@ -295,17 +293,14 @@ export const fetchGetCart = (existingToken: string) => {
 };
 
 export const fetchCheckCartAndRemoveProduct = (
-  existingToken: string,
   cart: Cart,
   lineItemId: string,
   quantity?: number,
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart(existingToken));
-      await dispatch(
-        fetchRemoveProductFromCart(existingToken, cart, lineItemId, quantity),
-      );
+      await dispatch(fetchGetCart());
+      await dispatch(fetchRemoveProductFromCart(cart, lineItemId, quantity));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
@@ -316,14 +311,11 @@ export const fetchCheckCartAndRemoveProduct = (
   };
 };
 
-export const fetchCheckCartAndRemoveAll = (
-  existingToken: string,
-  cart: Cart,
-) => {
+export const fetchCheckCartAndRemoveAll = (cart: Cart) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart(existingToken));
-      await dispatch(fetchRemoveAllProductsFromCart(existingToken, cart));
+      await dispatch(fetchGetCart());
+      await dispatch(fetchRemoveAllProductsFromCart(cart));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
@@ -334,14 +326,11 @@ export const fetchCheckCartAndRemoveAll = (
   };
 };
 
-export const fetchCheckCartAndRemoveCart = (
-  existingToken: string,
-  cart: Cart,
-) => {
+export const fetchCheckCartAndRemoveCart = (cart: Cart) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart(existingToken));
-      await dispatch(fetchRemoveCart(existingToken, cart));
+      await dispatch(fetchGetCart());
+      await dispatch(fetchRemoveCart(cart));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
@@ -357,7 +346,7 @@ export const fetchGetOrCreateCart = (existingToken?: string) => {
     try {
       if (existingToken) {
         try {
-          await dispatch(fetchGetCart(existingToken));
+          await dispatch(fetchGetCart());
         } catch (errorGetCart) {
           const error = errorGetCart as ClientResponse<ErrorResponse>;
           const body = error.body;

@@ -68,21 +68,11 @@ export function CartProductButtons({
     const addProduct = () => {
       if (cart && tokenAnonymData?.refreshToken && !isLogged) {
         dispatch(
-          fetchAddProductsCart(
-            tokenAnonymData?.refreshToken,
-            cart,
-            products[productArrId],
-            productQuantity,
-          ),
+          fetchAddProductsCart(cart, products[productArrId], productQuantity),
         );
       } else if (cart && tokenPassData?.refreshToken) {
         dispatch(
-          fetchAddProductsCart(
-            tokenPassData?.token,
-            cart,
-            products[productArrId],
-            productQuantity,
-          ),
+          fetchAddProductsCart(cart, products[productArrId], productQuantity),
         );
       }
     };
@@ -168,9 +158,7 @@ export function CartProductButtons({
     );
 
     if (currentToken && lineItem && cart) {
-      await dispatch(
-        fetchCheckCartAndRemoveProduct(currentToken, cart, lineItem.id),
-      );
+      await dispatch(fetchCheckCartAndRemoveProduct(cart, lineItem.id));
       setSuccess(false);
     }
   };

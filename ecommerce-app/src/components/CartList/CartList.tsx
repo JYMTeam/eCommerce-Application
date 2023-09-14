@@ -26,9 +26,9 @@ export default function CartList() {
     : tokenAnonymData?.refreshToken;
 
   useEffect(() => {
-    const getActiveCart = async (currentToken: string) => {
+    const getActiveCart = async () => {
       try {
-        await dispatch(fetchGetCart(currentToken));
+        await dispatch(fetchGetCart());
       } catch (cartError) {
         const error = cartError as ClientResponse<ErrorResponse>;
         const body = error.body;
@@ -39,7 +39,7 @@ export default function CartList() {
     };
 
     if (currentToken) {
-      getActiveCart(currentToken);
+      getActiveCart();
     }
   }, [dispatch, currentToken]);
 

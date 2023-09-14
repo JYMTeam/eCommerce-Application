@@ -9,10 +9,8 @@ interface ICartItemRemove {
 }
 
 export const CartRemoveItemButton = ({ cartArrIndex }: ICartItemRemove) => {
-  const { cart, tokenAnonymData } = useAppSelector((state) => state.cart);
-  const { tokenPassData, isLogged } = useAppSelector(
-    (state) => state.userLogin,
-  );
+  const { cart } = useAppSelector((state) => state.cart);
+
   const RemoveButtonStyles = {
     ":hover": {
       bgcolor: "transparent",
@@ -23,21 +21,9 @@ export const CartRemoveItemButton = ({ cartArrIndex }: ICartItemRemove) => {
   const dispatch = useAppDispatch();
 
   const handleRemoveClick = () => {
-    let currentToken = "";
-
-    if (isLogged && tokenPassData) {
-      currentToken = tokenPassData.refreshToken || "";
-    } else if (tokenAnonymData) {
-      currentToken = tokenAnonymData.refreshToken || "";
-    }
-
-    if (currentToken && cart) {
+    if (cart) {
       dispatch(
-        fetchCheckCartAndRemoveProduct(
-          currentToken,
-          cart,
-          cart.lineItems[cartArrIndex].id,
-        ),
+        fetchCheckCartAndRemoveProduct(cart, cart.lineItems[cartArrIndex].id),
       );
     }
   };
