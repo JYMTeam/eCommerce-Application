@@ -332,33 +332,36 @@ const initialCartItem = {
 
 export const parseCartListItems = (cartItems: LineItem[]) => {
   let { image, price, discount, quantity, totalCost } = initialCartItem;
-  return cartItems.map(({ name, variant, price: itemPrice, totalPrice }) => {
-    if (variant.images && variant.images.length !== 0) {
-      image = variant.images[0].url;
-    }
-    const currencyCode = itemPrice.value.currencyCode;
-    const centAmount = itemPrice.value.centAmount;
-    const totalCentAmount = totalPrice.centAmount;
-    const discountCentAmount = getDiscount(itemPrice);
+  return cartItems.map(
+    ({ name, variant, price: itemPrice, totalPrice }, cartArrIndex) => {
+      if (variant.images && variant.images.length !== 0) {
+        image = variant.images[0].url;
+      }
+      const currencyCode = itemPrice.value.currencyCode;
+      const centAmount = itemPrice.value.centAmount;
+      const totalCentAmount = totalPrice.centAmount;
+      const discountCentAmount = getDiscount(itemPrice);
 
-    const formatedPrice = formatPrice(centAmount, currencyCode);
-    const formatedTotalPrice = formatPrice(totalCentAmount, currencyCode);
-    const formatedDiscount = discountCentAmount
-      ? formatPrice(discountCentAmount, currencyCode)
-      : "";
+      const formatedPrice = formatPrice(centAmount, currencyCode);
+      const formatedTotalPrice = formatPrice(totalCentAmount, currencyCode);
+      const formatedDiscount = discountCentAmount
+        ? formatPrice(discountCentAmount, currencyCode)
+        : "";
 
-    price = `${formatedPrice}`;
-    discount = `${formatedDiscount}`;
-    totalCost = `${formatedTotalPrice}`;
+      price = `${formatedPrice}`;
+      discount = `${formatedDiscount}`;
+      totalCost = `${formatedTotalPrice}`;
 
-    const parsedCartItem: IParsedCartItem = {
-      name: name[DEFAULT_LOCALE],
-      image,
-      price,
-      discount,
-      quantity,
-      totalCost,
-    };
-    return parsedCartItem;
-  });
+      const parsedCartItem: IParsedCartItem = {
+        cartArrIndex,
+        name: name[DEFAULT_LOCALE],
+        image,
+        price,
+        discount,
+        quantity,
+        totalCost,
+      };
+      return parsedCartItem;
+    },
+  );
 };

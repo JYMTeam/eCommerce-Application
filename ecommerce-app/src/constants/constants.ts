@@ -99,6 +99,7 @@ const NOTIFICATION_MESSAGES = {
   SUCCESS_ADDRESS_REMOVE: "Your address has been successfully removed",
   SUCCESS_PRODUCT_ADD: "Bag successfully added to cart",
   SUCCESS_PRODUCT_REMOVE: "Bag successfully removed from cart",
+  SUCCESS_ALL_PRODUCTS_REMOVE: "Your cart has been successfully emptied",
 };
 
 export {

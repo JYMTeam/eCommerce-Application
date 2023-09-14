@@ -8,6 +8,7 @@ import { ClientResponse } from "@commercetools/sdk-client-v2";
 import { ErrorResponse } from "@commercetools/platform-sdk";
 import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
 import { statusCode } from "../../types";
+import { CartRemoveAllButton } from "./CartRemoveAllButton";
 
 export default function CartList() {
   const { cart, errorMessage, tokenAnonymData } = useAppSelector(
@@ -52,6 +53,7 @@ export default function CartList() {
 
   return (
     <>
+      <CartRemoveAllButton />
       <List component="ul">
         {parsedCartListItems.map((item, index) => (
           <Box key={index} component={"nav"}>
