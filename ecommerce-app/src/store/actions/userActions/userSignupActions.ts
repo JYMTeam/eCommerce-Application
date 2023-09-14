@@ -13,7 +13,7 @@ import {
   notificationActive,
 } from "../../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
-import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientbuilderManager";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
 
 export const fetchUserSignup = (
   userSignupOptions: CustomerDraft,

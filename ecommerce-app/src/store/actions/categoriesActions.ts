@@ -7,7 +7,7 @@ import {
   categoriesFetchSuccess,
   categoriesFetching,
 } from "../slices/categoriesSlice";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager";
 
 export const fetchCategories = () => {
   return async (dispatch: AppDispatch) => {

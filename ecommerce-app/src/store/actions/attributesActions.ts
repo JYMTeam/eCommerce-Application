@@ -8,7 +8,7 @@ import {
 } from "../slices/attributesSlice";
 import { PRODUCT_TYPE_INDEX } from "../../constants/constants";
 // import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager";
 
 export const fetchAttributes = () => {
   return async (dispatch: AppDispatch) => {

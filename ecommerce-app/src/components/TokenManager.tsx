@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { fetchLoginWithToken } from "../store/actions/userActions/userLoginActions";
-import {
-  anonymTokenCache,
-  passToken,
-} from "../commercetools-sdk/PassTokenCache/PassTokenCache";
-import { clientBuilderManager } from "../commercetools-sdk/builders/ClientbuilderManager";
+import { clientBuilderManager } from "../commercetools-sdk/builders/ClientBuilderManager";
 
 export function TokenManager() {
   const [isPassTokenVerified, setPassTokenVerified] = useState(false);
@@ -23,11 +19,7 @@ export function TokenManager() {
         tokenPassData?.refreshToken !== "" &&
         tokenPassData?.refreshToken
       ) {
-        console.log("passToken before");
-        console.log(passToken);
         await dispatch(fetchLoginWithToken(tokenPassData.refreshToken));
-        console.log("passToken after");
-        console.log(passToken);
         setPassTokenVerified(true);
       }
     };
@@ -39,15 +31,11 @@ export function TokenManager() {
         tokenAnonymData?.refreshToken !== "" &&
         tokenAnonymData?.refreshToken
       ) {
-        console.log("anonymToken before");
-        console.log(anonymTokenCache);
         clientBuilderManager.switchToRefreshTokenFlow(
           tokenAnonymData.refreshToken,
         );
         // dispatch(fetchGetOrCreateCart(tokenAnonymData.refreshToken));
         // await dispatch(fetchLoginWithToken(tokenAnonymData.refreshToken));
-        console.log("anonymToken after");
-        console.log(anonymTokenCache);
         setAnonymTokenVerified(true);
       }
     };
