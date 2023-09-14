@@ -24,7 +24,7 @@ import {
 import { useState } from "react";
 import { CustomerDraft } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchUserSignup } from "../../store/actions/userSignupActions";
+import { fetchUserSignup } from "../../store/actions/userActions/userSignupActions";
 import { setSignupSchema } from "../../utils/validation-schemas";
 import { userSignupClearErrorMessage } from "../../store/slices/userSignupSlice";
 import { successMessageHandler } from "./signupHelpers";

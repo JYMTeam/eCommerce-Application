@@ -1,16 +1,19 @@
 import { ClientResponse } from "@commercetools/sdk-client-v2";
-import { AppDispatch } from "..";
+import { AppDispatch } from "../..";
 import { AuthErrorResponse, CustomerDraft } from "@commercetools/platform-sdk";
 import {
   userSignupFetchError,
   userSignupFetchSuccess,
   userSignupFetching,
-} from "../slices/userSignupSlice";
+} from "../../slices/userSignupSlice";
 import { fetchUserLogin } from "./userLoginActions";
-import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
-import { INotification, notificationActive } from "../slices/notificationSlice";
-import { NOTIFICATION_MESSAGES } from "../../constants/constants";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
+import { convertCustomerDraftToUserAuthOptions } from "../../../utils/utils";
+import {
+  INotification,
+  notificationActive,
+} from "../../slices/notificationSlice";
+import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchUserSignup = (
   userSignupOptions: CustomerDraft,

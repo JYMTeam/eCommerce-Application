@@ -10,7 +10,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchCheckCartAndRemoveAll } from "../../store/actions/cartActions";
+import { fetchCheckCartAndRemoveAll } from "../../store/actions/cartActions/cartRemoveActions";
 
 export const CartRemoveAllButton = () => {
   const { cart } = useAppSelector((state) => state.cart);

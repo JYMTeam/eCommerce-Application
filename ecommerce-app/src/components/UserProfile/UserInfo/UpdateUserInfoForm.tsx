@@ -11,7 +11,7 @@ import { subtractYears } from "../../../utils/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { IUpdatePersonalValues } from "../../../types";
-import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userUpdateActions";
+import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userActions/userUpdateActions";
 import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
 import { successMessageHandler } from "../../SignupForm/signupHelpers";
 import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";

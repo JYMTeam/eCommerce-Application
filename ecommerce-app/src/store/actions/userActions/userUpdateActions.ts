@@ -1,10 +1,10 @@
 import { ClientResponse } from "@commercetools/sdk-client-v2";
-import { AppDispatch } from "..";
+import { AppDispatch } from "../..";
 import {
   userLoginFetchError,
   userLoginFetchSuccess,
   userLoginFetching,
-} from "../slices/userLoginSlice";
+} from "../../slices/userLoginSlice";
 import {
   AuthErrorResponse,
   Customer,
@@ -14,10 +14,13 @@ import {
 import {
   IUpdateAddressInitialValues,
   IUpdatePersonalValues,
-} from "../../types";
-import { INotification, notificationActive } from "../slices/notificationSlice";
-import { NOTIFICATION_MESSAGES } from "../../constants/constants";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
+} from "../../../types";
+import {
+  INotification,
+  notificationActive,
+} from "../../slices/notificationSlice";
+import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchUpdateUserPersonalInfo = (
   userCurrentData: Customer,

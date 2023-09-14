@@ -7,7 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Formik, Form } from "formik";
 import { initialLoginValues } from "../../constants/constants";
-import { fetchUserLogin } from "../../store/actions/userLoginActions";
+import { fetchUserLogin } from "../../store/actions/userActions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { convertToUserAuthOptions } from "../../utils/utils";

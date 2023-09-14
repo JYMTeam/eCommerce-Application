@@ -3,7 +3,7 @@ import {
   TokenStore,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
-import { AppDispatch } from "..";
+import { AppDispatch } from "../..";
 import {
   userLoginFetchError,
   userLoginFetchSuccess,
@@ -11,17 +11,24 @@ import {
   setUserToken,
   userLoginReset,
   setIsSuccess,
-} from "../slices/userLoginSlice";
+} from "../../slices/userLoginSlice";
 import {
   anonymTokenCache,
   passToken,
-} from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
+} from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { AuthErrorResponse, ErrorResponse } from "@commercetools/platform-sdk";
-import { INotification, notificationActive } from "../slices/notificationSlice";
-import { cartFetchError, cartReset, setAnonymToken } from "../slices/cartSlice";
-import { fetchGetCart } from "./cartActions";
-import { NOTIFICATION_MESSAGES } from "../../constants/constants";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
+import {
+  INotification,
+  notificationActive,
+} from "../../slices/notificationSlice";
+import {
+  cartFetchError,
+  cartReset,
+  setAnonymToken,
+} from "../../slices/cartSlice";
+import { fetchGetCart } from "../cartActions/cartActions";
+import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,

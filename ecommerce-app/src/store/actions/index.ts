@@ -1,12 +1,13 @@
-import * as LoginActionCreators from "./userLoginActions";
-import * as UserUpdateActionCreators from "./userUpdateActions";
-import * as SignupActionCreators from "./userSignupActions";
+import * as LoginActionCreators from "./userActions/userLoginActions";
+import * as UserUpdateActionCreators from "./userActions/userUpdateActions";
+import * as SignupActionCreators from "./userActions/userSignupActions";
 import * as ProductsActionCreators from "./productsActions";
 import * as ProductDetailsActionCreators from "./productDetailsActions";
 import * as AttributeActionsCreators from "./attributesActions";
 import * as NotificationActionsCreators from "./notificationActions";
 import * as CategoriesActionsCreators from "./attributesActions";
-import * as CartActionsCreators from "./cartActions";
+import * as CartActionsCreators from "./cartActions/cartActions";
+import * as CartRemoveActionsCreators from "./cartActions/cartRemoveActions";
 
 const ActionCreators = {
   ...LoginActionCreators,
@@ -18,6 +19,7 @@ const ActionCreators = {
   ...NotificationActionsCreators,
   ...CategoriesActionsCreators,
   ...CartActionsCreators,
+  ...CartRemoveActionsCreators,
 };
 
 export default ActionCreators;

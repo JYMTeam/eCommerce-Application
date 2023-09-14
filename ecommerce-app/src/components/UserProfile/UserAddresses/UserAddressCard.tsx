@@ -7,7 +7,7 @@ import { Address } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 import { UpdateUserAddressCardForm } from "./UpdateUserAddressCardForm";
-import { fetchDeleteUserAddress } from "../../../store/actions/userUpdateActions";
+import { fetchDeleteUserAddress } from "../../../store/actions/userActions/userUpdateActions";
 
 const EditButtonStyles = {
   zIndex: "1",

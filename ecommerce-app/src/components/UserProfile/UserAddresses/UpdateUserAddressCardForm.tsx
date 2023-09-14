@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   fetchCreateUserAddress,
   fetchUpdateUserAddress,
-} from "../../../store/actions/userUpdateActions";
+} from "../../../store/actions/userActions/userUpdateActions";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 
 export interface IUpdateUserAddressProps {
