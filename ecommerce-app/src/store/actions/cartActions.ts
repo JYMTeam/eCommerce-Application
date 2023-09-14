@@ -13,8 +13,6 @@ import {
   setAnonymToken,
 } from "../slices/cartSlice";
 import { anonymTokenCache } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
-import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
-import { getApiAnonymRoot } from "../../commercetools-sdk/builders/ClientBuilderAnonym";
 import { INotification, notificationActive } from "../slices/notificationSlice";
 import {
   DEFAULT_CURRENCY,
@@ -23,15 +21,21 @@ import {
 } from "../../constants/constants";
 import { formatProductsErrorMessage } from "../../commercetools-sdk/errors/errors";
 import { statusCode } from "../../types";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchCreateCart = (existingToken?: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
-      const apiRoot = existingToken
-        ? getApiTokenRoot(existingToken)
-        : getApiAnonymRoot();
-      const answer = await apiRoot
+      if (existingToken) {
+        await clientBuilderManager.switchToRefreshTokenFlow(existingToken);
+      } else {
+        await clientBuilderManager.switchToAnonymFlow();
+      }
+      // const apiRoot = existingToken
+      //   ? getApiTokenRoot(existingToken)
+      //   : getApiAnonymRoot();
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()
         .post({
@@ -74,7 +78,7 @@ export const fetchAddProductsCart = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
-      const answer = await getApiTokenRoot(existingToken)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()
         .withId({ ID: cart.id })
@@ -124,7 +128,7 @@ const fetchRemoveProductFromCart = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
-      const answer = await getApiTokenRoot(existingToken)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()
         .withId({ ID: cart.id })
@@ -182,7 +186,7 @@ const fetchRemoveAllProductsFromCart = (existingToken: string, cart: Cart) => {
         return removeAction;
       });
 
-      const answer = await getApiTokenRoot(existingToken)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()
         .withId({ ID: cart.id })
@@ -228,7 +232,7 @@ const fetchRemoveCart = (existingToken: string, cart: Cart) => {
     try {
       dispatch(cartFetching());
 
-      const answer = await getApiTokenRoot(existingToken)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()
         .withId({ ID: cart.id })
@@ -273,7 +277,7 @@ export const fetchGetCart = (existingToken: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(cartFetching());
-      const answer = await getApiTokenRoot(existingToken)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .activeCart()
         .get()

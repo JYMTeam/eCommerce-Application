@@ -23,8 +23,10 @@ export class ClientBuilderManager {
 
   private static customerScopes: string[] =
     ClientBuilderManager.getCustomerScopes();
+
   private static authMiddlewareOptions =
     ClientBuilderManager.getAuthMiddlewareOptions();
+
   private static httpMiddlewareOptions: HttpMiddlewareOptions = {
     host: ClientBuilderManager.basicOptions.apiHost,
     fetch,
@@ -33,6 +35,11 @@ export class ClientBuilderManager {
   private static anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     ...ClientBuilderManager.authMiddlewareOptions,
     tokenCache: anonymTokenCache,
+  };
+
+  private static signupAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
+    ...ClientBuilderManager.authMiddlewareOptions,
+    scopes: ClientBuilderManager.basicOptions.defaultScopes,
   };
 
   private static getCustomerScopes() {
@@ -80,6 +87,15 @@ export class ClientBuilderManager {
     return passOptions;
   }
 
+  private getSignupOptions() {
+    const signupAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
+      ...ClientBuilderManager.authMiddlewareOptions,
+      scopes: ClientBuilderManager.basicOptions.defaultScopes,
+    };
+
+    return signupAuthMiddlewareOptions;
+  }
+
   private getRefreshOptions(refreshToken: string) {
     const refreshOptions: RefreshAuthMiddlewareOptions = {
       ...ClientBuilderManager.authMiddlewareOptions,
@@ -118,6 +134,14 @@ export class ClientBuilderManager {
     this.currentClient = new ClientBuilder()
       .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
       .withRefreshTokenFlow(this.getRefreshOptions(refreshToken))
+      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
+      .build();
+  }
+
+  public async switchToSignupFlow(): Promise<void> {
+    this.currentClient = new ClientBuilder()
+      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+      .withAnonymousSessionFlow(this.getSignupOptions())
       .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
       .build();
   }

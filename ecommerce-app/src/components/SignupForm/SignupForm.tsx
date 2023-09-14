@@ -57,13 +57,13 @@ export function SignupForm() {
   const { isLogged, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
-  const { tokenAnonymData } = useAppSelector((state) => state.cart);
+  const { tokenAnonymData, cart } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   const onSubmit = (values: ISignupInitialValues) => {
     const newUser: CustomerDraft = convertToCustomerDraft(values);
-    if (tokenAnonymData) {
-      dispatch(fetchUserSignup(newUser, tokenAnonymData.token));
+    if (tokenAnonymData && cart) {
+      dispatch(fetchUserSignup(newUser, tokenAnonymData.refreshToken));
     } else {
       dispatch(fetchUserSignup(newUser));
     }

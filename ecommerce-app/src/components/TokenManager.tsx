@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { fetchLoginWithToken } from "../store/actions/userLoginActions";
-import { passToken } from "../commercetools-sdk/PassTokenCache/PassTokenCache";
+import {
+  anonymTokenCache,
+  passToken,
+} from "../commercetools-sdk/PassTokenCache/PassTokenCache";
+import { clientBuilderManager } from "../commercetools-sdk/builders/ClientbuilderManager";
 
 export function TokenManager() {
-  const [isTokenVerified, setTokenVerified] = useState(false);
+  const [isPassTokenVerified, setPassTokenVerified] = useState(false);
+  const [isAnonymTokenVerified, setAnonymTokenVerified] = useState(false);
   const { tokenPassData } = useAppSelector((state) => state.userLogin);
+  const { tokenAnonymData } = useAppSelector((state) => state.cart);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const checkTokenAndFetchLogin = async () => {
+    const checkPassTokenAndFetchLogin = async () => {
       if (
-        !isTokenVerified &&
+        !isPassTokenVerified &&
         tokenPassData &&
         tokenPassData?.refreshToken !== "" &&
         tokenPassData?.refreshToken
@@ -22,12 +28,39 @@ export function TokenManager() {
         await dispatch(fetchLoginWithToken(tokenPassData.refreshToken));
         console.log("passToken after");
         console.log(passToken);
-        setTokenVerified(true);
+        setPassTokenVerified(true);
       }
     };
 
-    checkTokenAndFetchLogin();
-  }, [dispatch, tokenPassData, isTokenVerified]);
+    const checkAnonymTokenAndFetchLogin = async () => {
+      if (
+        !isAnonymTokenVerified &&
+        tokenAnonymData &&
+        tokenAnonymData?.refreshToken !== "" &&
+        tokenAnonymData?.refreshToken
+      ) {
+        console.log("anonymToken before");
+        console.log(anonymTokenCache);
+        clientBuilderManager.switchToRefreshTokenFlow(
+          tokenAnonymData.refreshToken,
+        );
+        // dispatch(fetchGetOrCreateCart(tokenAnonymData.refreshToken));
+        // await dispatch(fetchLoginWithToken(tokenAnonymData.refreshToken));
+        console.log("anonymToken after");
+        console.log(anonymTokenCache);
+        setAnonymTokenVerified(true);
+      }
+    };
+
+    checkPassTokenAndFetchLogin();
+    checkAnonymTokenAndFetchLogin();
+  }, [
+    dispatch,
+    tokenPassData,
+    tokenAnonymData,
+    isPassTokenVerified,
+    isAnonymTokenVerified,
+  ]);
 
   return <></>;
 }

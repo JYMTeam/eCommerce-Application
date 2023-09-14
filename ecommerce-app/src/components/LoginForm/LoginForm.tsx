@@ -32,7 +32,9 @@ export function LoginForm() {
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
         if (tokenAnonymData) {
-          dispatch(fetchUserLogin(existingUser, tokenAnonymData.token)).catch();
+          dispatch(
+            fetchUserLogin(existingUser, tokenAnonymData.refreshToken),
+          ).catch();
         } else {
           dispatch(fetchUserLogin(existingUser)).catch();
         }

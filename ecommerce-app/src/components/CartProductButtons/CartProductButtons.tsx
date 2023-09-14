@@ -66,16 +66,16 @@ export function CartProductButtons({
 
   useEffect(() => {
     const addProduct = () => {
-      if (cart && tokenAnonymData?.token && !isLogged) {
+      if (cart && tokenAnonymData?.refreshToken && !isLogged) {
         dispatch(
           fetchAddProductsCart(
-            tokenAnonymData?.token,
+            tokenAnonymData?.refreshToken,
             cart,
             products[productArrId],
             productQuantity,
           ),
         );
-      } else if (cart && tokenPassData?.token) {
+      } else if (cart && tokenPassData?.refreshToken) {
         dispatch(
           fetchAddProductsCart(
             tokenPassData?.token,
@@ -153,8 +153,8 @@ export function CartProductButtons({
   const addButtonHandler = async () => {
     clearAnimation();
     const currentToken = isLogged
-      ? tokenPassData?.token
-      : tokenAnonymData?.token;
+      ? tokenPassData?.refreshToken
+      : tokenAnonymData?.refreshToken;
     await dispatch(fetchGetOrCreateCart(currentToken));
     setIsAddProduct(true);
   };

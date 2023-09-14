@@ -7,10 +7,10 @@ import {
   userSignupFetching,
 } from "../slices/userSignupSlice";
 import { fetchUserLogin } from "./userLoginActions";
-import { getApiSignupRoot } from "../../commercetools-sdk/builders/ClientBuilderSignup";
 import { convertCustomerDraftToUserAuthOptions } from "../../utils/utils";
 import { INotification, notificationActive } from "../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../constants/constants";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchUserSignup = (
   userSignupOptions: CustomerDraft,
@@ -19,9 +19,12 @@ export const fetchUserSignup = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userSignupFetching());
+      const userAuthOptions =
+        convertCustomerDraftToUserAuthOptions(userSignupOptions);
 
+      await clientBuilderManager.switchToSignupFlow();
       //signup
-      await getApiSignupRoot()
+      await clientBuilderManager.requestCurrentBuilder
         .customers()
         .post({
           body: userSignupOptions,
@@ -33,13 +36,13 @@ export const fetchUserSignup = (
         type: "success",
       };
       dispatch(notificationActive(successMessage));
-      const existingUser =
-        convertCustomerDraftToUserAuthOptions(userSignupOptions);
-      if (existingUser) {
+      if (userAuthOptions) {
         if (existingAnonymToken) {
-          dispatch(fetchUserLogin(existingUser, existingAnonymToken));
+          console.log("anonym token after sign up");
+          console.log(existingAnonymToken);
+          dispatch(fetchUserLogin(userAuthOptions, existingAnonymToken, true));
         } else {
-          dispatch(fetchUserLogin(existingUser));
+          dispatch(fetchUserLogin(userAuthOptions));
         }
       }
     } catch (e) {

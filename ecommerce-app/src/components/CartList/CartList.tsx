@@ -21,7 +21,9 @@ export default function CartList() {
   const [emptyCartError, setEmptyCartError] = useState(false);
 
   const dispatch = useAppDispatch();
-  const currentToken = isLogged ? tokenPassData?.token : tokenAnonymData?.token;
+  const currentToken = isLogged
+    ? tokenPassData?.refreshToken
+    : tokenAnonymData?.refreshToken;
 
   useEffect(() => {
     const getActiveCart = async (currentToken: string) => {

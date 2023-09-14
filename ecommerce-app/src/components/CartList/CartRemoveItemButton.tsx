@@ -26,9 +26,9 @@ export const CartRemoveItemButton = ({ cartArrIndex }: ICartItemRemove) => {
     let currentToken = "";
 
     if (isLogged && tokenPassData) {
-      currentToken = tokenPassData.token;
+      currentToken = tokenPassData.refreshToken || "";
     } else if (tokenAnonymData) {
-      currentToken = tokenAnonymData.token;
+      currentToken = tokenAnonymData.refreshToken || "";
     }
 
     if (currentToken && cart) {

@@ -12,7 +12,6 @@ import {
   userLoginReset,
   setIsSuccess,
 } from "../slices/userLoginSlice";
-import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
 import {
   anonymTokenCache,
   passToken,
@@ -24,20 +23,20 @@ import {
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
-import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 import {
   IUpdateAddressInitialValues,
   IUpdatePersonalValues,
 } from "../../types";
 import { INotification, notificationActive } from "../slices/notificationSlice";
-import { cartFetchError, cartReset } from "../slices/cartSlice";
+import { cartFetchError, cartReset, setAnonymToken } from "../slices/cartSlice";
 import { fetchGetCart } from "./cartActions";
 import { NOTIFICATION_MESSAGES } from "../../constants/constants";
-import { getApiRefreshTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithRefreshToken";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientbuilderManager";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,
   existingAnonymToken?: string,
+  signupMode?: boolean,
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
@@ -49,32 +48,37 @@ export const fetchUserLogin = (
           refreshToken: undefined,
         };
         passToken.set({ ...cache });
+        await dispatch(setUserToken(cache));
 
-        const apiRoot = getApiTokenRoot(existingAnonymToken);
-        const bodyParams = {
-          activeCartSignInMode: "MergeWithExistingCustomerCart",
-          // updateProductData: true,
-        };
-
-        const answer = await apiRoot
+        if (existingAnonymToken && signupMode) {
+          await clientBuilderManager.switchToRefreshTokenFlow(
+            existingAnonymToken,
+          );
+        }
+        await clientBuilderManager.requestCurrentBuilder
           .me()
           .login()
           .post({
             body: {
               email: userAuthOptions.username,
               password: userAuthOptions.password,
-              ...bodyParams,
+              activeCartSignInMode: "MergeWithExistingCustomerCart",
             },
           })
           .execute();
-        console.log(answer);
-        // dispatch(setIsSuccess());
 
         anonymTokenCache.set({ ...cache });
-        const answer2 = await getApiPassRoot(userAuthOptions)
+        await dispatch(setAnonymToken(cache));
+        await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
+        const answer2 = await clientBuilderManager.requestCurrentBuilder
           .me()
           .get()
           .execute();
+        const refreshToken = passToken.get().refreshToken;
+
+        if (refreshToken) {
+          await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
+        }
         dispatch(setIsSuccess());
 
         const successLoginMessage: INotification = {
@@ -82,21 +86,20 @@ export const fetchUserLogin = (
           type: "success",
         };
         dispatch(userLoginFetchSuccess(answer2.body));
-        // if (!existingAnonymToken) {
         dispatch(setUserToken(passToken.get()));
-        // dispatch(fetchGetCart(passToken.get().token));
-        // } else {
-        // dispatch(fetchGetCart(existingAnonymToken));
-
-        // }
-        console.log("token after login");
-        // console.log(passToken.get());
-        console.log(anonymTokenCache.get());
-        console.log(passToken.get());
         dispatch(notificationActive(successLoginMessage));
       } else {
         dispatch(userLoginFetching());
-        const answer = await getApiPassRoot(userAuthOptions)
+        const cache: TokenStore = {
+          token: "",
+          expirationTime: 0,
+          refreshToken: undefined,
+        };
+        passToken.set({ ...cache });
+        await dispatch(setUserToken(cache));
+
+        await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
+        const answer = await clientBuilderManager.requestCurrentBuilder
           .me()
           .login()
           .post({
@@ -107,6 +110,10 @@ export const fetchUserLogin = (
           })
           .execute();
         dispatch(setIsSuccess());
+        const refreshToken = passToken.get().refreshToken;
+        if (refreshToken) {
+          await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
+        }
 
         const successLoginMessage: INotification = {
           message: "You have successfully logged in!",
@@ -141,21 +148,12 @@ export const fetchLoginWithToken = (existingRefreshToken: string) => {
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-
-      const answer = await getApiRefreshTokenRoot(existingRefreshToken)
-        .me()
-        .get()
-        .execute();
-      const answer2 = await getApiRefreshTokenRoot(existingRefreshToken)
-        .me()
-        .get()
-        .execute();
-      const answer3 = await getApiRefreshTokenRoot(existingRefreshToken)
+      await clientBuilderManager.switchToRefreshTokenFlow(existingRefreshToken);
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .get()
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
-      console.log(answer, answer2, answer3);
       // dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
@@ -187,7 +185,7 @@ export const fetchUpdateUserPersonalInfo = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: updateCustomer,
@@ -307,7 +305,7 @@ export const fetchUpdateUserAddress = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: updateCustomer,
@@ -365,7 +363,7 @@ export const fetchCreateUserAddress = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answerAddress = await getApiTokenRoot(existingToken.token)
+      const answerAddress = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: createAddressCustomer,
@@ -376,7 +374,7 @@ export const fetchCreateUserAddress = (
           answerAddress.body,
           values,
         );
-        const answerFlags = await getApiTokenRoot(existingToken.token)
+        const answerFlags = await clientBuilderManager.requestCurrentBuilder
           .me()
           .post({
             body: updateFlagsCustomer,
@@ -463,7 +461,7 @@ export const fetchDeleteUserAddress = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: updateCustomer,

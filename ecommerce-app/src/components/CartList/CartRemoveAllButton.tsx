@@ -41,8 +41,8 @@ export const CartRemoveAllButton = () => {
   const handleOnClickRemoveAll = () => {
     setOpen(false);
     const currentToken = isLogged
-      ? tokenPassData?.token
-      : tokenAnonymData?.token;
+      ? tokenPassData?.refreshToken
+      : tokenAnonymData?.refreshToken;
     if (cart && currentToken) {
       dispatch(fetchCheckCartAndRemoveAll(currentToken, cart));
     }
