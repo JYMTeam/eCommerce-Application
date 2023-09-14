@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { fetchLoginWithToken } from "../store/actions/userActions/userLoginActions";
-import { clientBuilderManager } from "../commercetools-sdk/builders/ClientBuilderManager1";
+import { clientBuilderManager } from "../commercetools-sdk/builders/ClientBuilderManager";
 
 export function TokenManager() {
   const [isPassTokenVerified, setPassTokenVerified] = useState(false);

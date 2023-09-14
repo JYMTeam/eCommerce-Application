@@ -6,7 +6,7 @@ import {
   productDetailsFetchError,
 } from "../slices/productDetailsSlice";
 // import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager1";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager";
 
 export const fetchProductDetails = (id: string) => {
   return async (dispatch: AppDispatch) => {

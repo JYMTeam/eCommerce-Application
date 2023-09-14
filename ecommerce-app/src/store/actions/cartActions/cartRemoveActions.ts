@@ -16,7 +16,7 @@ import {
 } from "../../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
 import { formatProductsErrorMessage } from "../../../commercetools-sdk/errors/errors";
-import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager1";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
 import { fetchGetCart } from "./cartActions";
 
 const fetchRemoveProductFromCart = (

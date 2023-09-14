@@ -28,7 +28,7 @@ import {
 } from "../../slices/cartSlice";
 import { fetchGetCart } from "../cartActions/cartActions";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
-import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager1";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
 
 export const fetchUserLogin = (
   userAuthOptions: UserAuthOptions,

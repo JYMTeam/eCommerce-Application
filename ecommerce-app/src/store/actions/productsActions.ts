@@ -14,7 +14,7 @@ import {
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { convertUSDToCents } from "../../utils/utils";
 import { SelectedFilterAndSortValues, SortMethods } from "../../types";
-import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager1";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager";
 
 const FILTER_QUERY_ATTRIBUTES_BEGIN = "variants.attributes";
 const FILTER_QUERY_PRICE_BEGIN = "variants.price.centAmount";
