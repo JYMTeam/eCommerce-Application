@@ -23,7 +23,7 @@ import {
 } from "../../../constants/constants";
 import { formatProductsErrorMessage } from "../../../commercetools-sdk/errors/errors";
 import { statusCode } from "../../../types";
-import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager1";
 
 export const fetchCreateCart = (existingToken?: string) => {
   return async (dispatch: AppDispatch) => {

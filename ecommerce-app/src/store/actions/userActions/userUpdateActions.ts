@@ -20,7 +20,7 @@ import {
   notificationActive,
 } from "../../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
-import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager1";
 
 export const fetchUpdateUserPersonalInfo = (
   userCurrentData: Customer,
