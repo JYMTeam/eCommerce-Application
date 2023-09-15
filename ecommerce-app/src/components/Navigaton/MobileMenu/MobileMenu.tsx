@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./drawer.css";
+import "./MobileMenu.css";
 import { SwipeableDrawer } from "@mui/material";
 import { Stack, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { MenuItems } from "../MenuItems/MenuItems";
 
-export const Drawer = ({
+export const MobileMenu = ({
   shouldCloseDrawer,
 }: {
   shouldCloseDrawer: boolean;

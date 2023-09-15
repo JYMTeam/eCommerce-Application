@@ -6,7 +6,7 @@ import { parseProducts } from "../../utils/dataParsers";
 import { Grid, Typography, Chip } from "@mui/material";
 import { IParsedProduct } from "../../types";
 import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
-import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
+import { CartProductButtons } from "../Cart/CartProductButtons/CartProductButtons";
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;

@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge, BadgeProps, Box, Button, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CartIcon from "../../assets/cart.svg";
-import { useAppSelector } from "../../hooks/redux";
+import CartIcon from "../../../assets/cart.svg";
+import { useAppSelector } from "../../../hooks/redux";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {

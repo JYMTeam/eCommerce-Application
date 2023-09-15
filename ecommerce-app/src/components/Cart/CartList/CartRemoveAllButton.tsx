@@ -9,8 +9,8 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchCheckCartAndRemoveAll } from "../../store/actions/cartActions/cartRemoveActions";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { fetchCheckCartAndRemoveAll } from "../../../store/actions/cartActions/cartRemoveActions";
 
 export const CartRemoveAllButton = () => {
   const { cart } = useAppSelector((state) => state.cart);

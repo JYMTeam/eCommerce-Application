@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
-import CartList from "../components/CartList/CartList";
+import CartList from "../components/Cart/CartList/CartList";
 
 export function CartPage() {
   return (

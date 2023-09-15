@@ -1,6 +1,6 @@
 import React from "react";
-import errorGif from "../../assets/error-404.gif";
-import { MissingPageTemplate } from "../../components/MissingPageTemplate";
+import errorGif from "../../../assets/error-404.gif";
+import { MissingPageTemplate } from "../../MissingPageTemplate";
 
 export const CartEmpty = () => {
   const pageData = {

@@ -3,9 +3,9 @@ import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import { MenuItems } from "./MenuItems";
-import { Theme } from "../Theme";
+import { Theme } from "../../Theme";
 import { Provider } from "react-redux";
-import { setupStore } from "../../store";
+import { setupStore } from "../../../store";
 
 describe("MenuItems Component", () => {
   it("displays main menu elements", () => {

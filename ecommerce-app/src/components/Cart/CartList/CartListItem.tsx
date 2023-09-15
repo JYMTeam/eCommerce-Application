@@ -7,7 +7,7 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { IParsedCartItem } from "../../types";
+import { IParsedCartItem } from "../../../types";
 import { CartRemoveItemButton } from "./CartRemoveItemButton";
 
 interface ICartListItemProps {

@@ -19,7 +19,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
-import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
+import { CartProductButtons } from "../Cart/CartProductButtons/CartProductButtons";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { IParsedProduct } from "../../types";
 

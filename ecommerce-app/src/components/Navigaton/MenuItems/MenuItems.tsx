@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Divider, useMediaQuery } from "@mui/material";
 import { Button } from "@mui/material";
-import { useAppSelector } from "../../hooks/redux";
-import { Theme } from "../Theme";
+import { useAppSelector } from "../../../hooks/redux";
+import { Theme } from "../../Theme";
 import { UserProfileMenuItem } from "./UserProfileMenuItem";
 import { CartMenuItem } from "./CartMenuItem";
 
