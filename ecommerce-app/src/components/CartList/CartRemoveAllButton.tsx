@@ -10,13 +10,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchCheckCartAndRemoveAll } from "../../store/actions/cartActions";
+import { fetchCheckCartAndRemoveAll } from "../../store/actions/cartActions/cartRemoveActions";
 
 export const CartRemoveAllButton = () => {
-  const { cart, tokenAnonymData } = useAppSelector((state) => state.cart);
-  const { tokenPassData, isLogged } = useAppSelector(
-    (state) => state.userLogin,
-  );
+  const { cart } = useAppSelector((state) => state.cart);
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -40,11 +37,8 @@ export const CartRemoveAllButton = () => {
 
   const handleOnClickRemoveAll = () => {
     setOpen(false);
-    const currentToken = isLogged
-      ? tokenPassData?.token
-      : tokenAnonymData?.token;
-    if (cart && currentToken) {
-      dispatch(fetchCheckCartAndRemoveAll(currentToken, cart));
+    if (cart) {
+      dispatch(fetchCheckCartAndRemoveAll(cart));
     }
   };
 

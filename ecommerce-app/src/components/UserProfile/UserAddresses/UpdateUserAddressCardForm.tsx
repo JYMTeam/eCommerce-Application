@@ -24,7 +24,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import {
   fetchCreateUserAddress,
   fetchUpdateUserAddress,
-} from "../../../store/actions/userLoginActions";
+} from "../../../store/actions/userActions/userUpdateActions";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 
 export interface IUpdateUserAddressProps {
@@ -78,9 +78,7 @@ export function UpdateUserAddressCardForm({
   };
 
   const UpdateAddressSchema = setUpdateUserAddressSchema(schemaOptions);
-  const { loginData, tokenPassData, loading } = useAppSelector(
-    (state) => state.userLogin,
-  );
+  const { loginData, loading } = useAppSelector((state) => state.userLogin);
   const isUserEdit = useAppSelector(
     (state) => state.userEditMode.userAddressCardEdits[addressArrIndex],
   );
@@ -93,18 +91,11 @@ export function UpdateUserAddressCardForm({
   };
 
   const onSubmit = (values: IUpdateAddressInitialValues) => {
-    if (loginData && tokenPassData && tokenPassData?.token !== "") {
+    if (loginData) {
       if (!isNew) {
-        dispatch(
-          fetchUpdateUserAddress(
-            tokenPassData,
-            loginData,
-            addressArrIndex,
-            values,
-          ),
-        );
+        dispatch(fetchUpdateUserAddress(loginData, addressArrIndex, values));
       } else {
-        dispatch(fetchCreateUserAddress(tokenPassData, loginData, values));
+        dispatch(fetchCreateUserAddress(loginData, values));
       }
       handleEditMode();
     }

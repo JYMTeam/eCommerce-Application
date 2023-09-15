@@ -7,7 +7,7 @@ import { Address } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 import { UpdateUserAddressCardForm } from "./UpdateUserAddressCardForm";
-import { fetchDeleteUserAddress } from "../../../store/actions/userLoginActions";
+import { fetchDeleteUserAddress } from "../../../store/actions/userActions/userUpdateActions";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -39,9 +39,7 @@ export const UserAddressCard = ({
   const isEdit = useAppSelector(
     (state) => state.userEditMode.userAddressCardEdits[id],
   );
-  const { loginData, tokenPassData } = useAppSelector(
-    (state) => state.userLogin,
-  );
+  const { loginData } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();
 
   const handleEditMode = () => {
@@ -49,8 +47,8 @@ export const UserAddressCard = ({
   };
 
   const handleDelete = () => {
-    if (loginData && tokenPassData && tokenPassData?.token !== "") {
-      dispatch(fetchDeleteUserAddress(tokenPassData, loginData, id));
+    if (loginData) {
+      dispatch(fetchDeleteUserAddress(loginData, id));
     }
   };
 

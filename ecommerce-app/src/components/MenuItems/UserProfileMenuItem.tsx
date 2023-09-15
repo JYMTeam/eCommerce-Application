@@ -11,7 +11,7 @@ import {
 import { useAppDispatch } from "../../hooks/redux";
 import PersonIcon from "@mui/icons-material/Person";
 import { cartReset } from "../../store/slices/cartSlice";
-import { logoutUser } from "../../store/actions/userLoginActions";
+import { logoutUser } from "../../store/actions/userActions/userLoginActions";
 
 const settings = ["Profile", "Log out"];
 export const UserProfileMenuItem = ({

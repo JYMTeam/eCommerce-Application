@@ -11,7 +11,7 @@ import { subtractYears } from "../../../utils/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
 import { IUpdatePersonalValues } from "../../../types";
-import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userLoginActions";
+import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userActions/userUpdateActions";
 import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
 import { successMessageHandler } from "../../SignupForm/signupHelpers";
 import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
@@ -30,8 +30,9 @@ export function UpdateUserInfoForm({
   dateOfBirth,
 }: IUpdateUserInfoProps) {
   const UpdateUserInfoSchema = setUpdateUserInfoSchema();
-  const { loading, errorMessage, loginData, tokenPassData, isSuccessMessage } =
-    useAppSelector((state) => state.userLogin);
+  const { loading, errorMessage, loginData, isSuccessMessage } = useAppSelector(
+    (state) => state.userLogin,
+  );
   const isUserInfoEdit = useAppSelector(
     (state) => state.userEditMode.userInfoEdit,
   );
@@ -54,10 +55,8 @@ export function UpdateUserInfoForm({
       initialValues={initialUpdateUserInfoValues}
       validationSchema={UpdateUserInfoSchema}
       onSubmit={(values) => {
-        if (loginData && tokenPassData && tokenPassData?.token !== "") {
-          dispatch(
-            fetchUpdateUserPersonalInfo(tokenPassData, loginData, values),
-          );
+        if (loginData) {
+          dispatch(fetchUpdateUserPersonalInfo(loginData, values));
           handleEditMode();
         }
       }}

@@ -3,7 +3,7 @@ import {
   getCustomerScopes,
   httpMiddlewareOptions,
   defaultClient,
-} from "../ClientBuilderDefault";
+} from "../oldBuilders/ClientBuilderDefault";
 import {
   ClientBuilder,
   HttpMiddlewareOptions,

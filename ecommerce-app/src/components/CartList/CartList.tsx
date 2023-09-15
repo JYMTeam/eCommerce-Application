@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { Box, Divider, List } from "@mui/material";
 import CartListItem from "./CartListItem";
 import { parseCartListItems } from "../../utils/dataParsers";
-import { fetchGetCart } from "../../store/actions/cartActions";
+import { fetchGetCart } from "../../store/actions/cartActions/cartActions";
 import { ClientResponse } from "@commercetools/sdk-client-v2";
 import { ErrorResponse } from "@commercetools/platform-sdk";
 import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
@@ -21,12 +21,14 @@ export default function CartList() {
   const [emptyCartError, setEmptyCartError] = useState(false);
 
   const dispatch = useAppDispatch();
-  const currentToken = isLogged ? tokenPassData?.token : tokenAnonymData?.token;
+  const currentToken = isLogged
+    ? tokenPassData?.refreshToken
+    : tokenAnonymData?.refreshToken;
 
   useEffect(() => {
-    const getActiveCart = async (currentToken: string) => {
+    const getActiveCart = async () => {
       try {
-        await dispatch(fetchGetCart(currentToken));
+        await dispatch(fetchGetCart());
       } catch (cartError) {
         const error = cartError as ClientResponse<ErrorResponse>;
         const body = error.body;
@@ -37,7 +39,7 @@ export default function CartList() {
     };
 
     if (currentToken) {
-      getActiveCart(currentToken);
+      getActiveCart();
     }
   }, [dispatch, currentToken]);
 

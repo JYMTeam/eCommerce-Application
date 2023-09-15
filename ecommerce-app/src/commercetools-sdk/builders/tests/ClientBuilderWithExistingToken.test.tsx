@@ -1,4 +1,4 @@
-import { getApiTokenRoot } from "../ClientBuilderWithExistingToken";
+import { getApiTokenRoot } from "../oldBuilders/ClientBuilderWithExistingToken";
 
 describe("getApiTokenRoot", () => {
   it("should create an API token root with existing token", () => {

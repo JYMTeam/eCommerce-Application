@@ -1,165 +1,28 @@
-import {
-  ClientResponse,
-  TokenStore,
-  UserAuthOptions,
-} from "@commercetools/sdk-client-v2";
-import { AppDispatch } from "..";
+import { ClientResponse } from "@commercetools/sdk-client-v2";
+import { AppDispatch } from "../..";
 import {
   userLoginFetchError,
   userLoginFetchSuccess,
   userLoginFetching,
-  setUserToken,
-  userLoginReset,
-  setIsSuccess,
-} from "../slices/userLoginSlice";
-import { getApiPassRoot } from "../../commercetools-sdk/builders/ClientBuilderWithPass";
-import {
-  anonymTokenCache,
-  passToken,
-} from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
+} from "../../slices/userLoginSlice";
 import {
   AuthErrorResponse,
   Customer,
-  ErrorResponse,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
-import { getApiTokenRoot } from "../../commercetools-sdk/builders/ClientBuilderWithExistingToken";
 import {
   IUpdateAddressInitialValues,
   IUpdatePersonalValues,
-} from "../../types";
-import { INotification, notificationActive } from "../slices/notificationSlice";
-import { cartFetchError, cartReset } from "../slices/cartSlice";
-import { fetchGetCart } from "./cartActions";
-import { NOTIFICATION_MESSAGES } from "../../constants/constants";
-
-export const fetchUserLogin = (
-  userAuthOptions: UserAuthOptions,
-  existingAnonymToken?: string,
-) => {
-  return async (dispatch: AppDispatch) => {
-    try {
-      dispatch(userLoginFetching());
-      if (existingAnonymToken) {
-        const cache: TokenStore = {
-          token: "",
-          expirationTime: 0,
-          refreshToken: undefined,
-        };
-        passToken.set({ ...cache });
-
-        const apiRoot = getApiTokenRoot(existingAnonymToken);
-        const bodyParams = {
-          activeCartSignInMode: "MergeWithExistingCustomerCart",
-          // updateProductData: true,
-        };
-
-        const answer = await apiRoot
-          .me()
-          .login()
-          .post({
-            body: {
-              email: userAuthOptions.username,
-              password: userAuthOptions.password,
-              ...bodyParams,
-            },
-          })
-          .execute();
-        console.log(answer);
-        // dispatch(setIsSuccess());
-
-        anonymTokenCache.set({ ...cache });
-        const answer2 = await getApiPassRoot(userAuthOptions)
-          .me()
-          .get()
-          .execute();
-        dispatch(setIsSuccess());
-
-        const successLoginMessage: INotification = {
-          message: NOTIFICATION_MESSAGES.SUCCESS_LOGIN,
-          type: "success",
-        };
-        dispatch(userLoginFetchSuccess(answer2.body));
-        // if (!existingAnonymToken) {
-        dispatch(setUserToken(passToken.get()));
-        // dispatch(fetchGetCart(passToken.get().token));
-        // } else {
-        // dispatch(fetchGetCart(existingAnonymToken));
-
-        // }
-        console.log("token after login");
-        // console.log(passToken.get());
-        console.log(anonymTokenCache.get());
-        console.log(passToken.get());
-        dispatch(notificationActive(successLoginMessage));
-      } else {
-        dispatch(userLoginFetching());
-        const answer = await getApiPassRoot(userAuthOptions)
-          .me()
-          .login()
-          .post({
-            body: {
-              email: userAuthOptions.username,
-              password: userAuthOptions.password,
-            },
-          })
-          .execute();
-        dispatch(setIsSuccess());
-
-        const successLoginMessage: INotification = {
-          message: "You have successfully logged in!",
-          type: "success",
-        };
-
-        dispatch(userLoginFetchSuccess(answer.body.customer));
-        dispatch(setUserToken(passToken.get()));
-        dispatch(notificationActive(successLoginMessage));
-      }
-
-      try {
-        await dispatch(fetchGetCart(passToken.get().token));
-      } catch (cartError) {
-        const error = cartError as ClientResponse<ErrorResponse>;
-        const body = error.body;
-        if (body) {
-          dispatch(cartFetchError(body));
-        }
-      }
-    } catch (loginError) {
-      const error = loginError as ClientResponse<AuthErrorResponse>;
-      const body = error.body;
-      if (body) {
-        dispatch(userLoginFetchError(body));
-      }
-    }
-  };
-};
-
-export const fetchLoginWithToken = (existingToken: TokenStore) => {
-  return async (dispatch: AppDispatch) => {
-    try {
-      dispatch(userLoginFetching());
-
-      const answer = await getApiTokenRoot(existingToken.token)
-        .me()
-        .get()
-        .execute();
-
-      dispatch(userLoginFetchSuccess(answer.body));
-      // dispatch(fetchGetCart(existingToken.token));
-    } catch (e) {
-      const error = e as ClientResponse<AuthErrorResponse>;
-      const body = error.body;
-      if (body) {
-        dispatch(userLoginReset());
-      }
-    }
-  };
-};
+} from "../../../types";
+import {
+  INotification,
+  notificationActive,
+} from "../../slices/notificationSlice";
+import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
+import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
 
 export const fetchUpdateUserPersonalInfo = (
-  existingToken: TokenStore,
   userCurrentData: Customer,
   userUpdatedData: IUpdatePersonalValues,
 ) => {
@@ -178,7 +41,7 @@ export const fetchUpdateUserPersonalInfo = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: updateCustomer,
@@ -201,7 +64,6 @@ export const fetchUpdateUserPersonalInfo = (
 };
 
 export const fetchUpdateUserAddress = (
-  existingToken: TokenStore,
   userCurrentData: Customer,
   addressArrIndex: number,
   values: IUpdateAddressInitialValues,
@@ -298,7 +160,7 @@ export const fetchUpdateUserAddress = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: updateCustomer,
@@ -321,7 +183,6 @@ export const fetchUpdateUserAddress = (
 };
 
 export const fetchCreateUserAddress = (
-  existingToken: TokenStore,
   userCurrentData: Customer,
   values: IUpdateAddressInitialValues,
 ) => {
@@ -356,7 +217,7 @@ export const fetchCreateUserAddress = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answerAddress = await getApiTokenRoot(existingToken.token)
+      const answerAddress = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: createAddressCustomer,
@@ -367,7 +228,7 @@ export const fetchCreateUserAddress = (
           answerAddress.body,
           values,
         );
-        const answerFlags = await getApiTokenRoot(existingToken.token)
+        const answerFlags = await clientBuilderManager.requestCurrentBuilder
           .me()
           .post({
             body: updateFlagsCustomer,
@@ -437,7 +298,6 @@ const updateShippingBillingFlags = (
 };
 
 export const fetchDeleteUserAddress = (
-  existingToken: TokenStore,
   userCurrentData: Customer,
   addressArrIndex: number,
 ) => {
@@ -454,7 +314,7 @@ export const fetchDeleteUserAddress = (
   return async (dispatch: AppDispatch) => {
     try {
       dispatch(userLoginFetching());
-      const answer = await getApiTokenRoot(existingToken.token)
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .post({
           body: updateCustomer,
@@ -473,12 +333,5 @@ export const fetchDeleteUserAddress = (
         dispatch(userLoginFetchError(body));
       }
     }
-  };
-};
-
-export const logoutUser = () => {
-  return async (dispatch: AppDispatch) => {
-    dispatch(userLoginReset());
-    dispatch(cartReset());
   };
 };
