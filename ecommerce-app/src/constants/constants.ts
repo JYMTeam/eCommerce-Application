@@ -114,7 +114,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     githubLink: "https://github.com/yaroslavagd",
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
-    color: "rgb(213, 225, 214)",
+    color: "primary.main",
   },
   {
     name: "Mariya Demidovich",

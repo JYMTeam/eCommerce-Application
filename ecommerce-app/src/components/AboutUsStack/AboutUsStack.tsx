@@ -5,8 +5,8 @@ import { Card } from "@mui/material";
 import PhotoCardPart from "./PhotoCardPart";
 import ContributionCardPart from "./ContributionCardPart";
 
-const CARD_BOX_SHADOW = 3;
 const CARD_MAX_WIDTH = 425;
+const BORDER_WIDTH = 2;
 
 export default function AboutUsStack() {
   return (
@@ -18,18 +18,22 @@ export default function AboutUsStack() {
             sx={{
               display: "flex",
               flexDirection: { md: "row", xs: "column" },
-              boxShadow: CARD_BOX_SHADOW,
-              width: { md: "100%", xs: CARD_MAX_WIDTH },
+              borderRadius: 0,
+              border: `black 1px solid`,
+              width: {
+                md: `calc(100% - ${BORDER_WIDTH}px)`,
+                xs: CARD_MAX_WIDTH,
+              },
             }}
           >
             {index % 2 === 0 ? (
               <>
                 <PhotoCardPart data={teamInfo}></PhotoCardPart>
-                <ContributionCardPart data={teamInfo} />
+                <ContributionCardPart data={teamInfo} index={index} />
               </>
             ) : (
               <>
-                <ContributionCardPart data={teamInfo} />
+                <ContributionCardPart data={teamInfo} index={index} />
                 <PhotoCardPart data={teamInfo}></PhotoCardPart>
               </>
             )}
