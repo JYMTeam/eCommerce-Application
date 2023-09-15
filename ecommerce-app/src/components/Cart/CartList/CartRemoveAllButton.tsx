@@ -45,7 +45,7 @@ export const CartRemoveAllButton = () => {
   return (
     <>
       <Button variant="text" sx={buttonSx} onClick={handleClickOpen}>
-        Empty Cart
+        Empty&nbsp;Cart
       </Button>
       <Dialog
         fullScreen={fullScreen}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { Box, Divider, List } from "@mui/material";
+import { Box, Divider, List, Typography } from "@mui/material";
 import CartListItem from "./CartListItem/CartListItem";
 import { parseCartListItems } from "../../../utils/dataParsers";
 import { fetchGetCart } from "../../../store/actions/cartActions/cartActions";
@@ -55,16 +55,39 @@ export default function CartList() {
   const parsedCartListItems = parseCartListItems(cart.lineItems);
 
   return (
-    <>
-      <CartRemoveAllButton />
-      <List component="ul">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "flex-start",
+        flexGrow: "1",
+        backgroundColor: "background.paper",
+        boxShadow:
+          "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+        borderRadius: "4px",
+        padding: "1em",
+      }}
+    >
+      <Box>
+        <Typography
+          variant="h6"
+          component="h3"
+          sx={{
+            textTransform: "uppercase",
+          }}
+        >
+          Shopping&nbsp;Cart
+        </Typography>
+        <CartRemoveAllButton />
+      </Box>
+      <List component="ul" sx={{ flexGrow: "1", width: "100%" }}>
         {parsedCartListItems.map((item, index) => (
           <Box key={index} component={"nav"}>
-            <CartListItem data={item} />
             <Divider component="li" />
+            <CartListItem data={item} />
           </Box>
         ))}
       </List>
-    </>
+    </Box>
   );
 }
