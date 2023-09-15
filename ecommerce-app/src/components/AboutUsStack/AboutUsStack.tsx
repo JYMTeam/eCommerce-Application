@@ -10,7 +10,7 @@ const BORDER_WIDTH = 2;
 
 export default function AboutUsStack() {
   return (
-    <Stack direction={{ sm: "column" }} spacing={{ sm: 2 }}>
+    <Stack direction={{ sm: "column" }}>
       {teamMembersInfo.map((teamInfo, index) => {
         return (
           <Card
