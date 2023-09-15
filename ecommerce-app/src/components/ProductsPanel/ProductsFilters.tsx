@@ -155,7 +155,6 @@ export default function ProductsAttributes() {
           <Tooltip title="Reset Filters">
             <IconButton
               aria-label="Reset Filters"
-              title="Reset Filters"
               color="primary"
               sx={{
                 ":hover": {
