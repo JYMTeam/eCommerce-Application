@@ -2,17 +2,15 @@ import React from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchCheckCartAndRemoveProduct } from "../../store/actions/cartActions";
+import { fetchCheckCartAndRemoveProduct } from "../../store/actions/cartActions/cartRemoveActions";
 
 interface ICartItemRemove {
   cartArrIndex: number;
 }
 
 export const CartRemoveItemButton = ({ cartArrIndex }: ICartItemRemove) => {
-  const { cart, tokenAnonymData } = useAppSelector((state) => state.cart);
-  const { tokenPassData, isLogged } = useAppSelector(
-    (state) => state.userLogin,
-  );
+  const { cart } = useAppSelector((state) => state.cart);
+
   const RemoveButtonStyles = {
     ":hover": {
       bgcolor: "transparent",
@@ -23,21 +21,9 @@ export const CartRemoveItemButton = ({ cartArrIndex }: ICartItemRemove) => {
   const dispatch = useAppDispatch();
 
   const handleRemoveClick = () => {
-    let currentToken = "";
-
-    if (isLogged && tokenPassData) {
-      currentToken = tokenPassData.token;
-    } else if (tokenAnonymData) {
-      currentToken = tokenAnonymData.token;
-    }
-
-    if (currentToken && cart) {
+    if (cart) {
       dispatch(
-        fetchCheckCartAndRemoveProduct(
-          currentToken,
-          cart,
-          cart.lineItems[cartArrIndex].id,
-        ),
+        fetchCheckCartAndRemoveProduct(cart, cart.lineItems[cartArrIndex].id),
       );
     }
   };

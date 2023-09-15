@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchGetOrCreateCart,
   fetchAddProductsCart,
-  fetchCheckCartAndRemoveProduct,
-} from "../../store/actions/cartActions";
+} from "../../store/actions/cartActions/cartActions";
+import { fetchCheckCartAndRemoveProduct } from "../../store/actions/cartActions/cartRemoveActions";
 import { Theme } from "../Theme";
 import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
 
@@ -66,23 +66,13 @@ export function CartProductButtons({
 
   useEffect(() => {
     const addProduct = () => {
-      if (cart && tokenAnonymData?.token && !isLogged) {
+      if (cart && tokenAnonymData?.refreshToken && !isLogged) {
         dispatch(
-          fetchAddProductsCart(
-            tokenAnonymData?.token,
-            cart,
-            products[productArrId],
-            productQuantity,
-          ),
+          fetchAddProductsCart(cart, products[productArrId], productQuantity),
         );
-      } else if (cart && tokenPassData?.token) {
+      } else if (cart && tokenPassData?.refreshToken) {
         dispatch(
-          fetchAddProductsCart(
-            tokenPassData?.token,
-            cart,
-            products[productArrId],
-            productQuantity,
-          ),
+          fetchAddProductsCart(cart, products[productArrId], productQuantity),
         );
       }
     };
@@ -153,8 +143,8 @@ export function CartProductButtons({
   const addButtonHandler = async () => {
     clearAnimation();
     const currentToken = isLogged
-      ? tokenPassData?.token
-      : tokenAnonymData?.token;
+      ? tokenPassData?.refreshToken
+      : tokenAnonymData?.refreshToken;
     await dispatch(fetchGetOrCreateCart(currentToken));
     setIsAddProduct(true);
   };
@@ -168,9 +158,7 @@ export function CartProductButtons({
     );
 
     if (currentToken && lineItem && cart) {
-      await dispatch(
-        fetchCheckCartAndRemoveProduct(currentToken, cart, lineItem.id),
-      );
+      await dispatch(fetchCheckCartAndRemoveProduct(cart, lineItem.id));
       setSuccess(false);
     }
   };

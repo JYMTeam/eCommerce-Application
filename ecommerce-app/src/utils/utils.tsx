@@ -3,6 +3,12 @@ import { IFormInitialValues, ISignupInitialValues } from "../types";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { DEFAULT_LOCALE } from "../constants/constants";
 
+export const createEmptyCache = () => ({
+  token: "",
+  expirationTime: 0,
+  refreshToken: undefined,
+});
+
 export const subtractYears = (date: Date, years: number) => {
   date.setFullYear(date.getFullYear() - years);
   return date;
