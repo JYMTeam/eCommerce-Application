@@ -146,7 +146,7 @@ export const fetchRemoveProductsCart = (
         })
         .execute();
       const successMessage: INotification = {
-        message: NOTIFICATION_MESSAGES.SUCCESS_PRODUCT_ADD,
+        message: NOTIFICATION_MESSAGES.SUCCESS_PRODUCT_REMOVE,
         type: "success",
       };
       dispatch(cartFetchSuccess(answer.body));
