@@ -22,7 +22,7 @@ export function AboutUsPage() {
             variant="subtitle1"
             component="p"
             align="left"
-            sx={{ border: "gainsboro 5px solid", padding: 0.5, mb: 2 }}
+            sx={{ padding: 0.5, mb: 2 }}
           >
             The JYMTeam was started in 2023 when three girls decided to unite
             and work together on the eCommerce site you are currently visiting.
