@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./ProductsSearchPanel.css";
-import { TextField, Box, IconButton } from "@mui/material";
+import { TextField, Box, IconButton, Tooltip } from "@mui/material";
 import { Search, Clear } from "@mui/icons-material";
 import { useAppDispatch } from "../../../hooks/redux";
 import {
@@ -61,39 +61,42 @@ const SearchComponent = () => {
             inputRef={inputRef}
             InputProps={{
               endAdornment: searchValue && (
-                <IconButton
-                  onClick={handleClearInput}
-                  style={{ color: "#343454" }}
-                  size="small"
-                  sx={{
-                    ":hover": {
-                      bgcolor: "transparent",
-                      color: "primary.dark",
-                    },
-                  }}
-                >
-                  <Clear />
-                </IconButton>
+                <Tooltip title="Reset Search">
+                  <IconButton
+                    onClick={handleClearInput}
+                    color="primary"
+                    size="small"
+                    sx={{
+                      ":hover": {
+                        bgcolor: "transparent",
+                        color: "primary.dark",
+                      },
+                    }}
+                  >
+                    <Clear />
+                  </IconButton>
+                </Tooltip>
               ),
             }}
           />
         </Box>
       )}
-
-      <IconButton
-        className="search-panel__button"
-        onClick={toggleSearch}
-        color="primary"
-        aria-label="search"
-        sx={{
-          ":hover": {
-            bgcolor: "transparent",
-            color: "primary.dark",
-          },
-        }}
-      >
-        <Search />
-      </IconButton>
+      <Tooltip title={isSearchOpen ? "Close Search" : "Open Search"}>
+        <IconButton
+          className="search-panel__button"
+          onClick={toggleSearch}
+          color="primary"
+          aria-label="search"
+          sx={{
+            ":hover": {
+              bgcolor: "transparent",
+              color: "primary.dark",
+            },
+          }}
+        >
+          <Search />
+        </IconButton>
+      </Tooltip>
     </div>
   );
 };

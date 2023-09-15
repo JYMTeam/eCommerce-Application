@@ -45,7 +45,7 @@ export const UserProfileMenuItem = ({
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="User profile">
+        <Tooltip title="User Profile">
           <IconButton
             color="primary"
             aria-label="user-profile"
