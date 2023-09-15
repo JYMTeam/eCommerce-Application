@@ -104,6 +104,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     githubLink: "https://github.com/jkhvatova",
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
+    color: "#f3f0e7",
   },
   {
     name: "Yaroslava Hryzadubova",
@@ -113,6 +114,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     githubLink: "https://github.com/yaroslavagd",
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
+    color: "rgb(213, 225, 214)",
   },
   {
     name: "Mariya Demidovich",
@@ -122,6 +124,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     githubLink: "https://github.com/mariyademy",
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
+    color: "#f3f0e7",
   },
 ];
 

@@ -146,5 +146,6 @@ export interface ITeamMembersInfo {
   bio: string;
   image: string;
   githubLink: string;
-  contributionDesc?: string;
+  contributionDesc: string;
+  color: string;
 }

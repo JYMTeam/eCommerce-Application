@@ -15,7 +15,7 @@ export default function Footer() {
     <Box
       component={"footer"}
       sx={{
-        bgcolor: "primary.dark",
+        bgcolor: "primary.main",
         height: `${FOOTER_MIN_HEIGHT}rem`,
         display: "flex",
         paddingRight: FOOTER_PADDING,
@@ -24,7 +24,12 @@ export default function Footer() {
         justifyContent: "flex-end",
       }}
     >
-      <Typography variant="h6" component="p" align="center">
+      <Typography
+        variant="h6"
+        component="p"
+        align="center"
+        sx={{ color: "whitesmoke" }}
+      >
         {CURRENT_YEAR}
       </Typography>
       <Box component={"a"} href={FOOTER_LOGO_URL} target="_blank">
