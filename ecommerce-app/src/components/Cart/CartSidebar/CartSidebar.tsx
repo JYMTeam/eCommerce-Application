@@ -3,6 +3,46 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { useAppSelector } from "../../../hooks/redux";
 import { formatPrice } from "../../../utils/utils";
 
+const cartSidebarBoxSx = {
+  display: "flex",
+  flexDirection: {
+    xs: "column",
+    sm: "row",
+    md: "column",
+  },
+  justifyContent: "space-between",
+  alignItems: {
+    xs: "initial",
+    sm: "center",
+  },
+  position: {
+    xs: "sticky",
+    sm: "sticky",
+    md: "static",
+  },
+  bottom: "0",
+  maxHeight: "12.5rem",
+  padding: "1em",
+  borderRadius: "4px",
+  backgroundColor: {
+    xs: "#fffffff2",
+    sm: "#fffffff2",
+    md: "background.paper",
+  },
+  boxShadow:
+    "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+  zIndex: "1",
+};
+
+const cartSidebarHeaderSx = {
+  textTransform: "uppercase",
+};
+
+const cartSidebarItemSx = {
+  display: "flex",
+  gap: "0.938rem",
+};
+
 export const CartSidebar = () => {
   const { cart, loading } = useAppSelector((state) => state.cart);
   const [price, setPrice] = useState("");
@@ -20,34 +60,6 @@ export const CartSidebar = () => {
     }
   }, [cart]);
 
-  const cartSidebarBoxSx = {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-    position: {
-      xs: "sticky",
-      sm: "sticky",
-      md: "static",
-    },
-    bottom: "0",
-    maxHeight: "12.5rem",
-    padding: "1em",
-    borderRadius: "4px",
-    backgroundColor: "background.paper",
-    boxShadow:
-      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-    zIndex: "1",
-  };
-
-  const cartSidebarHeaderSx = {
-    textTransform: "uppercase",
-  };
-
-  const cartSidebarItemSx = {
-    display: "flex",
-    gap: "0.938rem",
-  };
   return (
     <Box sx={cartSidebarBoxSx}>
       <Typography variant="h6" component="h3" sx={cartSidebarHeaderSx}>

@@ -12,6 +12,13 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { fetchCheckCartAndRemoveAll } from "../../../store/actions/cartActions/cartRemoveActions";
 
+const buttonSx = {
+  ":hover": {
+    bgcolor: "transparent",
+    color: "primary.dark",
+  },
+};
+
 export const CartRemoveAllButton = () => {
   const { cart } = useAppSelector((state) => state.cart);
   const [open, setOpen] = React.useState(false);
@@ -33,13 +40,6 @@ export const CartRemoveAllButton = () => {
     if (cart) {
       dispatch(fetchCheckCartAndRemoveAll(cart));
     }
-  };
-
-  const buttonSx = {
-    ":hover": {
-      bgcolor: "transparent",
-      color: "primary.dark",
-    },
   };
 
   return (

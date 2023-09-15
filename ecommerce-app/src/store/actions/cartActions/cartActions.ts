@@ -120,6 +120,55 @@ export const fetchAddProductsCart = (
   };
 };
 
+export const fetchRemoveProductsCart = (
+  cart: Cart,
+  lineItemId: string,
+  quantity: number,
+) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(cartFetching());
+      const answer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .carts()
+        .withId({ ID: cart.id })
+        .post({
+          body: {
+            version: cart.version,
+            actions: [
+              {
+                action: "removeLineItem",
+                lineItemId,
+                quantity,
+              },
+            ],
+          },
+        })
+        .execute();
+      const successMessage: INotification = {
+        message: NOTIFICATION_MESSAGES.SUCCESS_PRODUCT_ADD,
+        type: "success",
+      };
+      dispatch(cartFetchSuccess(answer.body));
+      dispatch(notificationActive(successMessage));
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(cartFetchError(body));
+
+        const message = formatProductsErrorMessage(body);
+        const errorMessage: INotification = {
+          message,
+          type: "error",
+        };
+
+        dispatch(notificationActive(errorMessage));
+      }
+    }
+  };
+};
+
 // ATTENTION: Throw ERROR!!
 export const fetchGetCart = () => {
   return async (dispatch: AppDispatch) => {

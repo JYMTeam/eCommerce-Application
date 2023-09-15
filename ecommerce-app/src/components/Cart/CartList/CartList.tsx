@@ -11,6 +11,27 @@ import { statusCode } from "../../../types";
 import { CartRemoveAllButton } from "./CartRemoveAllButton";
 import { CartEmpty } from "./CartEmpty";
 
+const cartListBoxSx = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-start",
+  flexGrow: "1",
+  backgroundColor: "background.paper",
+  boxShadow:
+    "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+  borderRadius: "4px",
+  padding: "1em",
+};
+
+const cartListHeaderSx = {
+  textTransform: "uppercase",
+};
+
+const cartListSx = {
+  flexGrow: "1",
+  width: "100%",
+};
+
 export default function CartList() {
   const { cart, errorMessage, tokenAnonymData } = useAppSelector(
     (state) => state.cart,
@@ -53,27 +74,6 @@ export default function CartList() {
   }
 
   const parsedCartListItems = parseCartListItems(cart.lineItems);
-
-  const cartListBoxSx = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    flexGrow: "1",
-    backgroundColor: "background.paper",
-    boxShadow:
-      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-    borderRadius: "4px",
-    padding: "1em",
-  };
-
-  const cartListHeaderSx = {
-    textTransform: "uppercase",
-  };
-
-  const cartListSx = {
-    flexGrow: "1",
-    width: "100%",
-  };
 
   return (
     <Box sx={cartListBoxSx}>
