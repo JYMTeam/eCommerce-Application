@@ -106,9 +106,6 @@ export function MainPageCarousel() {
 
       const media = (
         <Grid item xs={4} key={item.name}>
-          {/* <CardMedia className="Media" image={item.Image} title={item.Name}>
-            <Typography className="MediaCaption">{item.Name}</Typography>
-          </CardMedia> */}
           <Card
             sx={{
               maxWidth: CARD_MAX_WIDTH,
