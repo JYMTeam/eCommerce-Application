@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Badge, BadgeProps, Box, Button } from "@mui/material";
+import { Badge, BadgeProps, Box, Button, Tooltip } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CartIcon from "../../assets/cart.svg";
 import { useAppSelector } from "../../hooks/redux";
@@ -17,26 +17,28 @@ export const CartMenuItem = () => {
   const { cart } = useAppSelector((state) => state.cart);
 
   return (
-    <StyledBadge color="secondary" badgeContent={cart?.totalLineItemQuantity}>
-      <Button
-        component={Link}
-        to="cart"
-        variant="contained"
-        color="primary"
-        sx={{
-          maxWidth: "10em",
-        }}
-      >
-        <Box
-          component="img"
-          src={CartIcon}
-          alt={"link to Shopping Cart"}
+    <Tooltip title="Cart">
+      <StyledBadge color="secondary" badgeContent={cart?.totalLineItemQuantity}>
+        <Button
+          component={Link}
+          to="cart"
+          variant="contained"
+          color="primary"
           sx={{
-            height: "1.4rem",
-            width: "auto",
+            maxWidth: "10em",
           }}
-        />
-      </Button>
-    </StyledBadge>
+        >
+          <Box
+            component="img"
+            src={CartIcon}
+            alt={"link to Shopping Cart"}
+            sx={{
+              height: "1.4rem",
+              width: "auto",
+            }}
+          />
+        </Button>
+      </StyledBadge>
+    </Tooltip>
   );
 };

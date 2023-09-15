@@ -9,6 +9,7 @@ import { ErrorResponse } from "@commercetools/platform-sdk";
 import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
 import { statusCode } from "../../types";
 import { CartRemoveAllButton } from "./CartRemoveAllButton";
+import { CartEmpty } from "./CartEmpty";
 
 export default function CartList() {
   const { cart, errorMessage, tokenAnonymData } = useAppSelector(
@@ -48,7 +49,7 @@ export default function CartList() {
   }
 
   if (!cart || cart.lineItems.length === 0 || emptyCartError) {
-    return <div>Empty Cart</div>;
+    return <CartEmpty />;
   }
 
   const parsedCartListItems = parseCartListItems(cart.lineItems);

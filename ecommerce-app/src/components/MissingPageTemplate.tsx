@@ -6,8 +6,16 @@ type Data = {
   title: string;
   desc: string;
   img: string;
+  linkTo: string;
+  buttonText: string;
 };
-export const MissingPageTemplate = ({ title, desc, img }: Data) => {
+export const MissingPageTemplate = ({
+  title,
+  desc,
+  img,
+  linkTo,
+  buttonText,
+}: Data) => {
   return (
     <Grid
       container
@@ -29,8 +37,13 @@ export const MissingPageTemplate = ({ title, desc, img }: Data) => {
         />
       </Box>
       <Box sx={{ mb: "2em" }}>
-        <Button component={Link} to="/" variant="contained" color="primary">
-          Go to Main page
+        <Button
+          component={Link}
+          to={linkTo}
+          variant="contained"
+          color="primary"
+        >
+          {buttonText}
         </Button>
       </Box>
     </Grid>
