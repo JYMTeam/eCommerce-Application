@@ -6,21 +6,21 @@ import {
   SxProps,
   Theme as MuiTheme,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchGetOrCreateCart,
   fetchAddProductsCart,
-} from "../../../store/actions/cartActions/cartActions";
-import { fetchCheckCartAndRemoveProduct } from "../../../store/actions/cartActions/cartRemoveActions";
-import { Theme } from "../../Theme";
-import { NOT_FOUND_MESSAGE } from "../../../commercetools-sdk/errors/errors";
+} from "../../store/actions/cartActions/cartActions";
+import { fetchCheckCartAndRemoveProduct } from "../../store/actions/cartActions/cartRemoveActions";
+import { Theme } from "../Theme";
+import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
 
 export interface IAddProductButtonProps {
   productArrId: number;
   sxProps?: SxProps<MuiTheme>;
 }
 
-export function CartProductButtons({
+export function ProductCartButtons({
   productArrId,
   sxProps,
 }: IAddProductButtonProps) {

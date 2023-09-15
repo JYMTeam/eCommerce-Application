@@ -1,8 +1,8 @@
 import React from "react";
 import { IconButton, Tooltip } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Delete";
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { fetchCheckCartAndRemoveProduct } from "../../../store/actions/cartActions/cartRemoveActions";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { fetchCheckCartAndRemoveProduct } from "../../../../store/actions/cartActions/cartRemoveActions";
 
 interface ICartItemRemove {
   cartArrIndex: number;

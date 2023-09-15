@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Box, Divider, List } from "@mui/material";
-import CartListItem from "./CartListItem";
+import CartListItem from "./CartListItem/CartListItem";
 import { parseCartListItems } from "../../../utils/dataParsers";
 import { fetchGetCart } from "../../../store/actions/cartActions/cartActions";
 import { ClientResponse } from "@commercetools/sdk-client-v2";
