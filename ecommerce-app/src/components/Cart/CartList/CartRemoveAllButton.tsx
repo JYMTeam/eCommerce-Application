@@ -20,13 +20,6 @@ export const CartRemoveAllButton = () => {
 
   const dispatch = useAppDispatch();
 
-  const buttonSx = {
-    ":hover": {
-      bgcolor: "transparent",
-      color: "primary.dark",
-    },
-  };
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -40,6 +33,13 @@ export const CartRemoveAllButton = () => {
     if (cart) {
       dispatch(fetchCheckCartAndRemoveAll(cart));
     }
+  };
+
+  const buttonSx = {
+    ":hover": {
+      bgcolor: "transparent",
+      color: "primary.dark",
+    },
   };
 
   return (

@@ -54,33 +54,36 @@ export default function CartList() {
 
   const parsedCartListItems = parseCartListItems(cart.lineItems);
 
+  const cartListBoxSx = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    flexGrow: "1",
+    backgroundColor: "background.paper",
+    boxShadow:
+      "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+    borderRadius: "4px",
+    padding: "1em",
+  };
+
+  const cartListHeaderSx = {
+    textTransform: "uppercase",
+  };
+
+  const cartListSx = {
+    flexGrow: "1",
+    width: "100%",
+  };
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        flexGrow: "1",
-        backgroundColor: "background.paper",
-        boxShadow:
-          "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-        borderRadius: "4px",
-        padding: "1em",
-      }}
-    >
+    <Box sx={cartListBoxSx}>
       <Box>
-        <Typography
-          variant="h6"
-          component="h3"
-          sx={{
-            textTransform: "uppercase",
-          }}
-        >
+        <Typography variant="h6" component="h3" sx={cartListHeaderSx}>
           Shopping&nbsp;Cart
         </Typography>
         <CartRemoveAllButton />
       </Box>
-      <List component="ul" sx={{ flexGrow: "1", width: "100%" }}>
+      <List component="ul" sx={cartListSx}>
         {parsedCartListItems.map((item, index) => (
           <Box key={index} component={"nav"}>
             <Divider component="li" />
