@@ -56,6 +56,7 @@ export default function CartListItem({
             flexDirection: "column",
             justifyContent: "right",
             alignItems: "end",
+            flexGrow: "1",
           }}
         >
           <CartRemoveItemButton cartArrIndex={cartArrIndex} />
