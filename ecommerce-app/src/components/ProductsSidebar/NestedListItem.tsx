@@ -9,6 +9,8 @@ import {
 import React from "react";
 import SingleListItem from "./SingleListItem";
 import { Link } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/redux";
+import { setProductsPage } from "../../store/actions/productsActions";
 
 interface INestedListItemProps {
   id: string;
@@ -21,20 +23,18 @@ export default function NestedListItem({
   text,
   children,
 }: INestedListItemProps) {
+  const dispatch = useAppDispatch();
   const [open, setOpen] = React.useState(false);
 
   const handleCategoryClick = () => {
+    dispatch(setProductsPage(1));
     setOpen(!open);
   };
 
   return (
     <>
-      <ListItem disablePadding>
-        <ListItemButton
-          onClick={handleCategoryClick}
-          component={Link}
-          to={`/shop/${id}`}
-        >
+      <ListItem disablePadding onClick={handleCategoryClick}>
+        <ListItemButton component={Link} to={`/shop/${id}`}>
           <ListItemText primary={text} />
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>

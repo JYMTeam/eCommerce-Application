@@ -20,7 +20,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
-import { CartProductManager } from "../CartProductManager/CartProductManager";
+import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { IParsedProduct } from "../../types";
 
@@ -165,7 +165,7 @@ export default function ProductsList() {
                 <CardActions>
                   {loading && <Skeleton width="147px" height="66px"></Skeleton>}
                   {!loading && parsedProducts.length !== 0 && (
-                    <CartProductManager
+                    <CartProductButtons
                       productArrId={index}
                       sxProps={{ color: BUTTON_COLOR }}
                     />

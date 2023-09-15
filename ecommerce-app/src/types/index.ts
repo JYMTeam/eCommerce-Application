@@ -140,6 +140,7 @@ export interface IAncestorInfo {
   text: string;
 }
 export interface IParsedCartItem {
+  cartArrIndex: number;
   name: string;
   image: string;
   price: string;

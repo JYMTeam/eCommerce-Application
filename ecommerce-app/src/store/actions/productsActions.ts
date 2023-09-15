@@ -207,15 +207,3 @@ const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
 const convertPriceToCentsString = (usdAmount: number) => {
   return convertUSDToCents(usdAmount).toString();
 };
-
-// export const setCategory = (categoryId: string) => {
-//   return async (dispatch: AppDispatch) => {
-//     dispatch(categorySet(categoryId));
-//   };
-// };
-
-// export const resetCategory = () => {
-//   return async (dispatch: AppDispatch) => {
-//     dispatch(categoryReset());
-//   };
-// };
