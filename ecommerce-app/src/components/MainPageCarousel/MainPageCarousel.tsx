@@ -16,17 +16,17 @@ import { fetchProducts } from "../../store/actions/productsActions";
 import { IParsedProduct } from "../../types";
 import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Pagination, Navigation } from "swiper/modules";
+import { EffectFade, Pagination, Navigation, Autoplay } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
-
+import "swiper/css/effect-fade";
 export const GRID_SPACING = 2;
-const CARD_MIN_HEIGHT = 400;
+const CARD_MIN_HEIGHT = 500;
 const CARD_MAX_WIDTH = "100%";
 const CARD_BOX_SHADOW = 3;
 const CARD_HEIGHT = "100%";
-const CARD_MEDIA_HEIGHT = 450;
+const CARD_MEDIA_HEIGHT = 600;
 const CARD_TITLE_FONTSIZE = 18;
 const BUTTON_COLOR = "#F9C152";
 const CARD_DESC_MB = 1.5;
@@ -61,6 +61,7 @@ export function MainPageCarousel() {
       return (
         <SwiperSlide key={item ? item.id : index}>
           <Card
+            className="main-slide"
             sx={{
               maxWidth: CARD_MAX_WIDTH,
               boxShadow: CARD_BOX_SHADOW,
@@ -90,63 +91,68 @@ export function MainPageCarousel() {
                 ) : (
                   <Skeleton variant="rectangular" height={CARD_MEDIA_HEIGHT} />
                 )}
-                {item ? (
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h4"
-                      component="h4"
-                      sx={{ fontSize: CARD_TITLE_FONTSIZE }}
-                    >
-                      {item.name}
-                    </Typography>
-                    <Typography
-                      onMouseOver={() => setShow(true)}
-                      onMouseOut={() => setShow(false)}
-                      variant="body2"
-                      color="text.secondary"
-                      sx={{
-                        mb: CARD_DESC_MB,
-                        fontSize: CARD_TITLE_FONTSIZE,
-                      }}
-                    >
-                      {show && (item.description as unknown as string)}
-                    </Typography>
-                    <Chip
-                      label={item.discount ? item.discount : item.price}
-                      size="small"
-                      sx={{
-                        mr: PRICE_MR,
-                        background: item.discount
-                          ? DISCOUNT_BG_COLOR
-                          : PRICE_BG_COLOR,
-                      }}
-                    />
-                    <span className="discount">
-                      {item.discount ? item.price : item.discount}
-                    </span>
-                  </CardContent>
-                ) : (
-                  <CardContent>
-                    <Skeleton width="100%" />
-                    <Skeleton
-                      sx={{ mb: CARD_DESC_MB }}
-                      width="100%"
-                      height={SKELETON_DESC_HEIGHT}
-                    />
-                    <Skeleton width="30%" height={SKELETON_PRICE_HEIGHT} />
-                  </CardContent>
-                )}
+                <CardContent className="main-slide-item-content">
+                  {item ? (
+                    <CardContent>
+                      <Typography
+                        gutterBottom
+                        variant="h4"
+                        component="h4"
+                        sx={{ fontSize: CARD_TITLE_FONTSIZE }}
+                      >
+                        {item.name}
+                      </Typography>
+                      <Typography
+                        onMouseOver={() => setShow(true)}
+                        onMouseOut={() => setShow(false)}
+                        variant="body2"
+                        color="text.secondary"
+                        sx={{
+                          mb: CARD_DESC_MB,
+                          fontSize: CARD_TITLE_FONTSIZE,
+                        }}
+                      >
+                        {show && (item.description as unknown as string)}
+                      </Typography>
+                      <Chip
+                        label={item.discount ? item.discount : item.price}
+                        size="small"
+                        sx={{
+                          mr: PRICE_MR,
+                          background: item.discount
+                            ? DISCOUNT_BG_COLOR
+                            : PRICE_BG_COLOR,
+                        }}
+                      />
+                      <span className="discount">
+                        {item.discount ? item.price : item.discount}
+                      </span>
+                    </CardContent>
+                  ) : (
+                    <CardContent>
+                      <Skeleton width="100%" />
+                      <Skeleton
+                        sx={{ mb: CARD_DESC_MB }}
+                        width="100%"
+                        height={SKELETON_DESC_HEIGHT}
+                      />
+                      <Skeleton width="30%" height={SKELETON_PRICE_HEIGHT} />
+                    </CardContent>
+                  )}
+
+                  <CardActions>
+                    {loading && (
+                      <Skeleton width="147px" height="66px"></Skeleton>
+                    )}
+                    {!loading && parsedProducts.length !== 0 && (
+                      <CartProductButtons
+                        productArrId={index}
+                        sxProps={{ color: BUTTON_COLOR }}
+                      />
+                    )}
+                  </CardActions>
+                </CardContent>
               </div>
-              <CardActions>
-                {loading && <Skeleton width="147px" height="66px"></Skeleton>}
-                {!loading && parsedProducts.length !== 0 && (
-                  <CartProductButtons
-                    productArrId={index}
-                    sxProps={{ color: BUTTON_COLOR }}
-                  />
-                )}
-              </CardActions>
             </CardActionArea>
           </Card>
         </SwiperSlide>
@@ -157,13 +163,13 @@ export function MainPageCarousel() {
   const swiperProps = {
     effect: "fade",
     loop: true,
-    navigation: true,
-    modules: [Navigation, EffectFade, Pagination],
-    pagination: { clickable: true },
+    //navigation: true,
+    modules: [EffectFade, Pagination, Autoplay, Navigation],
     autoplay: {
-      delay: 2000,
+      delay: 7000,
+      disableOnInteraction: false,
     },
-    onSlideChange: () => console.log("slide change"),
+    pagination: true,
   };
 
   return (
