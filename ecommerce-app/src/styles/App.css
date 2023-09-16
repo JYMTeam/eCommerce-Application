@@ -53,3 +53,14 @@ h2 {
 .main-slide:hover .main-slide-item-content {
   display: block;
 }
+.promo-banner {
+  background-image: url("../assets/promo-background.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 25% 75%;
+}
+.promo-banner-text {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  margin: 20px;
+}

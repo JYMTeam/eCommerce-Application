@@ -16,7 +16,7 @@ import { fetchProducts } from "../../store/actions/productsActions";
 import { IParsedProduct } from "../../types";
 import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { EffectFade, Pagination, Navigation, Autoplay } from "swiper/modules";
+import { EffectFade, Pagination, Autoplay } from "swiper/modules";
 import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -163,8 +163,7 @@ export function MainPageCarousel() {
   const swiperProps = {
     effect: "fade",
     loop: true,
-    //navigation: true,
-    modules: [EffectFade, Pagination, Autoplay, Navigation],
+    modules: [EffectFade, Pagination, Autoplay],
     autoplay: {
       delay: 7000,
       disableOnInteraction: false,
