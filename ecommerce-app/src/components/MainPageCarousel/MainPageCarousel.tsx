@@ -21,6 +21,7 @@ import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
+
 export const GRID_SPACING = 2;
 const CARD_MIN_HEIGHT = 500;
 const CARD_MAX_WIDTH = "100%";
