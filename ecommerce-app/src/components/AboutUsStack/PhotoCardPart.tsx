@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -6,7 +7,6 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { ITeamMembersInfo } from "../../types";
 
 const CARD_MEDIA_HEIGHT = 250;
@@ -39,6 +39,13 @@ export default function PhotoCardPart({
         alt={name as unknown as string}
         height={CARD_MEDIA_HEIGHT}
         image={image}
+        sx={{
+          minHeight: {
+            xs: "auto",
+            sm: "400px",
+            md: "auto",
+          },
+        }}
       />
       <CardContent>
         <Typography
@@ -59,7 +66,11 @@ export default function PhotoCardPart({
         <Typography
           variant="body2"
           color="text.secondary"
-          sx={{ mb: CARD_DESC_MB, fontSize: CARD_DESC_FONTSIZE }}
+          sx={{
+            mb: CARD_DESC_MB,
+            fontSize: CARD_DESC_FONTSIZE,
+            textAlign: "justify",
+          }}
         >
           {bio as unknown as string}
         </Typography>

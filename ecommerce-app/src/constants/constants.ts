@@ -27,7 +27,7 @@ const DEFAULT_CURRENCY = "USD";
 const FORM_DATE_FORMAT = "YYYY-MM-DD";
 const DEFAULT_PRODUCTS_LIMIT = 9;
 const PRODUCT_TYPE_INDEX = 0;
-const CURRENT_YEAR = 2023;
+const CURRENT_YEAR = "2023";
 
 const countryOptions = [
   { label: "USA", countryCode: "US", postalCodeFormat: "20521-9000" },

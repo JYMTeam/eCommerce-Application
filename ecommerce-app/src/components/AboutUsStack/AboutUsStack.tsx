@@ -5,11 +5,12 @@ import { Card } from "@mui/material";
 import PhotoCardPart from "./PhotoCardPart";
 import ContributionCardPart from "./ContributionCardPart";
 
-const CARD_MAX_WIDTH = 425;
-
 export default function AboutUsStack() {
   return (
-    <Stack direction={{ sm: "column" }} spacing={{ sm: 2 }} sx={{ mb: 2 }}>
+    <Stack
+      direction={{ sm: "column" }}
+      sx={{ mb: 2, border: "1px solid #e7e7e7" }}
+    >
       {teamMembersInfo.map((teamInfo, index) => {
         return (
           <Card
@@ -17,8 +18,13 @@ export default function AboutUsStack() {
             sx={{
               display: "flex",
               flexDirection: { md: "row", xs: "column" },
-              boxShadow: 3,
-              width: { md: "100%", xs: CARD_MAX_WIDTH },
+              borderRadius: 0,
+              boxShadow: 0,
+              margin: 0,
+              width: {
+                sm: "100%",
+                md: "100%",
+              },
             }}
           >
             {index % 2 === 0 ? (

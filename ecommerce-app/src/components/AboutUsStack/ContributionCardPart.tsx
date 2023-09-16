@@ -10,8 +10,6 @@ export default function ContributionCardPart({
   data: { contributionDesc, color },
 }: IContributionCardPartProps) {
   return (
-    <Box sx={{ width: { md: 1 / 2, xs: 1 }, backgroundColor: color }}>
-      Contribution
-    </Box>
+    <Box sx={{ width: { md: 1 / 2, xs: 1 }, backgroundColor: color }}></Box>
   );
 }

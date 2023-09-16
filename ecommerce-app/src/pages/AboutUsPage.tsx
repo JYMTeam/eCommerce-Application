@@ -1,29 +1,37 @@
-import { Box, Container, Typography } from "@mui/material";
 import React from "react";
+import { Box, Container, Typography } from "@mui/material";
 import Footer from "../components/Footer/Footer";
 import AboutUsStack from "../components/AboutUsStack/AboutUsStack";
+
+const aboutUsBoxSx = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
+const aboutUsHeaderSx = {
+  mb: 2,
+  textAlign: "center",
+  textTransform: "uppercase",
+};
+
+const aboutUsTextSx = {
+  mb: 2,
+  padding: 0.5,
+  textAlign: "justify",
+  lineHeight: 1.83,
+  marginBottom: "2rem",
+};
 
 export function AboutUsPage() {
   return (
     <>
       <Container>
-        <Box
-          component={"main"}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="h3" component="h2" align="center" sx={{ mb: 2 }}>
+        <Box component={"main"} sx={aboutUsBoxSx}>
+          <Typography variant="h6" component="h2" sx={aboutUsHeaderSx}>
             Meet the JYMTeam
           </Typography>
-          <Typography
-            variant="subtitle1"
-            component="p"
-            align="left"
-            sx={{ padding: 0.5, mb: 2 }}
-          >
+          <Typography variant="body2" component="p" sx={aboutUsTextSx}>
             The JYMTeam was started in 2023 when three girls decided to unite
             and work together on the eCommerce site you are currently visiting.
             The site is powered by{" "}
