@@ -148,4 +148,6 @@ export interface ITeamMembersInfo {
   githubLink: string;
   contributionDesc: string;
   color: string;
+  textColor: string;
+  buttonColor: string;
 }

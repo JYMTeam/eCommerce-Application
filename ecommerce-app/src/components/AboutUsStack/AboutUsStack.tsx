@@ -1,11 +1,13 @@
 import React from "react";
 import Stack from "@mui/material/Stack";
 import { teamMembersInfo } from "../../constants/constants";
-import { Card } from "@mui/material";
+import { Card, useMediaQuery } from "@mui/material";
+import { Theme } from "../Theme";
 import PhotoCardPart from "./PhotoCardPart";
 import ContributionCardPart from "./ContributionCardPart";
 
 export default function AboutUsStack() {
+  const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
   return (
     <Stack
       direction={{ sm: "column" }}
@@ -17,7 +19,7 @@ export default function AboutUsStack() {
             key={index}
             sx={{
               display: "flex",
-              flexDirection: { md: "row", xs: "column" },
+              flexDirection: { md: "row", xs: "column-reverse" },
               borderRadius: 0,
               boxShadow: 0,
               margin: 0,
@@ -27,7 +29,7 @@ export default function AboutUsStack() {
               },
             }}
           >
-            {index % 2 === 0 ? (
+            {index % 2 === 0 && !isMobile ? (
               <>
                 <PhotoCardPart data={teamInfo}></PhotoCardPart>
                 <ContributionCardPart data={teamInfo} />

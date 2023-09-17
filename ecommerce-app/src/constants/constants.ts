@@ -105,16 +105,20 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
     color: "#f3f0e7",
+    textColor: "#00000099",
+    buttonColor: "#F9C152",
   },
   {
     name: "Yaroslava Hryzadubova",
     role: "Web developer",
-    bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
+    bio: "Meet our developer, a graduate of Donetsk National Technical University in 2017. With six months of prior experience as a WordPress developer in Kyiv, she's now in Berlin, actively learning German, English, and enhancing her web development skills through React courses. She's excited about new opportunities in web development.",
     image: YaraPhoto,
     githubLink: "https://github.com/yaroslavagd",
     contributionDesc:
-      "The will be a short bio.The will be a short bio.The will be a short bio.",
+      "Contribution: Filters, Search, Shopping Cart, Token Requests, Login & Registration Requests, User Profile",
     color: "primary.main",
+    textColor: "#ffffff66",
+    buttonColor: "#ffffff99",
   },
   {
     name: "Mariya Demidovich",
@@ -125,6 +129,8 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     contributionDesc:
       "The will be a short bio.The will be a short bio.The will be a short bio.",
     color: "#f3f0e7",
+    textColor: "#00000099",
+    buttonColor: "#F9C152",
   },
 ];
 

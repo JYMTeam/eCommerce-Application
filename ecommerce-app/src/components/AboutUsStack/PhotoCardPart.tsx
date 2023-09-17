@@ -1,26 +1,15 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography,
-} from "@mui/material";
+import { Box, CardMedia } from "@mui/material";
 import { ITeamMembersInfo } from "../../types";
 
 const CARD_MEDIA_HEIGHT = 250;
-const CARD_TITLE_FONTSIZE = 18;
-const CARD_DESC_FONTSIZE = 14;
-const BUTTON_COLOR = "#F9C152";
-const CARD_DESC_MB = 1.5;
 
 interface IPhotoCardPartProps {
   data: ITeamMembersInfo;
 }
 
 export default function PhotoCardPart({
-  data: { name, image, role, bio, githubLink },
+  data: { name, image },
 }: IPhotoCardPartProps) {
   return (
     <Box
@@ -42,51 +31,11 @@ export default function PhotoCardPart({
         sx={{
           minHeight: {
             xs: "auto",
-            sm: "400px",
-            md: "auto",
+            sm: "450px",
+            md: "450px",
           },
         }}
       />
-      <CardContent>
-        <Typography
-          gutterBottom
-          variant="h4"
-          component="h4"
-          sx={{ fontSize: CARD_TITLE_FONTSIZE }}
-        >
-          {name}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ mb: CARD_DESC_MB, fontSize: CARD_DESC_FONTSIZE }}
-        >
-          {role as unknown as string}
-        </Typography>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{
-            mb: CARD_DESC_MB,
-            fontSize: CARD_DESC_FONTSIZE,
-            textAlign: "justify",
-          }}
-        >
-          {bio as unknown as string}
-        </Typography>
-      </CardContent>
-
-      <CardActions sx={{ justifyContent: "center", width: "100%" }}>
-        <Button
-          component="a"
-          size="small"
-          sx={{ color: BUTTON_COLOR }}
-          href={githubLink}
-          target="_blank"
-        >
-          See github
-        </Button>
-      </CardActions>
     </Box>
   );
 }
