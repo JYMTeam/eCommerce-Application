@@ -6,6 +6,14 @@ import { AppBar, Toolbar, Stack, IconButton, Box } from "@mui/material";
 import { MobileMenu } from "./MobileMenu/MobileMenu";
 import { Theme } from "../Theme";
 import { MenuItems } from "./MenuItems/MenuItems";
+import { CartMenuItem } from "./MenuItems/CartMenuItem";
+
+const menuNavSx = {
+  display: "flex",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  alignItems: "center",
+};
 
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
@@ -36,10 +44,14 @@ export function Navigation() {
             />
           </IconButton>
           {isMobile ? (
-            <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
+            <Box component={"nav"} sx={menuNavSx}>
+              <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
+              <CartMenuItem></CartMenuItem>
+            </Box>
           ) : (
             <Stack spacing={3} direction="row">
               <MenuItems shouldCloseDrawer={shouldCloseDrawer} />
+              <CartMenuItem></CartMenuItem>
             </Stack>
           )}
         </Toolbar>

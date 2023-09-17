@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 import { useAppSelector } from "../../../hooks/redux";
 import { Theme } from "../../Theme";
 import { UserProfileMenuItem } from "./UserProfileMenuItem";
-import { CartMenuItem } from "./CartMenuItem";
 
 export const MenuItems = ({
   shouldCloseDrawer = true,
@@ -70,8 +69,6 @@ export const MenuItems = ({
       {isLogged && (
         <UserProfileMenuItem shouldCloseDrawer={shouldCloseDrawer} />
       )}
-      {isMobile && <Divider />}
-      <CartMenuItem />
     </>
   );
 };
