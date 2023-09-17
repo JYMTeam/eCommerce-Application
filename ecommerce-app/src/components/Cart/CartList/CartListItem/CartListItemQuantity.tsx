@@ -52,14 +52,6 @@ export const CartListItemQuantity = ({
   const handlerOnIncrease = () => {
     if (cart && products) {
       const selectProduct = cart.lineItems[cartArrIndex].productId;
-      console.log("cartArrIndex");
-      console.log(cartArrIndex);
-      console.log("cart");
-      console.log(cart);
-      console.log("products");
-      console.log(products);
-      console.log("selectProduct");
-      console.log(selectProduct);
       if (selectProduct) {
         dispatch(fetchAddProductsCart(cart, selectProduct, 1));
       }
