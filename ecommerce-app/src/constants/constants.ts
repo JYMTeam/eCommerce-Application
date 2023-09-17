@@ -103,7 +103,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     image: "",
     githubLink: "https://github.com/jkhvatova",
     contributionDesc:
-      "The will be a short bio.The will be a short bio.The will be a short bio.",
+      "Project contribution: The will be a short bio.The will be a short bio.The will be a short bio.",
     color: "#f3f0e7",
     textColor: "#00000099",
     buttonColor: "#F9C152",
@@ -115,7 +115,7 @@ const teamMembersInfo: ITeamMembersInfo[] = [
     image: YaraPhoto,
     githubLink: "https://github.com/yaroslavagd",
     contributionDesc:
-      "Contribution: Filters, Search, Shopping Cart, Token Requests, Login & Registration Requests, User Profile",
+      "Project contribution: Filters, Search, Shopping Cart, Token Requests, Login & Registration Requests, User Profile",
     color: "primary.main",
     textColor: "#ffffff66",
     buttonColor: "#ffffff99",
@@ -123,11 +123,11 @@ const teamMembersInfo: ITeamMembersInfo[] = [
   {
     name: "Mariya Demidovich",
     role: "Web developer",
-    bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
+    bio: "After graduation from Minsk State Linguistic University, Mariya started her career path as a technical support specialist in a JavaScript UI library for web Apps development. She is a problem-solver who wants to progress further in programming. At the moment she is most interested in Web development and what goes with it.",
     image: MariyaPhoto,
     githubLink: "https://github.com/mariyademy",
     contributionDesc:
-      "The will be a short bio.The will be a short bio.The will be a short bio.",
+      "Project contribution: Forms validation, categories, Abous Us page, products & cart items display, discounts, pagination",
     color: "#f3f0e7",
     textColor: "#00000099",
     buttonColor: "#F9C152",

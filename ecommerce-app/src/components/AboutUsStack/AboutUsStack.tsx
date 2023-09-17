@@ -6,13 +6,15 @@ import { Theme } from "../Theme";
 import PhotoCardPart from "./PhotoCardPart";
 import ContributionCardPart from "./ContributionCardPart";
 
+const CARDS_BORDER = "1px solid #e7e7e7";
+const CARDS_WIDTH = {
+  sm: "100%",
+};
+
 export default function AboutUsStack() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
   return (
-    <Stack
-      direction={{ sm: "column" }}
-      sx={{ mb: 2, border: "1px solid #e7e7e7" }}
-    >
+    <Stack direction={{ sm: "column" }} sx={{ mb: 2, border: CARDS_BORDER }}>
       {teamMembersInfo.map((teamInfo, index) => {
         return (
           <Card
@@ -23,10 +25,7 @@ export default function AboutUsStack() {
               borderRadius: 0,
               boxShadow: 0,
               margin: 0,
-              width: {
-                sm: "100%",
-                md: "100%",
-              },
+              width: CARDS_WIDTH,
             }}
           >
             {index % 2 === 0 && !isMobile ? (
