@@ -7,16 +7,43 @@ import {
   HttpMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions,
+  TokenStore,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
-import { anonymTokenCache, passToken } from "../PassTokenCache/PassTokenCache";
+import {
+  anonymTokenManager,
+  passTokenManager,
+} from "../PassTokenCache/PassTokenCache";
 
 export class ClientBuilderManager {
-  private currentClient: Client = new ClientBuilder()
+  private currentClient: Client;
+  private defaultBuilder = new ClientBuilder()
     .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-    .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
     .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-    .build();
+    .withLoggerMiddleware();
+
+  constructor() {
+    const passTokenCache = passTokenManager.getToken();
+    const anonymTokenCache = anonymTokenManager.getToken();
+
+    if (passTokenCache.refreshToken) {
+      this.currentClient = this.defaultBuilder
+        .withRefreshTokenFlow(
+          this.getRefreshOptions(passTokenCache.refreshToken),
+        )
+        .build();
+    } else if (anonymTokenCache.refreshToken) {
+      this.currentClient = this.defaultBuilder
+        .withRefreshTokenFlow(
+          this.getRefreshOptions(anonymTokenCache.refreshToken),
+        )
+        .build();
+    } else {
+      this.currentClient = this.defaultBuilder
+        .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
+        .build();
+    }
+  }
 
   public get requestCurrentBuilder() {
     return createApiBuilderFromCtpClient(this.currentClient).withProjectKey({
@@ -25,44 +52,34 @@ export class ClientBuilderManager {
   }
 
   public async switchToCredentialsFlow(): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+    this.currentClient = this.defaultBuilder
       .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
       .build();
   }
 
   public async switchToAnonymFlow(): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+    this.currentClient = this.defaultBuilder
       .withAnonymousSessionFlow(
         ClientBuilderManager.anonymAuthMiddlewareOptions,
       )
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
       .build();
   }
 
   public async switchToPasswordFlow(user: UserAuthOptions): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+    this.currentClient = this.defaultBuilder
       .withPasswordFlow(this.getPassOptions(user))
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
       .build();
   }
 
   public async switchToRefreshTokenFlow(refreshToken: string): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+    this.currentClient = this.defaultBuilder
       .withRefreshTokenFlow(this.getRefreshOptions(refreshToken))
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
       .build();
   }
 
   public async switchToSignupFlow(): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+    this.currentClient = this.defaultBuilder
       .withAnonymousSessionFlow(this.getSignupOptions())
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
       .build();
   }
 
@@ -88,7 +105,10 @@ export class ClientBuilderManager {
 
   private static anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     ...ClientBuilderManager.authMiddlewareOptions,
-    tokenCache: anonymTokenCache,
+    tokenCache: {
+      get: () => anonymTokenManager.getToken(),
+      set: (cache: TokenStore) => anonymTokenManager.setToken(cache),
+    },
   };
 
   private static getCustomerScopes() {
@@ -124,7 +144,10 @@ export class ClientBuilderManager {
         clientSecret: ClientBuilderManager.basicOptions.clientSecret,
         user,
       },
-      tokenCache: passToken,
+      tokenCache: {
+        get: () => passTokenManager.getToken(),
+        set: (cache: TokenStore) => passTokenManager.setToken(cache),
+      },
     };
 
     return passOptions;
@@ -143,6 +166,10 @@ export class ClientBuilderManager {
     const refreshOptions: RefreshAuthMiddlewareOptions = {
       ...ClientBuilderManager.authMiddlewareOptions,
       refreshToken,
+      tokenCache: {
+        get: () => passTokenManager.getToken(),
+        set: (cache: TokenStore) => passTokenManager.setToken(cache),
+      },
     };
     return refreshOptions;
   }

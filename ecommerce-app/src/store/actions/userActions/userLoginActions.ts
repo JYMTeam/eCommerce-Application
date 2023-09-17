@@ -13,8 +13,8 @@ import {
   setIsSuccess,
 } from "../../slices/userLoginSlice";
 import {
-  anonymTokenCache,
-  passToken,
+  anonymTokenManager,
+  passTokenManager,
 } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { AuthErrorResponse, ErrorResponse } from "@commercetools/platform-sdk";
 import {
@@ -44,7 +44,7 @@ export const fetchUserLogin = (
           expirationTime: 0,
           refreshToken: undefined,
         };
-        passToken.set({ ...cache });
+        // passToken.setToken({ ...cache });
         await dispatch(setUserToken(cache));
 
         if (existingAnonymToken && signupMode) {
@@ -64,14 +64,14 @@ export const fetchUserLogin = (
           })
           .execute();
 
-        anonymTokenCache.set({ ...cache });
+        anonymTokenManager.setToken({ ...cache });
         await dispatch(setAnonymToken(cache));
         await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
         const answer2 = await clientBuilderManager.requestCurrentBuilder
           .me()
           .get()
           .execute();
-        const refreshToken = passToken.get().refreshToken;
+        const refreshToken = passTokenManager.getToken().refreshToken;
 
         if (refreshToken) {
           await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
@@ -83,7 +83,7 @@ export const fetchUserLogin = (
           type: "success",
         };
         dispatch(userLoginFetchSuccess(answer2.body));
-        dispatch(setUserToken(passToken.get()));
+        dispatch(setUserToken(passTokenManager.getToken()));
         dispatch(notificationActive(successLoginMessage));
       } else {
         dispatch(userLoginFetching());
@@ -92,7 +92,7 @@ export const fetchUserLogin = (
           expirationTime: 0,
           refreshToken: undefined,
         };
-        passToken.set({ ...cache });
+        // passToken.setToken({ ...cache });
         await dispatch(setUserToken(cache));
 
         await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
@@ -107,7 +107,7 @@ export const fetchUserLogin = (
           })
           .execute();
         dispatch(setIsSuccess());
-        const refreshToken = passToken.get().refreshToken;
+        const refreshToken = passTokenManager.getToken().refreshToken;
         if (refreshToken) {
           await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
         }
@@ -118,7 +118,7 @@ export const fetchUserLogin = (
         };
 
         dispatch(userLoginFetchSuccess(answer.body.customer));
-        dispatch(setUserToken(passToken.get()));
+        dispatch(setUserToken(passTokenManager.getToken()));
         dispatch(notificationActive(successLoginMessage));
       }
 
@@ -166,5 +166,6 @@ export const logoutUser = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(userLoginReset());
     dispatch(cartReset());
+    await clientBuilderManager.switchToCredentialsFlow();
   };
 };

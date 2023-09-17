@@ -1,11 +1,11 @@
 import React from "react";
 import { Box } from "@mui/material";
-import CartList from "../components/CartList/CartList";
+import { Cart } from "../components/Cart/Cart";
 
 export function CartPage() {
   return (
     <Box component={"main"}>
-      <CartList />
+      <Cart />
     </Box>
   );
 }
