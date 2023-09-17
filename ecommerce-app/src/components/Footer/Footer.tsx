@@ -18,7 +18,7 @@ const FOOTER_LINK_HOVER = {
 };
 
 const footerSx = {
-  height: `${FOOTER_MIN_HEIGHT}rem`,
+  minHeight: `${FOOTER_MIN_HEIGHT}rem`,
   display: "flex",
   flexWrap: "wrap",
   gap: FOOTER_iTEMS_GAP,
