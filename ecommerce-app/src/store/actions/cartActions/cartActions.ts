@@ -30,9 +30,7 @@ export const fetchCreateCart = (existingToken?: string) => {
       } else {
         await clientBuilderManager.switchToAnonymFlow();
       }
-      // const apiRoot = existingToken
-      //   ? getApiTokenRoot(existingToken)
-      //   : getApiAnonymRoot();
+
       const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()

@@ -14,34 +14,29 @@ import { anonymToken, passToken } from "../PassTokenCache/PassTokenCache";
 
 export class ClientBuilderManager {
   private currentClient: Client;
+  private defaultBuilder = new ClientBuilder()
+    .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
+    .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
+    .withLoggerMiddleware();
 
   constructor() {
     const passTokenCache = passToken.getToken();
     const anonymTokenCache = anonymToken.getToken();
 
     if (passTokenCache.refreshToken) {
-      this.currentClient = new ClientBuilder()
-        .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-        .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-        .withLoggerMiddleware()
+      this.currentClient = this.defaultBuilder
         .withRefreshTokenFlow(
           this.getRefreshOptions(passTokenCache.refreshToken),
         )
         .build();
     } else if (anonymTokenCache.refreshToken) {
-      this.currentClient = new ClientBuilder()
-        .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-        .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-        .withLoggerMiddleware()
+      this.currentClient = this.defaultBuilder
         .withRefreshTokenFlow(
           this.getRefreshOptions(anonymTokenCache.refreshToken),
         )
         .build();
     } else {
-      this.currentClient = new ClientBuilder()
-        .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-        .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-        .withLoggerMiddleware()
+      this.currentClient = this.defaultBuilder
         .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
         .build();
     }
@@ -54,19 +49,13 @@ export class ClientBuilderManager {
   }
 
   public async switchToCredentialsFlow(): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-      .withLoggerMiddleware()
+    this.currentClient = this.defaultBuilder
       .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
       .build();
   }
 
   public async switchToAnonymFlow(): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-      .withLoggerMiddleware()
+    this.currentClient = this.defaultBuilder
       .withAnonymousSessionFlow(
         ClientBuilderManager.anonymAuthMiddlewareOptions,
       )
@@ -74,28 +63,19 @@ export class ClientBuilderManager {
   }
 
   public async switchToPasswordFlow(user: UserAuthOptions): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-      .withLoggerMiddleware()
+    this.currentClient = this.defaultBuilder
       .withPasswordFlow(this.getPassOptions(user))
       .build();
   }
 
   public async switchToRefreshTokenFlow(refreshToken: string): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-      .withLoggerMiddleware()
+    this.currentClient = this.defaultBuilder
       .withRefreshTokenFlow(this.getRefreshOptions(refreshToken))
       .build();
   }
 
   public async switchToSignupFlow(): Promise<void> {
-    this.currentClient = new ClientBuilder()
-      .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-      .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-      .withLoggerMiddleware()
+    this.currentClient = this.defaultBuilder
       .withAnonymousSessionFlow(this.getSignupOptions())
       .build();
   }
