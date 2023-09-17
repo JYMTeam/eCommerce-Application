@@ -24,7 +24,7 @@ import {
 import { useState } from "react";
 import { CustomerDraft } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchUserSignup } from "../../store/actions/userSignupActions";
+import { fetchUserSignup } from "../../store/actions/userActions/userSignupActions";
 import { setSignupSchema } from "../../utils/validation-schemas";
 import { userSignupClearErrorMessage } from "../../store/slices/userSignupSlice";
 import { successMessageHandler } from "./signupHelpers";
@@ -53,15 +53,20 @@ export function SignupForm() {
   };
 
   const SignupSchema = setSignupSchema(SchemaOptions);
-  const dispatch = useAppDispatch();
   const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
   const { isLogged, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+  const { tokenAnonymData, cart } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const onSubmit = (values: ISignupInitialValues) => {
     const newUser: CustomerDraft = convertToCustomerDraft(values);
-    dispatch(fetchUserSignup(newUser));
+    if (tokenAnonymData && cart) {
+      dispatch(fetchUserSignup(newUser, tokenAnonymData.refreshToken));
+    } else {
+      dispatch(fetchUserSignup(newUser));
+    }
   };
 
   return (

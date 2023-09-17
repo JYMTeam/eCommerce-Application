@@ -1,5 +1,11 @@
 import React from "react";
-import WorkInProgress from "../components/WorkInProgress";
+import { Box } from "@mui/material";
+import { Cart } from "../components/Cart/Cart";
+
 export function CartPage() {
-  return <WorkInProgress />;
+  return (
+    <Box component={"main"}>
+      <Cart />
+    </Box>
+  );
 }

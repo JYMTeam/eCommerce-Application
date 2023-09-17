@@ -151,3 +151,12 @@ export interface ITeamMembersInfo {
   textColor: string;
   buttonColor: string;
 }
+export interface IParsedCartItem {
+  cartArrIndex: number;
+  name: string;
+  image: string;
+  price: string;
+  discount: string;
+  quantity: number;
+  totalCost: string;
+}

@@ -13,6 +13,8 @@ export default function WorkInProgress() {
         title={pageData.title}
         desc={pageData.desc}
         img={pageData.img}
+        linkTo="/"
+        buttonText="Go to Main Page"
       />
     </>
   );
