@@ -5,6 +5,7 @@ import { CartSidebar } from "./CartSidebar/CartSidebar";
 import { useAppSelector } from "../../hooks/redux";
 import { NOT_FOUND_MESSAGE } from "../../commercetools-sdk/errors/errors";
 import { CartEmpty } from "./CartList/CartEmpty";
+import { Promocode } from "./Promocode";
 
 const cartSx = {
   display: "flex",
@@ -30,6 +31,7 @@ export const Cart = () => {
     <Box sx={cartSx}>
       <CartList />
       <CartSidebar />
+      <Promocode />
     </Box>
   );
 };
