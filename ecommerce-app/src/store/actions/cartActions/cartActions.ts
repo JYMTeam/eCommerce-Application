@@ -7,7 +7,7 @@ import {
   cartFetching,
   setAnonymToken,
 } from "../../slices/cartSlice";
-import { anonymToken } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
+import { anonymTokenManager } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import {
   INotification,
   notificationActive,
@@ -43,7 +43,7 @@ export const fetchCreateCart = (existingToken?: string) => {
         .execute();
 
       dispatch(cartFetchSuccess(answer.body));
-      dispatch(setAnonymToken(anonymToken.getToken()));
+      dispatch(setAnonymToken(anonymTokenManager.getToken()));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;

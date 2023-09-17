@@ -10,7 +10,10 @@ import {
   TokenStore,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
-import { anonymToken, passToken } from "../PassTokenCache/PassTokenCache";
+import {
+  anonymTokenManager,
+  passTokenManager,
+} from "../PassTokenCache/PassTokenCache";
 
 export class ClientBuilderManager {
   private currentClient: Client;
@@ -20,8 +23,8 @@ export class ClientBuilderManager {
     .withLoggerMiddleware();
 
   constructor() {
-    const passTokenCache = passToken.getToken();
-    const anonymTokenCache = anonymToken.getToken();
+    const passTokenCache = passTokenManager.getToken();
+    const anonymTokenCache = anonymTokenManager.getToken();
 
     if (passTokenCache.refreshToken) {
       this.currentClient = this.defaultBuilder
@@ -103,8 +106,8 @@ export class ClientBuilderManager {
   private static anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     ...ClientBuilderManager.authMiddlewareOptions,
     tokenCache: {
-      get: () => anonymToken.getToken(),
-      set: (cache: TokenStore) => anonymToken.setToken(cache),
+      get: () => anonymTokenManager.getToken(),
+      set: (cache: TokenStore) => anonymTokenManager.setToken(cache),
     },
   };
 
@@ -142,8 +145,8 @@ export class ClientBuilderManager {
         user,
       },
       tokenCache: {
-        get: () => passToken.getToken(),
-        set: (cache: TokenStore) => passToken.setToken(cache),
+        get: () => passTokenManager.getToken(),
+        set: (cache: TokenStore) => passTokenManager.setToken(cache),
       },
     };
 
@@ -164,8 +167,8 @@ export class ClientBuilderManager {
       ...ClientBuilderManager.authMiddlewareOptions,
       refreshToken,
       tokenCache: {
-        get: () => passToken.getToken(),
-        set: (cache: TokenStore) => passToken.setToken(cache),
+        get: () => passTokenManager.getToken(),
+        set: (cache: TokenStore) => passTokenManager.setToken(cache),
       },
     };
     return refreshOptions;

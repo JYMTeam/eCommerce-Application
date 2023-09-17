@@ -14,7 +14,7 @@ import {
 } from "../../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
 import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
-import { passToken } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
+import { passTokenManager } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 
 export const fetchUserSignup = (
   userSignupOptions: CustomerDraft,
@@ -30,7 +30,7 @@ export const fetchUserSignup = (
         expirationTime: 0,
         refreshToken: undefined,
       };
-      passToken.setToken({ ...cache });
+      passTokenManager.setToken({ ...cache });
       await clientBuilderManager.switchToSignupFlow();
       //signup
       await clientBuilderManager.requestCurrentBuilder

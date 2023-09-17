@@ -1,6 +1,7 @@
 import { TokenCacheOptions, TokenStore } from "@commercetools/sdk-client-v2";
 
-export class PassTokenCache {
+const emptyTokenCache = '{"token":"","expirationTime":0,"refreshToken":""}';
+export class TokenCacheManager {
   private storageKey: string;
 
   constructor(storageKey: string) {
@@ -9,8 +10,7 @@ export class PassTokenCache {
 
   public getToken(tokenCacheOptions?: TokenCacheOptions): TokenStore {
     const cacheDataJSON =
-      localStorage.getItem(this.storageKey) ??
-      '{"token":"","expirationTime":0,"refreshToken":""}';
+      localStorage.getItem(this.storageKey) ?? emptyTokenCache;
     return JSON.parse(cacheDataJSON) as TokenStore;
   }
 
@@ -23,5 +23,5 @@ export class PassTokenCache {
   }
 }
 
-export const passToken = new PassTokenCache("passTokenCache");
-export const anonymToken = new PassTokenCache("passTokenCache");
+export const passTokenManager = new TokenCacheManager("passTokenJymTeam");
+export const anonymTokenManager = new TokenCacheManager("passTokenJymTeam");

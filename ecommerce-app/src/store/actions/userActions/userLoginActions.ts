@@ -13,8 +13,8 @@ import {
   setIsSuccess,
 } from "../../slices/userLoginSlice";
 import {
-  anonymToken,
-  passToken,
+  anonymTokenManager,
+  passTokenManager,
 } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { AuthErrorResponse, ErrorResponse } from "@commercetools/platform-sdk";
 import {
@@ -64,14 +64,14 @@ export const fetchUserLogin = (
           })
           .execute();
 
-        anonymToken.setToken({ ...cache });
+        anonymTokenManager.setToken({ ...cache });
         await dispatch(setAnonymToken(cache));
         await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
         const answer2 = await clientBuilderManager.requestCurrentBuilder
           .me()
           .get()
           .execute();
-        const refreshToken = passToken.getToken().refreshToken;
+        const refreshToken = passTokenManager.getToken().refreshToken;
 
         if (refreshToken) {
           await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
@@ -83,7 +83,7 @@ export const fetchUserLogin = (
           type: "success",
         };
         dispatch(userLoginFetchSuccess(answer2.body));
-        dispatch(setUserToken(passToken.getToken()));
+        dispatch(setUserToken(passTokenManager.getToken()));
         dispatch(notificationActive(successLoginMessage));
       } else {
         dispatch(userLoginFetching());
@@ -107,7 +107,7 @@ export const fetchUserLogin = (
           })
           .execute();
         dispatch(setIsSuccess());
-        const refreshToken = passToken.getToken().refreshToken;
+        const refreshToken = passTokenManager.getToken().refreshToken;
         if (refreshToken) {
           await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
         }
@@ -118,7 +118,7 @@ export const fetchUserLogin = (
         };
 
         dispatch(userLoginFetchSuccess(answer.body.customer));
-        dispatch(setUserToken(passToken.getToken()));
+        dispatch(setUserToken(passTokenManager.getToken()));
         dispatch(notificationActive(successLoginMessage));
       }
 
