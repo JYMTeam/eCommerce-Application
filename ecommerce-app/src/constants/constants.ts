@@ -9,6 +9,7 @@ import {
 import { Image } from "@commercetools/platform-sdk";
 import MariyaPhoto from "../assets/Mariya.jpg";
 import YaraPhoto from "../assets/Yara.jpg";
+import JuliaPhoto from "../assets/julia01.jpg";
 
 const AT_SIGN_DOMAIN_REGEX =
   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/u;
@@ -99,11 +100,11 @@ const teamMembersInfo: ITeamMembersInfo[] = [
   {
     name: "Julia Khvatova",
     role: "Web developer",
-    bio: "The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.The will be a short bio.",
-    image: "",
+    bio: "Graduated from Saint-Petersburg State University of Economics and Finance, Julia is now a web-developer with economics background. While working in a small startup, spent two years in iOS apps development, also has some experience in Wordpress development. Now she wants to pursue her career with React and React Native stacks",
+    image: JuliaPhoto,
     githubLink: "https://github.com/jkhvatova",
     contributionDesc:
-      "Project contribution: The will be a short bio.The will be a short bio.The will be a short bio.",
+      "Project contribution: Routing, Navigation, Main page, Detail product page, Promocodes",
     color: "#f3f0e7",
     textColor: "#00000099",
     buttonColor: "#F9C152",
