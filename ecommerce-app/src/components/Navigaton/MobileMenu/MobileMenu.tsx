@@ -38,7 +38,7 @@ export const MobileMenu = ({
         </div>
 
         <Stack spacing={3} direction="column" alignItems="center">
-          <MenuItems shouldCloseDrawer={shouldCloseDrawer} />
+          <MenuItems />
         </Stack>
       </SwipeableDrawer>
     </>

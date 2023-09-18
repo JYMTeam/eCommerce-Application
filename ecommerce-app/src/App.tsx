@@ -95,7 +95,7 @@ function App() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ padding: { xs: "0 1em" } }}>
         <div className="App">
           <TokenManager />
           <ThemeProvider theme={Theme}>

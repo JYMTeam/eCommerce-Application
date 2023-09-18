@@ -1,43 +1,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  Box,
-  IconButton,
-  Tooltip,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@mui/material";
+import { Box, IconButton, Tooltip } from "@mui/material";
 import { useAppDispatch } from "../../../hooks/redux";
 import PersonIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { cartReset } from "../../../store/slices/cartSlice";
 import { logoutUser } from "../../../store/actions/userActions/userLoginActions";
 
-const settings = ["Profile", "Log out"];
 export const UserProfileMenuItem = ({
   shouldCloseDrawer = true,
 }: {
   shouldCloseDrawer: boolean;
 }) => {
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null,
-  );
   const dispatch = useAppDispatch();
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    if (shouldCloseDrawer) {
-      setAnchorElUser(event.currentTarget);
-    }
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   const handleLogout = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    handleCloseUserMenu();
     dispatch(logoutUser());
     dispatch(cartReset());
   };
@@ -55,39 +33,31 @@ export const UserProfileMenuItem = ({
                 color: "primary.dark",
               },
             }}
-            onClick={handleOpenUserMenu}
+            component={Link}
+            to="user-profile"
           >
             <PersonIcon />
           </IconButton>
         </Tooltip>
-        <Menu
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          <MenuItem
-            component={Link}
-            to="user-profile"
-            key={settings[0]}
-            onClick={handleCloseUserMenu}
+        <Tooltip title="Logout">
+          <IconButton
+            color="primary"
+            aria-label="logout"
+            sx={{
+              marginLeft: {
+                xs: "0",
+                sm: "24px",
+              },
+              ":hover": {
+                bgcolor: "transparent",
+                color: "primary.dark",
+              },
+            }}
+            onClick={handleLogout}
           >
-            <Typography textAlign="center">{settings[0]}</Typography>
-          </MenuItem>
-          <MenuItem key={settings[1]} onClick={handleLogout}>
-            <Typography textAlign="center">{settings[1]}</Typography>
-          </MenuItem>
-        </Menu>
+            <LogoutIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
     </>
   );

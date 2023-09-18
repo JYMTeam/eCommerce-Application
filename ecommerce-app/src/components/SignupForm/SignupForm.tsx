@@ -34,6 +34,7 @@ const EMPTY_STR = "";
 const BIRTHDAY_INPUT_NAME = "dateOfBirth";
 const COUNTRY_SHIPPING_INPUT_NAME = "countryShipping";
 const COUNTRY_BILLING_INPUT_NAME = "countryBilling";
+const SIGNUP_BORDER_COLOR = "#dbd8d8";
 
 export function SignupForm() {
   const [countryCodeShipping, setCountryCodeShipping] = useState(EMPTY_STR);
@@ -132,8 +133,9 @@ export function SignupForm() {
             <Box
               sx={{
                 bgcolor: "background.paper",
-                boxShadow: 4,
-                borderRadius: 2,
+                boxShadow: 0,
+                borderRadius: 0,
+                border: `1px solid ${SIGNUP_BORDER_COLOR}`,
                 p: 2,
                 minHeight: 230,
               }}

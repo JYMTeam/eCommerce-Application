@@ -30,7 +30,12 @@ export default function CategoriesList() {
   return (
     <>
       <Toolbar>
-        <Typography variant="h5" noWrap component="h5">
+        <Typography
+          variant="h6"
+          sx={{ textTransform: "uppercase" }}
+          noWrap
+          component="h5"
+        >
           Categories
         </Typography>
       </Toolbar>
