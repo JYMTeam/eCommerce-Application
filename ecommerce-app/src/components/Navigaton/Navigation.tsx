@@ -25,8 +25,8 @@ export function Navigation() {
       style={{ background: "transparent", boxShadow: "none" }}
       sx={{ minHeight: "6rem" }}
     >
-      <Container maxWidth="xl">
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <Container maxWidth="xl" sx={{ pl: 0, pr: 0 }}>
+        <Toolbar sx={{ justifyContent: "space-between", pl: 0, pr: 0 }}>
           <IconButton
             component={Link}
             to="/"
@@ -45,8 +45,8 @@ export function Navigation() {
           </IconButton>
           {isMobile ? (
             <Box component={"nav"} sx={menuNavSx}>
-              <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
               <CartMenuItem></CartMenuItem>
+              <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
             </Box>
           ) : (
             <Stack spacing={3} direction="row">
