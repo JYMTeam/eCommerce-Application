@@ -6,23 +6,26 @@ import {
 } from "../../store/actions/productsActions";
 import { Pagination } from "@mui/material";
 import "./products.css";
+import { useParams } from "react-router-dom";
 import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
 
 export default function ProductsPagination() {
-  const { loading, page, limit, total, errorMessage, filterParams } =
+  const { errorMessage, loading, page, limit, total, filterParams } =
     useAppSelector((state) => state.products);
-
   const dispatch = useAppDispatch();
 
   const totalPages = total ? Math.ceil(total / limit) : 0;
+  const { id: categoryId } = useParams();
 
   const handleChange = (_: React.ChangeEvent<unknown>, pageNumber: number) => {
     const offset = limit * (pageNumber - 1);
+
     dispatch(setProductsPage(pageNumber));
+
     if (filterParams) {
-      dispatch(filterAndSortProducts(filterParams, offset));
+      dispatch(filterAndSortProducts(filterParams, offset, categoryId));
     } else {
-      dispatch(fetchProducts(offset));
+      dispatch(fetchProducts(offset, categoryId));
     }
   };
 

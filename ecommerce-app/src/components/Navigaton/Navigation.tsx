@@ -6,6 +6,14 @@ import { AppBar, Toolbar, Stack, IconButton, Box } from "@mui/material";
 import { MobileMenu } from "./MobileMenu/MobileMenu";
 import { Theme } from "../Theme";
 import { MenuItems } from "./MenuItems/MenuItems";
+import { CartMenuItem } from "./MenuItems/CartMenuItem";
+
+const menuNavSx = {
+  display: "flex",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  alignItems: "center",
+};
 
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
@@ -17,8 +25,8 @@ export function Navigation() {
       style={{ background: "transparent", boxShadow: "none" }}
       sx={{ minHeight: "6rem" }}
     >
-      <Container maxWidth="xl">
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <Container maxWidth="xl" sx={{ pl: 0, pr: 0 }}>
+        <Toolbar sx={{ justifyContent: "space-between", pl: 0, pr: 0 }}>
           <IconButton
             component={Link}
             to="/"
@@ -36,10 +44,14 @@ export function Navigation() {
             />
           </IconButton>
           {isMobile ? (
-            <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
+            <Box component={"nav"} sx={menuNavSx}>
+              <CartMenuItem></CartMenuItem>
+              <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
+            </Box>
           ) : (
             <Stack spacing={3} direction="row">
               <MenuItems shouldCloseDrawer={shouldCloseDrawer} />
+              <CartMenuItem></CartMenuItem>
             </Stack>
           )}
         </Toolbar>

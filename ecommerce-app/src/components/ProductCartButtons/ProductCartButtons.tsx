@@ -42,7 +42,7 @@ export function ProductCartButtons({
   const productQuantity = 1;
 
   const buttonsBoxSx = {
-    m: 1,
+    margin: { xs: "0 auto", md: 0 },
     position: "relative",
     maxWidth: "fit-content",
   };
