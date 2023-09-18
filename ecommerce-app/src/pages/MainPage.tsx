@@ -2,6 +2,7 @@ import { Box, Container } from "@mui/material";
 import React from "react";
 import { MainPageCarousel } from "../components/MainPageCarousel/MainPageCarousel";
 import MainPageBanner from "../components/MainPageBanner";
+import Footer from "../components/Footer/Footer";
 export function MainPage() {
   return (
     <Container>
@@ -9,6 +10,7 @@ export function MainPage() {
         <MainPageCarousel />
         <MainPageBanner />
       </Box>
+      <Footer></Footer>
     </Container>
   );
 }

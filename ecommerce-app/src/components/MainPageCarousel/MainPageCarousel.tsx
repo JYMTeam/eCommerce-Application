@@ -14,7 +14,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { fetchProducts } from "../../store/actions/productsActions";
 import { IParsedProduct } from "../../types";
-import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
+import { ProductCartButtons } from "../ProductCartButtons/ProductCartButtons";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination, Autoplay } from "swiper/modules";
 import SwiperCore from "swiper";
@@ -146,7 +146,7 @@ export function MainPageCarousel() {
                       <Skeleton width="147px" height="66px"></Skeleton>
                     )}
                     {!loading && parsedProducts.length !== 0 && (
-                      <CartProductButtons
+                      <ProductCartButtons
                         productArrId={index}
                         sxProps={{ color: BUTTON_COLOR }}
                       />
