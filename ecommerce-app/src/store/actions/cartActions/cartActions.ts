@@ -239,7 +239,7 @@ export const fetchAddPromocodeToCart = (
             actions: [
               {
                 action: "addDiscountCode",
-                code: promocode as unknown as string,
+                code: promocode.code,
               },
             ],
           },
@@ -247,6 +247,55 @@ export const fetchAddPromocodeToCart = (
         .execute();
       const successMessage: INotification = {
         message: NOTIFICATION_MESSAGES.SUCCESS_PROMOCODE_APPLY,
+        type: "success",
+      };
+      dispatch(cartFetchSuccess(answer.body));
+      dispatch(notificationActive(successMessage));
+    } catch (e) {
+      const error = e as ClientResponse<ErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(cartFetchError(body));
+
+        const message = formatProductsErrorMessage(body);
+        const errorMessage: INotification = {
+          message,
+          type: "error",
+        };
+
+        dispatch(notificationActive(errorMessage));
+      }
+    }
+  };
+};
+export const fetchRemovePromocodeFromCart = (
+  cart: Cart,
+  promocode: DiscountCode,
+) => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      dispatch(cartFetching());
+      const answer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .carts()
+        .withId({ ID: cart.id })
+        .post({
+          body: {
+            version: cart.version,
+            actions: [
+              {
+                action: "removeDiscountCode",
+                discountCode: {
+                  typeId: "discount-code",
+                  id: promocode.id,
+                },
+              },
+            ],
+          },
+        })
+        .execute();
+      const successMessage: INotification = {
+        message: NOTIFICATION_MESSAGES.SUCCESS_PROMOCODE_REMOVE,
         type: "success",
       };
       dispatch(cartFetchSuccess(answer.body));

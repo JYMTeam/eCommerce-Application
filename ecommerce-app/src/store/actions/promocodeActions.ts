@@ -19,7 +19,6 @@ export const fetchPromocodes = () => {
         .execute();
 
       dispatch(promocodeFetchSuccess(answer.body));
-      console.log(answer.body);
     } catch (err) {
       const error = err as ClientResponse<ErrorResponse>;
       const body = error.body;
