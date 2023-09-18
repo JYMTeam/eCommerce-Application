@@ -9,7 +9,7 @@ import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
 import { ProductCartButtons } from "../ProductCartButtons/ProductCartButtons";
 const MD_COLS = 6;
 const SM_COLS = 12;
-const GRID_SPACING = 2;
+const GRID_SPACING = 0;
 const PRODUCT_TITLE_FONTSIZE = "2em";
 const PRODUCT_DESC_FONTSIZE = "1em";
 const PRODUCT_DESC_MARGIN = 3;
