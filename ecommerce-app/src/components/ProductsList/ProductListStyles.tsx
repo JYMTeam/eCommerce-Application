@@ -30,6 +30,7 @@ export const ProductListBox = styled(Box)(({ theme }) => ({
   },
   display: "flex",
   justifyContent: "center",
+  marginTop: "0.5rem",
 }));
 
 export const CardOuterBox = styled(Box)(({ theme }) => ({

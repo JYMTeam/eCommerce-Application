@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchProducts,
@@ -51,11 +51,42 @@ export default function ProductsList() {
     useAppSelector((state) => state.products);
 
   const [openPanels, setOpenPanels] = useState<boolean[]>([]);
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
   const dispatch = useAppDispatch();
   const parsedProducts = parseProducts(products);
   const offset = limit * (page - 1);
   const { id: categoryId } = useParams();
+
+  const togglePanel = (index: number) => {
+    const newOpenPanels = new Array(parsedProducts.length).fill(false);
+    newOpenPanels[index] = !newOpenPanels[index];
+    setOpenPanels(newOpenPanels);
+  };
+
+  const closeAllPanels = useCallback(() => {
+    setOpenPanels(new Array(parsedProducts.length).fill(false));
+  }, [parsedProducts]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        cardRef.current &&
+        cardRef.current instanceof HTMLElement &&
+        event.target &&
+        event.target instanceof HTMLElement &&
+        !cardRef.current.contains(event.target) &&
+        event.target.className !== "circle-button"
+      ) {
+        closeAllPanels();
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [closeAllPanels]);
 
   useEffect(() => {
     if (filterParams) {
@@ -65,22 +96,12 @@ export default function ProductsList() {
     }
   }, [dispatch, offset, filterParams, categoryId]);
 
-  const togglePanel = (index: number) => {
-    const newOpenPanels = new Array(parsedProducts.length).fill(false);
-    newOpenPanels[index] = !newOpenPanels[index];
-    setOpenPanels(newOpenPanels);
-  };
-
-  const closeAllPanels = () => {
-    setOpenPanels(new Array(parsedProducts.length).fill(false));
-  };
-
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
   }
 
   return (
-    <ProductListBox onClick={closeAllPanels}>
+    <ProductListBox onClick={closeAllPanels} ref={cardRef}>
       <Grid container spacing={GRID_SPACING} sx={{ width: "100%" }}>
         {(loading
           ? Array.from(new Array(DEFAULT_PRODUCTS_LIMIT))

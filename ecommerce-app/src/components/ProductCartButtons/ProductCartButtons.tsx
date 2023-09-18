@@ -174,6 +174,7 @@ export function ProductCartButtons({
   return (
     <Box sx={buttonsBoxSx}>
       <Button
+        className="add-product-cart"
         size="small"
         variant="text"
         color="secondary"
@@ -181,6 +182,7 @@ export function ProductCartButtons({
         disabled={loadingButton || success || productsLoading}
         onClick={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           addButtonHandler();
         }}
       >
@@ -190,6 +192,7 @@ export function ProductCartButtons({
       {loadingButton && <CircularProgress size={24} sx={circularProgressSx} />}
       {success && (
         <Button
+          className="remove-product-cart"
           size="small"
           variant="text"
           color="secondary"
@@ -197,6 +200,7 @@ export function ProductCartButtons({
           disabled={loadingButton || productsLoading}
           onClick={(e) => {
             e.preventDefault();
+            e.stopPropagation();
             removeHandlerClick();
           }}
         >
