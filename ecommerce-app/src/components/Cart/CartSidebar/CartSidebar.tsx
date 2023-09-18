@@ -8,7 +8,7 @@ export const cartSidebarBoxSx = {
   display: "flex",
   flexDirection: {
     xs: "column",
-    sm: "row",
+    sm: "column",
     md: "column",
   },
   justifyContent: "space-between",
@@ -22,7 +22,7 @@ export const cartSidebarBoxSx = {
     md: "static",
   },
   bottom: "0",
-  //maxHeight: "30rem",
+  maxHeight: "20rem",
   padding: "1em",
   borderRadius: "4px",
   backgroundColor: {
@@ -42,6 +42,15 @@ const cartSidebarHeaderSx = {
 export const cartSidebarItemSx = {
   display: "flex",
   gap: "0.938rem",
+};
+
+export const cartSidebarPromoSx = {
+  display: "flex",
+  flexDirection: {
+    xs: "column",
+    sm: "row",
+    md: "row",
+  },
 };
 
 export const CartSidebar = () => {
@@ -85,7 +94,7 @@ export const CartSidebar = () => {
             </Typography>
           </Box>
         </Stack>
-        <Box sx={cartSidebarItemSx} mt={2} mb={4}>
+        <Box sx={cartSidebarPromoSx} mt={2} mb={4}>
           <Promocode />
         </Box>
         <Button variant="contained" size="large" disabled={loading}>
