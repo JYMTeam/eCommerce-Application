@@ -37,7 +37,6 @@ export default function MainPageBanners() {
           xs
           container
           direction="column"
-          spacing={2}
           m={2}
           textAlign="center"
         >
