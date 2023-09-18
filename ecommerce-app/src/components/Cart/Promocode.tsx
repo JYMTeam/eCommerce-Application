@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchPromocode } from "../../store/actions/promocodeActions";
+import { fetchPromocodes } from "../../store/actions/promocodeActions";
 import { Button, TextField } from "@mui/material";
 export const Promocode = () => {
   const { errorMessage } = useAppSelector((state) => state.promocodes);
   const dispatch = useAppDispatch();
-  const discountId = "1c47cebb-b591-4ca4-94af-c6776475f41e";
+  //const discountId = "1c47cebb-b591-4ca4-94af-c6776475f41e";
   useEffect(() => {
-    dispatch(fetchPromocode(discountId));
+    dispatch(fetchPromocodes());
   }, [dispatch]);
   const [text, setText] = useState("");
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
   }
   const addApplyHandler = async () => {
-    await dispatch(fetchPromocode(text));
+    await dispatch(fetchPromocodes());
     console.log(text);
   };
 

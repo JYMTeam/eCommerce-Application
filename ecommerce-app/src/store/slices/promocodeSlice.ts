@@ -11,18 +11,18 @@ export interface PromocodeState {
   loading: boolean;
   error: ErrorResponse | null;
   errorMessage: string;
-  promocode: DiscountCodePagedQueryResponse | null;
+  promocodes: DiscountCodePagedQueryResponse | null;
 }
 
 const initialState: PromocodeState = {
   loading: false,
   error: null,
   errorMessage: STR_PLACEHOLDER,
-  promocode: null,
+  promocodes: null,
 };
 
 export const promocodeSlice = createSlice({
-  name: "promocode",
+  name: "promocodes",
   initialState,
   reducers: {
     promocodeFetching(state) {
@@ -38,13 +38,13 @@ export const promocodeSlice = createSlice({
       state.loading = false;
       state.error = null;
       state.errorMessage = "";
-      state.promocode = action.payload;
+      state.promocodes = action.payload;
     },
     promocodeFetchError(state, action: PayloadAction<ErrorResponse>) {
       state.loading = false;
       state.error = action.payload;
       state.errorMessage = formatProductsErrorMessage(action.payload);
-      state.promocode = null;
+      state.promocodes = null;
     },
     promocodeErrorMessage(state) {
       state.error = null;

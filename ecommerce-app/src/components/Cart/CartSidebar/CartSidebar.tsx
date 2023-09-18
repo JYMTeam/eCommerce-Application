@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useAppSelector } from "../../../hooks/redux";
 import { formatPrice } from "../../../utils/utils";
+import { Promocode } from "../Promocode";
 
 const cartSidebarBoxSx = {
   display: "flex",
@@ -61,31 +62,36 @@ export const CartSidebar = () => {
   }, [cart]);
 
   return (
-    <Box sx={cartSidebarBoxSx}>
-      <Typography variant="h6" component="h3" sx={cartSidebarHeaderSx}>
-        Total
-      </Typography>
-      <Stack>
-        <Box sx={cartSidebarItemSx}>
-          <Typography variant="subtitle1" component="p">
-            Quantity:
-          </Typography>
-          <Typography variant="subtitle1" component="p">
-            {items}
-          </Typography>
+    <>
+      <Box sx={cartSidebarBoxSx}>
+        <Typography variant="h6" component="h3" sx={cartSidebarHeaderSx}>
+          Total
+        </Typography>
+        <Stack>
+          <Box sx={cartSidebarItemSx}>
+            <Typography variant="subtitle1" component="p">
+              Quantity:
+            </Typography>
+            <Typography variant="subtitle1" component="p">
+              {items}
+            </Typography>
+          </Box>
+          <Box sx={cartSidebarItemSx}>
+            <Typography variant="subtitle1" component="p">
+              Subtotal:
+            </Typography>
+            <Typography variant="subtitle1" component="p">
+              {price}
+            </Typography>
+          </Box>
+        </Stack>
+        <Button variant="contained" size="large" disabled={loading}>
+          Checkout
+        </Button>
+        <Box sx={cartSidebarItemSx} mt={2} mb={4}>
+          <Promocode />
         </Box>
-        <Box sx={cartSidebarItemSx}>
-          <Typography variant="subtitle1" component="p">
-            Subtotal:
-          </Typography>
-          <Typography variant="subtitle1" component="p">
-            {price}
-          </Typography>
-        </Box>
-      </Stack>
-      <Button variant="contained" size="large" disabled={loading}>
-        Checkout
-      </Button>
-    </Box>
+      </Box>
+    </>
   );
 };
