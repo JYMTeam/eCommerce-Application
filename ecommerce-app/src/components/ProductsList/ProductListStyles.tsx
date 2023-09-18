@@ -81,6 +81,8 @@ export const CircleButton = styled(Button)({
 });
 
 export const cardSx: SxProps<Theme> = {
+  display: "flex",
+  justifyContent: "center",
   maxWidth: CARD_MAX_WIDTH,
   boxShadow: 0,
   minHeight: CARD_MIN_HEIGHT,

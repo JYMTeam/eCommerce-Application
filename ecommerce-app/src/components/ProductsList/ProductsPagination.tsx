@@ -6,6 +6,7 @@ import {
 } from "../../store/actions/productsActions";
 import { Pagination } from "@mui/material";
 import "./products.css";
+import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
 
 export default function ProductsPagination() {
   const { loading, page, limit, total, errorMessage, filterParams } =
@@ -32,7 +33,13 @@ export default function ProductsPagination() {
       <Pagination
         count={totalPages}
         color="primary"
-        sx={{ mt: 2, mb: 2 }}
+        sx={{
+          mt: 2,
+          mb: 2,
+          paddingLeft: {
+            md: `${SIDEBAR_WIDTH}px`,
+          },
+        }}
         size="large"
         page={page}
         onChange={handleChange}

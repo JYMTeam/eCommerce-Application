@@ -5,6 +5,7 @@ import {
   filterAndSortProducts,
 } from "../../store/actions/productsActions";
 import {
+  Box,
   Card,
   CardActionArea,
   CardActions,
@@ -112,103 +113,116 @@ export default function ProductsList() {
             sm={SM_COLS}
             xs={XS_COLS}
             key={item ? item.id : index}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Card sx={cardSx}>
-              <CardActionArea
-                component={Link}
-                to={`/product/${item ? item.id : ""}`}
-                sx={cardActionAreaSx}
-              >
-                <CardOuterBox>
-                  {item ? (
-                    <CardMedia
-                      component="img"
-                      alt={item.name as unknown as string}
-                      height={CARD_MEDIA_HEIGHT}
-                      image={item.images[0].url}
-                      sx={cardMediaSx}
-                    />
-                  ) : (
-                    <Skeleton
-                      variant="rectangular"
-                      height={CARD_MEDIA_HEIGHT}
-                    />
-                  )}
-                  {item ? (
-                    <CircleButton
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        togglePanel(index);
-                      }}
-                    >
-                      +
-                    </CircleButton>
-                  ) : (
-                    <></>
-                  )}
-                  {item ? (
-                    <CardContentBox
-                      className={`card-content ${
-                        openPanels[index] ? "panel-open" : ""
-                      }`}
-                    >
-                      <CardContent sx={{ padding: CARD_CONTENT_PADDING }}>
-                        <Typography
-                          gutterBottom
-                          variant="h6"
-                          component="h4"
-                          sx={cardTitleSx}
-                        >
-                          {item.name}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          sx={cardDescSx}
-                        >
-                          {item.description as unknown as string}
-                        </Typography>
-                        <Chip
-                          label={item.discount ? item.discount : item.price}
-                          size="small"
-                          sx={{
-                            mr: PRICE_MR,
-                            background: item.discount
-                              ? DISCOUNT_BG_COLOR
-                              : PRICE_BG_COLOR,
-                          }}
-                        />
-                        <span className="discount">
-                          {item.discount ? item.price : item.discount}
-                        </span>
-                      </CardContent>
-                      <CardActions>
-                        {loading && (
-                          <Skeleton width="147px" height="66px"></Skeleton>
-                        )}
-                        {!loading && parsedProducts.length !== 0 && (
-                          <ProductCartButtons
-                            productArrId={index}
-                            sxProps={{ color: BUTTON_COLOR }}
-                          />
-                        )}
-                      </CardActions>
-                    </CardContentBox>
-                  ) : (
-                    <CardContent>
-                      <Skeleton width="100%" />
-                      <Skeleton
-                        sx={{ mb: CARD_DESC_MB }}
-                        width="100%"
-                        height={SKELETON_DESC_HEIGHT}
+            <Box
+              sx={{
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Card sx={cardSx}>
+                <CardActionArea
+                  component={Link}
+                  to={`/product/${item ? item.id : ""}`}
+                  sx={cardActionAreaSx}
+                >
+                  <CardOuterBox>
+                    {item ? (
+                      <CardMedia
+                        component="img"
+                        alt={item.name as unknown as string}
+                        height={CARD_MEDIA_HEIGHT}
+                        image={item.images[0].url}
+                        sx={cardMediaSx}
                       />
-                      <Skeleton width="30%" height={SKELETON_PRICE_HEIGHT} />
-                    </CardContent>
-                  )}
-                </CardOuterBox>
-              </CardActionArea>
-            </Card>
+                    ) : (
+                      <Skeleton
+                        variant="rectangular"
+                        height={CARD_MEDIA_HEIGHT}
+                      />
+                    )}
+                    {item ? (
+                      <CircleButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          togglePanel(index);
+                        }}
+                      >
+                        +
+                      </CircleButton>
+                    ) : (
+                      <></>
+                    )}
+                    {item ? (
+                      <CardContentBox
+                        className={`card-content ${
+                          openPanels[index] ? "panel-open" : ""
+                        }`}
+                      >
+                        <CardContent sx={{ padding: CARD_CONTENT_PADDING }}>
+                          <Typography
+                            gutterBottom
+                            variant="h6"
+                            component="h4"
+                            sx={cardTitleSx}
+                          >
+                            {item.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={cardDescSx}
+                          >
+                            {item.description as unknown as string}
+                          </Typography>
+                          <Chip
+                            label={item.discount ? item.discount : item.price}
+                            size="small"
+                            sx={{
+                              mr: PRICE_MR,
+                              background: item.discount
+                                ? DISCOUNT_BG_COLOR
+                                : PRICE_BG_COLOR,
+                            }}
+                          />
+                          <span className="discount">
+                            {item.discount ? item.price : item.discount}
+                          </span>
+                        </CardContent>
+                        <CardActions>
+                          {loading && (
+                            <Skeleton width="147px" height="66px"></Skeleton>
+                          )}
+                          {!loading && parsedProducts.length !== 0 && (
+                            <ProductCartButtons
+                              productArrId={index}
+                              sxProps={{ color: BUTTON_COLOR }}
+                            />
+                          )}
+                        </CardActions>
+                      </CardContentBox>
+                    ) : (
+                      <CardContent>
+                        <Skeleton width="100%" />
+                        <Skeleton
+                          sx={{ mb: CARD_DESC_MB }}
+                          width="100%"
+                          height={SKELETON_DESC_HEIGHT}
+                        />
+                        <Skeleton width="30%" height={SKELETON_PRICE_HEIGHT} />
+                      </CardContent>
+                    )}
+                  </CardOuterBox>
+                </CardActionArea>
+              </Card>
+            </Box>
           </Grid>
         ))}
       </Grid>
