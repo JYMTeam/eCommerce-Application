@@ -9,3 +9,11 @@
     height: 100vh;
   }
 }
+
+@media (max-width: 440px) {
+  .product-img {
+    width: 310px;
+    height: 310px;
+    object-fit: cover;
+  }
+}

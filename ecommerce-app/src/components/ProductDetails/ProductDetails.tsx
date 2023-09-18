@@ -115,6 +115,7 @@ export default function ProductDetail() {
                   mt: PRODUCT_DESC_MARGIN,
                   mb: PRODUCT_DESC_MARGIN,
                   fontSize: PRODUCT_DESC_FONTSIZE,
+                  textAlign: "justify",
                   padding: { xs: "0 20px", md: "0 20px 0 0" },
                 }}
               >
