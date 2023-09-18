@@ -4,6 +4,8 @@ import {
   subtractYears,
   convertToUserAuthOptions,
   convertToCustomerDraft,
+  convertCentsToUSD,
+  convertUSDToCents,
 } from "./utils";
 
 describe("subtractYears function", () => {
@@ -73,5 +75,19 @@ describe("convertToCustomerDraft", () => {
 
     const customerDraft = convertToCustomerDraft(formValues);
     expect(customerDraft).toEqual(expectedCustomerDraft);
+  });
+});
+
+describe("convertCentsToUSD function", () => {
+  it("converts cents to USD", () => {
+    const result = convertCentsToUSD(15250);
+    expect(result).toEqual(152.5);
+  });
+});
+
+describe("convertUSDToCents function", () => {
+  it("converts USD to cents", () => {
+    const result = convertUSDToCents(152.5);
+    expect(result).toEqual(15250);
   });
 });

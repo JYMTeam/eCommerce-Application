@@ -11,7 +11,7 @@ import {
 } from "../../store/actions/productsActions";
 import MinimumDistanceSlider from "../basic-components/MinimumDistanceSlider/MinimumDistanceSlider";
 import BasicSelect from "../basic-components/BasicSelect/BasicSelect";
-import { Button, Typography } from "@mui/material";
+import { Button, Tooltip, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import {
   FilterAndSortNames,
@@ -51,13 +51,11 @@ export default function ProductsAttributes() {
       if (price) setPriceValue(price);
       if (otherLists) setSelectedListsValues(otherLists);
     }
-  }, [filterParams]);
 
-  useEffect(() => {
     if (!attributesData.length) {
       dispatch(fetchAttributes());
     }
-  }, [dispatch, attributesData.length]);
+  }, [filterParams, dispatch, attributesData.length]);
 
   const handleListChange = (listName: string, values: string[]) => {
     setSelectedListsValues((prevSelectedValues) => ({
@@ -154,19 +152,21 @@ export default function ProductsAttributes() {
           Show results
         </Button>
         {filterParams && (
-          <IconButton
-            aria-label="FilterOff"
-            title="FilterOff"
-            sx={{
-              ":hover": {
-                bgcolor: "transparent",
-                color: "primary.dark",
-              },
-            }}
-            onClick={handleResetFilters}
-          >
-            <FilterOffIcon color="primary" />
-          </IconButton>
+          <Tooltip title="Reset Filters">
+            <IconButton
+              aria-label="Reset Filters"
+              color="primary"
+              sx={{
+                ":hover": {
+                  bgcolor: "transparent",
+                  color: "primary.dark",
+                },
+              }}
+              onClick={handleResetFilters}
+            >
+              <FilterOffIcon />
+            </IconButton>
+          </Tooltip>
         )}
       </Box>
     </div>

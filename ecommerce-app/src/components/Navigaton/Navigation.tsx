@@ -3,9 +3,19 @@ import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import { Container, useMediaQuery } from "@mui/material";
 import { AppBar, Toolbar, Stack, IconButton, Box } from "@mui/material";
-import { Drawer } from "../Drawer/Drawer";
+import { MobileMenu } from "./MobileMenu/MobileMenu";
 import { Theme } from "../Theme";
-import { MenuItems } from "../MenuItems/MenuItems";
+import { MenuItems } from "./MenuItems/MenuItems";
+import { CartMenuItem } from "./MenuItems/CartMenuItem";
+
+const menuNavSx = {
+  display: "flex",
+  justifyContent: "center",
+  flexWrap: "wrap",
+  alignItems: "center",
+};
+
+export const HEADER_MIN_HEIGHT = 6;
 
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
@@ -15,10 +25,10 @@ export function Navigation() {
     <AppBar
       position="static"
       style={{ background: "transparent", boxShadow: "none" }}
-      sx={{ minHeight: "6rem" }}
+      sx={{ minHeight: `${HEADER_MIN_HEIGHT}rem` }}
     >
-      <Container maxWidth="xl">
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+      <Container maxWidth="xl" sx={{ pl: 0, pr: 0 }}>
+        <Toolbar sx={{ justifyContent: "space-between", pl: 0, pr: 0 }}>
           <IconButton
             component={Link}
             to="/"
@@ -36,10 +46,14 @@ export function Navigation() {
             />
           </IconButton>
           {isMobile ? (
-            <Drawer shouldCloseDrawer={shouldCloseDrawer} />
+            <Box component={"nav"} sx={menuNavSx}>
+              <CartMenuItem></CartMenuItem>
+              <MobileMenu shouldCloseDrawer={shouldCloseDrawer} />
+            </Box>
           ) : (
             <Stack spacing={3} direction="row">
               <MenuItems shouldCloseDrawer={shouldCloseDrawer} />
+              <CartMenuItem></CartMenuItem>
             </Stack>
           )}
         </Toolbar>

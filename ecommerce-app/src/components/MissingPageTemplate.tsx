@@ -6,31 +6,58 @@ type Data = {
   title: string;
   desc: string;
   img: string;
+  linkTo: string;
+  buttonText: string;
 };
-export const MissingPageTemplate = ({ title, desc, img }: Data) => {
+export const MissingPageTemplate = ({
+  title,
+  desc,
+  img,
+  linkTo,
+  buttonText,
+}: Data) => {
   return (
     <Grid
       container
       direction="column"
       justifyContent="center"
       alignItems="center"
-      height="80vh"
     >
-      <Typography variant="h3" component="h2" align="center">
+      <Typography
+        variant="h6"
+        component="h2"
+        sx={{
+          textAlign: "center",
+          textTransform: "uppercase",
+          marginBottom: "0.5em",
+        }}
+      >
         {title}
       </Typography>
-      <Typography>{desc}</Typography>
+      <Typography variant="body2" component="p" align="center">
+        {desc}
+      </Typography>
       <Box display="flex" justifyContent="center" sx={{ width: "100%" }}>
         <Box
           component="img"
           src={img}
           alt={title}
-          sx={{ height: "40vh", maxwidth: "100%" }}
+          sx={{
+            height: "40vh",
+            maxWidth: "100%",
+            objectFit: "contain",
+            padding: "1.5em 0",
+          }}
         />
       </Box>
       <Box sx={{ mb: "2em" }}>
-        <Button component={Link} to="/" variant="contained" color="primary">
-          Go to Main page
+        <Button
+          component={Link}
+          to={linkTo}
+          variant="contained"
+          color="primary"
+        >
+          {buttonText}
         </Button>
       </Box>
     </Grid>

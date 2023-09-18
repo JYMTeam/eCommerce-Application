@@ -139,6 +139,18 @@ export interface IAncestorInfo {
   id: string;
   text: string;
 }
+
+export interface ITeamMembersInfo {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  githubLink: string;
+  contributionDesc: string;
+  color: string;
+  textColor: string;
+  buttonColor: string;
+}
 export interface IParsedCartItem {
   cartArrIndex: number;
   name: string;

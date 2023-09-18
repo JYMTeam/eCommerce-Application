@@ -41,7 +41,9 @@ export function TokenManager() {
     };
 
     checkPassTokenAndFetchLogin();
-    checkAnonymTokenAndFetchLogin();
+    if (!isPassTokenVerified) {
+      checkAnonymTokenAndFetchLogin();
+    }
   }, [
     dispatch,
     tokenPassData,

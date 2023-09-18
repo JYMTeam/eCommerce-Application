@@ -6,7 +6,7 @@ import { parseProducts } from "../../utils/dataParsers";
 import { Grid, Typography, Chip } from "@mui/material";
 import { IParsedProduct } from "../../types";
 import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
-import { CartProductButtons } from "../CartProductButtons/CartProductButtons";
+import { ProductCartButtons } from "../ProductCartButtons/ProductCartButtons";
 const MD_COLS = 6;
 const SM_COLS = 12;
 const GRID_SPACING = 2;
@@ -17,7 +17,6 @@ const BUTTON_COLOR = "#F9C152";
 const PRICE_MR = 1;
 const PRICE_BG_COLOR = "rgba(0, 0, 0, 0.08)";
 const DISCOUNT_BG_COLOR = "#00ffbb7d";
-const BUTTON_ML = 2;
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -74,6 +73,9 @@ export default function ProductDetail() {
             sx={{
               display: "flex",
               justifyContent: "center",
+              mb: 3,
+              width: "100%",
+              ml: 0,
             }}
           >
             <Grid
@@ -113,6 +115,7 @@ export default function ProductDetail() {
                   mt: PRODUCT_DESC_MARGIN,
                   mb: PRODUCT_DESC_MARGIN,
                   fontSize: PRODUCT_DESC_FONTSIZE,
+                  padding: { xs: "0 20px", md: "0 20px 0 0" },
                 }}
               >
                 {longDescription as unknown as string}
@@ -164,9 +167,9 @@ export default function ProductDetail() {
                 products.length !== 0 &&
                 productArrId !== null &&
                 productArrId !== -1 && (
-                  <CartProductButtons
+                  <ProductCartButtons
                     productArrId={productArrId}
-                    sxProps={{ ml: BUTTON_ML, color: BUTTON_COLOR }}
+                    sxProps={{ color: BUTTON_COLOR, mt: PRODUCT_DESC_MARGIN }}
                   />
                 )}
             </Grid>

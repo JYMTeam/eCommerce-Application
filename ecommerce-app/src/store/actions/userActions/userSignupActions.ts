@@ -1,4 +1,4 @@
-import { ClientResponse } from "@commercetools/sdk-client-v2";
+import { ClientResponse, TokenStore } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "../..";
 import { AuthErrorResponse, CustomerDraft } from "@commercetools/platform-sdk";
 import {
@@ -14,6 +14,7 @@ import {
 } from "../../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
 import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
+import { passTokenManager } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 
 export const fetchUserSignup = (
   userSignupOptions: CustomerDraft,
@@ -24,7 +25,12 @@ export const fetchUserSignup = (
       dispatch(userSignupFetching());
       const userAuthOptions =
         convertCustomerDraftToUserAuthOptions(userSignupOptions);
-
+      const cache: TokenStore = {
+        token: "",
+        expirationTime: 0,
+        refreshToken: undefined,
+      };
+      passTokenManager.setToken({ ...cache });
       await clientBuilderManager.switchToSignupFlow();
       //signup
       await clientBuilderManager.requestCurrentBuilder
@@ -41,8 +47,6 @@ export const fetchUserSignup = (
       dispatch(notificationActive(successMessage));
       if (userAuthOptions) {
         if (existingAnonymToken) {
-          console.log("anonym token after sign up");
-          console.log(existingAnonymToken);
           dispatch(fetchUserLogin(userAuthOptions, existingAnonymToken, true));
         } else {
           dispatch(fetchUserLogin(userAuthOptions));
