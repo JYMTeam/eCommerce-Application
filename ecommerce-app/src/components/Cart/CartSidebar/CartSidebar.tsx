@@ -3,6 +3,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { useAppSelector } from "../../../hooks/redux";
 import { formatPrice } from "../../../utils/utils";
 import { Promocode } from "../Promocode";
+const CART_SIDEBAR_BORDER_COLOR = "#dbd8d8";
 
 export const cartSidebarBoxSx = {
   display: "flex",
@@ -24,14 +25,14 @@ export const cartSidebarBoxSx = {
   bottom: "0",
   maxHeight: "20rem",
   padding: "1em",
-  borderRadius: "4px",
   backgroundColor: {
-    xs: "#fffffff2",
-    sm: "#fffffff2",
+    xs: "#ffffffd9",
+    sm: "#ffffffd9",
     md: "background.paper",
   },
-  boxShadow:
-    "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
+  boxShadow: "none",
+  borderRadius: 0,
+  border: `1px solid ${CART_SIDEBAR_BORDER_COLOR}`,
   zIndex: "1",
 };
 

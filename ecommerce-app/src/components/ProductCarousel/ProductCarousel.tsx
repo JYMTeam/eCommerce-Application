@@ -7,6 +7,8 @@ import "./productCarousel.css";
 
 const HEIGHT = "380px";
 const WIDTH = "380px";
+const HEIGHT_XS = "310px";
+const WIDTH_XS = "310px";
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,8 +32,8 @@ export function ProductCarousel(props: { images: Image[] }) {
         elevation={0}
         justifyContent="center"
         sx={{
-          width: { WIDTH },
-          height: { HEIGHT },
+          width: { md: WIDTH, xs: WIDTH_XS },
+          height: { md: HEIGHT, xs: HEIGHT_XS },
           overflow: "hidden",
           objectFit: "contain",
         }}
@@ -60,6 +62,7 @@ export function ProductCarousel(props: { images: Image[] }) {
                 right: 8,
                 top: 8,
                 color: (theme) => theme.palette.grey[500],
+                zIndex: 10,
               }}
             >
               <CloseIcon />
@@ -80,7 +83,10 @@ export function ProductCarousel(props: { images: Image[] }) {
   }
   return (
     <Carousel
-      sx={{ width: WIDTH }}
+      sx={{
+        width: { md: WIDTH, xs: WIDTH_XS },
+        height: { md: HEIGHT, xs: HEIGHT_XS },
+      }}
       indicators={props.images.length > 1 ? true : false}
       navButtonsAlwaysVisible={true}
       navButtonsAlwaysInvisible={props.images.length > 1 ? false : true}

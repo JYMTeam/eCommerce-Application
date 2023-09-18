@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-material-ui-carousel": "^3.4.2",
     "react-scripts": "5.0.1",
+    "swiper": "^10.2.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
     "yup": "^1.2.0"
@@ -82,6 +83,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/react-slick": "^0.23.10",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.3",

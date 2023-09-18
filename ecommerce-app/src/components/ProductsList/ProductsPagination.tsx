@@ -7,6 +7,7 @@ import {
 import { Pagination } from "@mui/material";
 import "./products.css";
 import { useParams } from "react-router-dom";
+import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
 
 export default function ProductsPagination() {
   const { errorMessage, loading, page, limit, total, filterParams } =
@@ -35,7 +36,13 @@ export default function ProductsPagination() {
       <Pagination
         count={totalPages}
         color="primary"
-        sx={{ mt: 2, mb: 2 }}
+        sx={{
+          mt: 2,
+          mb: 2,
+          paddingLeft: {
+            md: `${SIDEBAR_WIDTH}px`,
+          },
+        }}
         size="large"
         page={page}
         onChange={handleChange}

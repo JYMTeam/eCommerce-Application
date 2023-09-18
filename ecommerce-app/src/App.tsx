@@ -18,6 +18,7 @@ import { UserProfilePage } from "./pages/UserProfilePage";
 import { useSnackbar } from "notistack";
 import { hideNotification } from "./store/actions/notificationActions";
 import CategoryPage from "./pages/CategoryPage";
+import { AboutUsPage } from "./pages/AboutUsPage";
 import { TokenManager } from "./components/TokenManager";
 
 function App() {
@@ -89,13 +90,14 @@ function App() {
     { path: "/shop", element: <ShopPage /> },
     { path: "/product/:id", element: <ProductDetailsPage /> },
     { path: "/shop/:id", element: <CategoryPage /> },
+    { path: "/about", element: <AboutUsPage /> },
     { path: "/cart", element: <CartPage /> },
     { path: "*", element: <NotFoundPage /> },
   ];
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ padding: { xs: "0 1em" } }}>
         <div className="App">
           <TokenManager />
           <ThemeProvider theme={Theme}>

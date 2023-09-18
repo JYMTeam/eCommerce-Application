@@ -7,7 +7,7 @@ import { SIDEBAR_WIDTH } from "./ProductsSidebar";
 import { useAppSelector } from "../../hooks/redux";
 import { parseCategoriesBreadcrumb } from "../../utils/dataParsers";
 import { IAncestorInfo } from "../../types";
-import { PRODUCT_LIST_PADDING } from "../ProductsList/ProductsList";
+import { PRODUCT_LIST_PADDING } from "../ProductsList/ProductListStyles";
 
 interface ILinkRouterProps extends LinkProps {
   to: string;

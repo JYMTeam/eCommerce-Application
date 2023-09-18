@@ -16,6 +16,8 @@ import { Alert, AlertTitle } from "@mui/material";
 import { setLoginSchema } from "../../utils/validation-schemas";
 import { successMessageHandler } from "./loginHelpers";
 
+const LOGIN_BORDER_COLOR = "#dbd8d8";
+
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const LoginSchema = setLoginSchema();
@@ -65,8 +67,9 @@ export function LoginForm() {
             <Box
               sx={{
                 bgcolor: "background.paper",
-                boxShadow: 4,
-                borderRadius: 2,
+                boxShadow: 0,
+                borderRadius: 0,
+                border: `1px solid ${LOGIN_BORDER_COLOR}`,
                 p: 2,
                 minHeight: 230,
                 fontSize: 24,
