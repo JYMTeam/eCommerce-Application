@@ -60,6 +60,7 @@ export function ProductCarousel(props: { images: Image[] }) {
                 right: 8,
                 top: 8,
                 color: (theme) => theme.palette.grey[500],
+                zIndex: 10,
               }}
             >
               <CloseIcon />

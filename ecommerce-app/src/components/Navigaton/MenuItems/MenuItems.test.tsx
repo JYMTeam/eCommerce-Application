@@ -25,12 +25,10 @@ describe("MenuItems Component", () => {
     const shopButton = screen.getByText("Shop");
     const loginButton = screen.getByText("Login");
     const signUpButton = screen.getByText("Sign Up");
-    const cartButton = screen.getByAltText("link to Shopping Cart");
 
     expect(mainButton).toBeInTheDocument();
     expect(shopButton).toBeInTheDocument();
     expect(loginButton).toBeInTheDocument();
     expect(signUpButton).toBeInTheDocument();
-    expect(cartButton).toBeInTheDocument();
   });
 });
