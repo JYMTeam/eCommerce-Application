@@ -4,12 +4,14 @@ import { fetchPromocodes } from "../../store/actions/promocodeActions";
 import { Button, TextField } from "@mui/material";
 import {
   fetchAddPromocodeToCart,
-  fetchRemovePromocodeFromCart,
+  //fetchRemovePromocodeFromCart,
 } from "../../store/actions/cartActions/cartActions";
 import {
   DiscountCode,
   DiscountCodePagedQueryResponse,
 } from "@commercetools/platform-sdk";
+//import { cartSidebarItemSx } from "./CartSidebar/CartSidebar";
+
 export const Promocode = () => {
   const { cart } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
@@ -21,10 +23,15 @@ export const Promocode = () => {
     dispatch(fetchPromocodes());
   }, [dispatch]);
   const [text, setText] = useState("");
+  const [appliedPromocodes, setAppliedPromocodes] = useState<DiscountCode[]>(
+    [],
+  );
+  useEffect(() => {
+    console.log(appliedPromocodes.map((item) => item.code));
+  });
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
   }
-
   const getCurrentPromocode = (
     text: string,
     promocodes: DiscountCodePagedQueryResponse,
@@ -34,13 +41,20 @@ export const Promocode = () => {
     return results.filter((result: DiscountCode) => result.code === text);
   };
 
-  const addApplyHandler = async () => {
+  const addCurrentPromocode = async () => {
     if (promocodes) {
       const currentPromocode = getCurrentPromocode(text, promocodes);
 
       await dispatch(fetchPromocodes());
       if (cart && currentPromocode.length > 0) {
         await dispatch(fetchAddPromocodeToCart(cart, currentPromocode[0]));
+        if (
+          appliedPromocodes.filter(
+            (promocode) => promocode.code === currentPromocode[0].code,
+          ).length < 1
+        ) {
+          setAppliedPromocodes([...appliedPromocodes, currentPromocode[0]]);
+        }
       } else if (currentPromocode.length === 0) {
         console.log("error");
         if (errorMessage) {
@@ -50,23 +64,50 @@ export const Promocode = () => {
     }
   };
 
-  const removeCurrentPromocode = async () => {
-    if (promocodes) {
-      const currentPromocode = getCurrentPromocode(text, promocodes);
+  // const removeCurrentPromocode = async () => {
+  //   if (promocodes) {
+  //     const currentPromocode = getCurrentPromocode(text, promocodes);
 
-      await dispatch(fetchPromocodes());
-      if (cart && currentPromocode.length > 0) {
-        await dispatch(fetchRemovePromocodeFromCart(cart, currentPromocode[0]));
-      } else if (currentPromocode.length === 0) {
-        console.log("error");
-        if (errorMessage) {
-          return <p className="notification-message">{errorMessage}</p>;
-        }
-      }
-    }
-  };
+  //     await dispatch(fetchPromocodes());
+  //     if (cart && currentPromocode.length > 0) {
+  //       await dispatch(fetchRemovePromocodeFromCart(cart, currentPromocode[0]));
+  //     } else if (currentPromocode.length === 0) {
+  //       console.log("error");
+  //       if (errorMessage) {
+  //         return <p className="notification-message">{errorMessage}</p>;
+  //       }
+  //     }
+  //   }
+  // };
+
+  // const showUserPromocodes = async () => {
+  //   return (
+  //     <Box sx={cartSidebarItemSx}>
+  //       <Typography variant="subtitle1" component="p">
+  //         {appliedPromocodes.length > 0 ? "Promocodes applied:" : ""}
+  //       </Typography>
+
+  //       {appliedPromocodes.map((promocode: DiscountCode, index: number) => (
+  //         <Box key={index}>
+  //           <Typography variant="subtitle1" component="p">
+  //             {promocode.code}
+  //           </Typography>
+  //           <Button
+  //             onClick={removeCurrentPromocode}
+  //             type="button"
+  //             sx={{ p: "10px" }}
+  //             aria-label="apply-promo"
+  //           >
+  //             Remove
+  //           </Button>
+  //         </Box>
+  //       ))}
+  //     </Box>
+  //   );
+  // };
+
   return (
-    <div>
+    <>
       <TextField
         value={text}
         label="Enter promocode here"
@@ -75,25 +116,13 @@ export const Promocode = () => {
         }}
       />
       <Button
-        onClick={addApplyHandler}
+        onClick={addCurrentPromocode}
         type="button"
         sx={{ p: "10px" }}
         aria-label="apply-promo"
       >
         Apply
       </Button>
-      <div>
-        promocodes applied:
-        {}
-      </div>
-      <Button
-        onClick={removeCurrentPromocode}
-        type="button"
-        sx={{ p: "10px" }}
-        aria-label="apply-promo"
-      >
-        Remove
-      </Button>
-    </div>
+    </>
   );
 };

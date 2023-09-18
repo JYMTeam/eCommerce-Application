@@ -4,7 +4,7 @@ import { useAppSelector } from "../../../hooks/redux";
 import { formatPrice } from "../../../utils/utils";
 import { Promocode } from "../Promocode";
 
-const cartSidebarBoxSx = {
+export const cartSidebarBoxSx = {
   display: "flex",
   flexDirection: {
     xs: "column",
@@ -22,7 +22,7 @@ const cartSidebarBoxSx = {
     md: "static",
   },
   bottom: "0",
-  maxHeight: "12.5rem",
+  //maxHeight: "30rem",
   padding: "1em",
   borderRadius: "4px",
   backgroundColor: {
@@ -39,7 +39,7 @@ const cartSidebarHeaderSx = {
   textTransform: "uppercase",
 };
 
-const cartSidebarItemSx = {
+export const cartSidebarItemSx = {
   display: "flex",
   gap: "0.938rem",
 };
@@ -85,12 +85,12 @@ export const CartSidebar = () => {
             </Typography>
           </Box>
         </Stack>
-        <Button variant="contained" size="large" disabled={loading}>
-          Checkout
-        </Button>
         <Box sx={cartSidebarItemSx} mt={2} mb={4}>
           <Promocode />
         </Box>
+        <Button variant="contained" size="large" disabled={loading}>
+          Checkout
+        </Button>
       </Box>
     </>
   );
