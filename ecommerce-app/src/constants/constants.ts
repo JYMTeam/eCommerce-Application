@@ -144,6 +144,8 @@ const NOTIFICATION_MESSAGES = {
   SUCCESS_PRODUCT_ADD: "Bag successfully added to cart",
   SUCCESS_PRODUCT_REMOVE: "Bag successfully removed from cart",
   SUCCESS_ALL_PRODUCTS_REMOVE: "Your cart has been successfully emptied",
+  SUCCESS_PROMOCODE_APPLY: "Promocode have been successfully applied",
+  SUCCESS_PROMOCODE_REMOVE: "Promocode have been successfully removed",
 };
 
 export {
