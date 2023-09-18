@@ -19,8 +19,8 @@ export class ClientBuilderManager {
   private currentClient: Client;
   private defaultBuilder = new ClientBuilder()
     .withProjectKey(ClientBuilderManager.basicOptions.projectKey)
-    .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions)
-    .withLoggerMiddleware();
+    .withHttpMiddleware(ClientBuilderManager.httpMiddlewareOptions);
+  // .withLoggerMiddleware();
 
   constructor() {
     const passTokenCache = passTokenManager.getToken();

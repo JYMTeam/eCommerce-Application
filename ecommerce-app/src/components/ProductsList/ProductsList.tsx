@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchProducts,
@@ -18,38 +18,76 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import { Link, useParams } from "react-router-dom";
 import { parseProducts } from "../../utils/dataParsers";
-import { SIDEBAR_WIDTH } from "../ProductsSidebar/ProductsSidebar";
 import { ProductCartButtons } from "../ProductCartButtons/ProductCartButtons";
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { IParsedProduct } from "../../types";
+import {
+  CARD_DESC_MB,
+  CardContentBox,
+  CardOuterBox,
+  CircleButton,
+  ProductListBox,
+  cardActionAreaSx,
+  cardDescSx,
+  cardMediaSx,
+  cardSx,
+  cardTitleSx,
+} from "./ProductListStyles";
 
+export const GRID_SPACING = 2;
 const MD_COLS = 4;
 const SM_COLS = 6;
 const XS_COLS = 12;
-export const GRID_SPACING = 2;
-const CARD_MIN_HEIGHT = 320;
-const CARD_MAX_WIDTH = 325;
-const CARD_BOX_SHADOW = 3;
-const CARD_HEIGHT = "100%";
 const CARD_MEDIA_HEIGHT = 250;
-const CARD_TITLE_FONTSIZE = 18;
-const CARD_DESC_FONTSIZE = 14;
-const BUTTON_COLOR = "#F9C152";
-const CARD_DESC_MB = 1.5;
 const PRICE_MR = 1;
 const PRICE_BG_COLOR = "rgba(0, 0, 0, 0.08)";
 const DISCOUNT_BG_COLOR = "#00ffbb7d";
-export const PRODUCT_LIST_PADDING = 3;
 const SKELETON_DESC_HEIGHT = 63;
 const SKELETON_PRICE_HEIGHT = 30;
+const CARD_CONTENT_PADDING = "6%";
+const BUTTON_COLOR = "#F9C152";
 
 export default function ProductsList() {
   const { errorMessage, loading, products, page, limit, filterParams } =
     useAppSelector((state) => state.products);
+
+  const [openPanels, setOpenPanels] = useState<boolean[]>([]);
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
   const dispatch = useAppDispatch();
   const parsedProducts = parseProducts(products);
   const offset = limit * (page - 1);
   const { id: categoryId } = useParams();
+
+  const togglePanel = (index: number) => {
+    const newOpenPanels = new Array(parsedProducts.length).fill(false);
+    newOpenPanels[index] = !newOpenPanels[index];
+    setOpenPanels(newOpenPanels);
+  };
+
+  const closeAllPanels = useCallback(() => {
+    setOpenPanels(new Array(parsedProducts.length).fill(false));
+  }, [parsedProducts]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        cardRef.current &&
+        cardRef.current instanceof HTMLElement &&
+        event.target &&
+        event.target instanceof HTMLElement &&
+        !cardRef.current.contains(event.target) &&
+        event.target.className !== "circle-button"
+      ) {
+        closeAllPanels();
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [closeAllPanels]);
 
   useEffect(() => {
     if (filterParams) {
@@ -64,14 +102,8 @@ export default function ProductsList() {
   }
 
   return (
-    <Box
-      sx={{
-        flexGrow: 1,
-        p: PRODUCT_LIST_PADDING,
-        width: { md: `calc(100% - ${SIDEBAR_WIDTH}px)` },
-      }}
-    >
-      <Grid container spacing={GRID_SPACING}>
+    <ProductListBox onClick={closeAllPanels} ref={cardRef}>
+      <Grid container spacing={GRID_SPACING} sx={{ width: "100%" }}>
         {(loading
           ? Array.from(new Array(DEFAULT_PRODUCTS_LIMIT))
           : parsedProducts
@@ -81,100 +113,119 @@ export default function ProductsList() {
             sm={SM_COLS}
             xs={XS_COLS}
             key={item ? item.id : index}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <Card
+            <Box
               sx={{
-                maxWidth: CARD_MAX_WIDTH,
-                boxShadow: CARD_BOX_SHADOW,
-                minHeight: CARD_MIN_HEIGHT,
-                height: CARD_HEIGHT,
-                ":hover": {
-                  boxShadow: 7,
-                },
+                display: "flex",
+                width: "100%",
+                height: "100%",
+                justifyContent: "center",
               }}
             >
-              <CardActionArea
-                component={Link}
-                to={`/product/${item ? item.id : ""}`}
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "flex-start",
-                  alignContent: "space-between",
-                  height: "100%",
-                }}
-              >
-                <div style={{ width: "100%" }}>
-                  {item ? (
-                    <CardMedia
-                      component="img"
-                      alt={item.name as unknown as string}
-                      height={CARD_MEDIA_HEIGHT}
-                      image={item.images[0].url}
-                    />
-                  ) : (
-                    <Skeleton
-                      variant="rectangular"
-                      height={CARD_MEDIA_HEIGHT}
-                    />
-                  )}
-                  {item ? (
-                    <CardContent>
-                      <Typography
-                        gutterBottom
-                        variant="h4"
-                        component="h4"
-                        sx={{ fontSize: CARD_TITLE_FONTSIZE }}
-                      >
-                        {item.name}
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        color="text.secondary"
-                        sx={{ mb: CARD_DESC_MB, fontSize: CARD_DESC_FONTSIZE }}
-                      >
-                        {item.description as unknown as string}
-                      </Typography>
-                      <Chip
-                        label={item.discount ? item.discount : item.price}
-                        size="small"
-                        sx={{
-                          mr: PRICE_MR,
-                          background: item.discount
-                            ? DISCOUNT_BG_COLOR
-                            : PRICE_BG_COLOR,
-                        }}
+              <Card sx={cardSx}>
+                <CardActionArea
+                  component={Link}
+                  to={`/product/${item ? item.id : ""}`}
+                  sx={cardActionAreaSx}
+                >
+                  <CardOuterBox>
+                    {item ? (
+                      <CardMedia
+                        component="img"
+                        alt={item.name as unknown as string}
+                        height={CARD_MEDIA_HEIGHT}
+                        image={item.images[0].url}
+                        sx={cardMediaSx}
                       />
-                      <span className="discount">
-                        {item.discount ? item.price : item.discount}
-                      </span>
-                    </CardContent>
-                  ) : (
-                    <CardContent>
-                      <Skeleton width="100%" />
+                    ) : (
                       <Skeleton
-                        sx={{ mb: CARD_DESC_MB }}
-                        width="100%"
-                        height={SKELETON_DESC_HEIGHT}
+                        variant="rectangular"
+                        height={CARD_MEDIA_HEIGHT}
                       />
-                      <Skeleton width="30%" height={SKELETON_PRICE_HEIGHT} />
-                    </CardContent>
-                  )}
-                </div>
-                <CardActions>
-                  {loading && <Skeleton width="147px" height="66px"></Skeleton>}
-                  {!loading && parsedProducts.length !== 0 && (
-                    <ProductCartButtons
-                      productArrId={index}
-                      sxProps={{ color: BUTTON_COLOR }}
-                    />
-                  )}
-                </CardActions>
-              </CardActionArea>
-            </Card>
+                    )}
+                    {item ? (
+                      <CircleButton
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          togglePanel(index);
+                        }}
+                      >
+                        +
+                      </CircleButton>
+                    ) : (
+                      <></>
+                    )}
+                    {item ? (
+                      <CardContentBox
+                        className={`card-content ${
+                          openPanels[index] ? "panel-open" : ""
+                        }`}
+                      >
+                        <CardContent sx={{ padding: CARD_CONTENT_PADDING }}>
+                          <Typography
+                            gutterBottom
+                            variant="h6"
+                            component="h4"
+                            sx={cardTitleSx}
+                          >
+                            {item.name}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            sx={cardDescSx}
+                          >
+                            {item.description as unknown as string}
+                          </Typography>
+                          <Chip
+                            label={item.discount ? item.discount : item.price}
+                            size="small"
+                            sx={{
+                              mr: PRICE_MR,
+                              background: item.discount
+                                ? DISCOUNT_BG_COLOR
+                                : PRICE_BG_COLOR,
+                            }}
+                          />
+                          <span className="discount">
+                            {item.discount ? item.price : item.discount}
+                          </span>
+                        </CardContent>
+                        <CardActions>
+                          {loading && (
+                            <Skeleton width="147px" height="66px"></Skeleton>
+                          )}
+                          {!loading && parsedProducts.length !== 0 && (
+                            <ProductCartButtons
+                              productArrId={index}
+                              sxProps={{ color: BUTTON_COLOR }}
+                            />
+                          )}
+                        </CardActions>
+                      </CardContentBox>
+                    ) : (
+                      <CardContent>
+                        <Skeleton width="100%" />
+                        <Skeleton
+                          sx={{ mb: CARD_DESC_MB }}
+                          width="100%"
+                          height={SKELETON_DESC_HEIGHT}
+                        />
+                        <Skeleton width="30%" height={SKELETON_PRICE_HEIGHT} />
+                      </CardContent>
+                    )}
+                  </CardOuterBox>
+                </CardActionArea>
+              </Card>
+            </Box>
           </Grid>
         ))}
       </Grid>
-    </Box>
+    </ProductListBox>
   );
 }
