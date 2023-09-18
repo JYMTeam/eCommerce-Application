@@ -15,6 +15,8 @@ const menuNavSx = {
   alignItems: "center",
 };
 
+export const HEADER_MIN_HEIGHT = 6;
+
 export function Navigation() {
   const isMobile = useMediaQuery(Theme.breakpoints.down("md"));
   const [shouldCloseDrawer] = React.useState(true);
@@ -23,7 +25,7 @@ export function Navigation() {
     <AppBar
       position="static"
       style={{ background: "transparent", boxShadow: "none" }}
-      sx={{ minHeight: "6rem" }}
+      sx={{ minHeight: `${HEADER_MIN_HEIGHT}rem` }}
     >
       <Container maxWidth="xl" sx={{ pl: 0, pr: 0 }}>
         <Toolbar sx={{ justifyContent: "space-between", pl: 0, pr: 0 }}>
