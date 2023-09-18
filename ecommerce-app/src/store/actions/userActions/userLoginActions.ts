@@ -13,7 +13,7 @@ import {
   setIsSuccess,
 } from "../../slices/userLoginSlice";
 import {
-  anonymTokenManager,
+  // anonymTokenManager,
   passTokenManager,
 } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { AuthErrorResponse, ErrorResponse } from "@commercetools/platform-sdk";
@@ -64,7 +64,7 @@ export const fetchUserLogin = (
           })
           .execute();
 
-        anonymTokenManager.setToken({ ...cache });
+        passTokenManager.setToken({ ...cache });
         await dispatch(setAnonymToken(cache));
         await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
         const answer2 = await clientBuilderManager.requestCurrentBuilder

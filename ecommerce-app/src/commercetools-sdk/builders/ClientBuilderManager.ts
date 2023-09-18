@@ -11,7 +11,7 @@ import {
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
 import {
-  anonymTokenManager,
+  // anonymTokenManager,
   passTokenManager,
 } from "../PassTokenCache/PassTokenCache";
 
@@ -24,7 +24,7 @@ export class ClientBuilderManager {
 
   constructor() {
     const passTokenCache = passTokenManager.getToken();
-    const anonymTokenCache = anonymTokenManager.getToken();
+    // const anonymTokenCache = anonymTokenManager.getToken();
 
     if (passTokenCache.refreshToken) {
       this.currentClient = this.defaultBuilder
@@ -32,13 +32,15 @@ export class ClientBuilderManager {
           this.getRefreshOptions(passTokenCache.refreshToken),
         )
         .build();
-    } else if (anonymTokenCache.refreshToken) {
-      this.currentClient = this.defaultBuilder
-        .withRefreshTokenFlow(
-          this.getRefreshOptions(anonymTokenCache.refreshToken),
-        )
-        .build();
-    } else {
+    }
+    // else if (anonymTokenCache.refreshToken) {
+    //   this.currentClient = this.defaultBuilder
+    //     .withRefreshTokenFlow(
+    //       this.getRefreshOptions(anonymTokenCache.refreshToken),
+    //     )
+    //     .build();
+    // }
+    else {
       this.currentClient = this.defaultBuilder
         .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
         .build();
@@ -106,8 +108,8 @@ export class ClientBuilderManager {
   private static anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     ...ClientBuilderManager.authMiddlewareOptions,
     tokenCache: {
-      get: () => anonymTokenManager.getToken(),
-      set: (cache: TokenStore) => anonymTokenManager.setToken(cache),
+      get: () => passTokenManager.getToken(),
+      set: (cache: TokenStore) => passTokenManager.setToken(cache),
     },
   };
 

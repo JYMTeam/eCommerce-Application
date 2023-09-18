@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TokenStore } from "@commercetools/sdk-client-v2";
 import { formatAuthErrorMessage } from "../../commercetools-sdk/errors/errors";
 import {
-  anonymTokenManager,
+  // anonymTokenManager,
   passTokenManager,
 } from "../../commercetools-sdk/PassTokenCache/PassTokenCache";
 export interface IUserLoginState {
@@ -38,7 +38,7 @@ export const userLoginSlice = createSlice({
         refreshToken: undefined,
       };
       passTokenManager.setToken({ ...cache });
-      anonymTokenManager.setToken({ ...cache });
+      // anonymTokenManager.setToken({ ...cache });
       return { ...initialState };
     },
     userLoginFetchSuccess(state, action: PayloadAction<Customer>) {

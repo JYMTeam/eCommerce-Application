@@ -24,4 +24,4 @@ export class TokenCacheManager {
 }
 
 export const passTokenManager = new TokenCacheManager("passTokenJymTeam");
-export const anonymTokenManager = new TokenCacheManager("passTokenJymTeam");
+// export const anonymTokenManager = new TokenCacheManager("passTokenJymTeam");
