@@ -1,24 +1,27 @@
-import {
-  TokenCache,
-  TokenCacheOptions,
-  TokenStore,
-} from "@commercetools/sdk-client-v2";
+import { TokenCacheOptions, TokenStore } from "@commercetools/sdk-client-v2";
 
-export class PassTokenCache implements TokenCache {
-  private cache: TokenStore = {
-    token: "",
-    expirationTime: 0,
-    refreshToken: undefined,
-  };
+const emptyTokenCache = '{"token":"","expirationTime":0,"refreshToken":""}';
+export class TokenCacheManager {
+  private storageKey: string;
 
-  get(tokenCacheOptions?: TokenCacheOptions): TokenStore {
-    return this.cache;
+  constructor(storageKey: string) {
+    this.storageKey = storageKey;
   }
 
-  set(cache: TokenStore, tokenCacheOptions?: TokenCacheOptions): void {
-    this.cache = cache;
+  public getToken(tokenCacheOptions?: TokenCacheOptions): TokenStore {
+    const cacheDataJSON =
+      localStorage.getItem(this.storageKey) ?? emptyTokenCache;
+    return JSON.parse(cacheDataJSON) as TokenStore;
+  }
+
+  public setToken(
+    cache: TokenStore,
+    tokenCacheOptions?: TokenCacheOptions,
+  ): void {
+    const cacheDataJSON = JSON.stringify(cache);
+    localStorage.setItem(this.storageKey, cacheDataJSON);
   }
 }
 
-export const passToken = new PassTokenCache();
-export const anonymTokenCache = new PassTokenCache();
+export const passTokenManager = new TokenCacheManager("passTokenJymTeam");
+export const anonymTokenManager = new TokenCacheManager("passTokenJymTeam");

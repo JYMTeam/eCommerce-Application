@@ -1,18 +1,13 @@
 import { ClientResponse } from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "../..";
-import {
-  Cart,
-  DiscountCode,
-  ErrorResponse,
-  ProductProjection,
-} from "@commercetools/platform-sdk";
+import { Cart, ErrorResponse, DiscountCode } from "@commercetools/platform-sdk";
 import {
   cartFetchError,
   cartFetchSuccess,
   cartFetching,
   setAnonymToken,
 } from "../../slices/cartSlice";
-import { anonymTokenCache } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
+import { anonymTokenManager } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import {
   INotification,
   notificationActive,
@@ -35,9 +30,7 @@ export const fetchCreateCart = (existingToken?: string) => {
       } else {
         await clientBuilderManager.switchToAnonymFlow();
       }
-      // const apiRoot = existingToken
-      //   ? getApiTokenRoot(existingToken)
-      //   : getApiAnonymRoot();
+
       const answer = await clientBuilderManager.requestCurrentBuilder
         .me()
         .carts()
@@ -50,7 +43,7 @@ export const fetchCreateCart = (existingToken?: string) => {
         .execute();
 
       dispatch(cartFetchSuccess(answer.body));
-      dispatch(setAnonymToken(anonymTokenCache.get()));
+      dispatch(setAnonymToken(anonymTokenManager.getToken()));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
@@ -74,7 +67,7 @@ export const fetchCreateCart = (existingToken?: string) => {
 
 export const fetchAddProductsCart = (
   cart: Cart,
-  product: ProductProjection,
+  productId: string,
   quantity: number,
 ) => {
   return async (dispatch: AppDispatch) => {
@@ -90,7 +83,7 @@ export const fetchAddProductsCart = (
             actions: [
               {
                 action: "addLineItem",
-                productId: product.id,
+                productId,
                 quantity,
               },
             ],

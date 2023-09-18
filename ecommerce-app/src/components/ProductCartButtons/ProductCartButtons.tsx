@@ -68,11 +68,19 @@ export function ProductCartButtons({
     const addProduct = () => {
       if (cart && tokenAnonymData?.refreshToken && !isLogged) {
         dispatch(
-          fetchAddProductsCart(cart, products[productArrId], productQuantity),
+          fetchAddProductsCart(
+            cart,
+            products[productArrId].id,
+            productQuantity,
+          ),
         );
       } else if (cart && tokenPassData?.refreshToken) {
         dispatch(
-          fetchAddProductsCart(cart, products[productArrId], productQuantity),
+          fetchAddProductsCart(
+            cart,
+            products[productArrId].id,
+            productQuantity,
+          ),
         );
       }
     };
