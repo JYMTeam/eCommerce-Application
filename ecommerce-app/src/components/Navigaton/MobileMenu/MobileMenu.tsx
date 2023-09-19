@@ -17,7 +17,10 @@ export const MobileMenu = ({
   };
   return (
     <>
-      <IconButton onClick={handleToggleOpen}>
+      <IconButton
+        sx={{ paddingLeft: "0.8rem", paddingRight: "0" }}
+        onClick={handleToggleOpen}
+      >
         <MenuIcon color="primary" fontSize="large" />
       </IconButton>
       <SwipeableDrawer

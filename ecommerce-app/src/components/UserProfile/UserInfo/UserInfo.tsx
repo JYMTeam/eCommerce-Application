@@ -49,7 +49,10 @@ export default function UserInfo() {
       },
     ];
     return (
-      <Box className="personal-info" sx={{ width: "50%", minWidth: "280px" }}>
+      <Box
+        className="personal-info"
+        sx={{ width: { xs: "100%", sm: "70%", md: "50%" }, minWidth: "280px" }}
+      >
         <Tooltip
           className="personal-info__edit"
           sx={{

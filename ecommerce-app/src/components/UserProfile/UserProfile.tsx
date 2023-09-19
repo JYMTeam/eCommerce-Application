@@ -25,7 +25,13 @@ function CustomTabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3, display: "flex", justifyContent: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "0.8rem",
+          }}
+        >
           {children}
         </Box>
       )}
@@ -61,6 +67,9 @@ export default function UserProfile() {
           textColor="secondary"
           indicatorColor="secondary"
           centered
+          sx={{
+            padding: "0",
+          }}
         >
           <Tab
             color="secondary"

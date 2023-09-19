@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png";
-import { Container, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { AppBar, Toolbar, Stack, IconButton, Box } from "@mui/material";
 import { MobileMenu } from "./MobileMenu/MobileMenu";
 import { Theme } from "../Theme";
@@ -13,6 +13,7 @@ const menuNavSx = {
   justifyContent: "center",
   flexWrap: "wrap",
   alignItems: "center",
+  padding: 0,
 };
 
 export const HEADER_MIN_HEIGHT = 6;
@@ -25,14 +26,20 @@ export function Navigation() {
     <AppBar
       position="static"
       style={{ background: "transparent", boxShadow: "none" }}
-      sx={{ minHeight: `${HEADER_MIN_HEIGHT}rem` }}
+      sx={{ minHeight: `${HEADER_MIN_HEIGHT}rem`, padding: 0 }}
     >
-      <Container maxWidth="xl" sx={{ pl: 0, pr: 0 }}>
-        <Toolbar sx={{ justifyContent: "space-between", pl: 0, pr: 0 }}>
+      <Box sx={{ padding: "0 0.5rem" }}>
+        <Toolbar
+          sx={{
+            justifyContent: "space-between",
+            padding: { xs: 0, sm: 0, md: 0 },
+          }}
+        >
           <IconButton
             component={Link}
             to="/"
             sx={{
+              padding: "0.5rem 0",
               ":hover": {
                 bgcolor: "transparent",
               },
@@ -42,7 +49,11 @@ export function Navigation() {
               component="img"
               src={Logo}
               alt={"link to Main page"}
-              sx={{ height: "4rem", width: "auto" }}
+              sx={{
+                height: { xs: "3rem", sm: "4rem" },
+                width: "auto",
+                padding: "0.5rem 0",
+              }}
             />
           </IconButton>
           {isMobile ? (
@@ -57,7 +68,7 @@ export function Navigation() {
             </Stack>
           )}
         </Toolbar>
-      </Container>
+      </Box>
     </AppBar>
   );
 }

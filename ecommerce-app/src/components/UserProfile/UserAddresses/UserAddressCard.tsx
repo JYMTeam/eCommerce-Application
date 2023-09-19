@@ -58,7 +58,13 @@ export const UserAddressCard = ({
     lCountry = country === "DE" ? "Germany" : "USA";
   }
   return (
-    <Box className="personal-info" sx={{ width: "280px" }}>
+    <Box
+      className="personal-info"
+      sx={{
+        width: { xs: "100%", sm: "calc(50% - 20px)", md: "300px" },
+        minWidth: "280px",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
