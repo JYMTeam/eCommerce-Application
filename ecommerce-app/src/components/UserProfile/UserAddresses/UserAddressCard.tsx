@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, IconButton, Tooltip, Chip, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import RemoveIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
 import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
 import { Address } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
@@ -69,6 +69,18 @@ export const UserAddressCard = ({
           right: 16,
         }}
       >
+        {!isEdit && !isNew && (
+          <Tooltip className="address-info__edit" title="Remove">
+            <IconButton
+              color="primary"
+              aria-label="remove mode"
+              sx={EditButtonStyles}
+              onClick={handleDelete}
+            >
+              <ClearIcon />
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip className="address-info__edit" title="Edit mode">
           <IconButton
             color="primary"
@@ -79,18 +91,6 @@ export const UserAddressCard = ({
             <EditIcon />
           </IconButton>
         </Tooltip>
-        {!isEdit && !isNew && (
-          <Tooltip className="address-info__edit" title="Remove">
-            <IconButton
-              color="primary"
-              aria-label="remove mode"
-              sx={EditButtonStyles}
-              onClick={handleDelete}
-            >
-              <RemoveIcon />
-            </IconButton>
-          </Tooltip>
-        )}
       </Box>
       <Typography
         sx={{

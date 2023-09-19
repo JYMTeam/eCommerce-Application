@@ -47,8 +47,6 @@ export const fetchUserSignup = (
       dispatch(notificationActive(successMessage));
       if (userAuthOptions) {
         if (existingAnonymToken) {
-          console.log("anonym token after sign up");
-          console.log(existingAnonymToken);
           dispatch(fetchUserLogin(userAuthOptions, existingAnonymToken, true));
         } else {
           dispatch(fetchUserLogin(userAuthOptions));

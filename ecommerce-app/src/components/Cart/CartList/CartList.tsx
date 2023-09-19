@@ -10,6 +10,7 @@ import { NOT_FOUND_MESSAGE } from "../../../commercetools-sdk/errors/errors";
 import { statusCode } from "../../../types";
 import { CartRemoveAllButton } from "./CartRemoveAllButton";
 import { CartEmpty } from "./CartEmpty";
+const CART_LIST_BORDER_COLOR = "#dbd8d8";
 
 const cartListBoxSx = {
   display: "flex",
@@ -17,9 +18,9 @@ const cartListBoxSx = {
   alignItems: "flex-start",
   flexGrow: "1",
   backgroundColor: "background.paper",
-  boxShadow:
-    "0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)",
-  borderRadius: "4px",
+  boxShadow: 0,
+  borderRadius: 0,
+  border: `1px solid ${CART_LIST_BORDER_COLOR}`,
   padding: "1em",
 };
 

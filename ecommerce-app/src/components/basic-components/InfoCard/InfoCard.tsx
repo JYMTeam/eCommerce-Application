@@ -17,8 +17,9 @@ export function InfoCard({ infoData }: InfoCardProps) {
       sx={{
         display: "flex",
         flexWrap: "wrap",
-        border: "1px solid #e7e7e7",
-        borderRadius: "4px",
+        border: "1px solid #dbd8d8",
+        borderRadius: 0,
+        boxShadow: "none",
       }}
     >
       {infoData.map((item) => (

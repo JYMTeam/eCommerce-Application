@@ -9,15 +9,15 @@ import { ProductCarousel } from "../ProductCarousel/ProductCarousel";
 import { ProductCartButtons } from "../ProductCartButtons/ProductCartButtons";
 const MD_COLS = 6;
 const SM_COLS = 12;
-const GRID_SPACING = 2;
+const GRID_SPACING = 0;
 const PRODUCT_TITLE_FONTSIZE = "2em";
+const PRODUCT_TITLE_FONTSIZE_XS = "1.6em";
 const PRODUCT_DESC_FONTSIZE = "1em";
 const PRODUCT_DESC_MARGIN = 3;
 const BUTTON_COLOR = "#F9C152";
 const PRICE_MR = 1;
 const PRICE_BG_COLOR = "rgba(0, 0, 0, 0.08)";
 const DISCOUNT_BG_COLOR = "#00ffbb7d";
-const BUTTON_ML = 2;
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -74,6 +74,9 @@ export default function ProductDetail() {
             sx={{
               display: "flex",
               justifyContent: "center",
+              mb: 3,
+              width: "100%",
+              ml: 0,
             }}
           >
             <Grid
@@ -102,7 +105,17 @@ export default function ProductDetail() {
                 gutterBottom
                 variant="h3"
                 component="h3"
-                sx={{ fontSize: PRODUCT_TITLE_FONTSIZE }}
+                sx={{
+                  fontSize: {
+                    md: PRODUCT_TITLE_FONTSIZE,
+                    sm: PRODUCT_TITLE_FONTSIZE_XS,
+                    xs: PRODUCT_TITLE_FONTSIZE_XS,
+                  },
+                  mt: {
+                    sm: 2,
+                    xs: 2,
+                  },
+                }}
               >
                 {name}
               </Typography>
@@ -113,6 +126,8 @@ export default function ProductDetail() {
                   mt: PRODUCT_DESC_MARGIN,
                   mb: PRODUCT_DESC_MARGIN,
                   fontSize: PRODUCT_DESC_FONTSIZE,
+                  textAlign: "justify",
+                  padding: { xs: "0 20px", md: "0 20px 0 0" },
                 }}
               >
                 {longDescription as unknown as string}
@@ -166,7 +181,7 @@ export default function ProductDetail() {
                 productArrId !== -1 && (
                   <ProductCartButtons
                     productArrId={productArrId}
-                    sxProps={{ ml: BUTTON_ML, color: BUTTON_COLOR }}
+                    sxProps={{ color: BUTTON_COLOR, mt: PRODUCT_DESC_MARGIN }}
                   />
                 )}
             </Grid>

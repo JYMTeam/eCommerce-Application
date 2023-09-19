@@ -13,6 +13,18 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   },
 }));
 
+const cartButtonSx = {
+  pr: "1px",
+  pl: "1px",
+  minWidth: { xs: "40px", sm: "64px" },
+  maxHeight: { xs: "35px", sm: "100%" },
+};
+
+const cartIconSx = {
+  height: "1.4rem",
+  width: "auto",
+};
+
 export const CartMenuItem = () => {
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -24,18 +36,13 @@ export const CartMenuItem = () => {
           to="cart"
           variant="contained"
           color="primary"
-          sx={{
-            maxWidth: "10em",
-          }}
+          sx={cartButtonSx}
         >
           <Box
             component="img"
             src={CartIcon}
             alt={"link to Shopping Cart"}
-            sx={{
-              height: "1.4rem",
-              width: "auto",
-            }}
+            sx={cartIconSx}
           />
         </Button>
       </StyledBadge>

@@ -35,6 +35,7 @@ export const ProductsPanel = ({
               color: "primary.dark",
             },
             mr: 2,
+            margin: 0,
             display: { md: "none" },
           }}
           edge="start"

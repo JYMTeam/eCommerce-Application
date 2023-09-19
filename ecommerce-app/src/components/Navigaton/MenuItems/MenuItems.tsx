@@ -5,7 +5,6 @@ import { Button } from "@mui/material";
 import { useAppSelector } from "../../../hooks/redux";
 import { Theme } from "../../Theme";
 import { UserProfileMenuItem } from "./UserProfileMenuItem";
-import { CartMenuItem } from "./CartMenuItem";
 
 export const MenuItems = ({
   shouldCloseDrawer = true,
@@ -19,19 +18,6 @@ export const MenuItems = ({
       <Button
         variant="text"
         component={Link}
-        to="/"
-        sx={{
-          ":hover": {
-            bgcolor: "transparent",
-            color: "primary.dark",
-          },
-        }}
-      >
-        Main
-      </Button>
-      <Button
-        variant="text"
-        component={Link}
         to="shop"
         sx={{
           ":hover": {
@@ -41,6 +27,19 @@ export const MenuItems = ({
         }}
       >
         Shop
+      </Button>
+      <Button
+        variant="text"
+        component={Link}
+        to="about"
+        sx={{
+          ":hover": {
+            bgcolor: "transparent",
+            color: "primary.dark",
+          },
+        }}
+      >
+        About Us
       </Button>
       {isMobile && <Divider />}
       {!isLogged && (
@@ -70,8 +69,6 @@ export const MenuItems = ({
       {isLogged && (
         <UserProfileMenuItem shouldCloseDrawer={shouldCloseDrawer} />
       )}
-      {isMobile && <Divider />}
-      <CartMenuItem />
     </>
   );
 };
