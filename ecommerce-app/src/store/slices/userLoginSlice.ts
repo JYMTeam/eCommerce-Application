@@ -37,7 +37,7 @@ export const userLoginSlice = createSlice({
         expirationTime: 0,
         refreshToken: undefined,
       };
-      passTokenManager.setToken({ ...cache });
+      passTokenManager.set({ ...cache });
       // anonymTokenManager.setToken({ ...cache });
       return { ...initialState };
     },

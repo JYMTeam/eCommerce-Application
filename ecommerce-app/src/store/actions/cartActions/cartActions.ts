@@ -43,7 +43,7 @@ export const fetchCreateCart = (existingToken?: string) => {
         .execute();
 
       dispatch(cartFetchSuccess(answer.body));
-      dispatch(setAnonymToken(passTokenManager.getToken()));
+      dispatch(setAnonymToken(passTokenManager.get()));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;

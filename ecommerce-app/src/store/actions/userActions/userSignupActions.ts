@@ -30,7 +30,7 @@ export const fetchUserSignup = (
         expirationTime: 0,
         refreshToken: undefined,
       };
-      passTokenManager.setToken({ ...cache });
+      passTokenManager.set({ ...cache });
       await clientBuilderManager.switchToSignupFlow();
       //signup
       await clientBuilderManager.requestCurrentBuilder

@@ -7,13 +7,9 @@ import {
   HttpMiddlewareOptions,
   PasswordAuthMiddlewareOptions,
   RefreshAuthMiddlewareOptions,
-  TokenStore,
   UserAuthOptions,
 } from "@commercetools/sdk-client-v2";
-import {
-  // anonymTokenManager,
-  passTokenManager,
-} from "../PassTokenCache/PassTokenCache";
+import { passTokenManager } from "../PassTokenCache/PassTokenCache";
 
 export class ClientBuilderManager {
   private currentClient: Client;
@@ -23,8 +19,7 @@ export class ClientBuilderManager {
   // .withLoggerMiddleware();
 
   constructor() {
-    const passTokenCache = passTokenManager.getToken();
-    // const anonymTokenCache = anonymTokenManager.getToken();
+    const passTokenCache = passTokenManager.get();
 
     if (passTokenCache.refreshToken) {
       this.currentClient = this.defaultBuilder
@@ -32,15 +27,7 @@ export class ClientBuilderManager {
           this.getRefreshOptions(passTokenCache.refreshToken),
         )
         .build();
-    }
-    // else if (anonymTokenCache.refreshToken) {
-    //   this.currentClient = this.defaultBuilder
-    //     .withRefreshTokenFlow(
-    //       this.getRefreshOptions(anonymTokenCache.refreshToken),
-    //     )
-    //     .build();
-    // }
-    else {
+    } else {
       this.currentClient = this.defaultBuilder
         .withClientCredentialsFlow(ClientBuilderManager.authMiddlewareOptions)
         .build();
@@ -107,10 +94,7 @@ export class ClientBuilderManager {
 
   private static anonymAuthMiddlewareOptions: AnonymousAuthMiddlewareOptions = {
     ...ClientBuilderManager.authMiddlewareOptions,
-    tokenCache: {
-      get: () => passTokenManager.getToken(),
-      set: (cache: TokenStore) => passTokenManager.setToken(cache),
-    },
+    tokenCache: passTokenManager,
   };
 
   private static getCustomerScopes() {
@@ -146,10 +130,7 @@ export class ClientBuilderManager {
         clientSecret: ClientBuilderManager.basicOptions.clientSecret,
         user,
       },
-      tokenCache: {
-        get: () => passTokenManager.getToken(),
-        set: (cache: TokenStore) => passTokenManager.setToken(cache),
-      },
+      tokenCache: passTokenManager,
     };
 
     return passOptions;
@@ -168,10 +149,6 @@ export class ClientBuilderManager {
     const refreshOptions: RefreshAuthMiddlewareOptions = {
       ...ClientBuilderManager.authMiddlewareOptions,
       refreshToken,
-      tokenCache: {
-        get: () => passTokenManager.getToken(),
-        set: (cache: TokenStore) => passTokenManager.setToken(cache),
-      },
     };
     return refreshOptions;
   }
