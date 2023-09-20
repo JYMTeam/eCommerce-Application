@@ -54,6 +54,10 @@ export const userLoginSlice = createSlice({
       state.errorMessage = formatAuthErrorMessage(action.payload);
       state.loginData = null;
     },
+    userUpdateFetchError(state, action: PayloadAction<AuthErrorResponse>) {
+      state.loading = false;
+      state.errorMessage = formatAuthErrorMessage(action.payload);
+    },
     userLoginClearErrorMessage(state) {
       state.errorMessage = "";
     },
@@ -71,6 +75,7 @@ export const {
   userLoginReset,
   userLoginFetchSuccess,
   userLoginFetchError,
+  userUpdateFetchError,
   userLoginClearErrorMessage,
   setUserToken,
   setIsSuccess,

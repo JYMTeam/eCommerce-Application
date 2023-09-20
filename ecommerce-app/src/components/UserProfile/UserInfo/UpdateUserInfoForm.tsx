@@ -19,6 +19,7 @@ import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userActions/
 import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
 import { successMessageHandler } from "../../SignupForm/signupHelpers";
 import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
+import { NOT_CORRECT_PASSWORD_MESSAGE } from "../../../commercetools-sdk/errors/errors";
 
 export interface IUpdateUserInfoProps {
   email: string;
@@ -152,12 +153,13 @@ export function UpdateUserInfoForm({
                     )}
                   </>
                 )}
-                {errorMessage && (
-                  <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    {errorMessage}
-                  </Alert>
-                )}
+                {errorMessage &&
+                  errorMessage !== NOT_CORRECT_PASSWORD_MESSAGE && (
+                    <Alert severity="error">
+                      <AlertTitle>Error</AlertTitle>
+                      {errorMessage}
+                    </Alert>
+                  )}
               </Stack>
             </FormControl>
           </Form>

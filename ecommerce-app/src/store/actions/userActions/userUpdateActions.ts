@@ -9,6 +9,7 @@ import {
   userLoginFetchError,
   userLoginFetchSuccess,
   userLoginFetching,
+  userUpdateFetchError,
 } from "../../slices/userLoginSlice";
 import {
   AuthErrorResponse,
@@ -129,7 +130,7 @@ export const fetchUpdateUserPassword = (
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;
       if (body) {
-        dispatch(userLoginFetchError(body));
+        dispatch(userUpdateFetchError(body));
       }
     }
   };

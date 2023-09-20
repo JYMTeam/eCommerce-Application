@@ -151,7 +151,6 @@ export const fetchLoginWithToken = (existingRefreshToken: string) => {
         .get()
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
-      // dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;

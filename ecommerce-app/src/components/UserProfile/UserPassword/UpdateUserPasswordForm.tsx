@@ -59,7 +59,6 @@ export const UpdateUserPasswordForm = () => {
       validationSchema={UpdateUserPasswordSchema}
       onSubmit={(values) => {
         if (loginData) {
-          console.log(values);
           dispatch(fetchUpdateUserPassword(loginData, values));
           handleEditMode();
         }

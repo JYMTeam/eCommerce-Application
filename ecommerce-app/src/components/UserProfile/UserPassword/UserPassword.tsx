@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { IconButton, Tooltip, Box } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -19,20 +19,22 @@ export const UserPassword = () => {
   );
   const dispatch = useAppDispatch();
 
-  const { errorMessage, loading, loginData } = useAppSelector(
+  const { loginData, errorMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+
+  useEffect(() => {
+    if (errorMessage) {
+      dispatch(setUserPasswordEdit(true));
+    } else {
+      dispatch(setUserPasswordEdit(false));
+    }
+  }, [errorMessage, dispatch]);
+
   const handleEditMode = () => {
     dispatch(setUserPasswordEdit(!isUserPasswordEdit));
   };
 
-  if (loading) {
-    return <p className="notification-message">Loading...</p>;
-  }
-
-  if (errorMessage) {
-    return <p className="notification-message">{errorMessage}</p>;
-  }
   if (loginData) {
     const userData = [{ label: "Change Password", value: "" }];
     return (
@@ -60,15 +62,7 @@ export const UserPassword = () => {
           </IconButton>
         </Tooltip>
         {!isUserPasswordEdit && <InfoCard infoData={userData} />}
-        {isUserPasswordEdit && (
-          <UpdateUserPasswordForm />
-          // <UpdateUserInfoForm
-          //   email={loginData.email}
-          //   firstName={loginData.firstName}
-          //   lastName={loginData.lastName}
-          //   dateOfBirth={loginData.dateOfBirth}
-          // />
-        )}
+        {isUserPasswordEdit && <UpdateUserPasswordForm />}
       </Box>
     );
   }
