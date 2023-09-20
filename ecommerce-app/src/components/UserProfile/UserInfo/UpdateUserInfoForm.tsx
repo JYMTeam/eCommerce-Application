@@ -2,11 +2,15 @@ import React from "react";
 import { setUpdateUserInfoSchema } from "../../../utils/validation-schemas";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Formik, Form } from "formik";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { FORM_DATE_FORMAT, MAX_HUMAN_AGE } from "../../../constants/constants";
-import { Alert, AlertTitle, Stack } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Stack,
+  Button,
+  TextField,
+  FormControl,
+} from "@mui/material";
 import { subtractYears } from "../../../utils/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";

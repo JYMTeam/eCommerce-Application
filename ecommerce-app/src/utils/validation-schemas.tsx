@@ -70,6 +70,13 @@ const setUpdateUserInfoSchema = () => {
   });
 };
 
+const setUpdateUserPasswordSchema = () => {
+  return object().shape({
+    currentPassword: validatePassword(),
+    newPassword: validatePassword(),
+  });
+};
+
 const setUpdateUserAddressSchema = ({
   countryCode,
   postalCodeFormat,
@@ -87,5 +94,6 @@ export {
   setSignupSchema,
   setLoginSchema,
   setUpdateUserInfoSchema,
+  setUpdateUserPasswordSchema,
   setUpdateUserAddressSchema,
 };

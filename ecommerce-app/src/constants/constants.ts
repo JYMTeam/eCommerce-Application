@@ -4,6 +4,7 @@ import {
   ISignupInitialValues,
   ITeamMembersInfo,
   IUpdateAddressInitialValues,
+  IUpdatePasswordValues,
   IUpdatePersonalValues,
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
@@ -72,6 +73,13 @@ const initialUpdatePersonalValues: IUpdatePersonalValues = {
   lastName: "",
   email: "",
   dateOfBirth: "",
+};
+
+const initialUpdatePasswordValues: IUpdatePasswordValues = {
+  currentPassword: "",
+  newPassword: "",
+  isCurrentPasswordCheck: false,
+  isNewPasswordCheck: false,
 };
 
 const initialUpdateAddressValues: IUpdateAddressInitialValues = {
@@ -165,6 +173,7 @@ export {
   initialCountryOptions,
   initialUpdatePersonalValues,
   initialUpdateAddressValues,
+  initialUpdatePasswordValues,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,

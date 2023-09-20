@@ -2,11 +2,13 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface IEditModeState {
   userInfoEdit: boolean;
+  userPasswordEdit: boolean;
   userAddressCardEdits: Record<number, boolean>;
 }
 
 const initialState: IEditModeState = {
   userInfoEdit: false,
+  userPasswordEdit: false,
   userAddressCardEdits: {},
 };
 
@@ -16,6 +18,9 @@ const userEditModeSlice = createSlice({
   reducers: {
     setUserInfoEdit: (state, action: PayloadAction<boolean>) => {
       state.userInfoEdit = action.payload;
+    },
+    setUserPasswordEdit: (state, action: PayloadAction<boolean>) => {
+      state.userPasswordEdit = action.payload;
     },
     setUserAddressCardEdit: (
       state,
@@ -27,7 +32,7 @@ const userEditModeSlice = createSlice({
   },
 });
 
-export const { setUserInfoEdit, setUserAddressCardEdit } =
+export const { setUserInfoEdit, setUserPasswordEdit, setUserAddressCardEdit } =
   userEditModeSlice.actions;
 
 export default userEditModeSlice.reducer;

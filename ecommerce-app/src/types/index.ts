@@ -40,6 +40,14 @@ export interface IUpdatePersonalValues {
   email: string;
   dateOfBirth: string;
 }
+
+export interface IUpdatePasswordValues {
+  currentPassword: string;
+  newPassword: string;
+  isCurrentPasswordCheck: boolean;
+  isNewPasswordCheck: boolean;
+}
+
 export interface IPostalCodes {
   validate: (countryCode: string, value: string) => {};
 }

@@ -7,6 +7,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import UserAddresses from "./UserAddresses/UserAddresses";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import "./UserProfile.css";
+import { UserPassword } from "./UserPassword/UserPassword";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -85,7 +86,17 @@ export default function UserProfile() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <UserInfo />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <UserInfo />
+          <UserPassword />
+        </Box>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <UserAddresses />
