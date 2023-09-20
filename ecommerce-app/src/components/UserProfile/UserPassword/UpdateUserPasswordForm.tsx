@@ -25,13 +25,20 @@ const checkboxSx: SxProps<Theme> = {
   fontSize: "14px",
   marginTop: "0.5rem",
 };
+
 const passwordBoxSx: SxProps<Theme> = {
   display: "flex",
+  flexWrap: "wrap",
   alignItems: "center",
   gap: "0.8rem",
 };
+
 const passwordInputSx: SxProps<Theme> = {
   flexGrow: 1,
+};
+
+const stackFormSx: SxProps<Theme> = {
+  paddingTop: "2.5rem",
 };
 
 export const UpdateUserPasswordForm = () => {
@@ -92,7 +99,7 @@ export const UpdateUserPasswordForm = () => {
             autoComplete="off"
           >
             <FormControl fullWidth>
-              <Stack spacing={2} sx={{ paddingTop: "2.1rem" }}>
+              <Stack spacing={2} sx={stackFormSx}>
                 <Box sx={passwordBoxSx}>
                   <TextField
                     sx={passwordInputSx}
