@@ -147,6 +147,7 @@ const NOTIFICATION_MESSAGES = {
   SUCCESS_SIGNUP: "You have successfully signed up",
   SUCCESS_LOGIN: "You have successfully logged in!",
   SUCCESS_DATA_UPDATE: "Your data has been successfully updated",
+  SUCCESS_PASSWORD_UPDATE: "Your password has been successfully changed",
   SUCCESS_ADDRESS_CREATE: "Your address has been successfully created",
   SUCCESS_ADDRESS_REMOVE: "Your address has been successfully removed",
   SUCCESS_PRODUCT_ADD: "Bag successfully added to cart",

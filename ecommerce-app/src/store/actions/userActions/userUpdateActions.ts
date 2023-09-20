@@ -1,6 +1,11 @@
-import { ClientResponse } from "@commercetools/sdk-client-v2";
+import {
+  ClientResponse,
+  TokenStore,
+  UserAuthOptions,
+} from "@commercetools/sdk-client-v2";
 import { AppDispatch } from "../..";
 import {
+  setUserToken,
   userLoginFetchError,
   userLoginFetchSuccess,
   userLoginFetching,
@@ -8,11 +13,13 @@ import {
 import {
   AuthErrorResponse,
   Customer,
+  MyCustomerChangePassword,
   MyCustomerUpdate,
   MyCustomerUpdateAction,
 } from "@commercetools/platform-sdk";
 import {
   IUpdateAddressInitialValues,
+  IUpdatePasswordValues,
   IUpdatePersonalValues,
 } from "../../../types";
 import {
@@ -21,6 +28,7 @@ import {
 } from "../../slices/notificationSlice";
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
 import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
+import { passTokenManager } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 
 export const fetchUpdateUserPersonalInfo = (
   userCurrentData: Customer,
@@ -52,6 +60,70 @@ export const fetchUpdateUserPersonalInfo = (
         message: NOTIFICATION_MESSAGES.SUCCESS_DATA_UPDATE,
         type: "success",
       };
+      dispatch(notificationActive(successUpdateMessage));
+    } catch (e) {
+      const error = e as ClientResponse<AuthErrorResponse>;
+      const body = error.body;
+      if (body) {
+        dispatch(userLoginFetchError(body));
+      }
+    }
+  };
+};
+
+export const fetchUpdateUserPassword = (
+  userCurrentData: Customer,
+  userUpdatedData: IUpdatePasswordValues,
+) => {
+  const { currentPassword, newPassword } = userUpdatedData;
+
+  const updateCustomer: MyCustomerChangePassword = {
+    version: userCurrentData.version,
+    currentPassword,
+    newPassword,
+  };
+
+  return async (dispatch: AppDispatch) => {
+    try {
+      const cache: TokenStore = {
+        token: "",
+        expirationTime: 0,
+        refreshToken: undefined,
+      };
+
+      const user: UserAuthOptions = {
+        username: userCurrentData.email,
+        password: newPassword,
+      };
+
+      dispatch(userLoginFetching());
+
+      await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .password()
+        .post({
+          body: updateCustomer,
+        })
+        .execute();
+
+      passTokenManager.set({ ...cache });
+      await clientBuilderManager.switchToPasswordFlow(user);
+      const newUserAnswer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .get()
+        .execute();
+
+      const refreshToken = passTokenManager.get().refreshToken;
+      if (refreshToken) {
+        await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
+      }
+      dispatch(setUserToken(passTokenManager.get()));
+
+      const successUpdateMessage: INotification = {
+        message: NOTIFICATION_MESSAGES.SUCCESS_PASSWORD_UPDATE,
+        type: "success",
+      };
+      dispatch(userLoginFetchSuccess(newUserAnswer.body));
       dispatch(notificationActive(successUpdateMessage));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;

@@ -19,6 +19,7 @@ import { setUpdateUserPasswordSchema } from "../../../utils/validation-schemas";
 import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
 import { successMessageHandler } from "../../SignupForm/signupHelpers";
 import { setUserPasswordEdit } from "../../../store/slices/userEditModeSlice";
+import { fetchUpdateUserPassword } from "../../../store/actions/userActions/userUpdateActions";
 
 const checkboxSx: SxProps<Theme> = {
   fontSize: "14px",
@@ -59,7 +60,7 @@ export const UpdateUserPasswordForm = () => {
       onSubmit={(values) => {
         if (loginData) {
           console.log(values);
-          // dispatch(fetchUpdateUserPersonalInfo(loginData, values));
+          dispatch(fetchUpdateUserPassword(loginData, values));
           handleEditMode();
         }
       }}
