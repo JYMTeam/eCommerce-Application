@@ -47,6 +47,7 @@ export const UpdateUserPasswordForm = () => {
   );
   const [isShowCurrentPassword, setShowCurrentPassword] = useState(false);
   const [isShowNewPassword, setShowNewPassword] = useState(false);
+  const [isSamePassword, setSamePasswordError] = useState(false);
 
   const UpdateUserPasswordSchema = setUpdateUserPasswordSchema();
 
@@ -65,7 +66,9 @@ export const UpdateUserPasswordForm = () => {
       initialValues={initialUpdatePasswordValues}
       validationSchema={UpdateUserPasswordSchema}
       onSubmit={(values) => {
-        if (loginData) {
+        if (values.currentPassword === values.newPassword) {
+          setSamePasswordError(true);
+        } else if (loginData) {
           dispatch(fetchUpdateUserPassword(loginData, values));
           handleEditMode();
         }
@@ -79,12 +82,18 @@ export const UpdateUserPasswordForm = () => {
           if (errorMessage) {
             dispatch(userLoginClearErrorMessage());
           }
+          if (isSamePassword) {
+            setSamePasswordError(false);
+          }
           handleChange(event);
         };
 
         const onInputFocus = () => {
           if (errorMessage) {
             dispatch(userLoginClearErrorMessage());
+          }
+          if (isSamePassword) {
+            setSamePasswordError(false);
           }
         };
 
@@ -149,7 +158,6 @@ export const UpdateUserPasswordForm = () => {
                     label="Show password"
                   />
                 </Box>
-
                 <Button type="submit" disabled={loading} variant="contained">
                   Save Changes
                 </Button>
@@ -164,6 +172,12 @@ export const UpdateUserPasswordForm = () => {
                   <Alert severity="error">
                     <AlertTitle>Error</AlertTitle>
                     {errorMessage}
+                  </Alert>
+                )}
+                {isSamePassword && (
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    You entered the same password. Try creating a new password
                   </Alert>
                 )}
               </Stack>
