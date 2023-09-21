@@ -94,7 +94,13 @@ export function UpdateUserInfoForm({
             autoComplete="off"
           >
             <FormControl fullWidth>
-              <Stack spacing={2}>
+              <Stack
+                spacing={2}
+                sx={{
+                  padding: "0 0.5rem 0",
+                  boxSizing: "border-box",
+                }}
+              >
                 <TextField
                   autoComplete="off"
                   name="firstName"

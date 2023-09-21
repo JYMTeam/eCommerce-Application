@@ -35,10 +35,13 @@ const passwordBoxSx: SxProps<Theme> = {
 
 const passwordInputSx: SxProps<Theme> = {
   flexGrow: 1,
+  width: "60%",
 };
 
 const stackFormSx: SxProps<Theme> = {
+  padding: "0 0.5rem 0",
   paddingTop: "2.5rem",
+  boxSizing: "border-box",
 };
 
 export const UpdateUserPasswordForm = () => {
@@ -144,7 +147,7 @@ export const UpdateUserPasswordForm = () => {
                     onChange={onInputChange}
                     onFocus={onInputFocus}
                     helperText={errors.newPassword}
-                    error={!!errors.currentPassword}
+                    error={!!errors.newPassword}
                     defaultValue=""
                   />
                   <FormControlLabel
