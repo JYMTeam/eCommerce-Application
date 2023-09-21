@@ -26,9 +26,7 @@ export const Promocode = () => {
   const [appliedPromocodes, setAppliedPromocodes] = useState<DiscountCode[]>(
     [],
   );
-  useEffect(() => {
-    console.log(appliedPromocodes.map((item) => item.code));
-  });
+
   if (errorMessage) {
     return <p className="notification-message">{errorMessage}</p>;
   }
@@ -37,7 +35,6 @@ export const Promocode = () => {
     promocodes: DiscountCodePagedQueryResponse,
   ) => {
     const results = promocodes.results;
-    console.log(results.filter((result: DiscountCode) => result.code === text));
     return results.filter((result: DiscountCode) => result.code === text);
   };
 

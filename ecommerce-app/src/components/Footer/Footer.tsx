@@ -6,6 +6,7 @@ import RSS_School_JS_Logo from "../../assets/rss-school-js.svg";
 
 export const FOOTER_MIN_HEIGHT = 4;
 const FOOTER_PADDING = "1rem";
+const FOOTER_PADDING_TOP = "0.5rem";
 const FOOTER_LOGO_URL = "https://rs.school/js/";
 const FOOTER_JYM_TEAM_URL = "mailto:jymteam2023@gmail.com";
 const FOOTER_LOGO_WIDTH = "110px";
@@ -24,6 +25,7 @@ const footerSx = {
   gap: FOOTER_iTEMS_GAP,
   paddingRight: FOOTER_PADDING,
   paddingLeft: FOOTER_PADDING,
+  paddingTop: FOOTER_PADDING_TOP,
   alignItems: "center",
   justifyContent: "space-between",
 };

@@ -48,6 +48,7 @@ export const fetchProducts = (offset = 0, categoryId?: string) => {
     } catch (err) {
       const error = err as ClientResponse<ErrorResponse>;
       const body = error.body;
+      console.log(err);
       if (body) {
         dispatch(productsFetchError(body));
       }

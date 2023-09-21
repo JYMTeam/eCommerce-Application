@@ -13,6 +13,8 @@ export enum statusCode {
 }
 
 export const NOT_FOUND_MESSAGE = "404: Sorry, resource not found";
+export const NOT_CORRECT_PASSWORD_MESSAGE =
+  "The given current password does not match";
 
 const DEFAULT_ERROR_MESSAGE =
   "An unexpected error occurred. Please try again later.";
@@ -38,6 +40,10 @@ export const formatAuthErrorMessage = (error: AuthErrorResponse): string => {
       return "User with this email already exists";
     }
 
+    if (error.errors[0].code === "InvalidCurrentPassword") {
+      return NOT_CORRECT_PASSWORD_MESSAGE;
+    }
+
     if (
       error.errors[0].code === "InvalidOperation" ||
       error.errors[0].code === "InvalidJsonInput"
@@ -61,7 +67,7 @@ export const formatProductsErrorMessage = (error: ErrorResponse): string => {
   }
 
   if (error.statusCode === statusCode.NOT_FOUND) {
-    return "404: Sorry, resource not found";
+    return NOT_FOUND_MESSAGE;
   }
 
   return DEFAULT_ERROR_MESSAGE;

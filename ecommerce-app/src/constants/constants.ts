@@ -4,6 +4,7 @@ import {
   ISignupInitialValues,
   ITeamMembersInfo,
   IUpdateAddressInitialValues,
+  IUpdatePasswordValues,
   IUpdatePersonalValues,
 } from "../types";
 import { Image } from "@commercetools/platform-sdk";
@@ -74,6 +75,13 @@ const initialUpdatePersonalValues: IUpdatePersonalValues = {
   dateOfBirth: "",
 };
 
+const initialUpdatePasswordValues: IUpdatePasswordValues = {
+  currentPassword: "",
+  newPassword: "",
+  isCurrentPasswordCheck: false,
+  isNewPasswordCheck: false,
+};
+
 const initialUpdateAddressValues: IUpdateAddressInitialValues = {
   streetName: "",
   state: "",
@@ -139,6 +147,7 @@ const NOTIFICATION_MESSAGES = {
   SUCCESS_SIGNUP: "You have successfully signed up",
   SUCCESS_LOGIN: "You have successfully logged in!",
   SUCCESS_DATA_UPDATE: "Your data has been successfully updated",
+  SUCCESS_PASSWORD_UPDATE: "Your password has been successfully changed",
   SUCCESS_ADDRESS_CREATE: "Your address has been successfully created",
   SUCCESS_ADDRESS_REMOVE: "Your address has been successfully removed",
   SUCCESS_PRODUCT_ADD: "Bag successfully added to cart",
@@ -165,6 +174,7 @@ export {
   initialCountryOptions,
   initialUpdatePersonalValues,
   initialUpdateAddressValues,
+  initialUpdatePasswordValues,
   DEFAULT_LOCALE,
   PRODUCT_DESCRIPTION_PLACEHOLDER,
   PRODUCT_IMAGE_PLACEHOLDER,

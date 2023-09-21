@@ -20,6 +20,7 @@ import { hideNotification } from "./store/actions/notificationActions";
 import CategoryPage from "./pages/CategoryPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
 import { TokenManager } from "./components/TokenManager";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   type MyComponentProps = React.PropsWithChildren<{}>;
@@ -97,7 +98,7 @@ function App() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Container maxWidth="lg" sx={{ padding: { xs: "0 1em" } }}>
+      <Container maxWidth="lg" sx={{ padding: { xs: "0", sm: "0 1em" } }}>
         <div className="App">
           <TokenManager />
           <ThemeProvider theme={Theme}>
@@ -107,6 +108,8 @@ function App() {
                 <Route key={index} path={route.path} element={route.element} />
               ))}
             </Routes>
+
+            <Footer />
           </ThemeProvider>
         </div>
       </Container>

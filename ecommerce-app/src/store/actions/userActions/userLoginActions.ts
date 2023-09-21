@@ -13,7 +13,7 @@ import {
   setIsSuccess,
 } from "../../slices/userLoginSlice";
 import {
-  anonymTokenManager,
+  // anonymTokenManager,
   passTokenManager,
 } from "../../../commercetools-sdk/PassTokenCache/PassTokenCache";
 import { AuthErrorResponse, ErrorResponse } from "@commercetools/platform-sdk";
@@ -64,14 +64,14 @@ export const fetchUserLogin = (
           })
           .execute();
 
-        anonymTokenManager.setToken({ ...cache });
+        passTokenManager.set({ ...cache });
         await dispatch(setAnonymToken(cache));
         await clientBuilderManager.switchToPasswordFlow(userAuthOptions);
         const answer2 = await clientBuilderManager.requestCurrentBuilder
           .me()
           .get()
           .execute();
-        const refreshToken = passTokenManager.getToken().refreshToken;
+        const refreshToken = passTokenManager.get().refreshToken;
 
         if (refreshToken) {
           await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
@@ -83,7 +83,7 @@ export const fetchUserLogin = (
           type: "success",
         };
         dispatch(userLoginFetchSuccess(answer2.body));
-        dispatch(setUserToken(passTokenManager.getToken()));
+        dispatch(setUserToken(passTokenManager.get()));
         dispatch(notificationActive(successLoginMessage));
       } else {
         dispatch(userLoginFetching());
@@ -107,7 +107,7 @@ export const fetchUserLogin = (
           })
           .execute();
         dispatch(setIsSuccess());
-        const refreshToken = passTokenManager.getToken().refreshToken;
+        const refreshToken = passTokenManager.get().refreshToken;
         if (refreshToken) {
           await clientBuilderManager.switchToRefreshTokenFlow(refreshToken);
         }
@@ -118,7 +118,7 @@ export const fetchUserLogin = (
         };
 
         dispatch(userLoginFetchSuccess(answer.body.customer));
-        dispatch(setUserToken(passTokenManager.getToken()));
+        dispatch(setUserToken(passTokenManager.get()));
         dispatch(notificationActive(successLoginMessage));
       }
 
@@ -151,7 +151,6 @@ export const fetchLoginWithToken = (existingRefreshToken: string) => {
         .get()
         .execute();
       dispatch(userLoginFetchSuccess(answer.body));
-      // dispatch(fetchGetCart(existingToken.token));
     } catch (e) {
       const error = e as ClientResponse<AuthErrorResponse>;
       const body = error.body;

@@ -17,7 +17,6 @@ import {
 import { NOTIFICATION_MESSAGES } from "../../../constants/constants";
 import { formatProductsErrorMessage } from "../../../commercetools-sdk/errors/errors";
 import { clientBuilderManager } from "../../../commercetools-sdk/builders/ClientBuilderManager";
-import { fetchGetCart } from "./cartActions";
 
 const fetchRemoveProductFromCart = (
   cart: Cart,
@@ -178,8 +177,16 @@ export const fetchCheckCartAndRemoveProduct = (
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart());
-      await dispatch(fetchRemoveProductFromCart(cart, lineItemId, quantity));
+      dispatch(cartFetching());
+      const answer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .activeCart()
+        .get()
+        .execute();
+      dispatch(cartFetchSuccess(answer.body));
+      await dispatch(
+        fetchRemoveProductFromCart(answer.body, lineItemId, quantity),
+      );
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
@@ -193,8 +200,14 @@ export const fetchCheckCartAndRemoveProduct = (
 export const fetchCheckCartAndRemoveAll = (cart: Cart) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart());
-      await dispatch(fetchRemoveAllProductsFromCart(cart));
+      dispatch(cartFetching());
+      const answer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .activeCart()
+        .get()
+        .execute();
+      dispatch(cartFetchSuccess(answer.body));
+      await dispatch(fetchRemoveAllProductsFromCart(answer.body));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;
@@ -208,8 +221,14 @@ export const fetchCheckCartAndRemoveAll = (cart: Cart) => {
 export const fetchCheckCartAndRemoveCart = (cart: Cart) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart());
-      await dispatch(fetchRemoveCart(cart));
+      dispatch(cartFetching());
+      const answer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .activeCart()
+        .get()
+        .execute();
+      dispatch(cartFetchSuccess(answer.body));
+      await dispatch(fetchRemoveCart(answer.body));
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;

@@ -2,11 +2,15 @@ import React from "react";
 import { setUpdateUserInfoSchema } from "../../../utils/validation-schemas";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { Formik, Form } from "formik";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { FORM_DATE_FORMAT, MAX_HUMAN_AGE } from "../../../constants/constants";
-import { Alert, AlertTitle, Stack } from "@mui/material";
+import {
+  Alert,
+  AlertTitle,
+  Stack,
+  Button,
+  TextField,
+  FormControl,
+} from "@mui/material";
 import { subtractYears } from "../../../utils/utils";
 import dayjs from "dayjs";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -15,6 +19,7 @@ import { fetchUpdateUserPersonalInfo } from "../../../store/actions/userActions/
 import { userLoginClearErrorMessage } from "../../../store/slices/userLoginSlice";
 import { successMessageHandler } from "../../SignupForm/signupHelpers";
 import { setUserInfoEdit } from "../../../store/slices/userEditModeSlice";
+import { NOT_CORRECT_PASSWORD_MESSAGE } from "../../../commercetools-sdk/errors/errors";
 
 export interface IUpdateUserInfoProps {
   email: string;
@@ -89,7 +94,13 @@ export function UpdateUserInfoForm({
             autoComplete="off"
           >
             <FormControl fullWidth>
-              <Stack spacing={2}>
+              <Stack
+                spacing={2}
+                sx={{
+                  padding: "0 0.5rem 0",
+                  boxSizing: "border-box",
+                }}
+              >
                 <TextField
                   autoComplete="off"
                   name="firstName"
@@ -148,12 +159,13 @@ export function UpdateUserInfoForm({
                     )}
                   </>
                 )}
-                {errorMessage && (
-                  <Alert severity="error">
-                    <AlertTitle>Error</AlertTitle>
-                    {errorMessage}
-                  </Alert>
-                )}
+                {errorMessage &&
+                  errorMessage !== NOT_CORRECT_PASSWORD_MESSAGE && (
+                    <Alert severity="error">
+                      <AlertTitle>Error</AlertTitle>
+                      {errorMessage}
+                    </Alert>
+                  )}
               </Stack>
             </FormControl>
           </Form>
