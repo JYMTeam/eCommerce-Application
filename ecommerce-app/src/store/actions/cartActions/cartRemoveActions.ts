@@ -178,8 +178,17 @@ export const fetchCheckCartAndRemoveProduct = (
 ) => {
   return async (dispatch: AppDispatch) => {
     try {
-      await dispatch(fetchGetCart());
-      await dispatch(fetchRemoveProductFromCart(cart, lineItemId, quantity));
+      // await dispatch(fetchGetCart());
+      dispatch(cartFetching());
+      const answer = await clientBuilderManager.requestCurrentBuilder
+        .me()
+        .activeCart()
+        .get()
+        .execute();
+      dispatch(cartFetchSuccess(answer.body));
+      await dispatch(
+        fetchRemoveProductFromCart(answer.body, lineItemId, quantity),
+      );
     } catch (e) {
       const error = e as ClientResponse<ErrorResponse>;
       const body = error.body;

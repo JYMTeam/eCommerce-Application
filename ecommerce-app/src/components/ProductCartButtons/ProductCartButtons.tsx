@@ -24,7 +24,7 @@ export function ProductCartButtons({
   productArrId,
   sxProps,
 }: IAddProductButtonProps) {
-  const { cart, tokenAnonymData, errorMessage } = useAppSelector(
+  const { cart, tokenAnonymData, errorMessage, loading } = useAppSelector(
     (state) => state.cart,
   );
   const { tokenPassData, isLogged } = useAppSelector(
@@ -179,7 +179,7 @@ export function ProductCartButtons({
         variant="text"
         color="secondary"
         sx={buttonSx}
-        disabled={loadingButton || success || productsLoading}
+        disabled={loadingButton || success || productsLoading || loading}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -197,7 +197,7 @@ export function ProductCartButtons({
           variant="text"
           color="secondary"
           sx={buttonSx}
-          disabled={loadingButton || productsLoading}
+          disabled={loadingButton || productsLoading || loading}
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
