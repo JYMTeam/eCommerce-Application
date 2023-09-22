@@ -1,13 +1,13 @@
 import React from "react";
 import { Box, IconButton, Tooltip, Chip, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import ClearIcon from "@mui/icons-material/Clear";
 import { InfoCard } from "../../basic-components/InfoCard/InfoCard";
 import { Address } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setUserAddressCardEdit } from "../../../store/slices/userEditModeSlice";
 import { UpdateUserAddressCardForm } from "./UpdateUserAddressCardForm";
-import { fetchDeleteUserAddress } from "../../../store/actions/userLoginActions";
+import { fetchDeleteUserAddress } from "../../../store/actions/userActions/userUpdateActions";
 
 const EditButtonStyles = {
   zIndex: "1",
@@ -39,7 +39,7 @@ export const UserAddressCard = ({
   const isEdit = useAppSelector(
     (state) => state.userEditMode.userAddressCardEdits[id],
   );
-  const { loginData, tokenData } = useAppSelector((state) => state.userLogin);
+  const { loginData } = useAppSelector((state) => state.userLogin);
   const dispatch = useAppDispatch();
 
   const handleEditMode = () => {
@@ -47,8 +47,8 @@ export const UserAddressCard = ({
   };
 
   const handleDelete = () => {
-    if (loginData && tokenData && tokenData?.token !== "") {
-      dispatch(fetchDeleteUserAddress(tokenData, loginData, id));
+    if (loginData) {
+      dispatch(fetchDeleteUserAddress(loginData, id));
     }
   };
 
@@ -58,7 +58,13 @@ export const UserAddressCard = ({
     lCountry = country === "DE" ? "Germany" : "USA";
   }
   return (
-    <Box className="personal-info" sx={{ width: "280px" }}>
+    <Box
+      className="personal-info"
+      sx={{
+        width: { xs: "100%", sm: "calc(50% - 20px)", md: "300px" },
+        minWidth: "280px",
+      }}
+    >
       <Box
         sx={{
           display: "flex",
@@ -69,6 +75,18 @@ export const UserAddressCard = ({
           right: 16,
         }}
       >
+        {!isEdit && !isNew && (
+          <Tooltip className="address-info__edit" title="Remove">
+            <IconButton
+              color="primary"
+              aria-label="remove mode"
+              sx={EditButtonStyles}
+              onClick={handleDelete}
+            >
+              <ClearIcon />
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip className="address-info__edit" title="Edit mode">
           <IconButton
             color="primary"
@@ -79,18 +97,6 @@ export const UserAddressCard = ({
             <EditIcon />
           </IconButton>
         </Tooltip>
-        {!isEdit && !isNew && (
-          <Tooltip className="address-info__edit" title="Delete">
-            <IconButton
-              color="primary"
-              aria-label="delete mode"
-              sx={EditButtonStyles}
-              onClick={handleDelete}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        )}
       </Box>
       <Typography
         sx={{

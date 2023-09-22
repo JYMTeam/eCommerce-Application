@@ -3,14 +3,18 @@ import {
   ErrorResponse,
 } from "@commercetools/platform-sdk/dist/declarations/src/generated/models/error";
 
-enum statusCode {
+export enum statusCode {
   "OK" = 200,
   "BAD_REQUEST" = 400,
-  "UNATHORIZED" = 401,
+  "UNAUTHORIZED" = 401,
   "NOT_FOUND" = 404,
   "TOO_MANY_REQUESTS" = 429,
   "SERVER_ERROR" = 500,
 }
+
+export const NOT_FOUND_MESSAGE = "404: Sorry, resource not found";
+export const NOT_CORRECT_PASSWORD_MESSAGE =
+  "The given current password does not match";
 
 const DEFAULT_ERROR_MESSAGE =
   "An unexpected error occurred. Please try again later.";
@@ -36,6 +40,10 @@ export const formatAuthErrorMessage = (error: AuthErrorResponse): string => {
       return "User with this email already exists";
     }
 
+    if (error.errors[0].code === "InvalidCurrentPassword") {
+      return NOT_CORRECT_PASSWORD_MESSAGE;
+    }
+
     if (
       error.errors[0].code === "InvalidOperation" ||
       error.errors[0].code === "InvalidJsonInput"
@@ -54,8 +62,12 @@ export const formatProductsErrorMessage = (error: ErrorResponse): string => {
   const serverError = serverErrorMessage(error.statusCode);
   if (serverError) return serverError;
 
-  if (error.statusCode === statusCode.UNATHORIZED) {
+  if (error.statusCode === statusCode.UNAUTHORIZED) {
     return "401: Unauthorized. Sorry, your request could not be processed";
+  }
+
+  if (error.statusCode === statusCode.NOT_FOUND) {
+    return NOT_FOUND_MESSAGE;
   }
 
   return DEFAULT_ERROR_MESSAGE;

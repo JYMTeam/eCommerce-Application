@@ -7,7 +7,7 @@ import { SIDEBAR_WIDTH } from "./ProductsSidebar";
 import { useAppSelector } from "../../hooks/redux";
 import { parseCategoriesBreadcrumb } from "../../utils/dataParsers";
 import { IAncestorInfo } from "../../types";
-import { PRODUCT_LIST_PADDING } from "../ProductsList/ProductsList";
+import { PRODUCT_LIST_PADDING } from "../ProductsList/ProductListStyles";
 
 interface ILinkRouterProps extends LinkProps {
   to: string;
@@ -21,9 +21,9 @@ export default function CategoriesBreadcrumbs() {
   const { id: categoryId } = useParams();
   const { categories } = useAppSelector((state) => state.categories);
   const parsedBreadcrumb = parseCategoriesBreadcrumb(categories);
-  let breadcumbPath: IAncestorInfo[] | undefined = [];
+  let breadcrumbsPath: IAncestorInfo[] | undefined = [];
   if (categoryId) {
-    breadcumbPath = parsedBreadcrumb.get(categoryId);
+    breadcrumbsPath = parsedBreadcrumb.get(categoryId);
   }
 
   return (
@@ -40,10 +40,10 @@ export default function CategoriesBreadcrumbs() {
         <LinkRouter underline="hover" color="text.primary" to="/shop">
           Shop
         </LinkRouter>
-        {breadcumbPath &&
-          breadcumbPath.map(({ id, text }, index) => {
-            if (!breadcumbPath) return <></>;
-            const last = index === breadcumbPath.length - 1;
+        {breadcrumbsPath &&
+          breadcrumbsPath.map(({ id, text }, index) => {
+            if (!breadcrumbsPath) return <></>;
+            const last = index === breadcrumbsPath.length - 1;
             return last ? (
               <LinkRouter color="text.primary" to={`/shop/${id}`} key={id}>
                 {text}

@@ -22,9 +22,7 @@ export default function UserInfo() {
   );
   const dispatch = useAppDispatch();
 
-  const { errorMessage, loading, loginData } = useAppSelector(
-    (state) => state.userLogin,
-  );
+  const { loading, loginData } = useAppSelector((state) => state.userLogin);
   const handleEditMode = () => {
     dispatch(setUserInfoEdit(!isUserInfoEdit));
   };
@@ -33,9 +31,6 @@ export default function UserInfo() {
     return <p className="notification-message">Loading...</p>;
   }
 
-  if (errorMessage) {
-    return <p className="notification-message">{errorMessage}</p>;
-  }
   if (loginData) {
     const { dateOfBirth } = loginData;
     const lDateOfBirth = formatDateYYYYMMDDToMMDDYYYY(dateOfBirth || "");
@@ -49,7 +44,10 @@ export default function UserInfo() {
       },
     ];
     return (
-      <Box className="personal-info" sx={{ width: "50%", minWidth: "280px" }}>
+      <Box
+        className="personal-info"
+        sx={{ width: { xs: "100%", sm: "70%", md: "50%" }, minWidth: "280px" }}
+      >
         <Tooltip
           className="personal-info__edit"
           sx={{

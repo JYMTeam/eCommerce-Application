@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ProductsPanel.css";
-import { Badge, Box, Button, Drawer } from "@mui/material";
+import { Badge, Box, Button, Drawer, Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
 import CategoryIcon from "@mui/icons-material/Category";
 import CloseIcon from "@mui/icons-material/Close";
@@ -27,11 +27,19 @@ export const ProductsPanel = ({
     <>
       <Box className="products-panel">
         <IconButton
+          aria-label="open category panel"
           color="primary"
-          aria-label="open sidevar drawer"
+          sx={{
+            ":hover": {
+              bgcolor: "transparent",
+              color: "primary.dark",
+            },
+            mr: 2,
+            margin: 0,
+            display: { md: "none" },
+          }}
           edge="start"
           onClick={onCategoriesIconClick}
-          sx={{ mr: 2, display: { md: "none" } }}
         >
           <CategoryIcon />
         </IconButton>
@@ -63,9 +71,19 @@ export const ProductsPanel = ({
         onClose={() => setOpenFilter(false)}
       >
         <div onClick={() => setOpenFilter(false)} role="button" tabIndex={0}>
-          <IconButton>
-            <CloseIcon color="primary" fontSize="medium" />
-          </IconButton>
+          <Tooltip title="Close Panel">
+            <IconButton
+              color="primary"
+              sx={{
+                ":hover": {
+                  bgcolor: "transparent",
+                  color: "primary.dark",
+                },
+              }}
+            >
+              <CloseIcon fontSize="medium" />
+            </IconButton>
+          </Tooltip>
         </div>
         <ProductsFilters />
       </Drawer>

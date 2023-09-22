@@ -24,7 +24,7 @@ import {
 import { useState } from "react";
 import { CustomerDraft } from "@commercetools/platform-sdk";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchUserSignup } from "../../store/actions/userSignupActions";
+import { fetchUserSignup } from "../../store/actions/userActions/userSignupActions";
 import { setSignupSchema } from "../../utils/validation-schemas";
 import { userSignupClearErrorMessage } from "../../store/slices/userSignupSlice";
 import { successMessageHandler } from "./signupHelpers";
@@ -34,6 +34,7 @@ const EMPTY_STR = "";
 const BIRTHDAY_INPUT_NAME = "dateOfBirth";
 const COUNTRY_SHIPPING_INPUT_NAME = "countryShipping";
 const COUNTRY_BILLING_INPUT_NAME = "countryBilling";
+const SIGNUP_BORDER_COLOR = "#dbd8d8";
 
 export function SignupForm() {
   const [countryCodeShipping, setCountryCodeShipping] = useState(EMPTY_STR);
@@ -53,15 +54,20 @@ export function SignupForm() {
   };
 
   const SignupSchema = setSignupSchema(SchemaOptions);
-  const dispatch = useAppDispatch();
   const { loading, errorMessage } = useAppSelector((state) => state.userSignup);
   const { isLogged, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+  const { tokenAnonymData, cart } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
 
   const onSubmit = (values: ISignupInitialValues) => {
     const newUser: CustomerDraft = convertToCustomerDraft(values);
-    dispatch(fetchUserSignup(newUser));
+    if (tokenAnonymData && cart) {
+      dispatch(fetchUserSignup(newUser, tokenAnonymData.refreshToken));
+    } else {
+      dispatch(fetchUserSignup(newUser));
+    }
   };
 
   return (
@@ -127,8 +133,9 @@ export function SignupForm() {
             <Box
               sx={{
                 bgcolor: "background.paper",
-                boxShadow: 4,
-                borderRadius: 2,
+                boxShadow: 0,
+                borderRadius: 0,
+                border: `1px solid ${SIGNUP_BORDER_COLOR}`,
                 p: 2,
                 minHeight: 230,
               }}

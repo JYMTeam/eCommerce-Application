@@ -3,6 +3,12 @@ import { IFormInitialValues, ISignupInitialValues } from "../types";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { DEFAULT_LOCALE } from "../constants/constants";
 
+export const createEmptyCache = () => ({
+  token: "",
+  expirationTime: 0,
+  refreshToken: undefined,
+});
+
 export const subtractYears = (date: Date, years: number) => {
   date.setFullYear(date.getFullYear() - years);
   return date;
@@ -98,7 +104,6 @@ export const convertToCustomerDraft = (values: ISignupInitialValues) => {
     defaultShippingCheck,
     defaultBillingCheck,
   } = values;
-  console.log(values);
   const isCommonAddress = commonAddressCheck?.length !== 0;
   const isDefaultBilling = defaultBillingCheck?.length !== 0;
   const isDefaultShipping = defaultShippingCheck?.length !== 0;
@@ -185,35 +190,22 @@ const getNewUser = (
   let newUser: CustomerDraft = {
     ...newUserMainData,
   };
-  console.log("idefaultShipping");
-  console.log(indexDefaultShipping);
-  console.log("idefaultBilling");
-  console.log(indexDefaultBilling);
   if (indexDefaultShipping !== -1 && indexDefaultBilling !== -1) {
     newUser = {
       ...newUserMainData,
       defaultShippingAddress: indexDefaultShipping,
       defaultBillingAddress: indexDefaultBilling,
     };
-
-    console.log("newUser ++ def ship bil");
-    console.log(newUser);
   } else if (indexDefaultShipping !== -1) {
     newUser = {
       ...newUserMainData,
       defaultShippingAddress: indexDefaultShipping,
     };
-    console.log("newUser ++ def bil");
-    console.log(newUser);
   } else if (indexDefaultBilling !== -1) {
     newUser = {
       ...newUserMainData,
       defaultBillingAddress: indexDefaultBilling,
     };
-    console.log("newUser ++ def ship");
-    console.log(newUser);
   }
-  console.log("new userObject = ");
-  console.log(newUser);
   return newUser;
 };

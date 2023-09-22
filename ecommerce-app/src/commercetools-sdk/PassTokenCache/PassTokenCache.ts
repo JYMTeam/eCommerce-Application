@@ -3,8 +3,7 @@ import {
   TokenCacheOptions,
   TokenStore,
 } from "@commercetools/sdk-client-v2";
-
-export class PassTokenCache implements TokenCache {
+export class TokenCacheManager implements TokenCache {
   private cache: TokenStore = {
     token: "",
     expirationTime: 0,
@@ -20,4 +19,4 @@ export class PassTokenCache implements TokenCache {
   }
 }
 
-export const passToken = new PassTokenCache();
+export const passTokenManager = new TokenCacheManager();

@@ -1,6 +1,6 @@
 import { AppDispatch } from "..";
 import { ErrorResponse, ClientResponse } from "@commercetools/platform-sdk";
-import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
+// import { getApiEntryRoot } from "../../commercetools-sdk/builders/ClientBuilderEntry";
 import {
   productsFetching,
   productsFetchSuccess,
@@ -14,6 +14,7 @@ import {
 import { DEFAULT_PRODUCTS_LIMIT } from "../../constants/constants";
 import { convertUSDToCents } from "../../utils/utils";
 import { SelectedFilterAndSortValues, SortMethods } from "../../types";
+import { clientBuilderManager } from "../../commercetools-sdk/builders/ClientBuilderManager";
 
 const FILTER_QUERY_ATTRIBUTES_BEGIN = "variants.attributes";
 const FILTER_QUERY_PRICE_BEGIN = "variants.price.centAmount";
@@ -38,7 +39,7 @@ export const fetchProducts = (offset = 0, categoryId?: string) => {
         queryArgs.where = `categories(id="${categoryId}")`;
       }
 
-      const answer = await getApiEntryRoot()
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .productProjections()
         .get({ queryArgs })
         .execute();
@@ -47,6 +48,7 @@ export const fetchProducts = (offset = 0, categoryId?: string) => {
     } catch (err) {
       const error = err as ClientResponse<ErrorResponse>;
       const body = error.body;
+      console.log(err);
       if (body) {
         dispatch(productsFetchError(body));
       }
@@ -89,7 +91,7 @@ export const searchProducts = (text: string, offset = 0) => {
         fuzzy: true,
         fuzzyLevel,
       };
-      const answer = await getApiEntryRoot()
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .productProjections()
         .search()
         .get({ queryArgs })
@@ -122,7 +124,7 @@ export const filterAndSortProducts = (
         offset,
         ...queryOptions,
       };
-      const answer = await getApiEntryRoot()
+      const answer = await clientBuilderManager.requestCurrentBuilder
         .productProjections()
         .search()
         .get({ queryArgs })
@@ -207,15 +209,3 @@ const getFilterAndSortOptions = (lists: SelectedFilterAndSortValues) => {
 const convertPriceToCentsString = (usdAmount: number) => {
   return convertUSDToCents(usdAmount).toString();
 };
-
-// export const setCategory = (categoryId: string) => {
-//   return async (dispatch: AppDispatch) => {
-//     dispatch(categorySet(categoryId));
-//   };
-// };
-
-// export const resetCategory = () => {
-//   return async (dispatch: AppDispatch) => {
-//     dispatch(categoryReset());
-//   };
-// };

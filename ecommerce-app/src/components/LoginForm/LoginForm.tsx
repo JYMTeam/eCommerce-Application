@@ -7,7 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Formik, Form } from "formik";
 import { initialLoginValues } from "../../constants/constants";
-import { fetchUserLogin } from "../../store/actions/userLoginActions";
+import { fetchUserLogin } from "../../store/actions/userActions/userLoginActions";
 import { UserAuthOptions } from "@commercetools/sdk-client-v2";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { convertToUserAuthOptions } from "../../utils/utils";
@@ -16,12 +16,15 @@ import { Alert, AlertTitle } from "@mui/material";
 import { setLoginSchema } from "../../utils/validation-schemas";
 import { successMessageHandler } from "./loginHelpers";
 
+const LOGIN_BORDER_COLOR = "#dbd8d8";
+
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const LoginSchema = setLoginSchema();
   const { errorMessage, loading, isSuccessMessage } = useAppSelector(
     (state) => state.userLogin,
   );
+  const { tokenAnonymData } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   return (
@@ -30,7 +33,13 @@ export function LoginForm() {
       validationSchema={LoginSchema}
       onSubmit={(values) => {
         const existingUser: UserAuthOptions = convertToUserAuthOptions(values);
-        dispatch(fetchUserLogin(existingUser));
+        if (tokenAnonymData) {
+          dispatch(
+            fetchUserLogin(existingUser, tokenAnonymData.refreshToken),
+          ).catch();
+        } else {
+          dispatch(fetchUserLogin(existingUser)).catch();
+        }
       }}
     >
       {(formik) => {
@@ -58,8 +67,9 @@ export function LoginForm() {
             <Box
               sx={{
                 bgcolor: "background.paper",
-                boxShadow: 4,
-                borderRadius: 2,
+                boxShadow: 0,
+                borderRadius: 0,
+                border: `1px solid ${LOGIN_BORDER_COLOR}`,
                 p: 2,
                 minHeight: 230,
                 fontSize: 24,

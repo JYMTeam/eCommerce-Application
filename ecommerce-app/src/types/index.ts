@@ -40,6 +40,14 @@ export interface IUpdatePersonalValues {
   email: string;
   dateOfBirth: string;
 }
+
+export interface IUpdatePasswordValues {
+  currentPassword: string;
+  newPassword: string;
+  isCurrentPasswordCheck: boolean;
+  isNewPasswordCheck: boolean;
+}
+
 export interface IPostalCodes {
   validate: (countryCode: string, value: string) => {};
 }
@@ -138,4 +146,25 @@ export interface IProductsDrawerProps {
 export interface IAncestorInfo {
   id: string;
   text: string;
+}
+
+export interface ITeamMembersInfo {
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  githubLink: string;
+  contributionDesc: string;
+  color: string;
+  textColor: string;
+  buttonColor: string;
+}
+export interface IParsedCartItem {
+  cartArrIndex: number;
+  name: string;
+  image: string;
+  price: string;
+  discount: string;
+  quantity: number;
+  totalCost: string;
 }
