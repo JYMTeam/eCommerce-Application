@@ -1,0 +1,13 @@
+.products-pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.notification-message {
+  font-size: 28px;
+  font-weight: bold;
+  position: relative;
+  padding: 1em 0;
+  margin: 0;
+  text-align: center;
+}
