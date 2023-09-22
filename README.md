@@ -1,6 +1,6 @@
-# Project Name
+# JYMTeam Ecommerce App
 E-commerce App
-> Live demo [_here_]().
+> Live demo [_here_](https://ecommerce-app-jymteam.netlify.app/).
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -33,15 +33,20 @@ About Us page 🙋‍♂️🙋‍♀️
 The application is powered by CommerceTools 🌐, a leading provider of commerce solutions for B2C and B2B enterprises. CommerceTools offers a cloud-native, microservices-based commerce platform that enables brands to create unique and engaging digital commerce experiences.
 
 
-## Technologies Used
-- CommerceTools
+## Technologies and Libraries Used
+- CommerceTools SDK
 - Typescript
 - React
-- Redux
+- Redux Toolkit
+- Redux Persist
 - Jest
 - ESLint
 - Prettier
 - Husky
+- Mui
+- Formik
+- Notistack
+- Swiper
 
 ## Features
 
@@ -123,7 +128,7 @@ Once installed, you will also need to run this command to enable Git hooks:
 We'll provide various use cases and code examples here later.
 
 ## Project Status
-Project is: _in progress_
+Project is: _done_
 
 ## Room for Improvement
 
@@ -131,9 +136,10 @@ Room for improvement:
 - A lot
 
 To do:
-- Login, Registration, and Main Pages Implementation
-- Catalog Product, Detailed Product, and User Profile Pages Implementation
-- Detailed Product Page Enhancement, Basket Page, Catalog Page Enhancement, and About Us Page Implementation
+- Main Page Enhancement
+- Detailed Product Page Enhancement
+- Improve interaction with promocodes
+- Product order page
 
 
 ## Acknowledgements
